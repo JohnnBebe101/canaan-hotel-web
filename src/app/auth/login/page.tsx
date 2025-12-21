@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 /**
  * Admin Login Page
- * Route: /admin/login
+ * Route: /auth/login
  *
  * Handles admin authentication via credentials stored in environment variables
  */

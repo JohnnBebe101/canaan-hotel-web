@@ -17,78 +17,108 @@ export default function AdminDashboardPage() {
         <p className="text-gray-600">Central hub for hotel management operations</p>
       </div>
 
-      {/* Intent Blocks - System Architecture Definition */}
+      {/* Core System Capabilities */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-lg border border-blue-200">
-          <div className="flex items-center space-x-3 mb-4">
-            <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
-              <span className="text-white text-xl font-bold">📊</span>
+        <div className="bg-gradient-to-br from-blue-50 via-blue-100 to-blue-50 p-6 rounded-xl border border-blue-200 shadow-sm">
+          <div className="flex items-center space-x-4 mb-5">
+            <div className="w-14 h-14 bg-blue-500 rounded-xl flex items-center justify-center shadow-lg">
+              <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
             </div>
             <div>
-              <h3 className="text-lg font-bold text-blue-900">CRM Dashboard</h3>
-              <p className="text-blue-700 font-medium">Customer Relationship Management</p>
+              <h3 className="text-xl font-bold text-blue-900">CRM Analytics</h3>
+              <p className="text-blue-700 font-medium">Customer Insights & Metrics</p>
             </div>
           </div>
-          <p className="text-blue-800 mb-4">
-            Booking metrics, customer insights, and inquiry management will appear here.
-            This is the heart of guest relationship management.
+          <p className="text-blue-800 mb-4 leading-relaxed">
+            Real-time booking analytics, customer behavior insights, and inquiry management metrics
+            will be displayed here. This becomes the command center for guest relationship management.
           </p>
-          <div className="bg-blue-200 rounded-lg p-3">
-            <p className="text-sm text-blue-900 font-medium">Intent: Real-time booking analytics and customer data</p>
+          <div className="bg-blue-200 rounded-lg p-3 border border-blue-300">
+            <p className="text-sm text-blue-900 font-semibold">🎯 Mission Critical: Revenue optimization through data-driven decisions</p>
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-lg border border-green-200">
-          <div className="flex items-center space-x-3 mb-4">
-            <div className="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
-              <span className="text-white text-xl font-bold">🏨</span>
+        <div className="bg-gradient-to-br from-green-50 via-green-100 to-green-50 p-6 rounded-xl border border-green-200 shadow-sm">
+          <div className="flex items-center space-x-4 mb-5">
+            <div className="w-14 h-14 bg-green-500 rounded-xl flex items-center justify-center shadow-lg">
+              <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
             </div>
             <div>
-              <h3 className="text-lg font-bold text-green-900">Inventory Control</h3>
-              <p className="text-green-700 font-medium">Room Management & Availability</p>
+              <h3 className="text-xl font-bold text-green-900">Revenue Operations</h3>
+              <p className="text-green-700 font-medium">Inventory & Pricing Intelligence</p>
             </div>
           </div>
-          <p className="text-green-800 mb-4">
-            Room availability, pricing, and inventory metrics will be displayed here.
-            Critical for revenue management and operations.
+          <p className="text-green-800 mb-4 leading-relaxed">
+            Live room availability tracking, dynamic pricing insights, and inventory optimization
+            metrics will power revenue management decisions and operational efficiency.
           </p>
-          <div className="bg-green-200 rounded-lg p-3">
-            <p className="text-sm text-green-900 font-medium">Intent: Live inventory tracking and pricing optimization</p>
+          <div className="bg-green-200 rounded-lg p-3 border border-green-300">
+            <p className="text-sm text-green-900 font-semibold">💰 Business Engine: Maximize revenue through smart inventory management</p>
           </div>
         </div>
       </div>
 
-      {/* CRM Core - Intent Block */}
-      <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg border border-purple-200 p-8 mb-8">
-        <div className="text-center mb-6">
-          <div className="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span className="text-white text-2xl font-bold">🎯</span>
+      {/* CRM Operational Hub */}
+      <div className="bg-gradient-to-br from-purple-50 via-purple-100 to-purple-50 rounded-xl border border-purple-200 p-8 mb-8 shadow-sm">
+        <div className="text-center mb-8">
+          <div className="w-20 h-20 bg-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+            <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
           </div>
-          <h2 className="text-2xl font-bold text-purple-900 mb-2">CRM Command Center</h2>
-          <p className="text-purple-700 text-lg">Where Customer Relationships Are Built</p>
+          <h2 className="text-3xl font-bold text-purple-900 mb-2">CRM Operational Hub</h2>
+          <p className="text-purple-700 text-xl font-medium">Where Guest Relationships Are Managed</p>
+          <p className="text-purple-600 mt-2">Complete booking lifecycle from inquiry to completion</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          <div className="bg-white rounded-lg p-4 border border-purple-300">
-            <h4 className="font-bold text-purple-900 mb-2">📥 New Inquiries</h4>
-            <p className="text-sm text-purple-800">Fresh booking requests from potential guests will appear here first.</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="bg-white rounded-lg p-5 border border-purple-300 shadow-sm hover:shadow-md transition-shadow">
+            <div className="flex items-center space-x-3 mb-3">
+              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                <span className="text-blue-600 text-lg">📥</span>
+              </div>
+              <h4 className="font-bold text-purple-900">New Inquiries</h4>
+            </div>
+            <p className="text-sm text-gray-700 leading-relaxed">Fresh booking requests from potential guests arrive here first for immediate attention and response.</p>
           </div>
 
-          <div className="bg-white rounded-lg p-4 border border-purple-300">
-            <h4 className="font-bold text-purple-900 mb-2">⚡ Quick Actions</h4>
-            <p className="text-sm text-purple-800">Respond, quote, confirm, or follow up with guests directly from this dashboard.</p>
+          <div className="bg-white rounded-lg p-5 border border-purple-300 shadow-sm hover:shadow-md transition-shadow">
+            <div className="flex items-center space-x-3 mb-3">
+              <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                <span className="text-green-600 text-lg">⚡</span>
+              </div>
+              <h4 className="font-bold text-purple-900">Workflow Actions</h4>
+            </div>
+            <p className="text-sm text-gray-700 leading-relaxed">Respond, quote prices, confirm bookings, or follow up with guests through guided status transitions.</p>
           </div>
 
-          <div className="bg-white rounded-lg p-4 border border-purple-300">
-            <h4 className="font-bold text-purple-900 mb-2">📊 Conversion Funnel</h4>
-            <p className="text-sm text-purple-800">Track inquiry-to-booking conversion rates and optimize your sales process.</p>
+          <div className="bg-white rounded-lg p-5 border border-purple-300 shadow-sm hover:shadow-md transition-shadow">
+            <div className="flex items-center space-x-3 mb-3">
+              <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center">
+                <span className="text-amber-600 text-lg">📊</span>
+              </div>
+              <h4 className="font-bold text-purple-900">Conversion Tracking</h4>
+            </div>
+            <p className="text-sm text-gray-700 leading-relaxed">Monitor inquiry-to-booking conversion rates and optimize your guest acquisition process.</p>
           </div>
         </div>
 
-        <div className="bg-purple-200 rounded-lg p-4">
-          <p className="text-purple-900 font-medium text-center">
-            💡 This is where CRM happens. Every guest interaction starts and ends here.
-          </p>
+        <div className="bg-gradient-to-r from-purple-200 to-purple-300 rounded-xl p-6 border border-purple-300">
+          <div className="flex items-center justify-center space-x-3">
+            <svg className="w-6 h-6 text-purple-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            <p className="text-purple-900 font-bold text-lg text-center">
+              This is where CRM happens. Every guest journey begins and completes here.
+            </p>
+            <svg className="w-6 h-6 text-purple-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
         </div>
       </div>
 

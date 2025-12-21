@@ -1,18 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-
-// Booking inquiry data structure based on CMS_SCHEMA.md
-interface BookingInquiry {
-  guest_name: string;
-  email: string;
-  phone: string;
-  room_type: string;
-  dates: {
-    check_in: string;
-    check_out: string;
-  };
-  message?: string;
-  status?: string;
-}
+import { createBooking } from "@/lib/booking-store";
 
 // POST handler for booking inquiries
 export async function POST(request: NextRequest) {
@@ -47,29 +34,23 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Construct booking inquiry object
-    const bookingInquiry: BookingInquiry = {
-      guest_name: body.guest_name.trim(),
+    // Create operational booking record for CRM
+    const booking = createBooking({
+      guestName: body.guest_name.trim(),
       email: body.email.trim().toLowerCase(),
       phone: body.phone.trim(),
-      room_type: body.room_type.trim(),
-      dates: {
-        check_in: body.dates.check_in,
-        check_out: body.dates.check_out,
-      },
-      message: body.message?.trim() || "",
-      status: "pending", // Default status
-    };
+      roomType: body.room_type.trim(),
+      checkIn: body.dates.check_in,
+      checkOut: body.dates.check_out,
+      notes: body.message?.trim() || undefined,
+    });
 
-    // TODO: Store booking inquiry in database/JSON file
-    // This is where the booking data would be saved for admin dashboard access
-    // Example: await saveBookingInquiry(bookingInquiry);
-
-    // Return success response
+    // Return success response with booking details
     return NextResponse.json(
       {
         message: "Booking inquiry received successfully",
-        booking_id: `temp_${Date.now()}`, // Temporary ID until DB is implemented
+        booking_id: booking.id,
+        status: booking.status,
       },
       { status: 201 }
     );

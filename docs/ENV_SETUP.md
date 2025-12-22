@@ -46,9 +46,9 @@ SESSION_SECRET=change-me-in-production-generate-a-secure-random-key
 # Feature Flags (V3 - Production-Safe Toggles)
 # These control optional advanced features. All default to 'false' for safety.
 # Set to 'true' only when features are fully tested and ready for production.
-# NEXT_PUBLIC_PAYMENTS_ENABLED=false
-# NEXT_PUBLIC_EMAIL_NOTIFICATIONS_ENABLED=false
-# NEXT_PUBLIC_OTA_INTEGRATIONS_ENABLED=false
+# PAYMENTS_ENABLED=false
+# EMAIL_NOTIFICATIONS_ENABLED=false
+# OTA_INTEGRATIONS_ENABLED=false
 ```
 
 ## Required Environment Variables

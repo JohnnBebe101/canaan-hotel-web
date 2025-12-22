@@ -34,9 +34,9 @@ export interface FeatureFlags {
  */
 export function getFeatureFlags(): FeatureFlags {
   return {
-    PAYMENTS_ENABLED: process.env.NEXT_PUBLIC_PAYMENTS_ENABLED === 'true',
-    EMAIL_NOTIFICATIONS_ENABLED: process.env.NEXT_PUBLIC_EMAIL_NOTIFICATIONS_ENABLED === 'true',
-    OTA_INTEGRATIONS_ENABLED: process.env.NEXT_PUBLIC_OTA_INTEGRATIONS_ENABLED === 'true',
+    PAYMENTS_ENABLED: process.env.PAYMENTS_ENABLED === 'true',
+    EMAIL_NOTIFICATIONS_ENABLED: process.env.EMAIL_NOTIFICATIONS_ENABLED === 'true',
+    OTA_INTEGRATIONS_ENABLED: process.env.OTA_INTEGRATIONS_ENABLED === 'true',
   };
 }
 

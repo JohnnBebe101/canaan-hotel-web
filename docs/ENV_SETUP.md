@@ -42,6 +42,13 @@ SESSION_SECRET=change-me-in-production-generate-a-secure-random-key
 # External Widget Integrations (if needed)
 # BOOKING_COM_WIDGET_ID=your-booking-com-widget-id
 # TRIPADVISOR_WIDGET_ID=your-tripadvisor-widget-id
+
+# Feature Flags (V3 - Production-Safe Toggles)
+# These control optional advanced features. All default to 'false' for safety.
+# Set to 'true' only when features are fully tested and ready for production.
+# NEXT_PUBLIC_PAYMENTS_ENABLED=false
+# NEXT_PUBLIC_EMAIL_NOTIFICATIONS_ENABLED=false
+# NEXT_PUBLIC_OTA_INTEGRATIONS_ENABLED=false
 ```
 
 ## Required Environment Variables
@@ -69,6 +76,12 @@ All other variables listed above are optional or for future features:
 - Generate a strong `SESSION_SECRET` using a secure random generator
 - Never commit `.env.local` to version control (already gitignored)
 - Use strong passwords for production environments
+
+🔒 **Feature Flags Security**:
+- Feature flags default to 'false' for safety - no accidental activations
+- Test features thoroughly in staging before enabling in production
+- Monitor logs when enabling new features for unexpected behavior
+- Use environment-specific flag values (dev: false, staging: selective, prod: tested-only)
 
 ## Development Server
 

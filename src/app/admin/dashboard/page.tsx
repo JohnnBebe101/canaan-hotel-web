@@ -1,3 +1,6 @@
+import SystemStatusBadge from "@/components/admin/SystemStatusBadge";
+import { isPaymentsEnabled, isEmailEnabled, isOTAEnabled } from "@/lib/featureFlags";
+
 /**
  * Admin Dashboard - Control Center (Intent Blocks)
  * Route: /admin/dashboard
@@ -221,6 +224,18 @@ export default function AdminDashboardPage() {
             <div className="mt-2 text-xs text-gray-500">
               CRM → Property → Content → Health
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* System Capabilities */}
+      <div className="mt-8">
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">System Capabilities</h2>
+        <div className="bg-white rounded-lg border border-gray-200 p-6">
+          <div className="space-y-4">
+            <SystemStatusBadge label="Payments" enabled={isPaymentsEnabled()} />
+            <SystemStatusBadge label="Email Notifications" enabled={isEmailEnabled()} />
+            <SystemStatusBadge label="OTA Integrations" enabled={isOTAEnabled()} />
           </div>
         </div>
       </div>

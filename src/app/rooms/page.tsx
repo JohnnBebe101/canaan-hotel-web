@@ -49,7 +49,7 @@ export default function RoomsPage() {
       <div className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="text-center">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">Our Rooms</h1>
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Rooms</h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Discover our elegantly designed accommodations, each crafted for your comfort and relaxation.
               Choose from our range of rooms to find the perfect fit for your stay.
@@ -59,7 +59,7 @@ export default function RoomsPage() {
       </div>
 
       {/* Rooms Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
           {rooms.map((room) => (
             <div key={room.id} className="bg-white rounded-lg shadow-sm border overflow-hidden hover:shadow-lg transition-shadow duration-300">
@@ -79,7 +79,7 @@ export default function RoomsPage() {
               {/* Room Details */}
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-xl font-semibold text-gray-900">{room.name}</h3>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{room.name}</h3>
                   <span className="text-2xl font-bold text-amber-600">${room.price}</span>
                 </div>
 
@@ -104,11 +104,11 @@ export default function RoomsPage() {
                 <div className="flex space-x-3">
                   <a
                     href={`/contact?room=${room.id}`}
-                    className="flex-1 bg-amber-600 text-white text-center py-2 px-4 rounded-lg font-medium hover:bg-amber-700 transition-colors"
+                    className="flex-1 bg-amber-600 text-white text-center px-6 py-3 rounded-lg font-medium hover:bg-amber-700 transition-colors"
                   >
                     Book Now
                   </a>
-                  <button className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                  <button className="px-3 py-2 text-sm font-medium text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
                     View Details
                   </button>
                 </div>
@@ -125,7 +125,7 @@ export default function RoomsPage() {
           </p>
           <a
             href="/contact"
-            className="inline-block bg-amber-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-amber-700 transition-colors"
+            className="inline-block bg-amber-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-amber-700 transition-colors"
           >
             Make a Reservation
           </a>

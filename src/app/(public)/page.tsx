@@ -7,7 +7,7 @@ export default function HomePage() {
       <section className="relative h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
         <div className="absolute inset-0 bg-black/40"></div>
         <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 tracking-tight">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight">
             Canaan International Hotel
           </h1>
           <p className="text-xl md:text-2xl text-white/90 mb-8 font-light">
@@ -26,7 +26,7 @@ export default function HomePage() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Our Rooms
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -41,7 +41,7 @@ export default function HomePage() {
                 <span className="text-gray-500 text-sm">Room Image Placeholder</span>
               </div>
               <div className="p-6">
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">Deluxe Room</h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">Deluxe Room</h3>
                 <p className="text-gray-600 mb-4">
                   Spacious and comfortable, perfect for your stay
                 </p>
@@ -63,7 +63,7 @@ export default function HomePage() {
                 <span className="text-gray-500 text-sm">Room Image Placeholder</span>
               </div>
               <div className="p-6">
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">Executive Suite</h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">Executive Suite</h3>
                 <p className="text-gray-600 mb-4">
                   Premium accommodations with stunning views
                 </p>
@@ -85,7 +85,7 @@ export default function HomePage() {
                 <span className="text-gray-500 text-sm">Room Image Placeholder</span>
               </div>
               <div className="p-6">
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">Presidential Suite</h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">Presidential Suite</h3>
                 <p className="text-gray-600 mb-4">
                   The ultimate in luxury and sophistication
                 </p>
@@ -116,7 +116,7 @@ export default function HomePage() {
       {/* Booking Inquiry CTA Section */}
       <section className="py-20 bg-gradient-to-r from-amber-600 to-amber-700">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
             Ready to Book Your Stay?
           </h2>
           <p className="text-xl text-amber-50 mb-8 max-w-2xl mx-auto">
@@ -135,7 +135,7 @@ export default function HomePage() {
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Guest Reviews
             </h2>
             <p className="text-lg text-gray-600">
@@ -176,7 +176,7 @@ export default function HomePage() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Nearby Attractions
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -191,7 +191,7 @@ export default function HomePage() {
                 <span className="text-gray-500 text-sm">Attraction Image Placeholder</span>
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Historic Downtown</h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">Historic Downtown</h3>
                 <p className="text-gray-600 mb-4">
                   Discover charming streets and local culture just minutes away
                 </p>
@@ -205,7 +205,7 @@ export default function HomePage() {
                 <span className="text-gray-500 text-sm">Attraction Image Placeholder</span>
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Museum District</h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">Museum District</h3>
                 <p className="text-gray-600 mb-4">
                   Explore world-class museums and art galleries
                 </p>
@@ -219,7 +219,7 @@ export default function HomePage() {
                 <span className="text-gray-500 text-sm">Attraction Image Placeholder</span>
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Central Park</h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">Central Park</h3>
                 <p className="text-gray-600 mb-4">
                   Beautiful green spaces perfect for relaxation and recreation
                 </p>

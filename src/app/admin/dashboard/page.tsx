@@ -30,7 +30,7 @@ export default function AdminDashboardPage() {
               </svg>
             </div>
             <div>
-              <h3 className="text-xl font-bold text-blue-900">CRM Analytics</h3>
+              <h3 className="text-xl font-semibold text-blue-900">CRM Analytics</h3>
               <p className="text-blue-700 font-medium">Customer Insights & Metrics</p>
             </div>
           </div>
@@ -51,7 +51,7 @@ export default function AdminDashboardPage() {
               </svg>
             </div>
             <div>
-              <h3 className="text-xl font-bold text-green-900">Revenue Operations</h3>
+              <h3 className="text-xl font-semibold text-green-900">Revenue Operations</h3>
               <p className="text-green-700 font-medium">Inventory & Pricing Intelligence</p>
             </div>
           </div>
@@ -126,7 +126,7 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* System Architecture Definition */}
-      <div className="mt-8">
+      <div className="mt-12">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">System Architecture</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* CRM Core */}
@@ -197,7 +197,7 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* Development & Testing Tools */}
-      <div className="mt-8">
+      <div className="mt-12">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">Development Tools</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <a
@@ -229,7 +229,7 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* System Capabilities */}
-      <div className="mt-8">
+      <div className="mt-12">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">System Capabilities</h2>
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="space-y-4">

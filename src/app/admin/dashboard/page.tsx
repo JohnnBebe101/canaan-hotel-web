@@ -84,7 +84,7 @@ export default function AdminDashboardPage() {
               <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                 <span className="text-blue-600 text-lg">📥</span>
               </div>
-              <h4 className="font-bold text-purple-900">New Inquiries</h4>
+              <h4 className="font-semibold text-purple-900">New Inquiries</h4>
             </div>
             <p className="text-sm text-gray-700 leading-relaxed">Fresh booking requests from potential guests arrive here first for immediate attention and response.</p>
           </div>
@@ -94,7 +94,7 @@ export default function AdminDashboardPage() {
               <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
                 <span className="text-green-600 text-lg">⚡</span>
               </div>
-              <h4 className="font-bold text-purple-900">Workflow Actions</h4>
+              <h4 className="font-semibold text-purple-900">Workflow Actions</h4>
             </div>
             <p className="text-sm text-gray-700 leading-relaxed">Respond, quote prices, confirm bookings, or follow up with guests through guided status transitions.</p>
           </div>
@@ -104,7 +104,7 @@ export default function AdminDashboardPage() {
               <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center">
                 <span className="text-amber-600 text-lg">📊</span>
               </div>
-              <h4 className="font-bold text-purple-900">Conversion Tracking</h4>
+              <h4 className="font-semibold text-purple-900">Conversion Tracking</h4>
             </div>
             <p className="text-sm text-gray-700 leading-relaxed">Monitor inquiry-to-booking conversion rates and optimize your guest acquisition process.</p>
           </div>

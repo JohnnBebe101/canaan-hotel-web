@@ -82,7 +82,7 @@ export default function ContactPage() {
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-lg shadow-sm border p-8">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Book Your Stay</h1>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Book Your Stay</h1>
             <p className="text-gray-600">
               Fill out the form below to submit a booking inquiry. We'll get back to you promptly.
             </p>
@@ -230,7 +230,7 @@ export default function ContactPage() {
               <button
                 type="submit"
                 disabled={status === "loading"}
-                className="w-full bg-amber-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-amber-700 focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="w-full bg-amber-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-amber-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {status === "loading" ? "Submitting..." : "Submit Booking Inquiry"}
               </button>

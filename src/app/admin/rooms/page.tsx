@@ -117,7 +117,7 @@ export default function AdminRoomsPage() {
         </div>
         <Link
           href="/admin/rooms/new"
-          className="bg-amber-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-amber-700 transition-colors"
+          className="bg-amber-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-amber-700 transition-colors"
         >
           Add New Room
         </Link>
@@ -135,7 +135,7 @@ export default function AdminRoomsPage() {
               <div className="flex items-center justify-between">
                 <div className="flex-1">
                   <div className="flex items-center space-x-3 mb-2">
-                    <h3 className="text-lg font-medium text-gray-900">{room.name}</h3>
+                    <h3 className="text-lg font-semibold text-gray-900">{room.name}</h3>
                     <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
                       room.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                     }`}>
@@ -149,7 +149,7 @@ export default function AdminRoomsPage() {
                 <div className="flex items-center space-x-2 ml-4">
                   <button
                     onClick={() => handleToggleActive(room.id)}
-                    className={`px-3 py-1 text-xs font-medium rounded ${
+                    className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
                       room.isActive
                         ? 'bg-green-100 text-green-800 hover:bg-green-200'
                         : 'bg-red-100 text-red-800 hover:bg-red-200'
@@ -159,13 +159,13 @@ export default function AdminRoomsPage() {
                   </button>
                   <Link
                     href={`/admin/rooms/${room.id}`}
-                    className="px-3 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded hover:bg-blue-200"
+                    className="px-3 py-2 text-sm font-medium bg-blue-100 text-blue-800 rounded-md hover:bg-blue-200 transition-colors"
                   >
                     Edit
                   </Link>
                   <button
                     onClick={() => handleDelete(room.id)}
-                    className="px-3 py-1 text-xs font-medium bg-red-100 text-red-800 rounded hover:bg-red-200"
+                    className="px-3 py-2 text-sm font-medium bg-red-100 text-red-800 rounded-md hover:bg-red-200 transition-colors"
                   >
                     Delete
                   </button>
@@ -182,7 +182,7 @@ export default function AdminRoomsPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
               </svg>
             </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No rooms yet</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">No rooms yet</h3>
             <p className="text-gray-600 mb-4">Get started by creating your first room</p>
             <Link
               href="/admin/rooms/new"

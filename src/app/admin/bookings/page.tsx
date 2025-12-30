@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Booking, BookingStatus } from "@/lib/models";
+import { withTimeout } from "@/lib/asyncGuards";
 
 /**
  * Admin Bookings - CRM Inbox
@@ -25,7 +26,11 @@ export default function AdminBookingsPage() {
   const loadBookings = async () => {
     try {
       setLoading(true);
-      const response = await fetch("/api/admin/bookings");
+      // V4.4 async guard: Prevent hanging requests during CRM data loading
+      const response = await withTimeout(
+        (signal) => fetch("/api/admin/bookings", { signal }),
+        5000 // 5 second timeout for admin operations
+      );
       if (!response.ok) throw new Error("Failed to load bookings");
 
       const data = await response.json();
@@ -39,11 +44,16 @@ export default function AdminBookingsPage() {
 
   const updateBookingStatus = async (bookingId: string, newStatus: BookingStatus) => {
     try {
-      const response = await fetch("/api/admin/bookings", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: bookingId, status: newStatus })
-      });
+      // V4.4 async guard: Prevent hanging requests during CRM status updates
+      const response = await withTimeout(
+        (signal) => fetch("/api/admin/bookings", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: bookingId, status: newStatus }),
+          signal
+        }),
+        5000 // 5 second timeout for admin operations
+      );
 
       if (!response.ok) throw new Error("Failed to update status");
 

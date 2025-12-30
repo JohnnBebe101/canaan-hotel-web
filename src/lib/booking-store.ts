@@ -1,4 +1,5 @@
 import { Booking, BookingStatus } from "./models";
+import { safeAsync } from "./asyncGuards";
 import {
   dispatchBookingReceivedEmail,
   dispatchBookingStatusUpdateEmail,
@@ -28,13 +29,15 @@ export function createBooking(data: Omit<Booking, "id" | "status" | "createdAt" 
   };
   bookings.unshift(booking); // New bookings at top
 
-  // Dispatch email notifications (non-blocking)
-  try {
-    dispatchBookingReceivedEmail(booking);
-    dispatchHotelAlertEmail(booking);
-  } catch (error) {
-    console.error("[BOOKING STORE] Email dispatch failed:", error);
-  }
+  // Dispatch email notifications (non-blocking, V4.4 async guard)
+  // Prevents silent email failures and app hangs during booking creation
+  safeAsync(
+    () => Promise.all([
+      dispatchBookingReceivedEmail(booking),
+      dispatchHotelAlertEmail(booking)
+    ]).then(() => undefined),
+    "BOOKING_CREATION_EMAILS"
+  );
 
   return booking;
 }
@@ -56,15 +59,15 @@ export function updateBookingStatus(id: string, status: BookingStatus): Booking 
     booking.invoiceRef = `INV-${Date.now()}`;
   }
 
-  // Dispatch email notifications (non-blocking)
-  try {
-    dispatchBookingStatusUpdateEmail(booking);
-    if (status === "INVOICED") {
-      dispatchInvoiceIssuedEmail(booking);
-    }
-  } catch (error) {
-    console.error("[BOOKING STORE] Email dispatch failed:", error);
-  }
+  // Dispatch email notifications (non-blocking, V4.4 async guard)
+  // Prevents silent email failures and app hangs during status transitions
+  safeAsync(
+    () => Promise.all([
+      dispatchBookingStatusUpdateEmail(booking),
+      ...(status === "INVOICED" ? [dispatchInvoiceIssuedEmail(booking)] : [])
+    ]).then(() => undefined),
+    "BOOKING_STATUS_UPDATE_EMAILS"
+  );
 
   return booking;
 }

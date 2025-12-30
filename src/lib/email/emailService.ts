@@ -7,6 +7,7 @@
 
 import { EmailPayload } from "./emailTypes";
 import { isEmailEnabled } from "../featureFlags";
+import { logInfo, logWarn, logError } from "../logger";
 
 /**
  * Send Email Function
@@ -19,22 +20,26 @@ import { isEmailEnabled } from "../featureFlags";
  */
 export function sendEmail(payload: EmailPayload): void {
   if (!isEmailEnabled()) {
-    console.log("[EMAIL DISABLED]", {
-      to: payload.to,
-      subject: payload.subject,
-      body: payload.body.substring(0, 100) + "...",
+    // V4.4 logging: Track disabled email attempts for feature flag monitoring
+    logWarn("EMAIL_SERVICE", "Email dispatch blocked by feature flag", {
+      recipient: payload.to,
+      eventType: "FEATURE_DISABLED",
       bookingId: payload.bookingId,
-      invoiceRef: payload.invoiceRef,
+      invoiceRef: payload.invoiceRef
     });
     return;
   }
 
-  // Feature enabled - log successful send (stub for actual email service)
-  console.log("[EMAIL SENT]", {
-    to: payload.to,
+  // V4.4 logging: Track email dispatch attempts for operational monitoring
+  // Helps diagnose email delivery issues and service reliability
+  logInfo("EMAIL_SERVICE", "Email dispatch initiated", {
+    recipient: payload.to,
     subject: payload.subject,
-    body: payload.body.substring(0, 100) + "...",
+    eventType: "DISPATCH_ATTEMPT",
     bookingId: payload.bookingId,
-    invoiceRef: payload.invoiceRef,
+    invoiceRef: payload.invoiceRef
   });
+
+  // Mock successful dispatch for development (V4.1 will implement real email service)
+  // In production, this would integrate with SMTP provider
 }

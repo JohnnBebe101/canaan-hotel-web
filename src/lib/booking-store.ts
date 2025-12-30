@@ -1,5 +1,6 @@
 import { Booking, BookingStatus } from "./models";
 import { safeAsync } from "./asyncGuards";
+import { logInfo, logError } from "./logger";
 import {
   dispatchBookingReceivedEmail,
   dispatchBookingStatusUpdateEmail,
@@ -29,6 +30,14 @@ export function createBooking(data: Omit<Booking, "id" | "status" | "createdAt" 
   };
   bookings.unshift(booking); // New bookings at top
 
+  // V4.4 logging: Track booking lifecycle for CRM audit trail
+  logInfo("CRM_BOOKING", `New booking created: ${booking.id}`, {
+    bookingId: booking.id,
+    guestName: booking.guestName,
+    roomType: booking.roomType,
+    status: booking.status
+  });
+
   // Dispatch email notifications (non-blocking, V4.4 async guard)
   // Prevents silent email failures and app hangs during booking creation
   safeAsync(
@@ -51,6 +60,7 @@ export function updateBookingStatus(id: string, status: BookingStatus): Booking 
     return null;
   }
 
+  const previousStatus = booking.status;
   booking.status = status;
   booking.updatedAt = new Date().toISOString();
 
@@ -58,6 +68,15 @@ export function updateBookingStatus(id: string, status: BookingStatus): Booking 
   if (status === "INVOICED" && !booking.invoiceRef) {
     booking.invoiceRef = `INV-${Date.now()}`;
   }
+
+  // V4.4 logging: Track status transitions for CRM audit trail and operations
+  logInfo("CRM_STATUS_TRANSITION", `Booking status changed: ${previousStatus} → ${status}`, {
+    bookingId: id,
+    previousStatus,
+    newStatus: status,
+    guestName: booking.guestName,
+    invoiceRef: booking.invoiceRef
+  });
 
   // Dispatch email notifications (non-blocking, V4.4 async guard)
   // Prevents silent email failures and app hangs during status transitions

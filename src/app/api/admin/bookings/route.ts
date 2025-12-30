@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getBookings, updateBookingStatus, updateBookingNotes } from "@/lib/booking-store";
+import { logError } from "@/lib/logger";
 
 // CRM Workflow API - Admin Protected
 // Handles operational booking management (status changes, notes, etc.)
@@ -10,7 +11,13 @@ export async function GET() {
     const bookings = getBookings();
     return NextResponse.json(bookings);
   } catch (error) {
-    console.error("Error fetching bookings:", error);
+    // V4.4 logging: Track API failures for operational monitoring
+    // Helps diagnose CRM data access issues and service reliability
+    logError("API_BOOKINGS_GET", "Failed to fetch bookings", {
+      error: error instanceof Error ? error.message : String(error),
+      endpoint: "/api/admin/bookings",
+      method: "GET"
+    });
     return NextResponse.json(
       { error: "Failed to fetch bookings" },
       { status: 500 }
@@ -59,7 +66,13 @@ export async function PATCH(request: NextRequest) {
       { status: 400 }
     );
   } catch (error) {
-    console.error("Error updating booking:", error);
+    // V4.4 logging: Track booking update failures for audit trail
+    // Helps identify CRM operational issues and data consistency problems
+    logError("API_BOOKINGS_PATCH", "Failed to update booking", {
+      error: error instanceof Error ? error.message : String(error),
+      endpoint: "/api/admin/bookings",
+      method: "PATCH"
+    });
     return NextResponse.json(
       { error: "Failed to update booking" },
       { status: 500 }

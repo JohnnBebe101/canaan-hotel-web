@@ -7,6 +7,8 @@
  * - Unhandled promise rejections
  */
 
+import { logError } from "./logger";
+
 /**
  * Creates a timeout promise that rejects after the specified milliseconds
  */
@@ -52,7 +54,12 @@ export async function safeAsync<T>(
   try {
     return await operation();
   } catch (error) {
-    console.error(`[${context}] Async operation failed:`, error);
+    // V4.4 logging: Track async operation failures for operational monitoring
+    // Helps identify performance issues and service reliability problems
+    logError(context, "Async operation failed", {
+      error: error instanceof Error ? error.message : String(error),
+      operationType: "SAFE_ASYNC"
+    });
     return null;
   }
 }
@@ -69,7 +76,13 @@ export async function safeAsyncWithTimeout<T>(
   try {
     return await withTimeout(operation, timeoutMs);
   } catch (error) {
-    console.error(`[${context}] Async operation timed out or failed:`, error);
+    // V4.4 logging: Track timeout failures for performance monitoring
+    // Helps identify slow services and network issues
+    logError(context, "Async operation timed out or failed", {
+      error: error instanceof Error ? error.message : String(error),
+      timeoutMs,
+      operationType: "TIMEOUT_WRAPPED"
+    });
     return null;
   }
 }

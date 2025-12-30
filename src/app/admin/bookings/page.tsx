@@ -3,7 +3,10 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Booking, BookingStatus } from "@/lib/models";
-import { withTimeout } from "@/lib/asyncGuards";
+import { withTimeout, safeAsync } from "@/lib/asyncGuards";
+import { createStripePaymentLink } from "@/lib/payments/payment-link-service";
+import { PaymentCreateIntent, PaymentRecord } from "@/lib/payments/payment-types";
+import { isPaymentsEnabled } from "@/lib/featureFlags";
 
 /**
  * Admin Bookings - CRM Inbox
@@ -17,6 +20,7 @@ export default function AdminBookingsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
+  const [generatingPaymentLink, setGeneratingPaymentLink] = useState(false);
 
   // Load CRM bookings
   useEffect(() => {
@@ -70,6 +74,54 @@ export default function AdminBookingsPage() {
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to update status");
+    }
+  };
+
+  const generatePaymentLink = async (booking: Booking) => {
+    // V5.2.1 safety: Only allow for INVOICED bookings with payments enabled
+    if (booking.status !== "INVOICED" || !isPaymentsEnabled()) {
+      return;
+    }
+
+    setGeneratingPaymentLink(true);
+
+    try {
+      // Calculate amount (placeholder: $100 per night, would be calculated properly in production)
+      const checkIn = new Date(booking.checkIn);
+      const checkOut = new Date(booking.checkOut);
+      const nights = Math.ceil((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24));
+      const amountCents = nights * 10000; // $100/night in cents
+
+      const input: PaymentCreateIntent = {
+        bookingId: booking.id,
+        amountCents,
+        currency: "usd"
+      };
+
+      // V5.2.1 async guard: Safe payment link generation
+      const paymentRecord = await safeAsync(
+        () => createStripePaymentLink(input),
+        "ADMIN_PAYMENT_LINK_GENERATION"
+      );
+
+      if (paymentRecord) {
+        // Update booking with payment record
+        const updatedBooking = { ...booking, paymentRecord };
+
+        // Update local state
+        setBookings(bookings.map(b =>
+          b.id === booking.id ? updatedBooking : b
+        ));
+
+        // Update selected booking if it's the one being modified
+        if (selectedBooking?.id === booking.id) {
+          setSelectedBooking(updatedBooking);
+        }
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to generate payment link");
+    } finally {
+      setGeneratingPaymentLink(false);
     }
   };
 
@@ -422,6 +474,48 @@ export default function AdminBookingsPage() {
                     <p className="mt-1 text-xl font-mono font-bold text-purple-900">{selectedBooking.invoiceRef}</p>
                     <p className="mt-2 text-sm text-purple-700">Auto-generated when booking status changed to INVOICED</p>
                   </div>
+                </div>
+              )}
+
+              {/* Payment Link - V5.2.1 */}
+              {selectedBooking.status === "INVOICED" && isPaymentsEnabled() && (
+                <div className="mb-8">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <svg className="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                    </svg>
+                    Payment Processing
+                  </h3>
+
+                  {selectedBooking.paymentRecord ? (
+                    // Display existing payment link
+                    <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                      <label className="block text-xs font-medium text-green-600 uppercase tracking-wide">Stripe Payment Link (External)</label>
+                      <p className="mt-1 text-sm text-green-900 break-all font-mono">{selectedBooking.paymentRecord.paymentLink}</p>
+                      <p className="mt-2 text-xs text-green-700">
+                        Status: {selectedBooking.paymentRecord.status} |
+                        Amount: ${(selectedBooking.paymentRecord.amountCents / 100).toFixed(2)} {selectedBooking.paymentRecord.currency.toUpperCase()} |
+                        Created: {new Date(selectedBooking.paymentRecord.createdAt).toLocaleString()}
+                      </p>
+                    </div>
+                  ) : (
+                    // Generate payment link button
+                    <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                      <p className="text-sm text-yellow-800 mb-3">
+                        This booking is ready for payment processing. Generate a Stripe payment link for the guest.
+                      </p>
+                      <button
+                        onClick={() => generatePaymentLink(selectedBooking)}
+                        disabled={generatingPaymentLink}
+                        className="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      >
+                        {generatingPaymentLink ? "Generating..." : "Generate Payment Link"}
+                      </button>
+                      <p className="mt-2 text-xs text-yellow-600">
+                        V5.2.1 DESIGN: This creates a placeholder link. Real Stripe integration in V5.3+
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
 

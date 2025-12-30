@@ -2,6 +2,7 @@
 // These interfaces support future booking, pricing, and availability features
 
 import { PaymentStatus } from "./payments/types";
+import { PaymentRecord } from "./payments/payment-types";
 
 export interface Room {
   id: string;
@@ -35,6 +36,7 @@ export interface Booking {
   invoiceRef?: string;    // Auto-generated on INVOICED
   paymentId?: string;     // Payment integration (V4.1)
   paymentStatus?: PaymentStatus; // Payment status tracking
+  paymentRecord?: PaymentRecord; // V5.2.1 Payment link tracking
   createdAt: string;
   updatedAt: string;      // Audit trail
 }

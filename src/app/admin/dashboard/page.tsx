@@ -1,5 +1,6 @@
 import SystemStatusBadge from "@/components/admin/SystemStatusBadge";
 import { isPaymentsEnabled, isEmailEnabled, isOTAEnabled } from "@/lib/featureFlags";
+import { OTA_PROVIDERS } from "@/lib/ota/otaProviders";
 
 /**
  * Admin Dashboard - Control Center (Intent Blocks)
@@ -233,9 +234,41 @@ export default function AdminDashboardPage() {
         <h2 className="text-lg font-semibold text-gray-900 mb-4">System Capabilities</h2>
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="space-y-4">
-            <SystemStatusBadge label="Payments" enabled={isPaymentsEnabled()} />
+            {/* Payments: Disabled (Planned) - Read-only badge */}
+            <div className="flex items-center justify-between py-2">
+              <span className="text-sm font-medium text-gray-700">Payments</span>
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                Disabled (Planned)
+              </span>
+            </div>
             <SystemStatusBadge label="Email Notifications" enabled={isEmailEnabled()} />
-            <SystemStatusBadge label="OTA Integrations" enabled={isOTAEnabled()} />
+
+            {/* OTA Integrations - Custom status */}
+            <div className="flex items-center justify-between py-2">
+              <span className="text-sm font-medium text-gray-700">OTA Integrations</span>
+              <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
+                isOTAEnabled() ? "bg-blue-100 text-blue-800" : "bg-gray-100 text-gray-800"
+              }`}>
+                {isOTAEnabled() ? "Design Ready" : "Disabled"}
+              </span>
+            </div>
+
+            {/* OTA Providers List */}
+            <div className="border-t border-gray-200 pt-4">
+              <h4 className="text-sm font-medium text-gray-700 mb-3">Supported OTA Providers</h4>
+              <div className="space-y-2">
+                {Object.values(OTA_PROVIDERS).map((provider) => (
+                  <div key={provider.displayName} className="flex items-center justify-between py-1">
+                    <span className="text-sm text-gray-600">{provider.displayName}</span>
+                    <div className="flex items-center space-x-2">
+                      <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                        {provider.phase}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>

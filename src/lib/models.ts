@@ -1,6 +1,8 @@
 // Core data models for the Canaan Hotel CMS
 // These interfaces support future booking, pricing, and availability features
 
+import { PaymentStatus } from "./payments/types";
+
 export interface Room {
   id: string;
   name: string;
@@ -31,6 +33,8 @@ export interface Booking {
   status: BookingStatus;  // Full lifecycle support
   notes?: string;         // Admin notes
   invoiceRef?: string;    // Auto-generated on INVOICED
+  paymentId?: string;     // Payment integration (V4.1)
+  paymentStatus?: PaymentStatus; // Payment status tracking
   createdAt: string;
   updatedAt: string;      // Audit trail
 }

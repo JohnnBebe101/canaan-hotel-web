@@ -1,4 +1,10 @@
 import { Booking, BookingStatus } from "./models";
+import {
+  dispatchBookingReceivedEmail,
+  dispatchBookingStatusUpdateEmail,
+  dispatchInvoiceIssuedEmail,
+  dispatchHotelAlertEmail,
+} from "./email/emailDispatcher";
 
 // CRM Core: Operational booking management
 // Future: Replace with database, but this gives full workflow control
@@ -21,6 +27,15 @@ export function createBooking(data: Omit<Booking, "id" | "status" | "createdAt" 
     updatedAt: new Date().toISOString(),
   };
   bookings.unshift(booking); // New bookings at top
+
+  // Dispatch email notifications (non-blocking)
+  try {
+    dispatchBookingReceivedEmail(booking);
+    dispatchHotelAlertEmail(booking);
+  } catch (error) {
+    console.error("[BOOKING STORE] Email dispatch failed:", error);
+  }
+
   return booking;
 }
 
@@ -39,6 +54,16 @@ export function updateBookingStatus(id: string, status: BookingStatus): Booking 
   // Auto-generate invoice reference when moving to INVOICED
   if (status === "INVOICED" && !booking.invoiceRef) {
     booking.invoiceRef = `INV-${Date.now()}`;
+  }
+
+  // Dispatch email notifications (non-blocking)
+  try {
+    dispatchBookingStatusUpdateEmail(booking);
+    if (status === "INVOICED") {
+      dispatchInvoiceIssuedEmail(booking);
+    }
+  } catch (error) {
+    console.error("[BOOKING STORE] Email dispatch failed:", error);
   }
 
   return booking;

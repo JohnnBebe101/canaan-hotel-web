@@ -21,6 +21,7 @@ export default function AdminBookingsPage() {
   const [error, setError] = useState<string | null>(null);
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
   const [generatingPaymentLink, setGeneratingPaymentLink] = useState(false);
+  const [confirmingPayment, setConfirmingPayment] = useState(false);
 
   // Load CRM bookings
   useEffect(() => {
@@ -164,6 +165,52 @@ export default function AdminBookingsPage() {
     }
   };
 
+  const confirmManualPayment = async (booking: Booking) => {
+    if (!booking.paymentRecord || booking.paymentRecord.status === "PAID") {
+      return;
+    }
+
+    setConfirmingPayment(true);
+
+    try {
+      // V5.2.2: Manual payment confirmation - update payment and booking status
+      const updateResponse = await withTimeout(
+        (signal) => fetch("/api/admin/bookings", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: booking.id,
+            status: "CONFIRMED", // Move booking to CONFIRMED status
+            paymentStatus: "PAID" // Mark payment as received
+          }),
+          signal
+        }),
+        5000 // 5 second timeout for payment confirmation
+      );
+
+      if (!updateResponse.ok) {
+        throw new Error("Failed to confirm payment");
+      }
+
+      const updatedBooking = await updateResponse.json();
+
+      // Update local state
+      setBookings(bookings.map(b =>
+        b.id === booking.id ? updatedBooking : b
+      ));
+
+      // Update selected booking if it's the one being modified
+      if (selectedBooking?.id === booking.id) {
+        setSelectedBooking(updatedBooking);
+      }
+
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to confirm payment");
+    } finally {
+      setConfirmingPayment(false);
+    }
+  };
+
   const getStatusColor = (status: BookingStatus) => {
     switch (status) {
       case "NEW":
@@ -192,6 +239,23 @@ export default function AdminBookingsPage() {
       case "CANCELLED": return "Booking terminated";
       case "CLOSED": return "Transaction complete";
       default: return status;
+    }
+  };
+
+  const getPaymentStatusColor = (status: string) => {
+    switch (status) {
+      case "LINK_CREATED":
+        return "bg-blue-100 text-blue-800";
+      case "PAID":
+        return "bg-green-100 text-green-800";
+      case "FAILED":
+        return "bg-red-100 text-red-800";
+      case "CANCELLED":
+        return "bg-gray-100 text-gray-800";
+      case "PENDING":
+        return "bg-yellow-100 text-yellow-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
@@ -527,15 +591,65 @@ export default function AdminBookingsPage() {
                   </h3>
 
                   {selectedBooking.paymentRecord ? (
-                    // Display existing payment link
-                    <div className="bg-green-50 p-4 rounded-lg border border-green-200">
-                      <label className="block text-xs font-medium text-green-600 uppercase tracking-wide">Stripe Payment Link (External)</label>
-                      <p className="mt-1 text-sm text-green-900 break-all font-mono">{selectedBooking.paymentRecord.paymentLink}</p>
-                      <p className="mt-2 text-xs text-green-700">
-                        Status: {selectedBooking.paymentRecord.status} |
-                        Amount: ${(selectedBooking.paymentRecord.amountCents / 100).toFixed(2)} {selectedBooking.paymentRecord.currency.toUpperCase()} |
-                        Created: {new Date(selectedBooking.paymentRecord.createdAt).toLocaleString()}
-                      </p>
+                    // Enhanced payment information display - Read-only
+                    <div className="space-y-4">
+                      {/* Payment Status Badge */}
+                      <div className="flex items-center space-x-3">
+                        <span className={`inline-flex px-3 py-1 text-xs font-semibold rounded-full ${getPaymentStatusColor(selectedBooking.paymentRecord.status)}`}>
+                          {selectedBooking.paymentRecord.status.replace('_', ' ')}
+                        </span>
+                        <span className="text-sm text-gray-600">Payment Status</span>
+                      </div>
+
+                      {/* Payment Details */}
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="bg-gray-50 p-3 rounded-lg">
+                          <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">Payment Status</label>
+                          <p className="mt-1 text-sm font-medium text-gray-900">{selectedBooking.paymentRecord.status.replace('_', ' ')}</p>
+                        </div>
+                        <div className="bg-gray-50 p-3 rounded-lg">
+                          <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">Provider</label>
+                          <p className="mt-1 text-sm font-medium text-gray-900">{selectedBooking.paymentRecord.provider}</p>
+                        </div>
+                        <div className="bg-gray-50 p-3 rounded-lg">
+                          <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">Link Created</label>
+                          <p className="mt-1 text-sm font-medium text-gray-900">
+                            {new Date(selectedBooking.paymentRecord.createdAt).toLocaleDateString('en-US', {
+                              month: 'short',
+                              day: 'numeric',
+                              year: 'numeric'
+                            })}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Payment Link - Read-only */}
+                      <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
+                        <label className="block text-xs font-medium text-blue-600 uppercase tracking-wide">Stripe Payment Link</label>
+                        <p className="mt-1 text-sm text-blue-900 break-all font-mono">{selectedBooking.paymentRecord.paymentLink}</p>
+                        <p className="mt-2 text-xs text-blue-700">
+                          Amount: ${(selectedBooking.paymentRecord.amountCents / 100).toFixed(2)} {selectedBooking.paymentRecord.currency.toUpperCase()}
+                        </p>
+                      </div>
+
+                      {/* Manual Payment Confirmation - V5.2.2 */}
+                      {selectedBooking.paymentRecord.status !== "PAID" && (
+                        <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                          <p className="text-sm text-green-800 mb-3">
+                            If payment has been received through external means, mark this booking as paid.
+                          </p>
+                          <button
+                            onClick={() => confirmManualPayment(selectedBooking)}
+                            disabled={confirmingPayment}
+                            className="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                          >
+                            {confirmingPayment ? "Confirming..." : "Mark Payment as Received"}
+                          </button>
+                          <p className="mt-2 text-xs text-green-600">
+                            This will update booking status to CONFIRMED and trigger guest notification.
+                          </p>
+                        </div>
+                      )}
                     </div>
                   ) : (
                     // Generate payment link button

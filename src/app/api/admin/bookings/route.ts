@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getBookings, updateBookingStatus, updateBookingNotes, updateBookingPayment } from "@/lib/booking-store";
+import { updatePaymentStatus } from "@/lib/payments/payment-store";
 import { logError } from "@/lib/logger";
 
 // CRM Workflow API - Admin Protected
@@ -35,6 +36,40 @@ export async function PATCH(request: NextRequest) {
         { error: "Booking ID is required" },
         { status: 400 }
       );
+    }
+
+    // V5.2.2 Handle combined status and payment updates (manual payment confirmation)
+    if (body.status && body.paymentStatus) {
+      try {
+        // Update booking status to CONFIRMED
+        const bookingUpdated = updateBookingStatus(body.id, body.status);
+        if (!bookingUpdated) {
+          return NextResponse.json(
+            { error: "Booking not found or status update not allowed" },
+            { status: 404 }
+          );
+        }
+
+        // Update payment status to PAID (if payment record exists)
+        if (bookingUpdated.paymentId) {
+          const paymentUpdated = updatePaymentStatus(bookingUpdated.paymentId, body.paymentStatus);
+          // Note: Payment store update is optional - don't fail if payment record not found
+        }
+
+        return NextResponse.json(bookingUpdated);
+      } catch (error) {
+        // V5.2.2 logging: Track payment confirmation failures
+        logError("API_BOOKINGS_MANUAL_PAYMENT", "Failed to confirm manual payment", {
+          bookingId: body.id,
+          targetStatus: body.status,
+          paymentStatus: body.paymentStatus,
+          error: error instanceof Error ? error.message : String(error),
+        });
+        return NextResponse.json(
+          { error: "Failed to confirm payment" },
+          { status: 500 }
+        );
+      }
     }
 
     // Handle status updates

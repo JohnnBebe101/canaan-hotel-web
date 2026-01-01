@@ -105,17 +105,56 @@ export default function AdminBookingsPage() {
       );
 
       if (paymentRecord) {
-        // Update booking with payment record
-        const updatedBooking = { ...booking, paymentRecord };
+        try {
+          // V5.2.1: Persist payment reference to backend (safe operation)
+          const persistResponse = await withTimeout(
+            (signal) => fetch("/api/admin/bookings", {
+              method: "PATCH",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                id: booking.id,
+                paymentId: paymentRecord.id,
+                paymentRecord
+              }),
+              signal
+            }),
+            5000 // 5 second timeout for payment persistence
+          );
 
-        // Update local state
-        setBookings(bookings.map(b =>
-          b.id === booking.id ? updatedBooking : b
-        ));
+          if (persistResponse.ok) {
+            const persistedBooking = await persistResponse.json();
 
-        // Update selected booking if it's the one being modified
-        if (selectedBooking?.id === booking.id) {
-          setSelectedBooking(updatedBooking);
+            // Update local state with persisted data
+            setBookings(bookings.map(b =>
+              b.id === booking.id ? persistedBooking : b
+            ));
+
+            // Update selected booking if it's the one being modified
+            if (selectedBooking?.id === booking.id) {
+              setSelectedBooking(persistedBooking);
+            }
+          } else {
+            // Fallback: Update local state even if persistence fails (UI consistency)
+            const updatedBooking = { ...booking, paymentRecord };
+            setBookings(bookings.map(b =>
+              b.id === booking.id ? updatedBooking : b
+            ));
+
+            if (selectedBooking?.id === booking.id) {
+              setSelectedBooking(updatedBooking);
+            }
+          }
+        } catch (persistError) {
+          // V5.2.1 safety: Fallback to local state update if persistence fails
+          // Ensures UI remains functional even if backend persistence fails
+          const updatedBooking = { ...booking, paymentRecord };
+          setBookings(bookings.map(b =>
+            b.id === booking.id ? updatedBooking : b
+          ));
+
+          if (selectedBooking?.id === booking.id) {
+            setSelectedBooking(updatedBooking);
+          }
         }
       }
     } catch (err) {

@@ -100,6 +100,38 @@ export function updateBookingNotes(id: string, notes: string): Booking | null {
   return booking;
 }
 
+// V5.2.1 Payment Integration - Safe payment reference storage
+// Stores payment ID and record without changing booking lifecycle
+export function updateBookingPayment(id: string, paymentId: string, paymentRecord: any): Booking | null {
+  try {
+    const booking = getBooking(id);
+    if (!booking) return null;
+
+    // Safe update: only store payment references, never change status automatically
+    booking.paymentId = paymentId;
+    booking.paymentRecord = paymentRecord;
+    booking.updatedAt = new Date().toISOString();
+
+    // V5.2.1 logging: Track payment link generation for audit trail
+    logInfo("CRM_PAYMENT_LINK_STORED", `Payment reference stored for booking: ${id}`, {
+      bookingId: id,
+      paymentId,
+      status: paymentRecord?.status,
+      amount: paymentRecord?.amountCents,
+    });
+
+    return booking;
+  } catch (error) {
+    // Safe failure: Log but don't crash booking flow
+    logError("CRM_PAYMENT_UPDATE_FAILED", "Failed to store payment reference", {
+      bookingId: id,
+      paymentId,
+      error: error instanceof Error ? error.message : String(error),
+    });
+    return null;
+  }
+}
+
 // Analytics helpers for dashboard
 export function getBookingsByStatus(status: BookingStatus): Booking[] {
   return bookings.filter(b => b.status === status);

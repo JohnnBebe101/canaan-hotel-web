@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getBookings, updateBookingStatus, updateBookingNotes } from "@/lib/booking-store";
+import { getBookings, updateBookingStatus, updateBookingNotes, updateBookingPayment } from "@/lib/booking-store";
 import { logError } from "@/lib/logger";
 
 // CRM Workflow API - Admin Protected
@@ -61,8 +61,20 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json(updated);
     }
 
+    // V5.2.1 Handle payment updates (safe reference storage)
+    if (body.paymentId && body.paymentRecord) {
+      const updated = updateBookingPayment(body.id, body.paymentId, body.paymentRecord);
+      if (!updated) {
+        return NextResponse.json(
+          { error: "Booking not found or payment update failed" },
+          { status: 404 }
+        );
+      }
+      return NextResponse.json(updated);
+    }
+
     return NextResponse.json(
-      { error: "Invalid request: specify status or notes to update" },
+      { error: "Invalid request: specify status, notes, or payment data to update" },
       { status: 400 }
     );
   } catch (error) {

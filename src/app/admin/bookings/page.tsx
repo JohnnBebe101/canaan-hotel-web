@@ -6,7 +6,9 @@ import { Booking, BookingStatus } from "@/lib/models";
 import { withTimeout, safeAsync } from "@/lib/asyncGuards";
 import { createStripePaymentLink } from "@/lib/payments/payment-link-service";
 import { PaymentCreateIntent, PaymentRecord, PaymentStatus } from "@/lib/payments/payment-types";
+import { updatePaymentStatus } from "@/lib/payments/payment-store";
 import { isPaymentsEnabled } from "@/lib/featureFlags";
+import { logInfo, logError } from "@/lib/logger";
 
 /**
  * Admin Bookings - CRM Inbox
@@ -23,6 +25,7 @@ export default function AdminBookingsPage() {
   const [generatingPaymentLink, setGeneratingPaymentLink] = useState(false);
   const [confirmingPayment, setConfirmingPayment] = useState(false);
   const [paymentLinkCopied, setPaymentLinkCopied] = useState(false);
+  const [updatingPaymentStatus, setUpdatingPaymentStatus] = useState(false);
 
   // Load CRM bookings
   useEffect(() => {
@@ -221,6 +224,55 @@ export default function AdminBookingsPage() {
       setTimeout(() => setPaymentLinkCopied(false), 2000); // Reset after 2 seconds
     } catch (err) {
       console.warn('Failed to copy payment link to clipboard:', err);
+    }
+  };
+
+  const updatePaymentStatusLocal = async (newStatus: PaymentStatus, actionNote: string) => {
+    if (!selectedBooking?.paymentRecord || !isPaymentsEnabled()) return;
+
+    setUpdatingPaymentStatus(true);
+
+    try {
+      const updatedPayment = updatePaymentStatus(selectedBooking.paymentRecord.id, newStatus);
+
+      if (updatedPayment) {
+        // Update local state
+        const updatedBooking = {
+          ...selectedBooking,
+          paymentRecord: updatedPayment
+        };
+        setSelectedBooking(updatedBooking);
+
+        // Update bookings list
+        setBookings(bookings.map(b =>
+          b.id === selectedBooking.id ? updatedBooking : b
+        ));
+
+        // Log admin action
+        logInfo('ADMIN_PAYMENT_STATUS_UPDATE', `Payment status updated: ${selectedBooking.paymentRecord.status} → ${newStatus}`, {
+          bookingId: selectedBooking.id,
+          paymentId: updatedPayment.id,
+          previousStatus: selectedBooking.paymentRecord.status,
+          newStatus,
+          actionNote,
+          timestamp: new Date().toISOString()
+        });
+      } else {
+        logError('ADMIN_PAYMENT_STATUS_UPDATE', 'Failed to update payment status - payment record not found', {
+          bookingId: selectedBooking.id,
+          paymentId: selectedBooking.paymentRecord.id,
+          requestedStatus: newStatus
+        });
+      }
+    } catch (error) {
+      logError('ADMIN_PAYMENT_STATUS_UPDATE', 'Error updating payment status', {
+        bookingId: selectedBooking.id,
+        paymentId: selectedBooking.paymentRecord.id,
+        requestedStatus: newStatus,
+        error: error instanceof Error ? error.message : String(error)
+      });
+    } finally {
+      setUpdatingPaymentStatus(false);
     }
   };
 
@@ -664,6 +716,81 @@ export default function AdminBookingsPage() {
                               `${selectedBooking.paymentRecord.paymentLink.substring(0, 25)}...${selectedBooking.paymentRecord.paymentLink.substring(selectedBooking.paymentRecord.paymentLink.length - 25)}` :
                               selectedBooking.paymentRecord.paymentLink
                             : 'No link available'}
+                        </p>
+                      </div>
+
+                      {/* Manual Payment Status Controls - V5.3.2 */}
+                      <div className="md:col-span-2 lg:col-span-4 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <label className="block text-xs font-medium text-gray-600 uppercase tracking-wide mb-3">Manual Status Controls</label>
+                        <div className="flex flex-wrap gap-2">
+                          <button
+                            onClick={() => updatePaymentStatusLocal(PaymentStatus.PAID, 'Admin marked payment as received')}
+                            disabled={updatingPaymentStatus || selectedBooking.paymentRecord.status === PaymentStatus.PAID}
+                            className="inline-flex items-center px-3 py-2 text-xs font-medium text-green-700 bg-green-100 rounded-lg hover:bg-green-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                          >
+                            {updatingPaymentStatus ? (
+                              <>
+                                <svg className="w-3 h-3 mr-1 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                </svg>
+                                Updating...
+                              </>
+                            ) : (
+                              <>
+                                <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Mark as Paid
+                              </>
+                            )}
+                          </button>
+
+                          <button
+                            onClick={() => updatePaymentStatusLocal(PaymentStatus.FAILED, 'Admin marked payment as failed')}
+                            disabled={updatingPaymentStatus || selectedBooking.paymentRecord.status === PaymentStatus.FAILED}
+                            className="inline-flex items-center px-3 py-2 text-xs font-medium text-red-700 bg-red-100 rounded-lg hover:bg-red-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                          >
+                            {updatingPaymentStatus ? (
+                              <>
+                                <svg className="w-3 h-3 mr-1 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.003 8.003 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                </svg>
+                                Updating...
+                              </>
+                            ) : (
+                              <>
+                                <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                                </svg>
+                                Mark as Failed
+                              </>
+                            )}
+                          </button>
+
+                          <button
+                            onClick={() => updatePaymentStatusLocal(PaymentStatus.CANCELLED, 'Admin cancelled payment')}
+                            disabled={updatingPaymentStatus || selectedBooking.paymentRecord.status === PaymentStatus.CANCELLED}
+                            className="inline-flex items-center px-3 py-2 text-xs font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                          >
+                            {updatingPaymentStatus ? (
+                              <>
+                                <svg className="w-3 h-3 mr-1 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.003 8.003 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                </svg>
+                                Updating...
+                              </>
+                            ) : (
+                              <>
+                                <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                                Cancel Payment
+                              </>
+                            )}
+                          </button>
+                        </div>
+                        <p className="mt-2 text-xs text-gray-500">
+                          These controls update payment status only. Booking status and emails are not affected.
                         </p>
                       </div>
                     </div>

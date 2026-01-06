@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Booking, BookingStatus } from "@/lib/models";
 import { withTimeout, safeAsync } from "@/lib/asyncGuards";
 import { createStripePaymentLink } from "@/lib/payments/payment-link-service";
-import { PaymentCreateIntent, PaymentRecord } from "@/lib/payments/payment-types";
+import { PaymentCreateIntent, PaymentRecord, PaymentStatus } from "@/lib/payments/payment-types";
 import { isPaymentsEnabled } from "@/lib/featureFlags";
 
 /**
@@ -22,6 +22,7 @@ export default function AdminBookingsPage() {
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
   const [generatingPaymentLink, setGeneratingPaymentLink] = useState(false);
   const [confirmingPayment, setConfirmingPayment] = useState(false);
+  const [paymentLinkCopied, setPaymentLinkCopied] = useState(false);
 
   // Load CRM bookings
   useEffect(() => {
@@ -208,6 +209,18 @@ export default function AdminBookingsPage() {
       setError(err instanceof Error ? err.message : "Failed to confirm payment");
     } finally {
       setConfirmingPayment(false);
+    }
+  };
+
+  const copyPaymentLink = async () => {
+    if (!selectedBooking?.paymentRecord?.paymentLink) return;
+
+    try {
+      await navigator.clipboard.writeText(selectedBooking.paymentRecord.paymentLink);
+      setPaymentLinkCopied(true);
+      setTimeout(() => setPaymentLinkCopied(false), 2000); // Reset after 2 seconds
+    } catch (err) {
+      console.warn('Failed to copy payment link to clipboard:', err);
     }
   };
 
@@ -577,6 +590,88 @@ export default function AdminBookingsPage() {
                     <p className="mt-1 text-xl font-mono font-bold text-purple-900">{selectedBooking.invoiceRef}</p>
                     <p className="mt-2 text-sm text-purple-700">Auto-generated when booking status changed to INVOICED</p>
                   </div>
+                </div>
+              )}
+
+              {/* Payment Information - V5.3.2 Read-Only */}
+              {isPaymentsEnabled() && (
+                <div className="mb-8">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <svg className="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Payment Information
+                  </h3>
+
+                  {selectedBooking.paymentRecord ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                      {/* Payment Status */}
+                      <div className="bg-gray-50 p-3 rounded-lg">
+                        <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">Status</label>
+                        <p className="mt-1 text-sm font-medium text-gray-900">{selectedBooking.paymentRecord.status.replace('_', ' ')}</p>
+                      </div>
+
+                      {/* Payment Provider */}
+                      <div className="bg-gray-50 p-3 rounded-lg">
+                        <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">Provider</label>
+                        <p className="mt-1 text-sm font-medium text-gray-900">{selectedBooking.paymentRecord.provider}</p>
+                      </div>
+
+                      {/* Payment Amount */}
+                      <div className="bg-gray-50 p-3 rounded-lg">
+                        <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">Amount</label>
+                        <p className="mt-1 text-sm font-medium text-gray-900">
+                          ${(selectedBooking.paymentRecord.amountCents / 100).toFixed(2)}
+                        </p>
+                      </div>
+
+                      {/* Payment Currency */}
+                      <div className="bg-gray-50 p-3 rounded-lg">
+                        <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">Currency</label>
+                        <p className="mt-1 text-sm font-medium text-gray-900">{selectedBooking.paymentRecord.currency.toUpperCase()}</p>
+                      </div>
+
+                      {/* Payment Link (Masked) - Full width */}
+                      <div className="md:col-span-2 lg:col-span-4 bg-blue-50 p-3 rounded-lg border border-blue-200">
+                        <div className="flex items-center justify-between mb-2">
+                          <label className="block text-xs font-medium text-blue-600 uppercase tracking-wide">Payment Link</label>
+                          {selectedBooking.paymentRecord.paymentLink && (
+                            <button
+                              onClick={copyPaymentLink}
+                              className="inline-flex items-center px-2 py-1 text-xs font-medium text-blue-700 bg-blue-100 rounded hover:bg-blue-200 transition-colors"
+                            >
+                              {paymentLinkCopied ? (
+                                <>
+                                  <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                  </svg>
+                                  Copied
+                                </>
+                              ) : (
+                                <>
+                                  <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                  </svg>
+                                  Copy
+                                </>
+                              )}
+                            </button>
+                          )}
+                        </div>
+                        <p className="text-sm text-blue-900 font-mono break-all">
+                          {selectedBooking.paymentRecord.paymentLink ?
+                            selectedBooking.paymentRecord.paymentLink.length > 50 ?
+                              `${selectedBooking.paymentRecord.paymentLink.substring(0, 25)}...${selectedBooking.paymentRecord.paymentLink.substring(selectedBooking.paymentRecord.paymentLink.length - 25)}` :
+                              selectedBooking.paymentRecord.paymentLink
+                            : 'No link available'}
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                      <p className="text-sm text-gray-600">No payment created</p>
+                    </div>
+                  )}
                 </div>
               )}
 

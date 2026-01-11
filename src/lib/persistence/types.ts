@@ -11,6 +11,102 @@
 import { PaymentStatus, PaymentProvider } from '../payments/payment-types';
 
 /**
+ * ============================================================================
+ * DATABASE MIRROR SHAPES - V6.1+ Database Schema Interfaces
+ * ============================================================================
+ *
+ * These interfaces define the exact structure of data as stored in the database.
+ * They mirror the in-memory models but include database-specific fields and constraints.
+ * Used by ORM/Repository implementations when DB_PERSISTENCE_ENABLED=true.
+ */
+
+/**
+ * Booking Record - Database Schema Mirror
+ * Maps 1:1 with existing Booking model, optimized for database storage
+ */
+export interface BookingRecordDB {
+  /** UUID primary key */
+  id: string;
+
+  /** Guest information */
+  guestName: string;
+  email: string;
+  phone?: string;
+
+  /** Booking details */
+  roomType: string;
+  checkIn: string;
+  checkOut: string;
+
+  /** Status in CRM workflow */
+  status: 'NEW' | 'REVIEWED' | 'CONFIRMED' | 'INVOICED' | 'CANCELLED' | 'CLOSED';
+
+  /** Optional fields */
+  notes?: string;
+  invoiceRef?: string;
+  paymentId?: string;
+  paymentStatus?: PaymentStatus;
+  paymentRecord?: any; // V5.2.1 Payment link tracking
+
+  /** Audit timestamps */
+  createdAt: string;
+  updatedAt: string;
+}
+
+/**
+ * Payment Record - Database Schema Mirror
+ * Maps 1:1 with existing PaymentRecord model, optimized for database storage
+ */
+export interface PaymentRecordDB {
+  /** UUID primary key */
+  id: string;
+
+  /** Foreign key relationship */
+  bookingId: string;
+
+  /** Payment processing details */
+  provider: PaymentProvider;
+  status: PaymentStatus;
+  amountCents: number;
+  currency: string;
+  paymentLink?: string;
+
+  /** Audit timestamps */
+  createdAt: string;
+  updatedAt: string;
+}
+
+/**
+ * Audit Event - Database Schema Mirror
+ * Tracks all admin actions and system events for compliance and debugging
+ */
+export interface AuditEventDB {
+  /** UUID primary key */
+  id: string;
+
+  /** What was affected */
+  resourceType: 'booking' | 'payment' | 'room' | 'admin';
+  resourceId: string;
+
+  /** Action details */
+  actionType: string;
+  oldValues?: any; // JSONB in PostgreSQL
+  newValues?: any; // JSONB in PostgreSQL
+
+  /** Admin context */
+  adminId?: string;
+  adminEmail?: string;
+  notes?: string;
+
+  /** Security tracking */
+  ipAddress?: string;
+  userAgent?: string;
+
+  /** Audit timestamp */
+  createdAt: string;
+}
+
+/**
  * Booking Record Interface
  * Aligned with existing Booking model for future database persistence
  */

@@ -8,6 +8,8 @@
  * These types will be used when migrating from in-memory to database storage.
  */
 
+import { PaymentStatus, PaymentProvider } from '../payments/payment-types';
+
 /**
  * Booking Record Interface
  * Aligned with existing Booking model for future database persistence
@@ -24,7 +26,8 @@ export interface BookingRecord {
   notes?: string;
   invoiceRef?: string;
   paymentId?: string;
-  paymentStatus?: 'DRAFT' | 'LINK_CREATED' | 'AWAITING_CONFIRMATION' | 'PAID' | 'FAILED' | 'CANCELLED' | 'CLOSED';
+  paymentStatus?: PaymentStatus;
+  paymentRecord?: any; // V5.2.1 Payment link tracking
   createdAt: string;
   updatedAt: string;
 }
@@ -36,8 +39,8 @@ export interface BookingRecord {
 export interface PaymentRecord {
   id: string;
   bookingId: string;
-  provider: 'STRIPE' | 'PAYPAL' | 'MANUAL';
-  status: 'DRAFT' | 'LINK_CREATED' | 'AWAITING_CONFIRMATION' | 'PAID' | 'FAILED' | 'CANCELLED' | 'CLOSED';
+  provider: PaymentProvider;
+  status: PaymentStatus;
   amountCents: number;
   currency: string;
   paymentLink?: string;

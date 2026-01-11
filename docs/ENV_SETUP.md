@@ -43,12 +43,13 @@ SESSION_SECRET=change-me-in-production-generate-a-secure-random-key
 # BOOKING_COM_WIDGET_ID=your-booking-com-widget-id
 # TRIPADVISOR_WIDGET_ID=your-tripadvisor-widget-id
 
-# Feature Flags (V3 - Production-Safe Toggles)
+# Feature Flags (V3-V6 - Production-Safe Toggles)
 # These control optional advanced features. All default to 'false' for safety.
 # Set to 'true' only when features are fully tested and ready for production.
 # PAYMENTS_ENABLED=false
 # EMAIL_NOTIFICATIONS_ENABLED=false
 # OTA_INTEGRATIONS_ENABLED=false
+# DB_PERSISTENCE_ENABLED=false
 ```
 
 ## Required Environment Variables

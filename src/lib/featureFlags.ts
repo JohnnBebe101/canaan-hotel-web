@@ -21,6 +21,9 @@ export interface FeatureFlags {
 
   /** Online Travel Agency integrations (Booking.com, etc.) */
   OTA_INTEGRATIONS_ENABLED: boolean;
+
+  /** Database persistence layer (V6.1+) */
+  DB_PERSISTENCE_ENABLED: boolean;
 }
 
 /**
@@ -37,6 +40,7 @@ export function getFeatureFlags(): FeatureFlags {
     PAYMENTS_ENABLED: process.env.PAYMENTS_ENABLED === 'true',
     EMAIL_NOTIFICATIONS_ENABLED: process.env.EMAIL_NOTIFICATIONS_ENABLED === 'true',
     OTA_INTEGRATIONS_ENABLED: process.env.OTA_INTEGRATIONS_ENABLED === 'true',
+    DB_PERSISTENCE_ENABLED: process.env.DB_PERSISTENCE_ENABLED === 'true',
   };
 }
 
@@ -51,4 +55,8 @@ export function isEmailEnabled(): boolean {
 
 export function isOTAEnabled(): boolean {
   return getFeatureFlags().OTA_INTEGRATIONS_ENABLED;
+}
+
+export function isDbPersistenceEnabled(): boolean {
+  return getFeatureFlags().DB_PERSISTENCE_ENABLED;
 }

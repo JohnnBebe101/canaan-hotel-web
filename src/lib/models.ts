@@ -1,8 +1,7 @@
 // Core data models for the Canaan Hotel CMS
 // These interfaces support future booking, pricing, and availability features
 
-import { PaymentStatus } from "./payments/types";
-import { PaymentRecord } from "./payments/payment-types";
+import { PaymentStatus, PaymentRecord } from "./payments/payment-types";
 
 export interface Room {
   id: string;

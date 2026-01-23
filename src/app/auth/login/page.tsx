@@ -29,6 +29,7 @@ function LoginForm() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include", // Include cookies in request/response
         body: JSON.stringify({ username, password }),
       });
 
@@ -58,8 +59,9 @@ function LoginForm() {
         }
       }
 
-      router.push(redirect);
-      router.refresh();
+      // Use window.location.href for full page reload to ensure cookie is set
+      // This ensures the middleware can read the cookie on the next request
+      window.location.href = redirect;
     } catch (err) {
       setError("An error occurred. Please try again.");
       setLoading(false);

@@ -1,14 +1,14 @@
 import { redirect } from "next/navigation";
-import Link from "next/link";
 import { checkAuth } from "@/lib/auth";
 import LogoutButton from "@/components/LogoutButton";
+import Header from "@/components/Header";
 
 /**
  * Admin Layout
  * 
  * Provides the main layout structure for all admin routes:
  * - Protected by authentication (redirects to login if not authenticated)
- * - Sidebar navigation with links to Dashboard, Rooms, Bookings, Attractions
+ * - Shared header navigation
  * - Top bar with logout button
  * - Main content area for child routes
  */
@@ -25,38 +25,16 @@ export default async function AdminLayout({
   }
 
   return (
-    <div>
-      {/* Top Bar */}
-      <header>
-        <div>
-          <h1>Canaan Hotel Admin</h1>
-          <LogoutButton />
-        </div>
-      </header>
-
-      <div>
-        {/* Sidebar Navigation */}
-        <aside>
-          <nav>
-            <ul>
-              <li>
-                <Link href="/admin/dashboard">Dashboard</Link>
-              </li>
-              <li>
-                <Link href="/admin/rooms">Rooms</Link>
-              </li>
-              <li>
-                <Link href="/admin/bookings">Bookings</Link>
-              </li>
-              <li>
-                <Link href="/admin/attractions">Attractions</Link>
-              </li>
-            </ul>
-          </nav>
-        </aside>
-
+    <div className="min-h-screen bg-background-light dark:bg-background-dark">
+      <Header variant="admin" />
+      
+      <div className="flex">
         {/* Main Content Area */}
-        <main>{children}</main>
+        <main className="flex-1 p-6">
+          <div className="max-w-7xl mx-auto">
+            {children}
+          </div>
+        </main>
       </div>
     </div>
   );

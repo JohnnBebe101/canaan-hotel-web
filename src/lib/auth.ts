@@ -8,8 +8,18 @@ import { signSession, verifySession } from "./session";
  */
 
 const SESSION_COOKIE_NAME = "admin_session";
-const ADMIN_USERNAME = process.env.ADMIN_USERNAME || "admin";
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin";
+// Trim and use defaults if empty or undefined
+const ADMIN_USERNAME = (process.env.ADMIN_USERNAME?.trim() || "admin").trim();
+const ADMIN_PASSWORD = (process.env.ADMIN_PASSWORD?.trim() || "admin").trim();
+
+// Log loaded credentials at module load (development only)
+if (process.env.NODE_ENV === "development") {
+  console.log("[Auth] Module loaded with credentials:");
+  console.log("[Auth]   ADMIN_USERNAME:", JSON.stringify(ADMIN_USERNAME), `(length: ${ADMIN_USERNAME.length})`);
+  console.log("[Auth]   ADMIN_PASSWORD:", `"${'*'.repeat(ADMIN_PASSWORD.length)}"`, `(length: ${ADMIN_PASSWORD.length})`);
+  console.log("[Auth]   Raw env ADMIN_USERNAME:", JSON.stringify(process.env.ADMIN_USERNAME));
+  console.log("[Auth]   Raw env ADMIN_PASSWORD:", JSON.stringify(process.env.ADMIN_PASSWORD));
+}
 
 /**
  * Session expiration time in milliseconds (24 hours)
@@ -26,7 +36,24 @@ export function validateCredentials(
   username: string,
   password: string
 ): boolean {
-  return username === ADMIN_USERNAME && password === ADMIN_PASSWORD;
+  // Trim inputs to handle any whitespace issues
+  const trimmedUsername = username.trim();
+  const trimmedPassword = password.trim();
+
+  // Debug logging in development mode
+  if (process.env.NODE_ENV === "development") {
+    console.log("[Auth] Comparing credentials:");
+    console.log("[Auth]   Received username:", JSON.stringify(trimmedUsername));
+    console.log("[Auth]   Expected username:", JSON.stringify(ADMIN_USERNAME));
+    console.log("[Auth]   Username match:", trimmedUsername === ADMIN_USERNAME);
+    console.log("[Auth]   Received password length:", trimmedPassword.length);
+    console.log("[Auth]   Expected password length:", ADMIN_PASSWORD.length);
+    console.log("[Auth]   Password match:", trimmedPassword === ADMIN_PASSWORD);
+    console.log("[Auth]   Received username char codes:", [...trimmedUsername].map(c => c.charCodeAt(0)));
+    console.log("[Auth]   Expected username char codes:", [...ADMIN_USERNAME].map(c => c.charCodeAt(0)));
+  }
+
+  return trimmedUsername === ADMIN_USERNAME && trimmedPassword === ADMIN_PASSWORD;
 }
 
 /**
@@ -37,6 +64,10 @@ export function validateCredentials(
 export async function createSession(response: NextResponse): Promise<NextResponse> {
   const sessionToken = await signSession();
   
+  if (process.env.NODE_ENV === "development") {
+    console.log("[Auth] Creating session cookie:", SESSION_COOKIE_NAME);
+  }
+  
   response.cookies.set(SESSION_COOKIE_NAME, sessionToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
@@ -44,6 +75,10 @@ export async function createSession(response: NextResponse): Promise<NextRespons
     maxAge: SESSION_MAX_AGE / 1000, // Convert to seconds
     path: "/",
   });
+
+  if (process.env.NODE_ENV === "development") {
+    console.log("[Auth] Session cookie set successfully");
+  }
 
   return response;
 }
@@ -68,11 +103,28 @@ export async function isAuthenticated(
 ): Promise<boolean> {
   const sessionToken = request.cookies.get(SESSION_COOKIE_NAME)?.value;
   
+  if (process.env.NODE_ENV === "development") {
+    console.log("[Auth] Checking authentication for path:", request.nextUrl.pathname);
+    console.log("[Auth] Session cookie present:", !!sessionToken);
+    if (sessionToken) {
+      console.log("[Auth] Session token length:", sessionToken.length);
+    }
+  }
+  
   if (!sessionToken) {
+    if (process.env.NODE_ENV === "development") {
+      console.log("[Auth] No session token found");
+    }
     return false;
   }
 
-  return await verifySession(sessionToken);
+  const isValid = await verifySession(sessionToken);
+  
+  if (process.env.NODE_ENV === "development") {
+    console.log("[Auth] Session token valid:", isValid);
+  }
+
+  return isValid;
 }
 
 /**

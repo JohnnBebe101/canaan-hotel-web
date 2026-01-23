@@ -42,7 +42,7 @@ export async function PATCH(request: NextRequest) {
     if (body.status && body.paymentStatus) {
       try {
         // Update booking status to CONFIRMED
-        const bookingUpdated = updateBookingStatus(body.id, body.status);
+        const bookingUpdated = await updateBookingStatus(body.id, body.status);
         if (!bookingUpdated) {
           return NextResponse.json(
             { error: "Booking not found or status update not allowed" },
@@ -74,7 +74,7 @@ export async function PATCH(request: NextRequest) {
 
     // Handle status updates
     if (body.status) {
-      const updated = updateBookingStatus(body.id, body.status);
+      const updated = await updateBookingStatus(body.id, body.status);
       if (!updated) {
         return NextResponse.json(
           { error: "Booking not found or status update not allowed" },
@@ -86,7 +86,7 @@ export async function PATCH(request: NextRequest) {
 
     // Handle notes updates
     if (body.notes !== undefined) {
-      const updated = updateBookingNotes(body.id, body.notes);
+      const updated = await updateBookingNotes(body.id, body.notes);
       if (!updated) {
         return NextResponse.json(
           { error: "Booking not found" },
@@ -98,7 +98,7 @@ export async function PATCH(request: NextRequest) {
 
     // V5.2.1 Handle payment updates (safe reference storage)
     if (body.paymentId && body.paymentRecord) {
-      const updated = updateBookingPayment(body.id, body.paymentId, body.paymentRecord);
+      const updated = await updateBookingPayment(body.id, body.paymentId, body.paymentRecord);
       if (!updated) {
         return NextResponse.json(
           { error: "Booking not found or payment update failed" },

@@ -50,6 +50,8 @@ SESSION_SECRET=change-me-in-production-generate-a-secure-random-key
 # EMAIL_NOTIFICATIONS_ENABLED=false
 # OTA_INTEGRATIONS_ENABLED=false
 # DB_PERSISTENCE_ENABLED=false
+# DB_SHADOW_READ_ENABLED=false
+# DB_READ_PRIMARY_ENABLED=false
 ```
 
 ## Required Environment Variables

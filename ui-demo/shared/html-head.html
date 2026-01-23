@@ -1,0 +1,76 @@
+<!-- Shared HTML Head Template for Cannan Hotel UI Demo -->
+
+<!-- Basic Meta Tags (Customize per page) -->
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="author" content="Cannan International Hotel"/>
+
+<!-- Page-specific Meta Tags (Replace with actual content) -->
+<!-- <meta name="description" content="Page description here"/> -->
+<!-- <meta name="keywords" content="page keywords here"/> -->
+<!-- <meta property="og:title" content="Page Title"/> -->
+<!-- <meta property="og:description" content="Page description"/> -->
+<!-- <meta name="twitter:title" content="Page Title"/> -->
+<!-- <title>Page Title</title> -->
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" href="logo 2.png"/>
+
+<!-- Resource Hints -->
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+<link rel="dns-prefetch" href="https://cdn.tailwindcss.com"/>
+<link rel="dns-prefetch" href="https://images.unsplash.com"/>
+<link rel="dns-prefetch" href="https://lh3.googleusercontent.com"/>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+
+<!-- Tailwind CSS Configuration -->
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#f97316",
+          "background-light": "#f8f8f5",
+          "background-dark": "#181611",
+          "text-primary": "#172554",
+          "text-secondary": "#64748b",
+          "border-color": "#e2e8f0",
+        },
+        fontFamily: {
+          "display": ["Plus Jakarta Sans", "Noto Sans", "sans-serif"]
+        },
+        borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+      },
+    },
+  }
+</script>
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+<!-- Shared Styles -->
+<style>
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+
+  .skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: #f97316;
+    color: white;
+    padding: 8px;
+    text-decoration: none;
+    z-index: 100;
+  }
+
+  .skip-link:focus {
+    top: 0;
+  }
+</style>

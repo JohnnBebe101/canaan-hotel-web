@@ -36,12 +36,34 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Trim inputs to handle whitespace issues
+    const trimmedUsername = username.trim();
+    const trimmedPassword = password.trim();
+
+    // Debug logging in development mode
+    if (process.env.NODE_ENV === "development") {
+      console.log("[Login] Attempting login");
+      console.log("[Login] Received username:", JSON.stringify(trimmedUsername));
+      console.log("[Login] Received password length:", trimmedPassword.length);
+      console.log("[Login] Env ADMIN_USERNAME:", JSON.stringify(process.env.ADMIN_USERNAME));
+      console.log("[Login] Env ADMIN_PASSWORD length:", process.env.ADMIN_PASSWORD?.length);
+      console.log("[Login] All env vars with ADMIN_ prefix:", 
+        Object.keys(process.env).filter(k => k.startsWith('ADMIN_')).map(k => `${k}=${JSON.stringify(process.env[k])}`));
+    }
+
     // Validate credentials
-    if (!validateCredentials(username.trim(), password)) {
+    if (!validateCredentials(trimmedUsername, trimmedPassword)) {
+      if (process.env.NODE_ENV === "development") {
+        console.log("[Login] Authentication failed - credentials mismatch");
+      }
       return NextResponse.json(
         { error: "Invalid credentials" },
         { status: 401 }
       );
+    }
+
+    if (process.env.NODE_ENV === "development") {
+      console.log("[Login] Authentication successful");
     }
 
     // Create session

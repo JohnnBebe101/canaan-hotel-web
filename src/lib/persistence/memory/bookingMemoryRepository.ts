@@ -36,7 +36,7 @@ export class BookingMemoryRepository implements BookingRepository {
 
   async getById(id: string): Promise<BookingRecord | null> {
     // Delegate to existing in-memory function
-    const booking = getBooking(id);
+    const booking = await getBooking(id);
     // Return null if not found (matches existing behavior)
     // Type assertion safe for transitional adapter
     return (booking as BookingRecord) || null;
@@ -57,7 +57,7 @@ export class BookingMemoryRepository implements BookingRepository {
     };
 
     // Delegate to existing createBooking function (includes all side effects)
-    const created = createBooking(bookingData);
+    const created = await createBooking(bookingData);
 
     // Return as BookingRecord (compatible with existing Booking)
     // Type assertion safe for transitional adapter
@@ -70,24 +70,24 @@ export class BookingMemoryRepository implements BookingRepository {
     if (updates.status !== undefined) {
       // Delegate status updates to existing function (includes logging and email dispatch)
       // Type assertion safe for transitional adapter
-      return updateBookingStatus(id, updates.status) as BookingRecord | null;
+      return await updateBookingStatus(id, updates.status) as BookingRecord | null;
     }
 
     if (updates.notes !== undefined) {
       // Delegate notes updates to existing function
       // Type assertion safe for transitional adapter
-      return updateBookingNotes(id, updates.notes) as BookingRecord | null;
+      return await updateBookingNotes(id, updates.notes) as BookingRecord | null;
     }
 
     if (updates.paymentId !== undefined && updates.paymentRecord !== undefined) {
       // Delegate payment updates to existing function
       // Type assertion safe for transitional adapter
-      return updateBookingPayment(id, updates.paymentId, updates.paymentRecord) as BookingRecord | null;
+      return await updateBookingPayment(id, updates.paymentId, updates.paymentRecord) as BookingRecord | null;
     }
 
     // For other updates, we need to handle manually (no existing function covers all fields)
     // This maintains compatibility with existing update patterns
-    const booking = getBooking(id);
+    const booking = await getBooking(id);
     if (!booking) return null;
 
     // Apply updates to the existing booking object (direct mutation)

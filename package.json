@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-  "dev": "next dev --webpack -p 3002",
-  "build": "next build --webpack",
-  "start": "next start",
-  "lint": "next lint"
+    "dev": "next dev --webpack -p 3002",
+    "build": "next build --webpack",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "vitest",
+    "test:watch": "vitest --watch"
   },
   "dependencies": {
     "next": "16.1.0",
@@ -14,6 +16,8 @@
     "react-dom": "19.2.3"
   },
   "devDependencies": {
+    "@iconify-json/tabler": "^1.2.26",
+    "@iconify/tailwind4": "^1.2.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -21,6 +25,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.1.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^2.0.0"
   }
 }

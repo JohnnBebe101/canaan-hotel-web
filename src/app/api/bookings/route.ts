@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create operational booking record for CRM
-    const booking = createBooking({
+    const booking = await createBooking({
       guestName: body.guest_name.trim(),
       email: body.email.trim().toLowerCase(),
       phone: body.phone.trim(),

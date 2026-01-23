@@ -39,7 +39,7 @@ export class PaymentMemoryRepository implements PaymentRepository {
 
   async getByBookingId(bookingId: string): Promise<PaymentRecord[]> {
     // Delegate to existing in-memory function
-    const payment = getPaymentByBookingId(bookingId);
+    const payment = await getPaymentByBookingId(bookingId);
     // Return as array (existing function returns single record or undefined)
     return payment ? [payment] : [];
   }

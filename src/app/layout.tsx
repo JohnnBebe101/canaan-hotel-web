@@ -16,7 +16,7 @@ export const metadata = {
     description: "Experience unparalleled hospitality in the heart of Adigrat. Book direct for best rates and exclusive offers.",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop",
+        url: "/images/room-placeholder.jpg",
         width: 1200,
         height: 630,
         alt: "Cannan International Hotel Exterior",
@@ -27,7 +27,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "Cannan International Hotel - Your Gateway to Tigray's History and Comfort",
     description: "Experience unparalleled hospitality in the heart of Adigrat.",
-    images: ["https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop"],
+    images: ["/images/room-placeholder.jpg"],
   },
 };
 

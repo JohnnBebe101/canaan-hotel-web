@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
+import withBundleAnalyzer from "@next/bundle-analyzer";
 
-const nextConfig: NextConfig = {
+const baseConfig: NextConfig = {
   // Image optimization configuration
   images: {
     // Image qualities to support
@@ -17,21 +18,13 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "images.unsplash.com",
-      },
-      {
-        protocol: "https",
-        hostname: "lh3.googleusercontent.com",
-      },
-      {
-        protocol: "https",
         hostname: "localhost",
       },
       {
         protocol: "http",
         hostname: "localhost",
-      }
-    ]
+      },
+    ],
   },
   // Enable experimental features
   experimental: {
@@ -40,10 +33,19 @@ const nextConfig: NextConfig = {
   // Performance optimizations
   poweredByHeader: false,
   compress: true,
+  // Ensure Next.js uses this workspace as the tracing root, avoiding
+  // confusion with other lockfiles higher up the directory tree.
+  outputFileTracingRoot: process.cwd(),
   // Development origins (if configured)
   ...(process.env.NEXT_ALLOWED_DEV_ORIGINS && {
-    allowedDevOrigins: process.env.NEXT_ALLOWED_DEV_ORIGINS.split(",").map((origin) => origin.trim()),
+    allowedDevOrigins: process.env.NEXT_ALLOWED_DEV_ORIGINS.split(",").map(
+      (origin) => origin.trim(),
+    ),
   }),
 };
 
-export default nextConfig;
+const withAnalyzer = withBundleAnalyzer({
+  enabled: process.env.ANALYZE === "true",
+});
+
+export default withAnalyzer(baseConfig);

@@ -3,7 +3,6 @@ export default {
   content: [
     './src/**/*.{ts,tsx}',
     './src/app/**/*.{ts,tsx}',
-    './ui-demo/**/*.{html,tsx}',
   ],
   theme: {
     extend: {

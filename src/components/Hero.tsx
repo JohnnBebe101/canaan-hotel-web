@@ -2,14 +2,18 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image"; // Import Next.js Image component
+import BookingCard from "./BookingCard"; // Import BookingCard
+import HeroSlider from "./HeroSlider"; // Import HeroSlider
+import { HERO_SLIDER_IMAGES } from "@/lib/heroImages"; // Import hero images data
 
 export default function Hero() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <div className="bg-background-light dark:bg-background-dark">
+    <div className="relative min-h-screen bg-background-light dark:bg-background-dark overflow-hidden">
       {/* Fixed Header */}
-      <header className="border-border-color dark:border-text-secondary/20 bg-background-light/90 dark:bg-background-dark/90 fixed top-0 z-10 w-full border-b py-1 backdrop-blur-sm">
+      <header className="border-border-color dark:border-text-secondary/20 bg-background-light/90 dark:bg-background-dark/90 fixed top-0 z-50 w-full border-b py-1 backdrop-blur-sm">
         <nav className="navbar mx-auto max-w-7xl rounded-b-xl px-4 sm:px-6 lg:px-8">
           <div className="w-full lg:flex lg:items-center lg:gap-2">
             <div className="navbar-start items-center justify-between max-lg:w-full">
@@ -54,62 +58,65 @@ export default function Hero() {
         </nav>
       </header>
 
-      {/* Hero Section */}
-      <main className="h-screen">
-        <div className="flex h-full flex-col justify-between gap-18 overflow-x-hidden pt-40 md:gap-24 md:pt-45 lg:gap-35 lg:pt-47.5">
-          <div className="mx-auto flex max-w-7xl flex-col items-center gap-8 justify-self-center px-4 text-center sm:px-6 lg:px-8">
-            <div className="bg-background-dark/5 dark:bg-background-light/10 border-border-color dark:border-text-secondary/20 flex w-fit items-center gap-2.5 rounded-full border px-3 py-2">
-              <span className="badge badge-primary shrink-0 rounded-full">Premium</span>
-              <span className="text-text-secondary dark:text-text-secondary/80">Experience Luxury Hospitality</span>
-            </div>
-            <h1 className="text-text-primary dark:text-background-light relative z-1 text-5xl leading-[1.15] font-bold max-md:text-2xl md:max-w-3xl md:text-balance">
-              <span>Your Gateway to Tigray's History and Comfort</span>
-              <svg
-                width="223"
-                height="12"
-                viewBox="0 0 223 12"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="absolute -bottom-1.5 left-10 -z-1 max-lg:left-4 max-md:hidden"
-              >
-                <path
-                  d="M1.30466 10.7431C39.971 5.28788 76.0949 3.02 115.082 2.30401C143.893 1.77489 175.871 0.628649 204.399 3.63102C210.113 3.92052 215.332 4.91391 221.722 6.06058"
-                  stroke="url(#paint0_linear_10365_68643)"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-                <defs>
-                  <linearGradient
-                    id="paint0_linear_10365_68643"
-                    x1="19.0416"
-                    y1="4.03539"
-                    x2="42.8362"
-                    y2="66.9459"
-                    gradientUnits="userSpaceOnUse"
-                  >
-                    <stop offset="0.2" stopColor="var(--color-primary)" />
-                    <stop offset="1" stopColor="var(--color-primary)" />
-                  </linearGradient>
-                </defs>
-              </svg>
-            </h1>
-            <p className="text-text-secondary dark:text-text-secondary/80 max-w-3xl">
-              Experience unparalleled hospitality in the heart of Adigrat.
-            </p>
+      {/* Hero Slider Background */}
+      <HeroSlider images={HERO_SLIDER_IMAGES} />
+      {/* Dark overlay for better text contrast over slider */}
+      <div className="absolute inset-0 bg-black/40 z-10" />
 
-            <Link href="/rooms" className="btn btn-primary btn-lg inline-flex items-center gap-2">
-              Book Your Stay
-              <span className="icon-[tabler--arrow-right] size-5"></span>
-            </Link>
+      {/* Hero Content (text & booking card) */}
+      <main className="relative z-20 flex flex-col items-center justify-center px-4 pt-24 pb-16 text-center sm:px-6 lg:px-8">
+        {/* Main heading and description */}
+        <div className="mx-auto flex max-w-7xl flex-col items-center gap-8 justify-self-center">
+          <div className="bg-background-dark/5 dark:bg-background-light/10 border-border-color dark:border-text-secondary/20 flex w-fit items-center gap-2.5 rounded-full border px-3 py-2">
+            <span className="badge badge-primary shrink-0 rounded-full">Premium</span>
+            <span className="text-text-secondary dark:text-text-secondary/80">Experience Luxury Hospitality</span>
           </div>
+          <h1 className="relative z-1 text-5xl font-bold leading-[1.15] text-white max-md:text-2xl md:max-w-3xl md:text-balance">
+            <span>Your Gateway to Tigray's History and Comfort</span>
+            <svg
+              width="223"
+              height="12"
+              viewBox="0 0 223 12"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="absolute -bottom-1.5 left-10 -z-1 max-lg:left-4 max-md:hidden"
+            >
+              <path
+                d="M1.30466 10.7431C39.971 5.28788 76.0949 3.02 115.082 2.30401C143.893 1.77489 175.871 0.628649 204.399 3.63102C210.113 3.92052 215.332 4.91391 221.722 6.06058"
+                stroke="url(#paint0_linear_10365_68643)"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+              <defs>
+                <linearGradient
+                  id="paint0_linear_10365_68643"
+                  x1="19.0416"
+                  y1="4.03539"
+                  x2="42.8362"
+                  y2="66.9459"
+                  gradientUnits="userSpaceOnUse"
+                >
+                  <stop offset="0.2" stopColor="var(--color-primary)" />
+                  <stop offset="1" stopColor="var(--color-primary)" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </h1>
+          <p className="max-w-3xl text-gray-200">
+            Experience unparalleled hospitality in the heart of Adigrat.
+          </p>
+          <Link
+            href="/rooms"
+            className="btn btn-lg inline-flex items-center gap-2 bg-primary text-white hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+          >
+            Book Your Stay
+            <span className="icon-[tabler--arrow-right] size-5"></span>
+          </Link>
+        </div>
 
-          <div className="w-full">
-            <img
-              src="/assets/images/hotel-exterior.jpg"
-              alt="Canaan International Hotel exterior view"
-              className="min-h-67 w-full object-cover"
-            />
-          </div>
+        {/* Integrated Booking Card */}
+        <div className="mt-16 w-full max-w-xl">
+          <BookingCard />
         </div>
       </main>
     </div>

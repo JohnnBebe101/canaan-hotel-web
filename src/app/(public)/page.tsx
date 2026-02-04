@@ -4,9 +4,10 @@ import Head from "next/head";
 import Link from "next/link";
 import Hero from "../../components/Hero";
 import BookingCard from "../../components/BookingCard";
-import RoomImageCard from "../../components/RoomImageCard";
+import RoomCard from "../../components/RoomCard";
 import OptimizedImage from "../../components/OptimizedImage";
 import Testimonials from "../../components/Testimonials";
+import { FEATURED_ROOMS } from "@/lib/featuredRooms";
 
 export default function HomePage() {
   
@@ -21,7 +22,7 @@ export default function HomePage() {
         <meta property="og:type" content="website"/>
         <meta property="og:title" content="Cannan International Hotel - Your Gateway to Tigray's History and Comfort"/>
         <meta property="og:description" content="Experience unparalleled hospitality in the heart of Adigrat. Book direct for best rates and exclusive offers."/>
-        <meta property="og:image" content="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop"/>
+        <meta property="og:image" content="/images/room-placeholder.jpg"/>
 
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image"/>
@@ -47,7 +48,7 @@ export default function HomePage() {
             "telephone": "+251123456789",
             "email": "contact@cannanhotel.com",
             "priceRange": "$$",
-            "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop"
+            "image": "/images/room-placeholder.jpg"
           })}
         </script>
       </Head>
@@ -66,30 +67,19 @@ export default function HomePage() {
                   <p className="mx-auto max-w-2xl text-text-secondary dark:text-text-secondary/90">Discover our selection of comfortable accommodations designed for your perfect stay.</p>
           </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-                  <RoomImageCard
-                    src="/assets/images/hotel-entrance.jpg"
-                    alt="Economy Single Room with city view"
-                    title="Economy Single Room"
-                    description="Perfect for solo travelers with a stunning city view."
-                    price="From $50 / night"
-                    linkHref="/rooms"
-                  />
-                  <RoomImageCard
-                    src="/assets/images/hotel-comfort.jpg"
-                    alt="Comfort Double Room with private balcony"
-                    title="Comfort Double Room"
-                    description="Spacious comfort for couples, featuring a private balcony."
-                    price="From $75 / night"
-                    linkHref="/rooms"
-                  />
-                  <RoomImageCard
-                    src="/assets/images/hotel-family.jpg"
-                    alt="Family Suite with multiple beds and extra space"
-                    title="Family Suite"
-                    description="Ideal for families, with multiple beds and extra space."
-                    price="From $110 / night"
-                    linkHref="/rooms"
-                  />
+                  {FEATURED_ROOMS.map((room) => (
+                    <RoomCard
+                      key={room.slug}
+                      slug={room.slug}
+                      imageSrc={room.imageSrc}
+                      imageAlt={room.imageAlt}
+                      name={room.name}
+                      description={room.description}
+                      priceLabel={room.priceLabel}
+                      badges={room.badges}
+                      rating={room.rating}
+                    />
+                  ))}
                 </div>
           <div className="text-center mt-12">
                   <Link href="/rooms" className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-bold text-white transition-opacity hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
@@ -135,117 +125,6 @@ export default function HomePage() {
 
 
 
-              <section className="px-4 py-8 sm:px-6 lg:px-8" aria-labelledby="demo-newsletter">
-                <div className="max-w-4xl mx-auto">
-                  <div className="p-6 my-6 border border-gray-300 rounded-lg shadow-sm">
-                    <div className="text-center mb-6">
-                      <h2 id="demo-newsletter" className="text-xl font-bold text-text-primary dark:text-background-light mb-2">Demo: Email Marketing Suite</h2>
-                      <p className="text-sm text-text-secondary dark:text-text-secondary/90">Automated campaigns, guest communications, and marketing analytics</p>
-                    </div>
-                    <div className="flex flex-col sm:flex-row gap-4 items-center">
-                      <div className="flex-1">
-                        <div className="flex flex-wrap gap-2 mb-4">
-                          <span className="inline-block px-2 py-1 rounded-full bg-gray-200 text-gray-800">Demo: Welcome Series</span>
-                          <span className="inline-block px-2 py-1 rounded-full bg-gray-200 text-gray-800">Demo: Booking Confirmations</span>
-                          <span className="inline-block px-2 py-1 rounded-full bg-gray-200 text-gray-800">Demo: Promotional Campaigns</span>
-                        </div>
-                      </div>
-                      <div className="w-full sm:w-auto">
-                        <div className="flex gap-2">
-                          <input type="email" placeholder="Enter email for demo" className="flex-1 sm:w-64 h-10 rounded-lg border border-border-color bg-white px-3 text-sm text-text-primary focus:border-primary focus:ring-2 focus:ring-primary dark:border-text-secondary/50 dark:bg-background-light/10 dark:text-background-light" />
-                          <button type="button" className="px-6 py-3 rounded-lg bg-amber-500 hover:bg-amber-600 text-white" data-demo="true">
-                            Subscribe
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              {/* Demo Integration Sections */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-4 py-8" data-demo="true">
-                <div className="p-6 border border-gray-300 rounded-lg shadow-sm" data-demo="true">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                      <span className="material-symbols-outlined text-blue-600">people</span>
-                    </div>
-                    <h3 className="font-semibold text-gray-900">Demo: CRM System</h3>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600">Active Guests</span>
-                      <span className="inline-block px-2 py-1 rounded-full bg-green-100 text-green-800 text-xs">247</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600">Loyalty Members</span>
-                      <span className="inline-block px-2 py-1 rounded-full bg-blue-100 text-blue-800 text-xs">1,203</span>
-                    </div>
-                    <button className="w-full mt-3 px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-sm" data-demo="true">Demo: Manage Guests</button>
-                  </div>
-                </div>
-
-                <div className="p-6 border border-gray-300 rounded-lg shadow-sm" data-demo="true">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                      <span className="material-symbols-outlined text-green-600">credit_card</span>
-                    </div>
-                    <h3 className="font-semibold text-gray-900">Demo: Payments</h3>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600">Today's Revenue</span>
-                      <span className="inline-block px-2 py-1 rounded-full bg-green-100 text-green-800 text-xs">$2,847</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600">Pending</span>
-                      <span className="inline-block px-2 py-1 rounded-full bg-yellow-100 text-yellow-800 text-xs">$423</span>
-                    </div>
-                    <button className="w-full mt-3 px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-sm" data-demo="true">Demo: Process Payments</button>
-                  </div>
-                </div>
-
-                <div className="p-6 border border-gray-300 rounded-lg shadow-sm" data-demo="true">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                      <span className="material-symbols-outlined text-purple-600">mail</span>
-                    </div>
-                    <h3 className="font-semibold text-gray-900">Demo: Email Marketing</h3>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600">Open Rate</span>
-                      <span className="inline-block px-2 py-1 rounded-full bg-green-100 text-green-800 text-xs">68%</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600">Subscribers</span>
-                      <span className="inline-block px-2 py-1 rounded-full bg-blue-100 text-blue-800 text-xs">3,492</span>
-                    </div>
-                    <button className="w-full mt-3 px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-sm" data-demo="true">Demo: Send Campaign</button>
-                  </div>
-                </div>
-
-                <div className="p-6 border border-gray-300 rounded-lg shadow-sm" data-demo="true">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
-                      <span className="material-symbols-outlined text-orange-600">travel_explore</span>
-                    </div>
-                    <h3 className="font-semibold text-gray-900">Demo: OTA Integration</h3>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600">Booking.com</span>
-                      <span className="inline-block px-2 py-1 rounded-full bg-green-100 text-green-800 text-xs">Sync</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600">Expedia</span>
-                      <span className="inline-block px-2 py-1 rounded-full bg-green-100 text-green-800 text-xs">Sync</span>
-                    </div>
-                    <button className="w-full mt-3 px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-sm" data-demo="true">Demo: Manage Channels</button>
-                  </div>
-                </div>
-              </div>
-
               <Testimonials />
 
               <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24" aria-labelledby="explore-tigray">
@@ -257,7 +136,7 @@ export default function HomePage() {
                   <a className="group block overflow-hidden rounded-xl" href="#debre-damo" aria-label="Learn more about Debre Damo Monastery">
                     <div className="relative">
                       <OptimizedImage
-                        src="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop"
+                        src="/images/room-placeholder.jpg"
                         alt="The ancient cliff-face monastery of Debre Damo"
                         width={600}
                         height={400}
@@ -275,7 +154,7 @@ export default function HomePage() {
                   <a className="group block overflow-hidden rounded-xl" href="#gheralta" aria-label="Learn more about Gheralta Mountains">
                     <div className="relative">
                       <OptimizedImage
-                        src="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop"
+                        src="/images/room-placeholder.jpg"
                         alt="Dramatic sandstone cliffs of the Gheralta Mountains at sunset"
                         width={600}
                         height={400}
@@ -293,7 +172,7 @@ export default function HomePage() {
                   <a className="group block overflow-hidden rounded-xl" href="#al-nejashi" aria-label="Learn more about Al-Nejashi Mosque">
                     <div className="relative">
                       <OptimizedImage
-                        src="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop"
+                        src="/images/room-placeholder.jpg"
                         alt="The historic Al-Nejashi Mosque with its white minarets"
                         width={600}
                         height={400}

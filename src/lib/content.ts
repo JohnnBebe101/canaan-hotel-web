@@ -100,7 +100,7 @@ export const CONTENT_CONFIG = {
       id: "debre-damo",
       title: "Debre Damo Monastery",
       description: "An ancient monastery perched atop a flat-topped mountain.",
-      image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop",
+      image: "/images/room-placeholder.jpg",
       altText: "The ancient cliff-face monastery of Debre Damo",
       link: "#debre-damo"
     },
@@ -108,7 +108,7 @@ export const CONTENT_CONFIG = {
       id: "gheralta",
       title: "Gheralta Mountains",
       description: "Home to stunning rock-hewn churches and panoramic views.",
-      image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop",
+      image: "/images/room-placeholder.jpg",
       altText: "Dramatic sandstone cliffs of the Gheralta Mountains at sunset",
       link: "#gheralta"
     },
@@ -116,7 +116,7 @@ export const CONTENT_CONFIG = {
       id: "al-nejashi",
       title: "Al-Nejashi Mosque",
       description: "One of the earliest mosques in Africa, a site of great historical importance.",
-      image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop",
+      image: "/images/room-placeholder.jpg",
       altText: "The historic Al-Nejashi Mosque with its white minarets",
       link: "#al-nejashi"
     }

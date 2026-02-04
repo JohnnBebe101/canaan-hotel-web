@@ -1,6 +1,8 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 export default function RoomDetailPage() {
   return (
@@ -55,7 +57,7 @@ export default function RoomDetailPage() {
                   <Image 
                     className="w-full h-full object-cover cursor-pointer opacity-70 hover:opacity-100 transition-opacity" 
                     alt="The view from the hotel room window." 
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIAAz2eNn5B8jH1T5E-5PZ4unn1LY5Me0AjdeHDR2qlfr95nzWVlhmP3Zcl3YBUJP-nq7zMvDPvPnRW7YP56ukP2SbvJ7WaeDxb41WBetBPWf7iKO6hXaFmQDm07cN_mL4Vffr81nD2Ry_tl2p0d-RMlOlLgvTRJ9JYpd2db8hx4mD120XDFASR7xSJrTRhCHLQSZK4TQA0faoz4-vnRmZgLleux17sm354s5Lxcr-YB8Kcgt1l7HGizTP9hPT31khmtC7qVxc98oB"
+                    src="/images/room-placeholder.jpg"
                     width={200}
                     height={200}
                   />
@@ -146,18 +148,12 @@ export default function RoomDetailPage() {
                   </div>
                 </div>
                 
-                <button className="w-full flex items-center justify-center rounded-lg h-12 px-6 bg-primary text-white text-base font-bold hover:opacity-90 transition-opacity">
+                <Link
+                  href="/#booking"
+                  className="w-full flex items-center justify-center rounded-lg h-12 px-6 bg-primary text-white text-base font-bold hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                >
                   <span>Reserve Your Stay</span>
-                </button>
-                
-                <div className="flex gap-2 mt-3">
-                  <button className="flex-1 px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-sm" data-demo="true">
-                    Demo: Quick Book
-                  </button>
-                  <button className="flex-1 px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-sm" data-demo="true">
-                    Demo: Add to Cart
-                  </button>
-                </div>
+                </Link>
                 
                 <div className="text-center mt-3">
                   <p className="text-xs text-gray-500 dark:text-gray-400">
@@ -167,61 +163,13 @@ export default function RoomDetailPage() {
                     <span className="inline-block px-2 py-1 rounded-full bg-green-100 text-green-800 text-xs" data-demo="true">
                       Payment Processed
                     </span>
-                    <span className="inline-block px-2 py-1 rounded-full bg-blue-100 text-blue-800 text-xs" data-demo="true">
+                    <span className="inline-block px-2 py-1 rounded-full bg-primary/10 text-primary text-xs" data-demo="true">
                       Email Sent
                     </span>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-        
-        {/* Demo: Inventory Management */}
-        <div className="p-6 my-6 border border-gray-300 rounded-lg shadow-sm" data-demo="true">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">Demo: Inventory Management</h3>
-            <div className="flex gap-2">
-              <span className="inline-block px-2 py-1 rounded-full bg-green-100 text-green-800 text-xs">Auto-sync</span>
-              <span className="inline-block px-2 py-1 rounded-full bg-blue-100 text-blue-800 text-xs">OTA</span>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-            <div className="p-3 border border-gray-200 rounded-lg">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="material-symbols-outlined text-green-600 text-lg">inventory</span>
-                <span className="text-sm font-medium">Available Rooms</span>
-              </div>
-              <p className="text-lg font-bold text-green-600">8/10</p>
-              <span className="inline-block px-2 py-1 rounded-full bg-green-100 text-green-800 text-xs mt-1">High Availability</span>
-            </div>
-            <div className="p-3 border border-gray-200 rounded-lg">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="material-symbols-outlined text-blue-600 text-lg">trending_up</span>
-                <span className="text-sm font-medium">Demand</span>
-              </div>
-              <p className="text-lg font-bold text-blue-600">85%</p>
-              <span className="inline-block px-2 py-1 rounded-full bg-blue-100 text-blue-800 text-xs mt-1">Peak Season</span>
-            </div>
-            <div className="p-3 border border-gray-200 rounded-lg">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="material-symbols-outlined text-purple-600 text-lg">attach_money</span>
-                <span className="text-sm font-medium">Dynamic Pricing</span>
-              </div>
-              <p className="text-lg font-bold text-purple-600">$120-$180</p>
-              <span className="inline-block px-2 py-1 rounded-full bg-purple-100 text-purple-800 text-xs mt-1">Optimized</span>
-            </div>
-          </div>
-          <div className="flex gap-2">
-            <button className="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-sm" data-demo="true">
-              Demo: Rate Optimizer
-            </button>
-            <button className="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-sm" data-demo="true">
-              Demo: Yield Management
-            </button>
-            <button className="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-sm" data-demo="true">
-              Demo: Channel Sync
-            </button>
           </div>
         </div>
         
@@ -236,7 +184,7 @@ export default function RoomDetailPage() {
                   <span className="inline-block px-2 py-1 rounded-full bg-green-100 text-green-800 text-xs font-medium" data-demo="true">
                     Available
                   </span>
-                  <span className="inline-block px-2 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-medium" data-demo="true">
+                  <span className="inline-block px-2 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium" data-demo="true">
                     Best Seller
                   </span>
                 </div>

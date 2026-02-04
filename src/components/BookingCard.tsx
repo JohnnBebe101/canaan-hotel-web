@@ -7,6 +7,8 @@ interface BookingFormData {
   email: string;
   phone: string;
   room_type: string;
+  number_of_guests: number;
+  total_price: number;
   check_in: string;
   check_out: string;
   message: string;
@@ -24,6 +26,8 @@ export default function BookingCard() {
     email: "",
     phone: "",
     room_type: "",
+    number_of_guests: 1,
+    total_price: 0,
     check_in: "",
     check_out: "",
     message: "",
@@ -61,6 +65,8 @@ export default function BookingCard() {
           email: formData.email,
           phone: formData.phone,
           room_type: formData.room_type,
+          number_of_guests: formData.number_of_guests,
+          total_price: formData.total_price,
           dates: {
             check_in: formData.check_in,
             check_out: formData.check_out,
@@ -103,7 +109,10 @@ export default function BookingCard() {
   };
 
   return (
-    <section className="bg-background-light dark:bg-background-dark py-16 px-4 sm:px-6 lg:px-8">
+    <section
+      id="booking"
+      className="bg-background-light dark:bg-background-dark py-16 px-4 sm:px-6 lg:px-8"
+    >
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold tracking-tight text-text-primary dark:text-background-light mb-4">
@@ -115,7 +124,7 @@ export default function BookingCard() {
           </p>
         </div>
 
-        <div className="bg-white dark:bg-background-light/5 rounded-xl shadow-lg p-8 border border-border-color">
+        <div className="bg-white/85 backdrop-blur-md rounded-xl shadow-lg p-8 border border-border-color">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Guest Name */}
@@ -199,6 +208,49 @@ export default function BookingCard() {
                   <option value="Comfort Double Room">Comfort Double Room - $75/night</option>
                   <option value="Family Suite">Family Suite - $110/night</option>
                 </select>
+              </div>
+
+              {/* Number of Guests */}
+              <div>
+                <label
+                  htmlFor="number_of_guests"
+                  className="block text-sm font-medium text-text-primary dark:text-background-light mb-2"
+                >
+                  Number of Guests *
+                </label>
+                <input
+                  type="number"
+                  id="number_of_guests"
+                  name="number_of_guests"
+                  value={formData.number_of_guests}
+                  onChange={handleInputChange}
+                  required
+                  min={1}
+                  className="w-full px-4 py-3 border border-border-color rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-white dark:bg-background-light/10 text-text-primary dark:text-background-light placeholder-text-secondary dark:placeholder-text-secondary/70"
+                  placeholder="Number of guests"
+                />
+              </div>
+
+              {/* Total Price */}
+              <div>
+                <label
+                  htmlFor="total_price"
+                  className="block text-sm font-medium text-text-primary dark:text-background-light mb-2"
+                >
+                  Total Price (USD) *
+                </label>
+                <input
+                  type="number"
+                  id="total_price"
+                  name="total_price"
+                  value={formData.total_price}
+                  onChange={handleInputChange}
+                  required
+                  min={0}
+                  step="0.01"
+                  className="w-full px-4 py-3 border border-border-color rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-white dark:bg-background-light/10 text-text-primary dark:text-background-light placeholder-text-secondary dark:placeholder-text-secondary/70"
+                  placeholder="e.g., 150.00"
+                />
               </div>
 
               {/* Check-in Date */}

@@ -28,10 +28,10 @@ import {
 export class BookingMemoryRepository implements BookingRepository {
   async getAll(): Promise<BookingRecord[]> {
     // Delegate to existing in-memory function
-    const bookings = getBookings();
+    const bookings = await getBookings();
     // Return as BookingRecord[] (compatible with existing Booking[])
     // Type assertion safe for transitional adapter
-    return bookings as BookingRecord[];
+    return bookings as unknown as BookingRecord[];
   }
 
   async getById(id: string): Promise<BookingRecord | null> {
@@ -39,7 +39,7 @@ export class BookingMemoryRepository implements BookingRepository {
     const booking = await getBooking(id);
     // Return null if not found (matches existing behavior)
     // Type assertion safe for transitional adapter
-    return (booking as BookingRecord) || null;
+    return (booking as unknown as BookingRecord) || null;
   }
 
   async create(record: Omit<BookingRecord, 'id' | 'createdAt' | 'updatedAt'>): Promise<BookingRecord> {
@@ -61,7 +61,7 @@ export class BookingMemoryRepository implements BookingRepository {
 
     // Return as BookingRecord (compatible with existing Booking)
     // Type assertion safe for transitional adapter
-    return created as BookingRecord;
+    return created as unknown as BookingRecord;
   }
 
   async update(id: string, updates: PartialBookingRecord): Promise<BookingRecord | null> {
@@ -70,19 +70,19 @@ export class BookingMemoryRepository implements BookingRepository {
     if (updates.status !== undefined) {
       // Delegate status updates to existing function (includes logging and email dispatch)
       // Type assertion safe for transitional adapter
-      return await updateBookingStatus(id, updates.status) as BookingRecord | null;
+      return await updateBookingStatus(id, updates.status) as unknown as BookingRecord | null;
     }
 
     if (updates.notes !== undefined) {
       // Delegate notes updates to existing function
       // Type assertion safe for transitional adapter
-      return await updateBookingNotes(id, updates.notes) as BookingRecord | null;
+      return await updateBookingNotes(id, updates.notes) as unknown as BookingRecord | null;
     }
 
     if (updates.paymentId !== undefined && updates.paymentRecord !== undefined) {
       // Delegate payment updates to existing function
       // Type assertion safe for transitional adapter
-      return await updateBookingPayment(id, updates.paymentId, updates.paymentRecord) as BookingRecord | null;
+      return await updateBookingPayment(id, updates.paymentId, updates.paymentRecord) as unknown as BookingRecord | null;
     }
 
     // For other updates, we need to handle manually (no existing function covers all fields)
@@ -95,6 +95,6 @@ export class BookingMemoryRepository implements BookingRepository {
 
     // Return updated booking
     // Type assertion safe for transitional adapter
-    return booking as BookingRecord;
+    return booking as unknown as BookingRecord;
   }
 }

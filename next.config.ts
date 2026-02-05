@@ -42,6 +42,7 @@ const baseConfig: NextConfig = {
       (origin) => origin.trim(),
     ),
   }),
+
 };
 
 const withAnalyzer = withBundleAnalyzer({

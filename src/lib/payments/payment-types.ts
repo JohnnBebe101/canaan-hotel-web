@@ -205,6 +205,8 @@ export interface PaymentAdminAction {
    */
 }
 
+import { isPaymentsEnabled } from "../featureFlags";
+
 /**
  * Payment Feature Active Check
  * Helper function to determine if payments feature is enabled
@@ -212,9 +214,6 @@ export interface PaymentAdminAction {
  * @returns true if payments are enabled, false otherwise
  */
 export function isPaymentsFeatureActive(): boolean {
-  // Import here to avoid circular dependencies and ensure feature flag safety
-  const { isPaymentsEnabled } = require("../featureFlags");
-
   try {
     return isPaymentsEnabled();
   } catch (error) {

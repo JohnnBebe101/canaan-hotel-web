@@ -19,15 +19,11 @@ export async function saveBooking(booking: BookingRecordDB): Promise<void> {
 
     if (existingBookingIndex > -1) {
       // Update existing booking
-      db.data.bookings[existingBookingIndex] = { ...db.data.bookings[existingBookingIndex], ...booking as Booking };
+      const mappedUpdate = mapToDbBooking(booking);
+      db.data.bookings[existingBookingIndex] = { ...db.data.bookings[existingBookingIndex], ...mappedUpdate };
     } else {
       // Add new booking
-      const newBooking: Booking = {
-        id: nanoid(),
-        created_at: Date.now(),
-        status: 'pending',
-        ...booking as Booking,
-      };
+      const newBooking: Booking = mapToDbBooking(booking);
       db.data.bookings.push(newBooking);
     }
     await db.write();
@@ -36,6 +32,27 @@ export async function saveBooking(booking: BookingRecordDB): Promise<void> {
     throw new Error('Failed to save booking');
   }
 }
+
+/**
+ * Helper to map domain BookingRecordDB to legacy DB Booking schema
+ */
+function mapToDbBooking(record: BookingRecordDB): Booking {
+  return {
+    id: record.id,
+    guest_name: record.guestName,
+    email: record.email,
+    check_in_date: record.checkIn,
+    check_out_date: record.checkOut,
+    number_of_guests: 1, // Default fallback, as not in BookingRecordDB
+    room_type: record.roomType,
+    total_price: 0, // Default fallback
+    status: record.status === 'NEW' ? 'pending' :
+      record.status === 'CANCELLED' ? 'cancelled' : 'confirmed',
+    created_at: new Date(record.createdAt).getTime(),
+    notes: record.notes
+  };
+}
+
 
 /**
  * Save payment record to database
@@ -75,7 +92,7 @@ export async function getBookingById(id: string): Promise<BookingRecordDB | null
 
   try {
     const db = await initializeDatabase();
-    return db.data.bookings.find(b => b.id === id) as BookingRecordDB || null;
+    return db.data.bookings.find(b => b.id === id) as unknown as BookingRecordDB || null;
   } catch (error) {
     logError('DB_ADAPTER', 'Failed to retrieve booking from database', { bookingId: id, error });
     throw new Error('Failed to retrieve booking');
@@ -126,9 +143,9 @@ export async function updateBooking(id: string, updates: Partial<BookingRecordDB
     const bookingIndex = db.data.bookings.findIndex(b => b.id === id);
 
     if (bookingIndex > -1) {
-      db.data.bookings[bookingIndex] = { ...db.data.bookings[bookingIndex], ...updates as Booking };
+      db.data.bookings[bookingIndex] = { ...db.data.bookings[bookingIndex], ...updates as unknown as Booking };
       await db.write();
-      return db.data.bookings[bookingIndex] as BookingRecordDB;
+      return db.data.bookings[bookingIndex] as unknown as BookingRecordDB;
     }
     return null;
   } catch (error) {
@@ -163,7 +180,7 @@ export async function getAllBookings(): Promise<BookingRecordDB[]> {
 
   try {
     const db = await initializeDatabase();
-    return db.data.bookings as BookingRecordDB[];
+    return db.data.bookings as unknown as BookingRecordDB[];
   } catch (error) {
     logError('DB_ADAPTER', 'Failed to retrieve all bookings from database', { operation: 'getAllBookings', error });
     throw new Error('Failed to retrieve all bookings');

@@ -62,7 +62,7 @@ export async function getBooking(id: string): Promise<Booking | undefined> {
 
   // Old memory fallback path (now effectively empty/unused if DB is primary)
   // In a full cutover, this block would be removed.
-  return undefined; 
+  return undefined;
 }
 
 export async function createBooking(data: Omit<Booking, "id" | "status" | "createdAt" | "updatedAt">): Promise<Booking> {
@@ -74,7 +74,7 @@ export async function createBooking(data: Omit<Booking, "id" | "status" | "creat
   const newBooking: Booking = {
     ...data,
     id: crypto.randomUUID(), // Will be overwritten by lowdb nanoid if passed to saveBooking
-    status: "pending", // All bookings start as pending in the DB
+    status: "NEW", // All bookings start as NEW in the DB
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
@@ -112,7 +112,7 @@ export async function updateBookingStatus(id: string, status: BookingStatus): Pr
     logWarn("DB_DISABLED_UPDATE_STATUS", "Database persistence is disabled, cannot update booking status.");
     return null;
   }
-  
+
   const bookingToUpdate = await getBooking(id);
   if (!bookingToUpdate) return null;
 

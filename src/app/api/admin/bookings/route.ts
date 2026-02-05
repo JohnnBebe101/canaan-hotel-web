@@ -9,7 +9,7 @@ import { logError } from "@/lib/logger";
 // GET /api/admin/bookings - List all bookings for CRM dashboard
 export async function GET() {
   try {
-    const bookings = getBookings();
+    const bookings = await getBookings();
     return NextResponse.json(bookings);
   } catch (error) {
     // V4.4 logging: Track API failures for operational monitoring

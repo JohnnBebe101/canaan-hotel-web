@@ -9,10 +9,6 @@
  */
 
 import { PaymentRecord, PaymentStatus } from "./payment-types";
-import { isDbShadowReadEnabled } from "../featureFlags";
-import { readPaymentById } from "../persistence/dbReader";
-import { compareMemoryVsDB } from "../persistence/shadowCompare";
-import { logError } from "../logger";
 
 // In-memory storage for payment records
 // Future: Replace with database persistence
@@ -36,32 +32,6 @@ export function createPaymentRecord(record: PaymentRecord): PaymentRecord {
 export async function getPaymentByBookingId(bookingId: string): Promise<PaymentRecord | undefined> {
   // Get payment from memory (source of truth)
   const payment = paymentRecords.find(record => record.bookingId === bookingId);
-
-  // V6.4 Shadow reading: Compare memory vs DB without affecting behavior
-  try {
-    if (isDbShadowReadEnabled() && payment) {
-      // Attempt to read same payment from database using payment ID
-      const dbPayment = await readPaymentById(payment.id);
-
-      // Compare memory vs database data
-      const comparison = compareMemoryVsDB(payment, dbPayment);
-
-      // Log mismatch if detected (no action taken)
-      if (comparison.mismatch) {
-        // Logging handled by compareMemoryVsDB function
-      }
-    }
-  } catch (error) {
-    // V6.4: Shadow read failure - log but never affect payment retrieval
-    logError("SHADOW_READ_PAYMENT_FAILED", "Failed to perform shadow read for payment", {
-      bookingId,
-      paymentId: payment?.id,
-      operation: "getPaymentByBookingId",
-      error: error instanceof Error ? error.message : String(error),
-    });
-    // Memory result unchanged - continue with payment retrieval
-  }
-
   return payment;
 }
 

@@ -88,6 +88,8 @@ export default function BookingCard() {
           email: "",
           phone: "",
           room_type: "",
+          number_of_guests: 1,
+          total_price: 0,
           check_in: "",
           check_out: "",
           message: "",
@@ -163,7 +165,7 @@ export default function BookingCard() {
                   onChange={handleInputChange}
                   required
                   className="w-full px-4 py-3 border border-border-color rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-white dark:bg-background-light/10 text-text-primary dark:text-background-light placeholder-text-secondary dark:placeholder-text-secondary/70"
-                  placeholder="your.email@example.com"
+                  placeholder="guest@mail.com"
                 />
               </div>
 
@@ -353,11 +355,10 @@ export default function BookingCard() {
             {/* Status Message */}
             {submitStatus.type && (
               <div
-                className={`p-4 rounded-lg ${
-                  submitStatus.type === "success"
-                    ? "bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-200 border border-green-200 dark:border-green-800"
-                    : "bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-200 border border-red-200 dark:border-red-800"
-                }`}
+                className={`p-4 rounded-lg ${submitStatus.type === "success"
+                  ? "bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-200 border border-green-200 dark:border-green-800"
+                  : "bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-200 border border-red-200 dark:border-red-800"
+                  }`}
               >
                 {submitStatus.message}
               </div>

@@ -32,8 +32,8 @@ export default function AdminBookingsPage() {
     loadBookings();
   }, []);
 
-    const loadBookings = async () => {
-      try {
+  const loadBookings = async () => {
+    try {
       setLoading(true);
       // V4.4 async guard: Prevent hanging requests during CRM data loading
       const response = await withTimeout(
@@ -46,10 +46,10 @@ export default function AdminBookingsPage() {
       setBookings(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load bookings");
-      } finally {
-        setLoading(false);
-      }
-    };
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const updateBookingStatus = async (bookingId: string, newStatus: BookingStatus) => {
     try {
@@ -419,15 +419,15 @@ export default function AdminBookingsPage() {
               <div className="text-xs text-gray-400">Use status dropdown to advance workflow</div>
             </div>
           </div>
-          </div>
+        </div>
 
-          <div className="divide-y divide-gray-200">
-            {bookings.map((booking) => (
-              <div
-                key={booking.id}
+        <div className="divide-y divide-gray-200">
+          {bookings.map((booking) => (
+            <div
+              key={booking.id}
               className="p-6 hover:bg-gray-50 cursor-pointer transition-colors"
-                onClick={() => setSelectedBooking(booking)}
-              >
+              onClick={() => setSelectedBooking(booking)}
+            >
               <div className="flex items-start justify-between">
                 <div className="flex-1 min-w-0">
                   {/* Guest Header */}
@@ -460,10 +460,6 @@ export default function AdminBookingsPage() {
                         <span className="text-sm font-medium text-gray-700">Room:</span>
                         <span className="text-sm text-gray-900">{booking.roomType}</span>
                       </div>
-                      <div className="flex items-center space-x-2">
-                        <span className="text-sm font-medium text-gray-700">Room:</span>
-                        <span className="text-sm text-gray-900">{booking.roomType}</span>
-                      </div>
                     </div>
                     <div className="space-y-1">
                       <div className="flex items-center space-x-2">
@@ -485,7 +481,7 @@ export default function AdminBookingsPage() {
                     {booking.updatedAt !== booking.createdAt && (
                       <div className="text-xs text-gray-400">
                         Updated {new Date(booking.updatedAt).toLocaleDateString()}
-                    </div>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -521,11 +517,11 @@ export default function AdminBookingsPage() {
                       View Details
                     </Link>
                   </div>
-                  </div>
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
+        </div>
 
         {bookings.length === 0 && (
           <div className="p-16 text-center">
@@ -554,8 +550,8 @@ export default function AdminBookingsPage() {
               </svg>
               Preview Booking Form
             </Link>
-        </div>
-      )}
+          </div>
+        )}
       </div>
 
       {/* Booking Details Modal */}
@@ -566,7 +562,7 @@ export default function AdminBookingsPage() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   <div className={`w-3 h-3 rounded-full ${getStatusColor(selectedBooking.status).split(' ')[0]}`}></div>
-                <h2 className="text-xl font-semibold text-gray-900">Booking Details</h2>
+                  <h2 className="text-xl font-semibold text-gray-900">Booking Details</h2>
                   <span className={`inline-flex px-3 py-1 text-sm font-medium rounded-full ${getStatusColor(selectedBooking.status)}`}>
                     {selectedBooking.status}
                   </span>
@@ -804,7 +800,7 @@ export default function AdminBookingsPage() {
                   ) : (
                     <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                       <p className="text-sm text-gray-600">No payment created</p>
-                </div>
+                    </div>
                   )}
                 </div>
               )}
@@ -828,18 +824,18 @@ export default function AdminBookingsPage() {
                           {selectedBooking.paymentRecord.status.replace('_', ' ')}
                         </span>
                         <span className="text-sm text-gray-600">Payment Status</span>
-                </div>
+                      </div>
 
                       {/* Payment Details */}
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div className="bg-gray-50 p-3 rounded-lg">
                           <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">Payment Status</label>
                           <p className="mt-1 text-sm font-medium text-gray-900">{selectedBooking.paymentRecord.status.replace('_', ' ')}</p>
-                </div>
+                        </div>
                         <div className="bg-gray-50 p-3 rounded-lg">
                           <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">Provider</label>
                           <p className="mt-1 text-sm font-medium text-gray-900">{selectedBooking.paymentRecord.provider}</p>
-                </div>
+                        </div>
                         <div className="bg-gray-50 p-3 rounded-lg">
                           <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">Link Created</label>
                           <p className="mt-1 text-sm font-medium text-gray-900">
@@ -849,8 +845,8 @@ export default function AdminBookingsPage() {
                               year: 'numeric'
                             })}
                           </p>
-                </div>
-              </div>
+                        </div>
+                      </div>
 
                       {/* Payment Link - Read-only */}
                       <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">

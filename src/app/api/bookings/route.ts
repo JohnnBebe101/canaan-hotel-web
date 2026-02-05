@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
 
     // Validate required fields
-    const requiredFields = ["guest_name", "email", "phone", "room_type", "number_of_guests", "total_price", "dates"];
+    const requiredFields = ["guest_name", "email", "phone", "room_type", "dates"];
     const missingFields = requiredFields.filter((field) => !body[field]);
 
     if (missingFields.length > 0) {
@@ -42,8 +42,6 @@ export async function POST(request: NextRequest) {
       roomType: body.room_type.trim(),
       checkIn: body.dates.check_in,
       checkOut: body.dates.check_out,
-      number_of_guests: body.number_of_guests,
-      total_price: body.total_price,
       notes: body.message?.trim() || undefined,
     });
 

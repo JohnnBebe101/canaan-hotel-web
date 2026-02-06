@@ -9,12 +9,20 @@ import { destroySession } from "@/lib/auth";
  * - 200: Logout successful
  */
 export async function POST(request: NextRequest) {
-  const response = NextResponse.json(
-    { message: "Logout successful" },
-    { status: 200 }
-  );
+  try {
+    const response = NextResponse.json(
+      { message: "Logout successful" },
+      { status: 200 }
+    );
 
-  return destroySession(response);
+    return destroySession(response);
+  } catch (error) {
+    console.error("Logout error:", error);
+    return NextResponse.json(
+      { error: "Logout failed" },
+      { status: 500 }
+    );
+  }
 }
 
 /**
@@ -22,7 +30,15 @@ export async function POST(request: NextRequest) {
  * Alternative logout method via GET request
  */
 export async function GET(request: NextRequest) {
-  const response = NextResponse.redirect(new URL("/admin/login", request.url));
-  return destroySession(response);
+  try {
+    const response = NextResponse.redirect(new URL("/admin/login", request.url));
+    return destroySession(response);
+  } catch (error) {
+    console.error("Logout GET error:", error);
+    return NextResponse.json(
+      { error: "Logout failed" },
+      { status: 500 }
+    );
+  }
 }
 

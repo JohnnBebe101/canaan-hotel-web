@@ -65,9 +65,17 @@ export async function POST(request: NextRequest) {
 
 // GET handler (optional - for testing or retrieving bookings)
 export async function GET() {
-  return NextResponse.json(
-    { message: "Booking inquiry API endpoint. Use POST to submit a booking inquiry." },
-    { status: 200 }
-  );
+  try {
+    return NextResponse.json(
+      { message: "Booking inquiry API endpoint. Use POST to submit a booking inquiry." },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Booking GET error:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
+  }
 }
 

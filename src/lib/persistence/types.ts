@@ -145,6 +145,19 @@ export interface PaymentRecord {
 }
 
 /**
+ * Room Record - Database Schema Mirror
+ */
+export interface RoomRecordDB {
+  id: string;
+  name: string;
+  description: string;
+  pricePerNight: number;
+  maxGuests: number;
+  isActive: boolean;
+  createdAt: string;
+}
+
+/**
  * Room Record Interface
  * Aligned with existing Room model for future database persistence
  */
@@ -159,9 +172,33 @@ export interface RoomRecord {
 }
 
 /**
+ * Attraction Record - Database Schema Mirror
+ */
+export interface AttractionRecordDB {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  distance: string;
+  image?: string;
+  active: boolean;
+}
+
+export interface AttractionRecord {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  distance: string;
+  image?: string;
+  active: boolean;
+}
+
+/**
  * Generic record type for partial updates
  * Used in repository update operations
  */
 export type PartialBookingRecord = Partial<Omit<BookingRecord, 'id' | 'createdAt'>>;
 export type PartialPaymentRecord = Partial<Omit<PaymentRecord, 'id' | 'createdAt'>>;
 export type PartialRoomRecord = Partial<Omit<RoomRecord, 'id' | 'createdAt'>>;
+export type PartialAttractionRecord = Partial<Omit<AttractionRecord, 'id'>>;

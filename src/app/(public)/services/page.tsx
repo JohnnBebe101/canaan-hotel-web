@@ -1,10 +1,19 @@
-"use client";
-
+import { Metadata } from "next";
 import Link from "next/link";
 import HeroImage from "@/components/HeroImage";
 import ServiceCard from "@/components/ServiceCard";
 import DemoIntegrationCard from "@/components/DemoIntegrationCard";
 import DemoFeatureCard from "@/components/DemoFeatureCard";
+
+export const metadata: Metadata = {
+  title: "Our Services | Cannan International Hotel",
+  description: "Experience world-class hospitality at Cannan International Hotel. From fine dining to business essentials, discover our comprehensive range of services.",
+  openGraph: {
+    title: "Premium Services & Facilities in Adigrat - Cannan Hotel",
+    description: "Explore our amenities including 24-hour concierge, secure parking, and professional business facilities.",
+    images: ["/assets/images/hotel-exterior.jpg"],
+  },
+};
 
 export default function ServicesPage() {
   return (

@@ -14,11 +14,7 @@ const ADMIN_PASSWORD = (process.env.ADMIN_PASSWORD?.trim() || "admin").trim();
 
 // Log loaded credentials at module load (development only)
 if (process.env.NODE_ENV === "development") {
-  console.log("[Auth] Module loaded with credentials:");
-  console.log("[Auth]   ADMIN_USERNAME:", JSON.stringify(ADMIN_USERNAME), `(length: ${ADMIN_USERNAME.length})`);
-  console.log("[Auth]   ADMIN_PASSWORD:", `"${'*'.repeat(ADMIN_PASSWORD.length)}"`, `(length: ${ADMIN_PASSWORD.length})`);
-  console.log("[Auth]   Raw env ADMIN_USERNAME:", JSON.stringify(process.env.ADMIN_USERNAME));
-  console.log("[Auth]   Raw env ADMIN_PASSWORD:", JSON.stringify(process.env.ADMIN_PASSWORD));
+  // Credentials logging removed for production safety even in dev-mode logs
 }
 
 /**
@@ -63,11 +59,11 @@ export function validateCredentials(
  */
 export async function createSession(response: NextResponse): Promise<NextResponse> {
   const sessionToken = await signSession();
-  
+
   if (process.env.NODE_ENV === "development") {
     console.log("[Auth] Creating session cookie:", SESSION_COOKIE_NAME);
   }
-  
+
   response.cookies.set(SESSION_COOKIE_NAME, sessionToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
@@ -102,7 +98,7 @@ export async function isAuthenticated(
   request: NextRequest
 ): Promise<boolean> {
   const sessionToken = request.cookies.get(SESSION_COOKIE_NAME)?.value;
-  
+
   if (process.env.NODE_ENV === "development") {
     console.log("[Auth] Checking authentication for path:", request.nextUrl.pathname);
     console.log("[Auth] Session cookie present:", !!sessionToken);
@@ -110,7 +106,7 @@ export async function isAuthenticated(
       console.log("[Auth] Session token length:", sessionToken.length);
     }
   }
-  
+
   if (!sessionToken) {
     if (process.env.NODE_ENV === "development") {
       console.log("[Auth] No session token found");
@@ -119,7 +115,7 @@ export async function isAuthenticated(
   }
 
   const isValid = await verifySession(sessionToken);
-  
+
   if (process.env.NODE_ENV === "development") {
     console.log("[Auth] Session token valid:", isValid);
   }
@@ -135,7 +131,7 @@ export async function isAuthenticated(
 export async function checkAuth(): Promise<boolean> {
   const cookieStore = await cookies();
   const sessionToken = cookieStore.get(SESSION_COOKIE_NAME)?.value;
-  
+
   if (!sessionToken) {
     return false;
   }
@@ -153,7 +149,7 @@ export async function requireAuth(
   request: NextRequest
 ): Promise<NextResponse | null> {
   const authenticated = await isAuthenticated(request);
-  
+
   if (!authenticated) {
     const url = request.nextUrl.clone();
     url.pathname = "/auth/login";

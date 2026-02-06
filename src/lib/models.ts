@@ -65,3 +65,38 @@ export interface Attraction {
   image?: string;
   active: boolean;
 }
+
+// Email Infrastructure Models
+export type EmailType = 'BOOKING_RECEIVED' | 'STATUS_CHANGED' | 'INVOICE_CREATED';
+
+export interface EmailTemplate {
+  id: string;
+  type: EmailType;
+  recipient: string;
+  subject: string;
+  body: string;
+  relatedBookingId: string;
+  createdAt: string;
+}
+
+export interface EmailEvent {
+  id: string;
+  type: EmailType;
+  recipient: string;
+  subject: string;
+  body: string;
+  relatedBookingId: string;
+  createdAt: string;
+}
+
+// OTA Infrastructure Models
+export type OTAProvider = 'Booking.com' | 'Expedia' | 'Agoda';
+
+export interface OTAMapping {
+  id: string;
+  bookingId: string;
+  provider: OTAProvider;
+  externalReservationId: string;
+  syncStatus: 'SYNCED' | 'FAILED' | 'PENDING';
+  createdAt: string;
+}

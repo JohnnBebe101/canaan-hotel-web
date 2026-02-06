@@ -20,7 +20,6 @@ export function pushRoomToOTA(
   const payload = buildOTAPayload(provider, room);
 
   if (!isOTAEnabled()) {
-    console.log("[OTA DISABLED]", provider, room.id);
     return {
       success: false,
       provider,
@@ -30,7 +29,6 @@ export function pushRoomToOTA(
   }
 
   // Mock successful sync for development
-  console.log("[OTA SYNC MOCK]", provider, payload);
   return {
     success: true,
     provider,

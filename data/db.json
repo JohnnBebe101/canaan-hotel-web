@@ -1,98 +1,78 @@
 {
   "bookings": [
     {
-      "id": "54cdf774-06e8-4587-b349-dd582c5fdecd",
-      "created_at": 1770299434717,
-      "status": "pending",
-      "guestName": "Test User",
-      "email": "test.user@example.com",
-      "phone": "555-555-5555",
-      "roomType": "Comfort Double Room",
-      "checkIn": "2026-02-10",
-      "checkOut": "2026-02-15",
-      "notes": "This is a test booking from the CLI.",
-      "createdAt": "2026-02-05T13:50:34.712Z",
-      "updatedAt": "2026-02-05T13:50:34.712Z"
+      "id": "cTzK_EHCxb-Dx1e6R8g2h",
+      "guest_name": "John Demo",
+      "email": "john.demo@example.com",
+      "check_in_date": "2026-02-13",
+      "check_out_date": "2026-02-16",
+      "number_of_guests": 2,
+      "room_type": "Deluxe Ocean Suite",
+      "total_price": 750,
+      "status": "confirmed",
+      "created_at": 1770387673256,
+      "notes": "Demo seed booking"
     },
     {
-      "id": "da221e22-359e-4433-96e8-7eff4397507f",
-      "created_at": 1770312784838,
-      "status": "pending",
-      "guestName": "Test User",
-      "email": "test@example.com",
-      "phone": "1234567890",
-      "roomType": "Economy Single Room",
-      "checkIn": "2025-12-01",
-      "checkOut": "2025-12-05",
-      "createdAt": "2026-02-05T17:33:04.000Z",
-      "updatedAt": "2026-02-05T17:33:04.001Z"
-    },
-    {
-      "id": "0ef8d047-b0d6-41fc-a394-da29ef8e97de",
-      "guest_name": "John Doe",
-      "email": "john@test.com",
-      "check_in_date": "2026-03-01",
-      "check_out_date": "2026-03-05",
+      "id": "xJWz6a2EVomo6oCt1rF0O",
+      "guest_name": "Jane Sample",
+      "email": "jane.sample@example.com",
+      "check_in_date": "2026-02-20",
+      "check_out_date": "2026-02-22",
       "number_of_guests": 1,
-      "room_type": "Economy Single",
-      "total_price": 0,
+      "room_type": "Economy Single Room",
+      "total_price": 190,
       "status": "pending",
-      "created_at": 1770315994043,
-      "notes": "Live User Journey Test"
-    },
-    {
-      "id": "41418158-b459-4829-9380-faf6122d86ee",
-      "guest_name": "John Doe",
-      "email": "john@test.com",
-      "check_in_date": "2026-03-01",
-      "check_out_date": "2026-03-05",
-      "number_of_guests": 1,
-      "room_type": "Economy Single",
-      "total_price": 0,
-      "status": "pending",
-      "created_at": 1770316050085,
-      "notes": "Live User Journey Test"
-    },
-    {
-      "id": "2cb64a2f-2d07-4dfe-8054-7d00dda00c4d",
-      "guest_name": "John Doe",
-      "email": "john@test.com",
-      "check_in_date": "2026-03-01",
-      "check_out_date": "2026-03-05",
-      "number_of_guests": 1,
-      "room_type": "Economy Single",
-      "total_price": 0,
-      "status": "pending",
-      "created_at": 1770316103913,
-      "notes": "Live User Journey Test"
-    },
-    {
-      "id": "a6a78183-261c-4e19-97f6-618f9b9bf56b",
-      "guest_name": "John Doe",
-      "email": "john@test.com",
-      "check_in_date": "2026-03-01",
-      "check_out_date": "2026-03-05",
-      "number_of_guests": 1,
-      "room_type": "Economy Single",
-      "total_price": 0,
-      "status": "pending",
-      "created_at": 1770316179530,
-      "notes": "Live User Journey Test"
-    },
-    {
-      "id": "024084b5-20f5-4a8d-aee4-25fcf8b26a31",
-      "guest_name": "John Doe",
-      "email": "john@test.com",
-      "check_in_date": "2026-03-01",
-      "check_out_date": "2026-03-05",
-      "number_of_guests": 1,
-      "room_type": "Economy Single",
-      "total_price": 0,
-      "status": "CONFIRMED",
-      "created_at": 1770316235443,
-      "notes": "Live User Journey Test",
-      "updatedAt": "2026-02-05T18:30:35.855Z"
+      "created_at": 1770387673256,
+      "notes": "Demo seed booking"
     }
   ],
-  "payments": []
+  "payments": [],
+  "rooms": [
+    {
+      "id": "room-deluxe",
+      "name": "Deluxe Ocean Suite",
+      "description": "Spacious suite with panoramic ocean views and premium amenities.",
+      "price_per_night": 250,
+      "max_guests": 2,
+      "is_active": true,
+      "created_at": "2026-02-06T14:21:13.244Z"
+    },
+    {
+      "id": "room-executive",
+      "name": "Executive Garden Room",
+      "description": "Elegant room overlooking the lush hotel gardens.",
+      "price_per_night": 180,
+      "max_guests": 2,
+      "is_active": true,
+      "created_at": "2026-02-06T14:21:13.244Z"
+    },
+    {
+      "id": "room-economy",
+      "name": "Economy Single Room",
+      "description": "Compact and efficient room for the solo traveler.",
+      "price_per_night": 95,
+      "max_guests": 1,
+      "is_active": true,
+      "created_at": "2026-02-06T14:21:13.244Z"
+    }
+  ],
+  "attractions": [
+    {
+      "id": "historic-district",
+      "name": "Old Town Historic District",
+      "description": "Explore the colonial architecture and narrow cobblestone streets.",
+      "category": "Culture",
+      "distance": "1.5 km",
+      "is_active": true
+    },
+    {
+      "id": "botanical-gardens",
+      "name": "City Botanical Gardens",
+      "description": "A peaceful oasis featuring exotic plants from around the world.",
+      "category": "Nature",
+      "distance": "2.3 km",
+      "is_active": true
+    }
+  ]
 }

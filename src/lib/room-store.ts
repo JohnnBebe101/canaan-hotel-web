@@ -1,59 +1,73 @@
 import { Room } from "./models";
+import { getAllRooms, saveRoom, updateRoom as dbUpdateRoom, deleteRoom as dbDeleteRoom } from "./persistence/dbAdapter";
+import { logInfo, logError } from "./logger";
 
-// Temporary in-memory room storage
-// TODO: Replace with database when ready
-let rooms: Room[] = [
-  {
-    id: "deluxe-001",
-    name: "Deluxe Room",
-    description: "Spacious and comfortable room perfect for your stay. Features modern amenities and a relaxing atmosphere.",
-    pricePerNight: 120,
-    maxGuests: 2,
-    isActive: true,
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: "executive-001",
-    name: "Executive Suite",
-    description: "Premium accommodations with stunning views and enhanced amenities for business travelers.",
-    pricePerNight: 200,
-    maxGuests: 3,
-    isActive: true,
-    createdAt: new Date().toISOString(),
-  },
-];
+// Room Management Core: Operational room management
+// NO IN-MEMORY FALLBACK: Using database persistence as primary source
 
-export function getRooms(): Room[] {
-  return rooms;
+export async function getRooms(): Promise<Room[]> {
+  try {
+    const rooms = await getAllRooms();
+    return rooms as Room[];
+  } catch (error) {
+    logError("ROOM_FETCH_FAILED", "Failed to retrieve rooms from database", { error });
+    return [];
+  }
 }
 
-export function getRoomById(id: string): Room | undefined {
-  return rooms.find((room) => room.id === id);
+export async function getRoomById(id: string): Promise<Room | undefined> {
+  try {
+    const allRooms = await getRooms();
+    return allRooms.find((room) => room.id === id);
+  } catch (error) {
+    logError("ROOM_BY_ID_FAILED", `Failed to get room by id: ${id}`, { error });
+    return undefined;
+  }
 }
 
-export function createRoom(data: Omit<Room, "id" | "createdAt">): Room {
+export async function createRoom(data: Omit<Room, "id" | "createdAt">): Promise<Room> {
   const newRoom: Room = {
     ...data,
     id: crypto.randomUUID(),
     createdAt: new Date().toISOString(),
   };
-  rooms.push(newRoom);
+
+  try {
+    await saveRoom(newRoom);
+    logInfo("ROOM_CREATED", `New room created and persisted: ${newRoom.id}`, { roomId: newRoom.id });
+  } catch (error) {
+    logError("ROOM_CREATE_FAILED", "Failed to persist new room", { error });
+    throw new Error("Failed to create room in database");
+  }
+
   return newRoom;
 }
 
-export function updateRoom(
+export async function updateRoom(
   id: string,
   data: Partial<Omit<Room, "id" | "createdAt">>
-): Room | null {
-  const room = getRoomById(id);
-  if (!room) return null;
-
-  Object.assign(room, data);
-  return room;
+): Promise<Room | null> {
+  try {
+    const updated = await dbUpdateRoom(id, data);
+    if (updated) {
+      logInfo("ROOM_UPDATED", `Room updated and persisted: ${id}`, { roomId: id });
+    }
+    return updated as Room | null;
+  } catch (error) {
+    logError("ROOM_UPDATE_FAILED", `Failed to update room: ${id}`, { error });
+    throw new Error("Failed to update room in database");
+  }
 }
 
-export function deleteRoom(id: string): boolean {
-  const initialLength = rooms.length;
-  rooms = rooms.filter((room) => room.id !== id);
-  return rooms.length < initialLength;
+export async function deleteRoom(id: string): Promise<boolean> {
+  try {
+    const success = await dbDeleteRoom(id);
+    if (success) {
+      logInfo("ROOM_DELETED", `Room deleted and persisted: ${id}`, { roomId: id });
+    }
+    return success;
+  } catch (error) {
+    logError("ROOM_DELETE_FAILED", `Failed to delete room: ${id}`, { error });
+    return false;
+  }
 }

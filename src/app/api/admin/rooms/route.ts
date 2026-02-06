@@ -15,7 +15,7 @@ import {
 // GET /api/admin/rooms - List all rooms
 export async function GET() {
   try {
-    const rooms = getRooms();
+    const rooms = await getRooms();
     return NextResponse.json(rooms);
   } catch (error) {
     console.error("Error fetching rooms:", error);
@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const room = createRoom({
+    const room = await createRoom({
       name: body.name.trim(),
       description: body.description?.trim() || "",
       pricePerNight: Number(body.pricePerNight),
@@ -92,7 +92,7 @@ export async function PUT(request: NextRequest) {
     if (body.maxGuests !== undefined) updateData.maxGuests = Number(body.maxGuests);
     if (body.isActive !== undefined) updateData.isActive = Boolean(body.isActive);
 
-    const updated = updateRoom(body.id, updateData);
+    const updated = await updateRoom(body.id, updateData);
     if (!updated) {
       return NextResponse.json({ error: "Room not found" }, { status: 404 });
     }
@@ -119,7 +119,7 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    const success = deleteRoom(body.id);
+    const success = await deleteRoom(body.id);
     if (!success) {
       return NextResponse.json({ error: "Room not found" }, { status: 404 });
     }

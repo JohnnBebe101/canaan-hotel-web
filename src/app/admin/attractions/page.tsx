@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 /**
  * Admin Attractions Management Page
  * Route: /admin/attractions
  *
  * Allows admins to manage nearby attractions and hotel content
+ * PERSISTENT: Connected to /api/admin/attractions
  */
 
 interface Attraction {
@@ -20,45 +21,32 @@ interface Attraction {
 }
 
 export default function AdminAttractionsPage() {
-  // Static attraction data - in production this would be managed via database/CMS
-  const [attractions, setAttractions] = useState<Attraction[]>([
-    {
-      id: "historic-downtown",
-      name: "Historic Downtown",
-      description: "Discover charming streets and local culture just minutes away from our hotel. Explore boutique shops, local cafes, and historic architecture.",
-      category: "Culture",
-      distance: "0.5 km",
-      active: true
-    },
-    {
-      id: "museum-district",
-      name: "Museum District",
-      description: "Explore world-class museums and art galleries featuring contemporary and historical exhibits. Perfect for culture enthusiasts.",
-      category: "Arts & Culture",
-      distance: "1.2 km",
-      active: true
-    },
-    {
-      id: "central-park",
-      name: "Central Park",
-      description: "Beautiful green spaces perfect for relaxation and recreation. Enjoy walking paths, picnic areas, and outdoor activities.",
-      category: "Nature",
-      distance: "0.8 km",
-      active: true
-    },
-    {
-      id: "business-district",
-      name: "Business District",
-      description: "Convenient access to corporate offices, meeting spaces, and professional services. Ideal for business travelers.",
-      category: "Business",
-      distance: "1.5 km",
-      active: true
-    }
-  ]);
+  const [attractions, setAttractions] = useState<Attraction[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const [selectedAttraction, setSelectedAttraction] = useState<Attraction | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editForm, setEditForm] = useState<Partial<Attraction>>({});
+
+  // Initial Data Fetch
+  useEffect(() => {
+    fetchAttractions();
+  }, []);
+
+  const fetchAttractions = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/admin/attractions");
+      if (!res.ok) throw new Error("Failed to fetch attractions");
+      const data = await res.json();
+      setAttractions(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleEdit = (attraction: Attraction) => {
     setSelectedAttraction(attraction);
@@ -66,18 +54,29 @@ export default function AdminAttractionsPage() {
     setIsEditing(true);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!selectedAttraction) return;
 
-    setAttractions(prev => prev.map(attr =>
-      attr.id === selectedAttraction.id
-        ? { ...attr, ...editForm }
-        : attr
-    ));
+    try {
+      const res = await fetch("/api/admin/attractions", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: selectedAttraction.id, ...editForm }),
+      });
 
-    setIsEditing(false);
-    setSelectedAttraction(null);
-    setEditForm({});
+      if (!res.ok) throw new Error("Failed to update attraction");
+
+      const updated = await res.json();
+      setAttractions(prev => prev.map(attr =>
+        attr.id === updated.id ? updated : attr
+      ));
+
+      setIsEditing(false);
+      setSelectedAttraction(null);
+      setEditForm({});
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Failed to save");
+    }
   };
 
   const handleCancel = () => {
@@ -86,18 +85,45 @@ export default function AdminAttractionsPage() {
     setEditForm({});
   };
 
-  const toggleActive = (id: string) => {
-    setAttractions(prev => prev.map(attr =>
-      attr.id === id ? { ...attr, active: !attr.active } : attr
-    ));
+  const toggleActive = async (id: string, currentStatus: boolean) => {
+    try {
+      const res = await fetch("/api/admin/attractions", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, active: !currentStatus }),
+      });
+
+      if (!res.ok) throw new Error("Failed to toggle status");
+
+      const updated = await res.json();
+      setAttractions(prev => prev.map(attr =>
+        attr.id === id ? updated : attr
+      ));
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Failed to toggle");
+    }
   };
+
+  if (loading && attractions.length === 0) {
+    return (
+      <div className="p-6 flex items-center justify-center min-h-[400px]">
+        <div className="text-gray-500 animate-pulse text-lg">Loading attractions...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6">
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900 mb-2">Attractions Management</h1>
-        <p className="text-gray-600">Manage nearby attractions and local points of interest</p>
+        <p className="text-gray-600">Categories and points of interest for your guest landing page</p>
       </div>
+
+      {error && (
+        <div className="mb-6 bg-red-50 border-l-4 border-red-400 p-4 text-red-700">
+          {error}
+        </div>
+      )}
 
       {/* Attractions List */}
       <div className="bg-white rounded-lg shadow-sm border">
@@ -111,53 +137,57 @@ export default function AdminAttractionsPage() {
         </div>
 
         <div className="divide-y divide-gray-200">
-          {attractions.map((attraction) => (
-            <div key={attraction.id} className="p-6">
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center space-x-3 mb-2">
-                    <h3 className="text-lg font-medium text-gray-900">{attraction.name}</h3>
-                    <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                      attraction.active
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-gray-100 text-gray-800'
-                    }`}>
-                      {attraction.active ? 'Active' : 'Inactive'}
-                    </span>
-                    <span className="inline-flex px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
-                      {attraction.category}
-                    </span>
+          {attractions.length === 0 ? (
+            <div className="p-12 text-center text-gray-400">
+              No attractions found. Use the API or Database to add initial data.
+            </div>
+          ) : (
+            attractions.map((attraction) => (
+              <div key={attraction.id} className="p-6">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-3 mb-2">
+                      <h3 className="text-lg font-medium text-gray-900">{attraction.name}</h3>
+                      <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${attraction.active
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-gray-100 text-gray-800'
+                        }`}>
+                        {attraction.active ? 'Active' : 'Inactive'}
+                      </span>
+                      <span className="inline-flex px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
+                        {attraction.category}
+                      </span>
+                    </div>
+
+                    <p className="text-gray-600 mb-3 max-w-2xl">{attraction.description}</p>
+
+                    <div className="flex items-center space-x-4 text-sm text-gray-500">
+                      <span>📍 {attraction.distance} away</span>
+                    </div>
                   </div>
 
-                  <p className="text-gray-600 mb-3 max-w-2xl">{attraction.description}</p>
+                  <div className="flex items-center space-x-2 ml-4">
+                    <button
+                      onClick={() => toggleActive(attraction.id, attraction.active)}
+                      className={`px-3 py-1 text-xs font-medium rounded ${attraction.active
+                          ? 'bg-red-100 text-red-700 hover:bg-red-200'
+                          : 'bg-green-100 text-green-700 hover:bg-green-200'
+                        }`}
+                    >
+                      {attraction.active ? 'Deactivate' : 'Activate'}
+                    </button>
 
-                  <div className="flex items-center space-x-4 text-sm text-gray-500">
-                    <span>📍 {attraction.distance} away</span>
+                    <button
+                      onClick={() => handleEdit(attraction)}
+                      className="px-3 py-1 text-xs font-medium rounded bg-blue-100 text-blue-700 hover:bg-blue-200"
+                    >
+                      Edit
+                    </button>
                   </div>
-                </div>
-
-                <div className="flex items-center space-x-2 ml-4">
-                  <button
-                    onClick={() => toggleActive(attraction.id)}
-                    className={`px-3 py-1 text-xs font-medium rounded ${
-                      attraction.active
-                        ? 'bg-red-100 text-red-700 hover:bg-red-200'
-                        : 'bg-green-100 text-green-700 hover:bg-green-200'
-                    }`}
-                  >
-                    {attraction.active ? 'Deactivate' : 'Activate'}
-                  </button>
-
-                  <button
-                    onClick={() => handleEdit(attraction)}
-                    className="px-3 py-1 text-xs font-medium rounded bg-blue-100 text-blue-700 hover:bg-blue-200"
-                  >
-                    Edit
-                  </button>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
 
@@ -260,12 +290,12 @@ export default function AdminAttractionsPage() {
         </div>
       )}
 
-      {/* Implementation Note */}
-      <div className="mt-8 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-        <h3 className="text-sm font-medium text-yellow-800 mb-2">Implementation Note</h3>
-        <p className="text-sm text-yellow-700">
-          This attractions management interface allows you to edit existing attractions. In a production environment,
-          this would be connected to a database/CMS for full CRUD operations including adding new attractions and image uploads.
+      {/* Persistence Info */}
+      <div className="mt-8 bg-amber-50 border border-amber-200 rounded-lg p-4">
+        <h3 className="text-sm font-medium text-amber-800 mb-1">Persistence Active</h3>
+        <p className="text-sm text-amber-700">
+          All changes made here are now persisted to the central database (`data/db.json`).
+          Manual updates to the database file will be reflected after a page refresh.
         </p>
       </div>
     </div>

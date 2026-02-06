@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getBookings, updateBookingStatus, updateBookingNotes, updateBookingPayment } from "@/lib/booking-store";
 import { updatePaymentStatus } from "@/lib/payments/payment-store";
 import { logError } from "@/lib/logger";
+import { isPaymentsEnabled } from "@/lib/featureFlags";
 
 // CRM Workflow API - Admin Protected
 // Handles operational booking management (status changes, notes, etc.)
@@ -40,6 +41,13 @@ export async function PATCH(request: NextRequest) {
 
     // V5.2.2 Handle combined status and payment updates (manual payment confirmation)
     if (body.status && body.paymentStatus) {
+      if (!isPaymentsEnabled()) {
+        return NextResponse.json(
+          { error: "Payments feature is disabled" },
+          { status: 403 }
+        );
+      }
+
       try {
         // Update booking status to CONFIRMED
         const bookingUpdated = await updateBookingStatus(body.id, body.status);
@@ -98,6 +106,13 @@ export async function PATCH(request: NextRequest) {
 
     // V5.2.1 Handle payment updates (safe reference storage)
     if (body.paymentId && body.paymentRecord) {
+      if (!isPaymentsEnabled()) {
+        return NextResponse.json(
+          { error: "Payments feature is disabled" },
+          { status: 403 }
+        );
+      }
+
       const updated = await updateBookingPayment(body.id, body.paymentId, body.paymentRecord);
       if (!updated) {
         return NextResponse.json(

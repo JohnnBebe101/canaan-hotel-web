@@ -160,12 +160,12 @@ export const CONTENT_CONFIG = {
 // Utility functions for content management
 export const getContentById = (section: keyof typeof CONTENT_CONFIG, id: string) => {
   const sectionContent = CONTENT_CONFIG[section];
-  
+
   if (Array.isArray(sectionContent)) {
     // Type guard to check if items have id property
     return sectionContent.find(item => 'id' in item && item.id === id);
   }
-  
+
   return sectionContent;
 };
 
@@ -175,8 +175,6 @@ export const getAllContentBySection = (section: keyof typeof CONTENT_CONFIG) => 
 
 export const updateContent = (section: keyof typeof CONTENT_CONFIG, id: string, updates: Partial<any>) => {
   // In a real implementation, this would update content in a database or CMS
-  // For now, we'll just log the intended update
-  console.log(`Updating ${section}.${id}:`, updates);
   return { success: true, message: "Content update queued for review" };
 };
 

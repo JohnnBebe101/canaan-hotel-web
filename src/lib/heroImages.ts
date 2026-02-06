@@ -1,6 +1,6 @@
 export const HERO_SLIDER_IMAGES = [
-  { src: "/assets/images/hotel-exterior.jpg", alt: "Canaan International Hotel exterior view" },
-  { src: "/assets/images/hotel-entrance.jpg", alt: "Luxurious hotel lobby with comfortable seating" },
-  { src: "/assets/images/hotel-comfort.jpg", alt: "Elegant hotel room with a view" },
-  { src: "/assets/images/hotel-family.jpg", alt: "Modern hotel swimming pool area" },
+  { src: "/images/Compound.jpg", alt: "Canaan International Hotel compound and facilities" },
+  { src: "/images/Gate.jpg", alt: "Welcoming entrance to Canaan International Hotel" },
+  { src: "/images/Team.jpg", alt: "Professional hospitality team ready to serve you" },
+  { src: "/images/Adigrat.jpg", alt: "Historic city of Adigrat, Tigray region" },
 ];

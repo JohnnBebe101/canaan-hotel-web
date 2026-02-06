@@ -31,11 +31,8 @@ export default function HomePage() {
   return (
     <>
 
-      {/* Hero Section with integrated header */}
+      {/* Hero Section with integrated booking card */}
       <Hero />
-
-      {/* Booking Card Section */}
-      <BookingCard />
 
       <main id="main-content" className="flex flex-1 flex-col items-center">
         <div className="w-full max-w-7xl px-4 sm:px-6 lg:px-8">

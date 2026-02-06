@@ -48,35 +48,40 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
 
   return (
     <div
-      className="absolute inset-0 w-full h-full"
+      className="absolute inset-0 w-full h-full overflow-hidden"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {images.map((image, index) => (
-        <Image
+        <div
           key={image.src}
-          src={image.src}
-          alt={image.alt}
-          layout="fill"
-          objectFit="cover"
-          priority={index === 0} // Only apply priority to the first image
-          quality={90}
-          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-            index === currentImageIndex ? "opacity-100" : "opacity-0"
-          }`}
-        />
+          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentImageIndex ? "opacity-100" : "opacity-0"
+            }`}
+        >
+          <Image
+            src={image.src}
+            alt={image.alt}
+            fill
+            priority={index === 0} // Only apply priority to the first image
+            quality={90}
+            className="object-cover"
+            sizes="100vw"
+          />
+        </div>
       ))}
 
       {/* Slider dots */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-20">
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex space-x-3 z-30">
         {images.map((_, index) => (
           <button
             key={index}
-            className={`h-2 w-2 rounded-full transition-all duration-300 ${
-              index === currentImageIndex ? "bg-white scale-125" : "bg-gray-400 hover:bg-gray-300"
-            }`}
+            className={`h-3 w-3 rounded-full transition-all duration-300 hover:scale-110 ${index === currentImageIndex
+                ? "bg-white scale-125 shadow-lg"
+                : "bg-white/50 hover:bg-white/75"
+              }`}
             onClick={() => handleDotClick(index)}
             aria-label={`Go to slide ${index + 1}`}
+            aria-current={index === currentImageIndex}
           />
         ))}
       </div>

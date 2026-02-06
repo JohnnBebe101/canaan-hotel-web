@@ -1,5 +1,4 @@
 import type { NextConfig } from "next";
-import withBundleAnalyzer from "@next/bundle-analyzer";
 
 const baseConfig: NextConfig = {
   // Image optimization configuration
@@ -45,8 +44,19 @@ const baseConfig: NextConfig = {
 
 };
 
-const withAnalyzer = withBundleAnalyzer({
-  enabled: process.env.ANALYZE === "true",
-});
+const withAnalyzer = (config: any) => config;
 
-export default withAnalyzer(baseConfig);
+export default (async () => {
+  if (process.env.ANALYZE === "true") {
+    try {
+      // @ts-ignore
+      const withBundleAnalyzer = (await import("@next/bundle-analyzer")).default;
+      return withBundleAnalyzer({
+        enabled: true,
+      })(baseConfig);
+    } catch (e) {
+      console.warn("Bundle analyzer not found, proceeding without it.");
+    }
+  }
+  return baseConfig;
+})();

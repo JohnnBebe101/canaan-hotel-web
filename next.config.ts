@@ -44,19 +44,15 @@ const baseConfig: NextConfig = {
 
 };
 
-const withAnalyzer = (config: any) => config;
-
-export default (async () => {
+const withAnalyzer = (config: NextConfig) => {
   if (process.env.ANALYZE === "true") {
     try {
-      // @ts-ignore
-      const withBundleAnalyzer = (await import("@next/bundle-analyzer")).default;
-      return withBundleAnalyzer({
-        enabled: true,
-      })(baseConfig);
+      return require("@next/bundle-analyzer")({ enabled: true })(config);
     } catch (e) {
       console.warn("Bundle analyzer not found, proceeding without it.");
     }
   }
-  return baseConfig;
-})();
+  return config;
+};
+
+export default withAnalyzer(baseConfig);

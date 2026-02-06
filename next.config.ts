@@ -28,7 +28,7 @@ const baseConfig: NextConfig = {
   },
   // Enable experimental features
   experimental: {
-    optimizeCss: true,
+    // optimizeCss: true, // Requires critters dependency which is missing
   },
   // Performance optimizations
   poweredByHeader: false,

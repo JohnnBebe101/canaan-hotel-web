@@ -26,21 +26,21 @@ import {
 export class RoomMemoryRepository implements RoomRepository {
   async getAll(): Promise<RoomRecord[]> {
     // Delegate to existing in-memory function
-    const rooms = getRooms();
+    const rooms = await getRooms();
     // Return as RoomRecord[] (compatible with existing Room[])
     return rooms as RoomRecord[];
   }
 
   async getById(id: string): Promise<RoomRecord | null> {
     // Delegate to existing in-memory function
-    const room = getRoomById(id);
+    const room = await getRoomById(id);
     // Return null if not found (matches existing behavior)
     return room || null;
   }
 
   async getActive(): Promise<RoomRecord[]> {
     // Delegate to existing getRooms function and filter for active rooms
-    const rooms = getRooms();
+    const rooms = await getRooms();
     const activeRooms = rooms.filter(room => room.isActive);
     // Return as RoomRecord[] (compatible with existing Room[])
     return activeRooms as RoomRecord[];
@@ -57,7 +57,7 @@ export class RoomMemoryRepository implements RoomRepository {
     };
 
     // Delegate to existing createRoom function
-    const created = createRoom(roomData);
+    const created = await createRoom(roomData);
 
     // Return as RoomRecord (compatible with existing Room)
     return created as RoomRecord;
@@ -74,7 +74,7 @@ export class RoomMemoryRepository implements RoomRepository {
     };
 
     // Delegate to existing updateRoom function
-    const updated = updateRoom(id, updateData);
+    const updated = await updateRoom(id, updateData);
 
     // Return as RoomRecord or null (matches existing behavior)
     return updated as RoomRecord | null;

@@ -3,8 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { FEATURED_ROOMS } from "@/lib/featuredRooms";
 
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-  const room = FEATURED_ROOMS.find(r => r.slug === params.id);
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  const room = FEATURED_ROOMS.find(r => r.slug === id);
 
   if (!room) {
     return {
@@ -23,7 +24,9 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
   };
 }
 
-export default function RoomDetailPage() {
+export default async function RoomDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const room = FEATURED_ROOMS.find(r => r.slug === id);
   return (
     <main className="flex-1 px-4 sm:px-10 lg:px-20 py-10 sm:py-16">
       <div className="mx-auto max-w-7xl">

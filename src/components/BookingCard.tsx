@@ -362,6 +362,6 @@ export default function BookingCard() {
         </form>
       </div>
     </div>
-    </section >
+
   );
 }

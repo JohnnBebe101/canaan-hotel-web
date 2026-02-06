@@ -28,14 +28,14 @@ const baseConfig: NextConfig = {
   },
   // Enable experimental features
   experimental: {
-    optimizeCss: true,
+    // optimizeCss: true, // Requires critters dependency which is missing
   },
   // Performance optimizations
   poweredByHeader: false,
   compress: true,
   // Ensure Next.js uses this workspace as the tracing root, avoiding
   // confusion with other lockfiles higher up the directory tree.
-  outputFileTracingRoot: process.cwd(),
+  // outputFileTracingRoot: process.cwd(),
   // Development origins (if configured)
   ...(process.env.NEXT_ALLOWED_DEV_ORIGINS && {
     allowedDevOrigins: process.env.NEXT_ALLOWED_DEV_ORIGINS.split(",").map(

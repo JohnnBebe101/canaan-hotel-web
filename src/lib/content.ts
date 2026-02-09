@@ -40,7 +40,7 @@ export const CONTENT_CONFIG = {
   hero: {
     title: "Your Gateway to Tigray's History and Comfort",
     subtitle: "Experience unparalleled hospitality in the heart of Adigrat.",
-    image: "/assets/images/hotel-exterior.svg",
+    image: "/images/Compound.svg",
     altText: "Canaan International Hotel exterior view showing the beautiful architecture and welcoming entrance"
   } as HeroContent,
 
@@ -51,7 +51,7 @@ export const CONTENT_CONFIG = {
       title: "Economy Single Room",
       description: "Perfect for solo travelers with a stunning city view.",
       price: "From $50 / night",
-      image: "/assets/images/hotel-entrance.svg",
+      image: "/images/Gate.svg",
       altText: "Economy Single Room with city view"
     },
     {
@@ -59,7 +59,7 @@ export const CONTENT_CONFIG = {
       title: "Comfort Double Room",
       description: "Spacious comfort for couples, featuring a private balcony.",
       price: "From $75 / night",
-      image: "/assets/images/hotel-team.svg",
+      image: "/images/Room-Bed.svg",
       altText: "Comfort Double Room with private balcony"
     },
     {
@@ -67,7 +67,7 @@ export const CONTENT_CONFIG = {
       title: "Family Suite",
       description: "Ideal for families, with multiple beds and extra space.",
       price: "From $110 / night",
-      image: "/assets/images/hotel-team.svg",
+      image: "/images/Twin-Room.svg",
       altText: "Family Suite with multiple beds and extra space"
     }
   ] as RoomContent[],
@@ -100,7 +100,7 @@ export const CONTENT_CONFIG = {
       id: "debre-damo",
       title: "Debre Damo Monastery",
       description: "An ancient monastery perched atop a flat-topped mountain.",
-      image: "/images/room-placeholder.jpg",
+      image: "/images/Adigrat.svg",
       altText: "The ancient cliff-face monastery of Debre Damo",
       link: "#debre-damo"
     },
@@ -108,7 +108,7 @@ export const CONTENT_CONFIG = {
       id: "gheralta",
       title: "Gheralta Mountains",
       description: "Home to stunning rock-hewn churches and panoramic views.",
-      image: "/images/room-placeholder.jpg",
+      image: "/images/Adigrat.svg",
       altText: "Dramatic sandstone cliffs of the Gheralta Mountains at sunset",
       link: "#gheralta"
     },
@@ -116,7 +116,7 @@ export const CONTENT_CONFIG = {
       id: "al-nejashi",
       title: "Al-Nejashi Mosque",
       description: "One of the earliest mosques in Africa, a site of great historical importance.",
-      image: "/images/room-placeholder.jpg",
+      image: "/images/Gate.svg",
       altText: "The historic Al-Nejashi Mosque with its white minarets",
       link: "#al-nejashi"
     }

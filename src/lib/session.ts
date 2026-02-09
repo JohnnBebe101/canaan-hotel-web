@@ -1,10 +1,33 @@
-import { createHmac, timingSafeEqual } from "crypto";
+/**
+ * Session management using Web Crypto API (Edge Runtime compatible)
+ * Provides secure token signing and verification
+ */
 
-const SESSION_SECRET = process.env.SESSION_SECRET || "change-me-in-production";
+const SESSION_SECRET = process.env.SESSION_SECRET;
+
+if (!SESSION_SECRET) {
+  throw new Error("Missing required environment variable: SESSION_SECRET");
+}
 const SESSION_MAX_AGE = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
 /**
- * Signs a session token
+ * Get crypto subtle API (works in both Node.js and Edge Runtime)
+ */
+async function getKey(): Promise<CryptoKey> {
+  const encoder = new TextEncoder();
+  const keyData = encoder.encode(SESSION_SECRET);
+
+  return crypto.subtle.importKey(
+    "raw",
+    keyData,
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign", "verify"]
+  );
+}
+
+/**
+ * Signs a session token using Web Crypto API
  * Creates a signed token with timestamp and signature
  * @returns A signed session token
  */
@@ -12,16 +35,20 @@ export async function signSession(): Promise<string> {
   const timestamp = Date.now();
   const expiresAt = timestamp + SESSION_MAX_AGE;
   const payload = `${timestamp}.${expiresAt}`;
-  
-  const signature = createHmac("sha256", SESSION_SECRET)
-    .update(payload)
-    .digest("hex");
-  
+
+  const encoder = new TextEncoder();
+  const data = encoder.encode(payload);
+  const key = await getKey();
+
+  const signatureBuffer = await crypto.subtle.sign("HMAC", key, data);
+  const signatureArray = Array.from(new Uint8Array(signatureBuffer));
+  const signature = signatureArray.map(b => b.toString(16).padStart(2, "0")).join("");
+
   return `${payload}.${signature}`;
 }
 
 /**
- * Verifies a session token
+ * Verifies a session token using Web Crypto API
  * Validates the signature and checks expiration
  * @param token - The session token to verify
  * @returns true if token is valid, false otherwise
@@ -36,20 +63,24 @@ export async function verifySession(token: string): Promise<boolean> {
     const [timestamp, expiresAt, signature] = parts;
     const payload = `${timestamp}.${expiresAt}`;
 
-    // Verify signature
-    const expectedSignature = createHmac("sha256", SESSION_SECRET)
-      .update(payload)
-      .digest("hex");
+    // Verify signature using Web Crypto API
+    const encoder = new TextEncoder();
+    const data = encoder.encode(payload);
+    const key = await getKey();
 
-    // Use timing-safe comparison to prevent timing attacks
-    const signatureBuffer = Buffer.from(signature, "hex");
-    const expectedBuffer = Buffer.from(expectedSignature, "hex");
-    
-    if (signatureBuffer.length !== expectedBuffer.length) {
-      return false;
-    }
+    // Convert hex signature to ArrayBuffer
+    const signatureBytes = new Uint8Array(
+      signature.match(/.{1,2}/g)!.map(byte => parseInt(byte, 16))
+    );
 
-    if (!timingSafeEqual(signatureBuffer, expectedBuffer)) {
+    const isValid = await crypto.subtle.verify(
+      "HMAC",
+      key,
+      signatureBytes,
+      data
+    );
+
+    if (!isValid) {
       return false;
     }
 

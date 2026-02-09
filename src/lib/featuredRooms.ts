@@ -12,7 +12,7 @@ export interface FeaturedRoom {
 export const FEATURED_ROOMS: FeaturedRoom[] = [
   {
     slug: "economy-single",
-    imageSrc: "/assets/images/hotel-entrance.jpg",
+    imageSrc: "/images/Gate.svg",
     imageAlt: "Economy Single Room with city view",
     name: "Economy Single Room",
     description: "Perfect for solo travelers with a stunning city view.",
@@ -22,7 +22,7 @@ export const FEATURED_ROOMS: FeaturedRoom[] = [
   },
   {
     slug: "comfort-double",
-    imageSrc: "/assets/images/hotel-comfort.jpg",
+    imageSrc: "/images/Room-Larger.svg",
     imageAlt: "Comfort Double Room with private balcony",
     name: "Comfort Double Room",
     description: "Spacious comfort for couples, featuring a private balcony.",
@@ -32,7 +32,7 @@ export const FEATURED_ROOMS: FeaturedRoom[] = [
   },
   {
     slug: "family-suite",
-    imageSrc: "/assets/images/hotel-family.jpg",
+    imageSrc: "/images/Twin-Room.svg",
     imageAlt: "Family Suite with multiple beds and extra space",
     name: "Family Suite",
     description: "Ideal for families, with multiple beds and extra space.",

@@ -9,8 +9,15 @@ import { signSession, verifySession } from "./session";
 
 const SESSION_COOKIE_NAME = "admin_session";
 // Trim and use defaults if empty or undefined
-const ADMIN_USERNAME = (process.env.ADMIN_USERNAME?.trim() || "admin").trim();
-const ADMIN_PASSWORD = (process.env.ADMIN_PASSWORD?.trim() || "admin").trim();
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME?.trim();
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD?.trim();
+
+if (ADMIN_USERNAME === undefined) {
+  throw new Error("Missing required environment variable: ADMIN_USERNAME");
+}
+if (ADMIN_PASSWORD === undefined) {
+  throw new Error("Missing required environment variable: ADMIN_PASSWORD");
+}
 
 // Log loaded credentials at module load (development only)
 if (process.env.NODE_ENV === "development") {
@@ -43,10 +50,10 @@ export function validateCredentials(
     console.log("[Auth]   Expected username:", JSON.stringify(ADMIN_USERNAME));
     console.log("[Auth]   Username match:", trimmedUsername === ADMIN_USERNAME);
     console.log("[Auth]   Received password length:", trimmedPassword.length);
-    console.log("[Auth]   Expected password length:", ADMIN_PASSWORD.length);
+    console.log("[Auth]   Expected password length:", (ADMIN_PASSWORD as string).length);
     console.log("[Auth]   Password match:", trimmedPassword === ADMIN_PASSWORD);
     console.log("[Auth]   Received username char codes:", [...trimmedUsername].map(c => c.charCodeAt(0)));
-    console.log("[Auth]   Expected username char codes:", [...ADMIN_USERNAME].map(c => c.charCodeAt(0)));
+    console.log("[Auth]   Expected username char codes:", [...(ADMIN_USERNAME as string)].map(c => c.charCodeAt(0)));
   }
 
   return trimmedUsername === ADMIN_USERNAME && trimmedPassword === ADMIN_PASSWORD;

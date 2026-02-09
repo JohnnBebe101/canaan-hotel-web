@@ -9,20 +9,20 @@ import Testimonials from "../../components/Testimonials";
 import { FEATURED_ROOMS } from "@/lib/featuredRooms";
 
 export const metadata: Metadata = {
-  title: "Cannan International Hotel - Your Gateway to Tigray's History and Comfort",
-  description: "Experience unparalleled hospitality at Cannan International Hotel in Adigrat, Tigray. Book direct for best rates, exclusive offers, and flexible cancellation.",
-  keywords: "hotel Adigrat, Tigray hotel, Cannan International Hotel, Ethiopia hotel booking",
-  authors: [{ name: "Cannan International Hotel" }],
+  title: "Canaan International Hotel - Your Gateway to Tigray's History and Comfort",
+  description: "Experience unparalleled hospitality at Canaan International Hotel in Adigrat, Tigray. Book direct for best rates, exclusive offers, and flexible cancellation.",
+  keywords: "hotel Adigrat, Tigray hotel, Canaan International Hotel, Ethiopia hotel booking",
+  authors: [{ name: "Canaan International Hotel" }],
   openGraph: {
-    title: "Cannan International Hotel - Your Gateway to Tigray's History and Comfort",
+    title: "Canaan International Hotel - Your Gateway to Tigray's History and Comfort",
     description: "Experience unparalleled hospitality in the heart of Adigrat. Book direct for best rates and exclusive offers.",
-    images: ["/images/room-placeholder.jpg"],
+    images: ["/images/Compound.svg"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Cannan International Hotel - Your Gateway to Tigray's History and Comfort",
+    title: "Canaan International Hotel - Your Gateway to Tigray's History and Comfort",
     description: "Experience unparalleled hospitality in the heart of Adigrat.",
-    images: ["/images/room-placeholder.jpg"],
+    images: ["/images/Compound.svg"],
   },
 };
 
@@ -108,10 +108,10 @@ export default function HomePage() {
               <p className="mx-auto mt-4 max-w-2xl text-text-secondary dark:text-text-secondary/90">Discover the rich history and breathtaking landscapes surrounding our hotel.</p>
             </div>
             <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
-              <a className="group block overflow-hidden rounded-xl" href="#debre-damo" aria-label="Learn more about Debre Damo Monastery">
-                <div className="relative">
-                  <OptimizedImage
-                    src="/images/room-placeholder.jpg"
+                <a className="group block overflow-hidden rounded-xl" href="#debre-damo" aria-label="Learn more about Debre Damo Monastery">
+                  <div className="relative">
+                    <OptimizedImage
+                      src="/images/Adigrat.svg"
                     alt="The ancient cliff-face monastery of Debre Damo"
                     width={600}
                     height={400}
@@ -126,10 +126,10 @@ export default function HomePage() {
                   </div>
                 </div>
               </a>
-              <a className="group block overflow-hidden rounded-xl" href="#gheralta" aria-label="Learn more about Gheralta Mountains">
-                <div className="relative">
-                  <OptimizedImage
-                    src="/images/room-placeholder.jpg"
+                <a className="group block overflow-hidden rounded-xl" href="#gheralta" aria-label="Learn more about Gheralta Mountains">
+                  <div className="relative">
+                    <OptimizedImage
+                      src="/images/Adigrat.svg"
                     alt="Dramatic sandstone cliffs of the Gheralta Mountains at sunset"
                     width={600}
                     height={400}
@@ -144,10 +144,10 @@ export default function HomePage() {
                   </div>
                 </div>
               </a>
-              <a className="group block overflow-hidden rounded-xl" href="#al-nejashi" aria-label="Learn more about Al-Nejashi Mosque">
-                <div className="relative">
-                  <OptimizedImage
-                    src="/images/room-placeholder.jpg"
+                <a className="group block overflow-hidden rounded-xl" href="#al-nejashi" aria-label="Learn more about Al-Nejashi Mosque">
+                  <div className="relative">
+                    <OptimizedImage
+                      src="/images/Gate.svg"
                     alt="The historic Al-Nejashi Mosque with its white minarets"
                     width={600}
                     height={400}

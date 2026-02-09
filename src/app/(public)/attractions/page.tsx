@@ -5,7 +5,7 @@ import Card from "../../../components/Card";
 
 export const metadata: Metadata = {
   title: "Local Attractions | Explore Adigrat & Tigray",
-  description: "Discover the rich history and breathtaking landscapes surrounding Cannan International Hotel, including Debre Damo Monastery and Gheralta Mountains.",
+  description: "Discover the rich history and breathtaking landscapes surrounding Canaan International Hotel, including Debre Damo Monastery and Gheralta Mountains.",
   openGraph: {
     title: "Explore Tigray's Heritage - Attractions Near Canaan Hotel",
     description: "Plan your visit to ancient monasteries, stunning mountains, and historic sites in the Tigray region.",
@@ -96,7 +96,7 @@ export default function AttractionsPage() {
           aria-label="Local attractions hero section"
         >
           <HeroImage
-            src="/assets/images/hotel-exterior.jpg"
+            src="/images/Compound.svg"
             alt="Beautiful landscape of Tigray region"
             overlayOpacity={0.5}
             className="absolute inset-0 -z-10"

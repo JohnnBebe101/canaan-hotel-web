@@ -21,7 +21,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // Protect all admin routes
-  if (pathname.startsWith("/admin")) {
+  if (pathname.startsWith("/admin") || pathname.startsWith("/api/admin")) {
     const authRedirect = await requireAuth(request);
     if (authRedirect) {
       return authRedirect;

@@ -99,9 +99,9 @@ export default function AdminRoomsPage() {
           <p className="text-red-700 text-sm mt-1">{error}</p>
           <button
             onClick={loadRooms}
-            className="mt-3 px-4 py-2 bg-red-600 text-white text-sm rounded hover:bg-red-700"
+            className="mt-3 px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:opacity-90 transition-opacity"
           >
-            Retry
+            Retry Loading
           </button>
         </div>
       </div>
@@ -159,7 +159,7 @@ export default function AdminRoomsPage() {
                   </button>
                   <Link
                     href={`/admin/rooms/${room.id}`}
-                    className="px-3 py-2 text-sm font-medium bg-blue-100 text-blue-800 rounded-md hover:bg-blue-200 transition-colors"
+                    className="px-3 py-2 text-sm font-medium rounded-md bg-primary text-white hover:opacity-90 transition-opacity"
                   >
                     Edit
                   </Link>

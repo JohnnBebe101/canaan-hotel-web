@@ -9,12 +9,12 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
   if (!room) {
     return {
-      title: "Room Not Found | Cannan International Hotel",
+      title: "Room Not Found | Canaan International Hotel",
     };
   }
 
   return {
-    title: `${room.name} | Cannan International Hotel`,
+    title: `${room.name} | Canaan International Hotel`,
     description: room.description,
     openGraph: {
       title: `${room.name} - Luxury Accommodation in Adigrat`,
@@ -36,8 +36,8 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
               <div className="relative w-full overflow-hidden rounded-xl aspect-[4/3]">
                 <Image
                   className="w-full h-full object-cover"
-                  alt="A bright and airy hotel room with a large comfortable bed and modern furnishings."
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3C6TnOqoEKDQOlUk3nyUJvFf4CA6xKtEp7E6w2iXFjqYePW0V-DOFw2ABrPWCfaQALfnOo6hI9IrrKbEPb0w9mBg4SiafKtnCRfpzffJl4PxC9wqjSiWXjyerMtizbwhUlY6Y4TG90ZMb2GRmNb7NQDIxmUQxZyz2jpNEa19GzzjuEYe0kyXsQsdGHaU-42JpGDgOibSamVzVpHIm6UXDrekNGdjIW7lAfhvpnMwD3YOcPIU_i2yE4ICl4FNcFyBoHntYiQHngcXq"
+                  alt={`${room?.name || 'Hotel room'} - ${room?.description || 'Comfortable accommodation'}`}
+                  src="/images/Room-Larger.svg"
                   width={800}
                   height={600}
                   priority
@@ -51,8 +51,8 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
                 <div className="overflow-hidden rounded-lg aspect-square">
                   <Image
                     className="w-full h-full object-cover cursor-pointer border-2 border-primary"
-                    alt="Close-up of the neatly made bed with plush pillows."
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaBYjLISttxDOlpoYegjT-Wg5LLsph-oKb9oPOKKRKt5TksiQ48GsOhM8IVtUZtqmFq-NwU5UhtY5uRPWzgGAKBeCL-fS7jRidCAiDMBXd81oddT9P4MIcEd2xBNvxC_nRUXYe2SVxoPgHVyvwq9MFyj18sPwihffg6BQmO9PDX1oPeXT_ip7evD4oT6cQD3UUI99uRGejJ_wjIeDEqDyurcEU7a8-wDqMPGm4BVXnBj8tag6izFmUCbfQzXP1l1dwtQAjrlnLyUsO"
+                    alt="Bedroom view"
+                    src="/images/Bed-Best-View.svg"
                     width={200}
                     height={200}
                   />
@@ -60,8 +60,8 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
                 <div className="overflow-hidden rounded-lg aspect-square">
                   <Image
                     className="w-full h-full object-cover cursor-pointer opacity-70 hover:opacity-100 transition-opacity"
-                    alt="The desk and chair area in the hotel room."
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCX2zkhq02FZaNXzQN5j739GsryyUKYWexYTA32khsWqFVKljOcDF4DEGC75C7ugVWTvZxXvl9xXBr1owk9um-a8DUptCcTLswaTWEgEheYuIIcXl1y5ib8T8zDxUE_LCd9mSrdrazdX46xRQIhO9bkrWMOeOMYBX1j9eItDLfk-1jNS_po9rHfAwZgaO1jrvJA0Z_tsWqfQNO6n6_WFRNN910TmMQ6o1WVnx4tCXOdtlIxSo_hgfYiiA2vhVyw3tV5O7H_WrBIXg17"
+                    alt="Room amenities"
+                    src="/images/Rooms-Corridor.svg"
                     width={200}
                     height={200}
                   />
@@ -69,8 +69,8 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
                 <div className="overflow-hidden rounded-lg aspect-square">
                   <Image
                     className="w-full h-full object-cover cursor-pointer opacity-70 hover:opacity-100 transition-opacity"
-                    alt="A view of the bathroom with a modern shower."
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGbNw3NeQDZpiFEO5i3DE-_N2_BCthFBf_zbFjv3Upcua2e4DH_vICpHT7RYf69dwURtIq2XXzIekju3GhwXyttb9GTqkta6rGqVsQOm36ZIXERIgM3gq5tpPyUfHMb1XkeGzklYXuOZ7tlg3RJtjX2bubEEfxWxGEbaL9Zt7SgsRhGnQr74WUy6gGizPvJ8e9AA3Q8im2kc__ovIyXNmMWM_0NVubl2gUk05DVNF58oQyDJxuQYoA427IwPvJNltkLINJ_5oDKlYG"
+                    alt="Bathroom facilities"
+                    src="/images/Bath-Portrait.svg"
                     width={200}
                     height={200}
                   />
@@ -79,7 +79,7 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
                   <Image
                     className="w-full h-full object-cover cursor-pointer opacity-70 hover:opacity-100 transition-opacity"
                     alt="The view from the hotel room window."
-                    src="/images/room-placeholder.jpg"
+                    src="/images/Room-Bed.svg"
                     width={200}
                     height={200}
                   />
@@ -148,10 +148,11 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
                     <select
                       className="w-full rounded-lg border border-border-color dark:border-text-secondary/50 dark:bg-background-light/10 dark:text-background-light focus:ring-primary focus:border-primary"
                       id="adults"
+                      defaultValue="2"
                     >
-                      <option>1</option>
-                      <option selected>2</option>
-                      <option>3</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
                     </select>
                   </div>
 
@@ -162,10 +163,11 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
                     <select
                       className="w-full rounded-lg border border-border-color dark:border-text-secondary/50 dark:bg-background-light/10 dark:text-background-light focus:ring-primary focus:border-primary"
                       id="children"
+                      defaultValue="0"
                     >
-                      <option selected>0</option>
-                      <option>1</option>
-                      <option>2</option>
+                      <option value="0">0</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
                     </select>
                   </div>
                 </div>
@@ -198,10 +200,10 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
         <div className="lg:col-span-3 mt-12 lg:mt-0">
           <div className="flex flex-col gap-6">
             <div>
-              <div className="flex justify-between items-start mb-4">
-                <h1 className="text-4xl font-black leading-tight tracking-tighter text-primary dark:text-white">
-                  Comfort Double
-                </h1>
+                <div className="flex justify-between items-start mb-4">
+                  <h1 className="text-4xl font-black leading-tight tracking-tighter text-primary dark:text-white">
+                    {room?.name || "Comfort Double"}
+                  </h1>
                 <div className="flex gap-2">
                   <span className="inline-block px-2 py-1 rounded-full bg-green-100 text-green-800 text-xs font-medium" data-demo="true">
                     Available
@@ -212,7 +214,7 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
                 </div>
               </div>
               <p className="mt-4 text-base font-normal leading-relaxed">
-                Experience unparalleled comfort in our spacious Comfort Double room. Perfect for couples or business travelers, this room features modern amenities, a plush double bed, and a serene ambiance to ensure a restful stay. Enjoy the blend of contemporary design and cozy furnishings, creating your perfect home away from home in Adigrat.
+                {room?.description || "Experience unparalleled comfort in our spacious room. Perfect for couples or business travelers."}
               </p>
             </div>
 

@@ -6,9 +6,9 @@ export const metadata: Metadata = {
   title: "Our Rooms & Suites | Canaan International Hotel",
   description: "Explore our diverse range of accommodations in Adigrat, from economy singles to deluxe suites. Find the perfect room for your stay in Tigray.",
   openGraph: {
-    title: "Accommodations at Cannan International Hotel - Adigrat",
+    title: "Accommodations at Canaan International Hotel - Adigrat",
     description: "Discover comfortable and elegant rooms designed for a restful stay. Book direct for the best available rates.",
-    images: ["/images/room-placeholder.jpg"],
+    images: ["/images/Compound.svg"],
   },
 };
 

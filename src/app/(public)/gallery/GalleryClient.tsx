@@ -15,63 +15,63 @@ interface GalleryImage {
 const galleryImages: GalleryImage[] = [
     {
         id: "1",
-        src: "/assets/images/hotel-exterior.jpg",
+        src: "/images/Compound.svg",
         alt: "Hotel exterior view showing the main building",
         category: "exterior",
         title: "Hotel Exterior",
     },
     {
         id: "2",
-        src: "/assets/images/hotel-entrance.jpg",
+        src: "/images/Gate.svg",
         alt: "Hotel entrance with welcoming design",
         category: "exterior",
         title: "Main Entrance",
     },
     {
         id: "3",
-        src: "/assets/images/hotel-comfort.jpg",
+        src: "/images/Room-Larger.svg",
         alt: "Comfortable hotel room interior",
         category: "rooms",
         title: "Comfort Room",
     },
     {
         id: "4",
-        src: "/assets/images/hotel-family.jpg",
+        src: "/images/Twin-Room.svg",
         alt: "Spacious family suite",
         category: "rooms",
         title: "Family Suite",
     },
     {
         id: "5",
-        src: "https://lh3.googleusercontent.com/aida-public/AB6AXuCDrh16GHYlnaqEVWs2yuQQVY-cZT5cKmTV1Z5f7LMqcxHYmGPX83yGuWpIhyDz-sI0EAVDMOGKJnCixD6nRZlAy6VQqXlZbFWo4rHnIUKXbr8BQ0kl7vlX5LhG1fnX4EwM64cK3zcbvZi0NM2mRjJcl1Z6baJznFavNIXNy4miBiF4zDBFt5J9gWKqQofEwlQQBIcdyN2Mf7M34bZyDAl73Yq-ZQ3stdftFVktK5CtYpo4DqSZ2_KaBGf8rnHM_IuNuGkThbQzm3I3",
+        src: "/images/Room-Bed.svg",
         alt: "Economy single room with city view",
         category: "rooms",
         title: "Economy Single",
     },
     {
         id: "6",
-        src: "https://lh3.googleusercontent.com/aida-public/AB6AXuCER0_PlwABxBmlMMmAaU_yGix4gPIkXQKzPDFZ6WH5PJpJXSIbeFtD0JGKmaUlVh_-7MoJjGgDhuH29mzUNnuJvgaQreqY556Gp3nkbK-8SjpQsrPoEwWDUYBmYtnos7TgGUmaxFS61olFKtzfpsz8iClF-uuSJhKMddiHAoizkLTXluXZezNyqTerQ7pQfokpIAoQtyNxeNGanobXz8JodC-O06PRkK6NZgkk9JmF_Slaqhac-0YQHBuC-u-2ug-dYr85plGoSWtC",
+        src: "/images/Room-Best-View.svg",
         alt: "Deluxe double room with balcony",
         category: "rooms",
         title: "Deluxe Double",
     },
     {
         id: "7",
-        src: "https://lh3.googleusercontent.com/aida-public/AB6AXuBVBCiJf9wtUSe8GRtQ7FjJUL8fqmByyx3a4qTqQ4n4-Ktm0mo3pH9pUo8uYbzc7pSTsYQWC9WKS_MOLPYFKGQS1Ynu5UXq-QmoswfdXlt3IDrCGl334TDwMKhUc0kiS86rI4ylnTuYIpkv7nb4_LyTXcdTfjKTVMOHo4AG3w2nZv9nz4eOjt_Qsnjym7EGUbYmBexcpulCoMUbKpqoDgjuFuWWQDt8TvJ0TTqeXk65Mb-Odp1FD2F6X7eCjNp_5VISBUWeJhlZ1Qtu",
+        src: "/images/Adigrat.svg",
         alt: "Debre Damo Monastery",
         category: "attractions",
         title: "Debre Damo",
     },
     {
         id: "8",
-        src: "https://lh3.googleusercontent.com/aida-public/AB6AXuCOmzVXKyVHsOx5BZJWwzPKLNMpkFW0fPK_T6kwrzbuR1SHuGeOlUqQ5iQdDZ24F_uXiLTIRpp1jk-wCrZxA3OsyUxnlhaT0cTuR1qivKgKiXaC4BkeXMRihJwrwcinyoTV5O7hc0qsQZlQS5qIv0R_aQ5CizVwvf17Mu-9q5G6vgzVjddqcCtJqDweNpb0wk_UMwGCVCG8hk2T6Xffjriy0Duk_Hfqt6j8hpoJdRGZhC61HW5we8N_gYV6nX9-dPEJok4mvXIKhHwV",
+        src: "/images/Adigrat.svg",
         alt: "Gheralta Mountains at sunset",
         category: "attractions",
         title: "Gheralta Mountains",
     },
     {
         id: "9",
-        src: "https://lh3.googleusercontent.com/aida-public/AB6AXuBu1k1XaYnLWxoh_9eox5bwqgUMyw6TLJvyOs0Z4OkVoWWhjdFNrXXRF9X6CbCqqx7QMW0zFPcwvsPQn0jDImshfGxd0GMEKmWuF6Vq6XtTylCEo3OBIl9rSoaNHS33g4HNsV1sLmQd_L6uCT5wqcE-yythiueqZJ_PT8FIkllUYS_JPQ1fSfSCv8pEmMs47I5lvxXTwDY7971GKY8JDBXNG1vJ3kSw8SYuCMsInmPJhichHxmplgY7VrQ0b4DrcIk55orKUc6tJk1o",
+        src: "/images/Gate.svg",
         alt: "Al-Nejashi Mosque historic site",
         category: "attractions",
         title: "Al-Nejashi Mosque",
@@ -101,7 +101,7 @@ export default function GalleryClient() {
                 aria-label="Gallery hero section"
             >
                 <HeroImage
-                    src="/assets/images/hotel-exterior.jpg"
+                    src="/images/Compound.svg"
                     alt="Canaan International Hotel exterior"
                     overlayOpacity={0.5}
                     className="absolute inset-0 -z-10"

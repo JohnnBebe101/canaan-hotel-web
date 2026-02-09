@@ -509,13 +509,13 @@ export default function AdminBookingsPage() {
                       <option value="CANCELLED">CANCELLED</option>
                       <option value="CLOSED">CLOSED</option>
                     </select>
-                    <Link
-                      href={`/admin/bookings/${booking.id}`}
-                      className="inline-flex items-center px-3 py-2 text-sm font-medium bg-blue-100 text-blue-800 rounded-md hover:bg-blue-200 transition-colors"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      View Details
-                    </Link>
+                      <Link
+                        href={`/admin/bookings/${booking.id}`}
+                        className="inline-flex items-center px-3 py-2 text-sm font-medium rounded-md bg-primary text-white hover:opacity-90 transition-opacity"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        View Details
+                      </Link>
                   </div>
                 </div>
               </div>

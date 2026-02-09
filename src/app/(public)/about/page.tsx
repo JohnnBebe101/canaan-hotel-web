@@ -2,10 +2,10 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "About Us | Cannan International Hotel",
-  description: "Discover the story of Cannan International Hotel, a testament to Tigrayan hospitality and the resilient spirit of our community in Adigrat.",
+  title: "About Us | Canaan International Hotel",
+  description: "Discover the story of Canaan International Hotel, a testament to Tigrayan hospitality and the resilient spirit of our community in Adigrat.",
   openGraph: {
-    title: "About Cannan International Hotel - Our Story & Commitment",
+    title: "About Canaan International Hotel - Our Story & Commitment",
     description: "Learn about our roots in Adigrat, our commitment to Tigray, and our journey as a cornerstone of hospitality.",
   },
 };
@@ -20,7 +20,7 @@ export default function AboutPage() {
               className="flex min-h-[480px] flex-col gap-6 rounded-xl bg-cover bg-center bg-no-repeat @[480px]:gap-8 items-center justify-center p-8 text-center"
               aria-label="Hero section with hotel staff photo"
               style={{
-                backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.5) 100%), url("/assets/images/Team.jpg")'
+                backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.5) 100%), url("/images/Team.svg")'
               }}
             >
               <div className="flex flex-col gap-4">
@@ -41,20 +41,20 @@ export default function AboutPage() {
                   Rooted in Adigrat
                 </h2>
                 <p className="text-white text-base font-normal leading-normal @[480px]:text-lg max-w-2xl">
-                  Discover the story of Cannan International Hotel, a testament to Tigrayan hospitality and the resilient spirit of our community.
+                  Discover the story of Canaan International Hotel, a testament to Tigrayan hospitality and the resilient spirit of our community.
                 </p>
               </div>
             </div>
           </div>
         </div>
 
-        <section className="py-16 sm:py-24 grid grid-cols-1 md:grid-cols-2 gap-12 items-center" aria-labelledby="cannan-story">
+        <section className="py-16 sm:py-24 grid grid-cols-1 md:grid-cols-2 gap-12 items-center" aria-labelledby="canaan-story">
           <div className="flex flex-col gap-4">
-            <h2 id="cannan-story" className="text-[#D48135] dark:text-[#D48135] text-[22px] sm:text-3xl font-bold leading-tight tracking-[-0.015em]">
-              The Cannan Story
+            <h2 id="canaan-story" className="text-[#D48135] dark:text-[#D48135] text-[22px] sm:text-3xl font-bold leading-tight tracking-[-0.015em]">
+              The Canaan Story
             </h2>
             <p className="text-[#2D2424]/80 dark:text-background-light/80 text-base font-normal leading-relaxed">
-              Discover the journey of the Cannan International Hotel, from its humble beginnings to becoming a cornerstone of hospitality in Adigrat. Our founders envisioned a place that not only offers comfort but also embodies the rich culture and resilient spirit of Tigray. We are dedicated to providing an authentic experience that honors our heritage and welcomes the world.
+              Discover the journey of the Canaan International Hotel, from its humble beginnings to becoming a cornerstone of hospitality in Adigrat. Our founders envisioned a place that not only offers comfort but also embodies the rich culture and resilient spirit of Tigray. We are dedicated to providing an authentic experience that honors our heritage and welcomes the world.
             </p>
             <p className="text-[#2D2424]/80 dark:text-background-light/80 text-base font-normal leading-relaxed pt-2">
               Founded with a vision to create a haven of comfort and culture, our hotel has grown with the community, becoming a cherished landmark for locals and travelers alike.
@@ -64,7 +64,7 @@ export default function AboutPage() {
             className="w-full bg-center bg-no-repeat bg-cover aspect-square rounded-xl"
             role="img"
             aria-label="A black and white historical photo of the hotel's founder."
-            style={{ backgroundImage: 'url("/assets/images/Adigrat.jpg")' }}
+            style={{ backgroundImage: 'url("/images/Adigrat.svg")' }}
           ></div>
         </section>
 
@@ -80,7 +80,7 @@ export default function AboutPage() {
               Our Commitment to Tigray
             </h2>
             <p className="text-[#2D2424]/80 dark:text-background-light/80 text-base font-normal leading-relaxed">
-              Cannan International Hotel is more than just a place to stay; it's a part of the fabric of Adigrat. We are deeply committed to our community, prioritizing local sourcing for our restaurant, employing local artisans for our decor, and actively participating in initiatives that support the economic and cultural vitality of Tigray. Your stay with us directly contributes to the well-being of our beloved region.
+              Canaan International Hotel is more than just a place to stay; it's a part of the fabric of Adigrat. We are deeply committed to our community, prioritizing local sourcing for our restaurant, employing local artisans for our decor, and actively participating in initiatives that support the economic and cultural vitality of Tigray. Your stay with us directly contributes to the well-being of our beloved region.
             </p>
           </div>
         </section>
@@ -122,18 +122,18 @@ export default function AboutPage() {
               Experience Our Hospitality
             </h2>
             <p className="text-[#2D2424]/80 dark:text-background-light/80 text-base sm:text-lg font-normal leading-normal max-w-2xl">
-              Ready to be a part of our story? Book your stay and discover the warmth, comfort, and authentic culture of the Cannan International Hotel.
+              Ready to be a part of our story? Book your stay and discover the warmth, comfort, and authentic culture of the Canaan International Hotel.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mt-4">
               <Link
                 href="/rooms"
-                className="flex min-w-[140px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-[#D48135] text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-[#D48135]/90 transition-colors focus:outline-none focus:ring-2 focus:ring-[#D48135] focus:ring-offset-2"
+                className="flex min-w-[140px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
               >
                 <span className="truncate">Book Your Stay</span>
               </Link>
               <Link
                 href="/rooms"
-                className="flex min-w-[140px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-[#5C6B59] text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-[#5C6B59]/90 transition-colors focus:outline-none focus:ring-2 focus:ring-[#5C6B59] focus:ring-offset-2"
+                className="flex min-w-[140px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
               >
                 <span className="truncate">Explore Our Rooms</span>
               </Link>

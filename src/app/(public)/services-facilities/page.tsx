@@ -2,12 +2,12 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Facilities & Amenities | Cannan International Hotel",
-  description: "Explore the luxurious facilities at Cannan International Hotel, including our elegant restaurant, bar, and secure parking.",
+  title: "Facilities & Amenities | Canaan International Hotel",
+  description: "Explore the luxurious facilities at Canaan International Hotel, including our elegant restaurant, bar, and secure parking.",
   openGraph: {
-    title: "World-Class Facilities in Adigrat - Cannan International Hotel",
+    title: "World-Class Facilities in Adigrat - Canaan International Hotel",
     description: "Unwind in our sophisticated lounge or stay productive with our business amenities. Everything you need for a comfortable stay.",
-    images: ["/assets/images/Gate.jpg"],
+    images: ["/images/Gate.svg"],
   },
 };
 
@@ -22,7 +22,7 @@ export default function ServicesPage() {
               role="img"
               aria-label="A luxurious hotel lounge area with comfortable seating and elegant decor."
               style={{
-                backgroundImage: 'linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 40%), url("/assets/images/Gate.jpg")'
+                backgroundImage: 'linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 40%), url("/images/Gate.svg")'
               }}
             >
               <div className="flex p-6 md:p-8">
@@ -36,7 +36,7 @@ export default function ServicesPage() {
 
         <div className="py-10">
           <p className="text-[#181611] dark:text-background-light text-base md:text-lg font-normal leading-normal text-center max-w-3xl mx-auto">
-            Welcome to Cannan International Hotel. We are committed to providing you with an exceptional stay, complete with a wide range of services and facilities designed for your comfort and convenience.
+            Welcome to Canaan International Hotel. We are committed to providing you with an exceptional stay, complete with a wide range of services and facilities designed for your comfort and convenience.
           </p>
         </div>
 

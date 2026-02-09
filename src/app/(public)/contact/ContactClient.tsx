@@ -37,7 +37,7 @@ export default function ContactClient() {
                 <div
                     className="w-full h-64 md:h-96 bg-center bg-no-repeat bg-cover rounded-xl object-cover border border-border-color dark:border-text-secondary/20"
                     role="img"
-                    aria-label="An interactive map showing the location of Cannan International Hotel in Adigrat, Tigray"
+                    aria-label="An interactive map showing the location of Canaan International Hotel in Adigrat, Tigray"
                     style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuCW_Sq-6MxdZfXT6k0KVoAvToBcuaJQo1Pb0KSpz82y-aMoeeiwIEzyhdqqC1KDdSHxqtpaZP3zRwaYZ60UD6u3ThZnxGfZVf4EmCBx5FwFlnQ2RNHW1hprL2RnUFRyBjKg7Guc6N_ZNCpd-E9b8ySUje61I67QcQA7XLj2p0cEMdYKTKWaSY4-TYghE6qO0izjKtXCZ8-4xeWvGI7R3Qk3DWhLqveHDCd7GZUR7YsRZi8QPxYtSs-raDbPEopy8i7QrcaTGNllj6nQ")' }}
                 ></div>
             </div>

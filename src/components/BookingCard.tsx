@@ -112,15 +112,20 @@ export default function BookingCard() {
 
   return (
     <div className="w-full">
-      {/* Transparent card with backdrop blur */}
-      <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md rounded-2xl shadow-2xl p-6 sm:p-8 border border-white/20">
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white mb-2">
-            Book Your Stay
-          </h2>
-          <p className="text-sm text-gray-700 dark:text-gray-300">
-            Reserve directly for best rates. We'll confirm within 24 hours.
-          </p>
+      <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg rounded-2xl shadow-2xl p-6 sm:p-8 border border-white/30 dark:border-white/10 ring-1 ring-black/5">
+        <div className="mb-4 flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+              Book Your Stay
+            </h2>
+            <p className="text-sm text-gray-700 dark:text-gray-300">
+              Reserve directly for best rates
+            </p>
+          </div>
+          <div className="flex items-center gap-1.5 bg-green-100 dark:bg-green-900/30 px-2.5 py-1.5 rounded-full">
+            <span className="material-symbols-outlined text-green-600 dark:text-green-400 text-sm">verified</span>
+            <span className="text-xs font-semibold text-green-700 dark:text-green-400">Best Price Guarantee</span>
+          </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -343,7 +348,7 @@ export default function BookingCard() {
                   Submitting...
                 </>
               ) : (
-                "Submit Booking Inquiry"
+                <span>Submit Booking Inquiry</span>
               )}
             </button>
           </div>

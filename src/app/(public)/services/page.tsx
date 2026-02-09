@@ -6,12 +6,12 @@ import DemoIntegrationCard from "@/components/DemoIntegrationCard";
 import DemoFeatureCard from "@/components/DemoFeatureCard";
 
 export const metadata: Metadata = {
-  title: "Our Services | Cannan International Hotel",
-  description: "Experience world-class hospitality at Cannan International Hotel. From fine dining to business essentials, discover our comprehensive range of services.",
+  title: "Our Services | Canaan International Hotel",
+  description: "Experience world-class hospitality at Canaan International Hotel. From fine dining to business essentials, discover our comprehensive range of services.",
   openGraph: {
-    title: "Premium Services & Facilities in Adigrat - Cannan Hotel",
+    title: "Premium Services & Facilities in Adigrat - Canaan Hotel",
     description: "Explore our amenities including 24-hour concierge, secure parking, and professional business facilities.",
-    images: ["/assets/images/hotel-exterior.jpg"],
+    images: ["/images/Compound.svg"],
   },
 };
 
@@ -25,7 +25,7 @@ export default function ServicesPage() {
           aria-label="Hero section with hotel services"
         >
           <HeroImage
-            src="/assets/images/hotel-exterior.jpg"
+            src="/images/Compound.svg"
             alt="Canaan International Hotel services and facilities"
             overlayOpacity={0.5}
             className="absolute inset-0 -z-10"

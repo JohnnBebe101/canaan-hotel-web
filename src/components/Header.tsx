@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 
 interface HeaderProps {
@@ -55,18 +56,26 @@ export default function Header({ variant = "public", currentPage }: HeaderProps)
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex-shrink-0 flex items-center">
-            <Link href={variant === "public" ? "/" : "/admin/dashboard"} className="flex items-center space-x-3">
-              <div className="h-12 w-12 rounded-lg bg-primary flex items-center justify-center">
-                <span className="text-white font-bold text-xl">CH</span>
+          <div className="flex-shrink-0 flex items-center gap-3">
+            <Link href={variant === "public" ? "/" : "/admin/dashboard"} className="flex items-center gap-3">
+              <div className="h-10 w-auto">
+                <Image
+                  src="/images/logo 2.svg"
+                  alt="Canaan International Hotel Logo"
+                  width={40}
+                  height={40}
+                  className="h-10 w-auto object-contain"
+                  priority
+                />
               </div>
-              <div className="flex flex-col">
-                <span className="text-lg font-bold text-text-primary dark:text-background-light">
-                  {variant === "public" ? "Cannan International Hotel" : "Admin Panel"}
+              <div className="hidden sm:flex flex-col">
+                <span className="text-base font-bold text-text-primary dark:text-background-light">
+                  {variant === "public" ? "Canaan International Hotel" : "Admin Panel"}
                 </span>
                 {variant === "public" && (
-                  <span className="text-xs text-text-secondary dark:text-text-secondary/80 hidden sm:block">
-                    Your Gateway to Tigray's History and Comfort
+                  <span className="text-xs text-text-secondary/80 flex items-center gap-1">
+                    <span className="material-symbols-outlined text-green-600 text-xs">verified</span>
+                    Best Price Guarantee
                   </span>
                 )}
               </div>

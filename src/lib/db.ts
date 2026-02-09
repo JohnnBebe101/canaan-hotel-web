@@ -1,186 +1,374 @@
-import { Low } from 'lowdb';
-import { JSONFile } from 'lowdb/node';
-import { join } from 'path';
-import { nanoid } from 'nanoid';
+import { supabase, type Booking, type Payment, type Room, type Attraction } from './supabase';
 
-// Define the Booking interface, mirroring the API expected schema
-export interface Booking {
-  id: string;
-  guest_name: string;
-  email: string;
-  check_in_date: string; // YYYY-MM-DD format
-  check_out_date: string; // YYYY-MM-DD format
-  number_of_guests: number;
-  room_type: string; // e.g., "Economy Single", "Comfort Double"
-  total_price: number;
-  status: 'pending' | 'confirmed' | 'cancelled';
-  created_at: number; // Unix timestamp
-  notes?: string; // Admin notes
-}
+// Flag to track if Supabase is connected
+let isConnected = false;
 
-interface Payment {
-  id: string;
-  bookingId: string;
-  amount: number;
-  currency: string;
-  status: 'pending' | 'completed' | 'failed';
-  created_at: number;
-}
-
-export interface Room {
-  id: string;
-  name: string;
-  description: string;
-  price_per_night: number;
-  max_guests: number;
-  is_active: boolean;
-  created_at: string;
-}
-
-export interface Attraction {
-  id: string;
-  name: string;
-  description: string;
-  category: string;
-  distance: string;
-  image?: string;
-  is_active: boolean;
-}
-
-// Define the structure of our database
-interface Data {
-  bookings: Booking[];
-  payments: Payment[];
-  rooms: Room[];
-  attractions: Attraction[];
-}
-
-// Default data for the database
-const defaultData: Data = {
-  bookings: [],
-  payments: [],
-  rooms: [],
-  attractions: []
-};
-
-let db: Low<Data> | null = null;
-
-// Function to initialize the database
-export async function initializeDatabase() {
-  if (db) {
-    return db;
+/**
+ * Initialize database connection
+ * Returns true if Supabase is connected, false otherwise
+ */
+export async function initializeDatabase(): Promise<boolean> {
+  if (isConnected) {
+    return true;
   }
 
-  const file = join(process.cwd(), 'data', 'db.json');
-  const adapter = new JSONFile<Data>(file);
-  db = new Low<Data>(adapter, defaultData);
-
-  await db.read();
-  // If the database file is new or empty, write the default data
-  if (!db.data) {
-    db.data = defaultData;
+  try {
+    const { error } = await supabase.from('rooms').select('count').limit(1);
+    
+    if (error) {
+      console.error('[Database] Connection failed:', error.message);
+      return false;
+    }
+    
+    isConnected = true;
+    console.log('[Database] Connected to Supabase successfully');
+    return true;
+  } catch (error) {
+    console.error('[Database] Connection error:', error);
+    return false;
   }
-
-  let dataChanged = false;
-
-  // SEEDING: If the database is completely empty (no rooms, attractions, or bookings), populate with demo data
-  const isEmpty = (db.data.rooms?.length || 0) === 0 &&
-    (db.data.attractions?.length || 0) === 0 &&
-    (db.data.bookings?.length || 0) === 0;
-
-  if (isEmpty) {
-    db.data.rooms = [
-      {
-        id: "room-deluxe",
-        name: "Deluxe Ocean Suite",
-        description: "Spacious suite with panoramic ocean views and premium amenities.",
-        price_per_night: 250,
-        max_guests: 2,
-        is_active: true,
-        created_at: new Date().toISOString(),
-      },
-      {
-        id: "room-executive",
-        name: "Executive Garden Room",
-        description: "Elegant room overlooking the lush hotel gardens.",
-        price_per_night: 180,
-        max_guests: 2,
-        is_active: true,
-        created_at: new Date().toISOString(),
-      },
-      {
-        id: "room-economy",
-        name: "Economy Single Room",
-        description: "Compact and efficient room for the solo traveler.",
-        price_per_night: 95,
-        max_guests: 1,
-        is_active: true,
-        created_at: new Date().toISOString(),
-      }
-    ];
-
-    db.data.attractions = [
-      {
-        id: "historic-district",
-        name: "Old Town Historic District",
-        description: "Explore the colonial architecture and narrow cobblestone streets.",
-        category: "Culture",
-        distance: "1.5 km",
-        is_active: true
-      },
-      {
-        id: "botanical-gardens",
-        name: "City Botanical Gardens",
-        description: "A peaceful oasis featuring exotic plants from around the world.",
-        category: "Nature",
-        distance: "2.3 km",
-        is_active: true
-      }
-    ];
-
-    const today = new Date();
-    const nextWeek = new Date(today);
-    nextWeek.setDate(today.getDate() + 7);
-    const inTwoWeeks = new Date(today);
-    inTwoWeeks.setDate(today.getDate() + 14);
-
-    db.data.bookings = [
-      {
-        id: nanoid(),
-        guest_name: "John Demo",
-        email: "john.demo@example.com",
-        check_in_date: nextWeek.toISOString().split('T')[0],
-        check_out_date: new Date(nextWeek.getTime() + 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-        number_of_guests: 2,
-        room_type: "Deluxe Ocean Suite",
-        total_price: 750,
-        status: 'confirmed',
-        created_at: Date.now(),
-        notes: "Demo seed booking"
-      },
-      {
-        id: nanoid(),
-        guest_name: "Jane Sample",
-        email: "jane.sample@example.com",
-        check_in_date: inTwoWeeks.toISOString().split('T')[0],
-        check_out_date: new Date(inTwoWeeks.getTime() + 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-        number_of_guests: 1,
-        room_type: "Economy Single Room",
-        total_price: 190,
-        status: 'pending',
-        created_at: Date.now(),
-        notes: "Demo seed booking"
-      }
-    ];
-
-    dataChanged = true;
-  }
-
-  if (dataChanged) {
-    await db.write();
-  }
-
-  return db;
 }
 
-export { nanoid };
+export function isDatabaseAvailable(): boolean {
+  return isConnected;
+}
+
+// ============================================
+// BOOKINGS OPERATIONS
+// ============================================
+
+export async function getBookings(): Promise<Booking[]> {
+  const { data, error } = await supabase
+    .from('bookings')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('[Database] Error fetching bookings:', error);
+    throw new Error('Failed to fetch bookings');
+  }
+
+  return data || [];
+}
+
+export async function getBookingById(id: string): Promise<Booking | null> {
+  const { data, error } = await supabase
+    .from('bookings')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (error) {
+    if (error.code === 'PGRST116') {
+      return null;
+    }
+    console.error('[Database] Error fetching booking:', error);
+    throw new Error('Failed to fetch booking');
+  }
+
+  return data;
+}
+
+export async function createBooking(booking: Omit<Booking, 'id' | 'created_at'>): Promise<Booking> {
+  const { data, error } = await supabase
+    .from('bookings')
+    .insert(booking)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('[Database] Error creating booking:', error);
+    throw new Error('Failed to create booking');
+  }
+
+  return data;
+}
+
+export async function updateBooking(id: string, updates: Partial<Booking>): Promise<Booking> {
+  const { data, error } = await supabase
+    .from('bookings')
+    .update(updates)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('[Database] Error updating booking:', error);
+    throw new Error('Failed to update booking');
+  }
+
+  return data;
+}
+
+export async function deleteBooking(id: string): Promise<boolean> {
+  const { error } = await supabase
+    .from('bookings')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    console.error('[Database] Error deleting booking:', error);
+    throw new Error('Failed to delete booking');
+  }
+
+  return true;
+}
+
+// ============================================
+// ROOMS OPERATIONS
+// ============================================
+
+export async function getRooms(): Promise<Room[]> {
+  const { data, error } = await supabase
+    .from('rooms')
+    .select('*')
+    .eq('is_active', true)
+    .order('price_per_night', { ascending: true });
+
+  if (error) {
+    console.error('[Database] Error fetching rooms:', error);
+    throw new Error('Failed to fetch rooms');
+  }
+
+  return data || [];
+}
+
+export async function getRoomById(id: string): Promise<Room | null> {
+  const { data, error } = await supabase
+    .from('rooms')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (error) {
+    if (error.code === 'PGRST116') {
+      return null;
+    }
+    console.error('[Database] Error fetching room:', error);
+    throw new Error('Failed to fetch room');
+  }
+
+  return data;
+}
+
+export async function getRoomBySlug(slug: string): Promise<Room | null> {
+  const slugToName: Record<string, string> = {
+    'economy-single': 'Economy Single Room',
+    'comfort-double': 'Comfort Double Room',
+    'family-suite': 'Family Suite',
+    'deluxe': 'Deluxe Ocean Suite',
+    'executive': 'Executive Garden Room',
+  };
+
+  const roomName = slugToName[slug.toLowerCase()] || slug;
+
+  const { data, error } = await supabase
+    .from('rooms')
+    .select('*')
+    .ilike('name', roomName)
+    .single();
+
+  if (error) {
+    if (error.code === 'PGRST116') {
+      return null;
+    }
+    console.error('[Database] Error fetching room by slug:', error);
+    throw new Error('Failed to fetch room');
+  }
+
+  return data;
+}
+
+export async function createRoom(room: Omit<Room, 'id' | 'created_at'>): Promise<Room> {
+  const { data, error } = await supabase
+    .from('rooms')
+    .insert(room)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('[Database] Error creating room:', error);
+    throw new Error('Failed to create room');
+  }
+
+  return data;
+}
+
+export async function updateRoom(id: string, updates: Partial<Room>): Promise<Room> {
+  const { data, error } = await supabase
+    .from('rooms')
+    .update(updates)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('[Database] Error updating room:', error);
+    throw new Error('Failed to update room');
+  }
+
+  return data;
+}
+
+export async function deleteRoom(id: string): Promise<boolean> {
+  const { error } = await supabase
+    .from('rooms')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    console.error('[Database] Error deleting room:', error);
+    throw new Error('Failed to delete room');
+  }
+
+  return true;
+}
+
+// ============================================
+// ATTRACTIONS OPERATIONS
+// ============================================
+
+export async function getAttractions(): Promise<Attraction[]> {
+  const { data, error } = await supabase
+    .from('attractions')
+    .select('*')
+    .eq('is_active', true)
+    .order('name');
+
+  if (error) {
+    console.error('[Database] Error fetching attractions:', error);
+    throw new Error('Failed to fetch attractions');
+  }
+
+  return data || [];
+}
+
+export async function getAttractionById(id: string): Promise<Attraction | null> {
+  const { data, error } = await supabase
+    .from('attractions')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (error) {
+    if (error.code === 'PGRST116') {
+      return null;
+    }
+    console.error('[Database] Error fetching attraction:', error);
+    throw new Error('Failed to fetch attraction');
+  }
+
+  return data;
+}
+
+export async function createAttraction(attraction: Omit<Attraction, 'id' | 'created_at'>): Promise<Attraction> {
+  const { data, error } = await supabase
+    .from('attractions')
+    .insert(attraction)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('[Database] Error creating attraction:', error);
+    throw new Error('Failed to create attraction');
+  }
+
+  return data;
+}
+
+export async function updateAttraction(id: string, updates: Partial<Attraction>): Promise<Attraction> {
+  const { data, error } = await supabase
+    .from('attractions')
+    .update(updates)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('[Database] Error updating attraction:', error);
+    throw new Error('Failed to update attraction');
+  }
+
+  return data;
+}
+
+export async function deleteAttraction(id: string): Promise<boolean> {
+  const { error } = await supabase
+    .from('attractions')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    console.error('[Database] Error deleting attraction:', error);
+    throw new Error('Failed to delete attraction');
+  }
+
+  return true;
+}
+
+// ============================================
+// PAYMENTS OPERATIONS
+// ============================================
+
+export async function getPayments(): Promise<Payment[]> {
+  const { data, error } = await supabase
+    .from('payments')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('[Database] Error fetching payments:', error);
+    throw new Error('Failed to fetch payments');
+  }
+
+  return data || [];
+}
+
+export async function createPayment(payment: Omit<Payment, 'id' | 'created_at'>): Promise<Payment> {
+  const { data, error } = await supabase
+    .from('payments')
+    .insert(payment)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('[Database] Error creating payment:', error);
+    throw new Error('Failed to create payment');
+  }
+
+  return data;
+}
+
+// ============================================
+// UTILITY FUNCTIONS
+// ============================================
+
+export async function getBookingStats() {
+  const { data: totalBookings } = await supabase
+    .from('bookings')
+    .select('count', { count: 'exact' });
+
+  const { data: confirmedBookings } = await supabase
+    .from('bookings')
+    .select('count', { count: 'exact' })
+    .eq('status', 'confirmed');
+
+  const { data: pendingBookings } = await supabase
+    .from('bookings')
+    .select('count', { count: 'exact' })
+    .eq('status', 'pending');
+
+  const { data: revenueData } = await supabase
+    .from('bookings')
+    .select('total_price')
+    .eq('status', 'confirmed');
+
+  const revenue = revenueData?.reduce((sum, b) => sum + (b.total_price || 0), 0) || 0;
+
+  return {
+    totalBookings: totalBookings?.[0]?.count || 0,
+    confirmedBookings: confirmedBookings?.[0]?.count || 0,
+    pendingBookings: pendingBookings?.[0]?.count || 0,
+    totalRevenue: revenue,
+  };
+}

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createBooking } from "@/lib/booking-store";
+import { createBooking, type Booking } from "@/lib/booking-store";
 
 // POST handler for booking inquiries
 export async function POST(request: NextRequest) {
@@ -27,25 +27,42 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate dates structure
-    if (!body.dates.check_in || !body.dates.check_out) {
+    if (!body.dates?.check_in || !body.dates?.check_out) {
       return NextResponse.json(
         { error: "Dates must include check_in and check_out" },
         { status: 400 }
       );
     }
 
-    // Create operational booking record for CRM
+    // Calculate total price based on room type (simplified)
+    const roomPrices: Record<string, number> = {
+      'Economy Single Room': 50,
+      'Comfort Double Room': 75,
+      'Family Suite': 110,
+    };
+    const pricePerNight = roomPrices[body.room_type] || 75;
+
+    // Calculate nights
+    const checkIn = new Date(body.dates.check_in);
+    const checkOut = new Date(body.dates.check_out);
+    const nights = Math.max(1, Math.ceil((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24)));
+    const totalPrice = pricePerNight * nights;
+
+    // Create booking record
     const booking = await createBooking({
-      guestName: body.guest_name.trim(),
+      guest_name: body.guest_name.trim(),
       email: body.email.trim().toLowerCase(),
       phone: body.phone.trim(),
-      roomType: body.room_type.trim(),
-      checkIn: body.dates.check_in,
-      checkOut: body.dates.check_out,
-      notes: body.message?.trim() || undefined,
+      room_type: body.room_type.trim(),
+      check_in_date: body.dates.check_in,
+      check_out_date: body.dates.check_out,
+      number_of_guests: body.number_of_guests || 1,
+      total_price: totalPrice,
+      status: 'pending',
+      notes: body.message?.trim(),
     });
 
-    // Return success response with booking details
+    // Return success response
     return NextResponse.json(
       {
         message: "Booking inquiry received successfully",
@@ -78,4 +95,3 @@ export async function GET() {
     );
   }
 }
-

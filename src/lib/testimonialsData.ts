@@ -1,66 +1,35 @@
 export interface Testimonial {
-  id: string; // Add a unique ID for mapping
+  id: string;
   quote: string;
   author: string;
-  role?: string; // Optional role for the author
-  rating: number; // 1-5 stars
-  ota?: string; // e.g., 'Booking.com', 'Expedia', 'TripAdvisor'
-  avatarSrc?: string; // Optional: for author image
+  role: string;
+  rating: number;
+  avatarSrc: string;
 }
 
 export const TESTIMONIALS: Testimonial[] = [
   {
     id: "1",
-    quote:
-      "An exceptional stay at Canaan Hotel! The rooms were immaculate, the staff incredibly welcoming, and the location perfect for exploring the area. Highly recommend!",
+    quote: "An exceptional stay! The staff went above and beyond to make our anniversary special. The room was immaculate and the views of the mountains were breathtaking.",
     author: "Sarah Johnson",
-    role: "Frequent Traveler",
+    role: "Business Traveler",
     rating: 5,
-    ota: "Booking.com",
-    avatarSrc: "/assets/images/user-sarah.jpg", // Placeholder if you add user avatars
+    avatarSrc: "https://ui-avatars.com/api/?name=Sarah+Johnson&background=FF6B35&color=fff",
   },
   {
     id: "2",
-    quote:
-      "Wonderful experience from start to finish. The amenities were top-notch, and the breakfast was delicious. Will definitely return!",
+    quote: "Perfect location in Adigrat. Clean, comfortable, and great value. The included breakfast was delicious with a good selection of local and international options.",
     author: "Michael Chen",
-    role: "Business Guest",
+    role: "Solo Explorer",
     rating: 5,
-    ota: "Expedia",
-    avatarSrc: "/assets/images/user-michael.jpg",
+    avatarSrc: "https://ui-avatars.com/api/?name=Michael+Chen&background=4A90A4&color=fff",
   },
   {
     id: "3",
-    quote:
-      "Great value for money. Clean, comfortable, and the service was outstanding. The hotel exceeded our expectations.",
-    author: "Emma Rodriguez",
-    role: "Family Vacationer",
-    rating: 4,
-    ota: "TripAdvisor",
-    avatarSrc: "/assets/images/user-emma.jpg",
-  },
-  {
-    id: "4",
-    quote:
-      "A peaceful retreat with beautiful surroundings. The staff went above and beyond to make our stay memorable.",
-    author: "David Kim",
-    role: "Solo Adventurer",
+    quote: "We stayed here while exploring the ancient churches of Tigray. The hotel arranged excellent guides for us. Highly recommend for anyone visiting the region!",
+    author: "Emma Williams",
+    role: "Family Vacation",
     rating: 5,
-    ota: "Agoda",
-    avatarSrc: "/assets/images/user-david.jpg",
-  },
-  {
-    id: "5",
-    quote:
-      "The best hotel experience in Adigrat. Every detail was perfect, from the room service to the helpful concierge. Truly a five-star stay!",
-    author: "Jessica Lee",
-    role: "Luxury Seeker",
-    rating: 5,
-    ota: "Booking.com",
-    avatarSrc: "/assets/images/user-jessica.jpg",
+    avatarSrc: "https://ui-avatars.com/api/?name=Emma+Williams&background=7B68EE&color=fff",
   },
 ];
-
-export function getTestimonials(): Testimonial[] {
-  return TESTIMONIALS;
-}

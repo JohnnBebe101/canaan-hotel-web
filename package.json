@@ -14,6 +14,7 @@
     "node": ">=20.19.6"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.95.3",
     "lowdb": "^6.0.1",
     "nanoid": "^5.1.6",
     "next": "16.1.0",

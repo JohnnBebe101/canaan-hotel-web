@@ -1,73 +1,97 @@
-import { Room } from "./models";
-import { getAllRooms, saveRoom, updateRoom as dbUpdateRoom, deleteRoom as dbDeleteRoom } from "./persistence/dbAdapter";
-import { logInfo, logError } from "./logger";
+import { supabase } from './supabase';
 
-// Room Management Core: Operational room management
-// NO IN-MEMORY FALLBACK: Using database persistence as primary source
+// ============================================
+// ROOM STORE (Supabase)
+// ============================================
+
+export interface Room {
+  id: string;
+  name: string;
+  description: string;
+  price_per_night: number;
+  max_guests: number;
+  is_active: boolean;
+  image_src?: string;
+  image_alt?: string;
+  price_label?: string;
+  badges?: string[];
+  rating?: number;
+  created_at: string;
+}
 
 export async function getRooms(): Promise<Room[]> {
-  try {
-    const rooms = await getAllRooms();
-    return rooms as Room[];
-  } catch (error) {
-    logError("ROOM_FETCH_FAILED", "Failed to retrieve rooms from database", { error });
-    return [];
+  const { data, error } = await supabase
+    .from('rooms')
+    .select('*')
+    .eq('is_active', true)
+    .order('price_per_night', { ascending: true });
+
+  if (error) {
+    console.error('[RoomStore] Error fetching rooms:', error);
+    throw new Error('Failed to fetch rooms');
   }
+
+  return data || [];
 }
 
-export async function getRoomById(id: string): Promise<Room | undefined> {
-  try {
-    const allRooms = await getRooms();
-    return allRooms.find((room) => room.id === id);
-  } catch (error) {
-    logError("ROOM_BY_ID_FAILED", `Failed to get room by id: ${id}`, { error });
-    return undefined;
+export async function getRoomById(id: string): Promise<Room | null> {
+  const { data, error } = await supabase
+    .from('rooms')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (error) {
+    if (error.code === 'PGRST116') return null;
+    console.error('[RoomStore] Error fetching room:', error);
+    throw new Error('Failed to fetch room');
   }
+
+  return data;
 }
 
-export async function createRoom(data: Omit<Room, "id" | "createdAt">): Promise<Room> {
-  const newRoom: Room = {
-    ...data,
-    id: crypto.randomUUID(),
-    createdAt: new Date().toISOString(),
-  };
+export async function createRoom(room: Omit<Room, 'id' | 'created_at'>): Promise<Room> {
+  const { data, error } = await supabase
+    .from('rooms')
+    .insert(room)
+    .select()
+    .single();
 
-  try {
-    await saveRoom(newRoom);
-    logInfo("ROOM_CREATED", `New room created and persisted: ${newRoom.id}`, { roomId: newRoom.id });
-  } catch (error) {
-    logError("ROOM_CREATE_FAILED", "Failed to persist new room", { error });
-    throw new Error("Failed to create room in database");
+  if (error) {
+    console.error('[RoomStore] Error creating room:', error);
+    throw new Error('Failed to create room');
   }
 
-  return newRoom;
+  return data;
 }
 
-export async function updateRoom(
-  id: string,
-  data: Partial<Omit<Room, "id" | "createdAt">>
-): Promise<Room | null> {
-  try {
-    const updated = await dbUpdateRoom(id, data);
-    if (updated) {
-      logInfo("ROOM_UPDATED", `Room updated and persisted: ${id}`, { roomId: id });
-    }
-    return updated as Room | null;
-  } catch (error) {
-    logError("ROOM_UPDATE_FAILED", `Failed to update room: ${id}`, { error });
-    throw new Error("Failed to update room in database");
+export async function updateRoom(id: string, updates: Partial<Room>): Promise<Room | null> {
+  const { data, error } = await supabase
+    .from('rooms')
+    .update(updates)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('[RoomStore] Error updating room:', error);
+    throw new Error('Failed to update room');
   }
+
+  return data;
 }
 
 export async function deleteRoom(id: string): Promise<boolean> {
-  try {
-    const success = await dbDeleteRoom(id);
-    if (success) {
-      logInfo("ROOM_DELETED", `Room deleted and persisted: ${id}`, { roomId: id });
-    }
-    return success;
-  } catch (error) {
-    logError("ROOM_DELETE_FAILED", `Failed to delete room: ${id}`, { error });
-    return false;
+  // Soft delete - set is_active to false
+  const { error } = await supabase
+    .from('rooms')
+    .update({ is_active: false })
+    .eq('id', id);
+
+  if (error) {
+    console.error('[RoomStore] Error deleting room:', error);
+    throw new Error('Failed to delete room');
   }
+
+  return true;
 }

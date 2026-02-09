@@ -17,7 +17,7 @@ interface Attraction {
   category: string;
   distance: string;
   image?: string;
-  active: boolean;
+  is_active: boolean;
 }
 
 export default function AdminAttractionsPage() {
@@ -131,7 +131,7 @@ export default function AdminAttractionsPage() {
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold text-gray-900">Nearby Attractions ({attractions.length})</h2>
             <div className="text-sm text-gray-500">
-              {attractions.filter(a => a.active).length} active
+              {attractions.filter(a => a.is_active).length} active
             </div>
           </div>
         </div>
@@ -148,11 +148,11 @@ export default function AdminAttractionsPage() {
                   <div className="flex-1">
                     <div className="flex items-center space-x-3 mb-2">
                       <h3 className="text-lg font-medium text-gray-900">{attraction.name}</h3>
-                      <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${attraction.active
+                      <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${attraction.is_active
                           ? 'bg-green-100 text-green-800'
                           : 'bg-gray-100 text-gray-800'
                         }`}>
-                        {attraction.active ? 'Active' : 'Inactive'}
+                        {attraction.is_active ? 'Active' : 'Inactive'}
                       </span>
                       <span className="inline-flex px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
                         {attraction.category}
@@ -167,14 +167,14 @@ export default function AdminAttractionsPage() {
                   </div>
 
                   <div className="flex items-center space-x-2 ml-4">
-                    <button
-                      onClick={() => toggleActive(attraction.id, attraction.active)}
-                      className={`px-3 py-1 text-xs font-medium rounded ${attraction.active
+<button
+                      onClick={() => toggleActive(attraction.id, attraction.is_active)}
+                      className={`px-3 py-1 text-xs font-medium rounded ${attraction.is_active
                           ? 'bg-red-100 text-red-700 hover:bg-red-200'
                           : 'bg-green-100 text-green-700 hover:bg-green-200'
                         }`}
                     >
-                      {attraction.active ? 'Deactivate' : 'Activate'}
+                      {attraction.is_active ? 'Deactivate' : 'Activate'}
                     </button>
 
                     <button
@@ -250,9 +250,9 @@ export default function AdminAttractionsPage() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                  <select
-                    value={editForm.active ? 'active' : 'inactive'}
-                    onChange={(e) => setEditForm({ ...editForm, active: e.target.value === 'active' })}
+<select
+                    value={editForm.is_active ? 'is_active' : 'inactive'}
+                    onChange={(e) => setEditForm({ ...editForm, is_active: e.target.value === 'is_active' })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
                   >
                     <option value="active">Active</option>

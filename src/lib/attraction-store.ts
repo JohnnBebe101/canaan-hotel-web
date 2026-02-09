@@ -1,62 +1,93 @@
-import { Attraction } from "./models";
-import { getAllAttractions, saveAttraction, updateAttraction as dbUpdateAttraction, deleteAttraction as dbDeleteAttraction } from "./persistence/dbAdapter";
-import { logInfo, logError } from "./logger";
+import { supabase } from './supabase';
 
-// Attraction Management Core: Operational attraction management
-// NO IN-MEMORY FALLBACK: Using database persistence as primary source
+// ============================================
+// ATTRACTION STORE (Supabase)
+// ============================================
+
+export interface Attraction {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  distance: string;
+  image?: string;
+  is_active: boolean;
+  created_at: string;
+}
 
 export async function getAttractions(): Promise<Attraction[]> {
-    try {
-        const attractions = await getAllAttractions();
-        return attractions as Attraction[];
-    } catch (error) {
-        logError("ATTRACTION_FETCH_FAILED", "Failed to retrieve attractions from database", { error });
-        return [];
-    }
+  const { data, error } = await supabase
+    .from('attractions')
+    .select('*')
+    .eq('is_active', true)
+    .order('name');
+
+  if (error) {
+    console.error('[AttractionStore] Error fetching attractions:', error);
+    throw new Error('Failed to fetch attractions');
+  }
+
+  return data || [];
 }
 
-export async function createAttraction(data: Omit<Attraction, "id">): Promise<Attraction> {
-    const newAttraction: Attraction = {
-        ...data,
-        id: crypto.randomUUID(),
-    };
+export async function getAttractionById(id: string): Promise<Attraction | null> {
+  const { data, error } = await supabase
+    .from('attractions')
+    .select('*')
+    .eq('id', id)
+    .single();
 
-    try {
-        await saveAttraction(newAttraction);
-        logInfo("ATTRACTION_CREATED", `New attraction created and persisted: ${newAttraction.id}`, { attractionId: newAttraction.id });
-    } catch (error) {
-        logError("ATTRACTION_CREATE_FAILED", "Failed to persist new attraction", { error });
-        throw new Error("Failed to create attraction in database");
-    }
+  if (error) {
+    if (error.code === 'PGRST116') return null;
+    console.error('[AttractionStore] Error fetching attraction:', error);
+    throw new Error('Failed to fetch attraction');
+  }
 
-    return newAttraction;
+  return data;
 }
 
-export async function updateAttraction(
-    id: string,
-    data: Partial<Omit<Attraction, "id">>
-): Promise<Attraction | null> {
-    try {
-        const updated = await dbUpdateAttraction(id, data);
-        if (updated) {
-            logInfo("ATTRACTION_UPDATED", `Attraction updated and persisted: ${id}`, { attractionId: id });
-        }
-        return updated as Attraction | null;
-    } catch (error) {
-        logError("ATTRACTION_UPDATE_FAILED", `Failed to update attraction: ${id}`, { error });
-        throw new Error("Failed to update attraction in database");
-    }
+export async function createAttraction(attraction: Omit<Attraction, 'id' | 'created_at'>): Promise<Attraction> {
+  const { data, error } = await supabase
+    .from('attractions')
+    .insert(attraction)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('[AttractionStore] Error creating attraction:', error);
+    throw new Error('Failed to create attraction');
+  }
+
+  return data;
+}
+
+export async function updateAttraction(id: string, updates: Partial<Attraction>): Promise<Attraction | null> {
+  const { data, error } = await supabase
+    .from('attractions')
+    .update(updates)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('[AttractionStore] Error updating attraction:', error);
+    throw new Error('Failed to update attraction');
+  }
+
+  return data;
 }
 
 export async function deleteAttraction(id: string): Promise<boolean> {
-    try {
-        const success = await dbDeleteAttraction(id);
-        if (success) {
-            logInfo("ATTRACTION_DELETED", `Attraction deleted and persisted: ${id}`, { attractionId: id });
-        }
-        return success;
-    } catch (error) {
-        logError("ATTRACTION_DELETE_FAILED", `Failed to delete attraction: ${id}`, { error });
-        return false;
-    }
+  // Soft delete - set is_active to false
+  const { error } = await supabase
+    .from('attractions')
+    .update({ is_active: false })
+    .eq('id', id);
+
+  if (error) {
+    console.error('[AttractionStore] Error deleting attraction:', error);
+    throw new Error('Failed to delete attraction');
+  }
+
+  return true;
 }

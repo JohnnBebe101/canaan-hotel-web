@@ -47,12 +47,11 @@ export default function EditRoomPage() {
     setSaving(true);
 
     try {
-      // Validate required fields
       if (!room.name.trim()) {
         throw new Error("Room name is required");
       }
 
-      if (!room.pricePerNight || room.pricePerNight <= 0) {
+      if (!room.price_per_night || room.price_per_night <= 0) {
         throw new Error("Valid price is required");
       }
 
@@ -63,9 +62,9 @@ export default function EditRoomPage() {
           id: room.id,
           name: room.name.trim(),
           description: room.description.trim(),
-          pricePerNight: room.pricePerNight,
-          maxGuests: room.maxGuests,
-          isActive: room.isActive
+          price_per_night: room.price_per_night,
+          max_guests: room.max_guests,
+          is_active: room.is_active
         })
       });
 
@@ -165,8 +164,8 @@ export default function EditRoomPage() {
                 <span className="absolute left-3 top-2 text-gray-500">$</span>
                 <input
                   type="number"
-                  value={room.pricePerNight}
-                  onChange={(e) => updateRoom("pricePerNight", parseFloat(e.target.value) || 0)}
+                  value={room.price_per_night}
+                  onChange={(e) => updateRoom("price_per_night", parseFloat(e.target.value) || 0)}
                   className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
                   min="1"
                   step="0.01"
@@ -180,8 +179,8 @@ export default function EditRoomPage() {
                 Maximum Guests
               </label>
               <select
-                value={room.maxGuests}
-                onChange={(e) => updateRoom("maxGuests", parseInt(e.target.value))}
+                value={room.max_guests}
+                onChange={(e) => updateRoom("max_guests", parseInt(e.target.value))}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
               >
                 <option value="1">1 Guest</option>
@@ -208,8 +207,8 @@ export default function EditRoomPage() {
               <input
                 type="checkbox"
                 id="isActive"
-                checked={room.isActive}
-                onChange={(e) => updateRoom("isActive", e.target.checked)}
+                checked={room.is_active}
+                onChange={(e) => updateRoom("is_active", e.target.checked)}
                 className="h-4 w-4 text-amber-600 focus:ring-amber-500 border-gray-300 rounded"
               />
               <label htmlFor="isActive" className="ml-2 block text-sm text-gray-900">

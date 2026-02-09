@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --webpack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -14,7 +14,7 @@
     "node": ">=20.19.6"
   },
   "dependencies": {
-    "lowdb": "^7.0.1",
+    "lowdb": "^6.0.1",
     "nanoid": "^5.1.6",
     "next": "16.1.0",
     "react": "19.2.3",

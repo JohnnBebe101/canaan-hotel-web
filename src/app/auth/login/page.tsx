@@ -2,13 +2,7 @@
 
 import { useState, FormEvent, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-
-/**
- * Admin Login Page
- * Route: /auth/login
- *
- * Handles admin authentication via credentials stored in environment variables
- */
+import Link from "next/link";
 
 function LoginForm() {
   const router = useRouter();
@@ -29,7 +23,7 @@ function LoginForm() {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include", // Include cookies in request/response
+        credentials: "include",
         body: JSON.stringify({ username, password }),
       });
 
@@ -41,16 +35,12 @@ function LoginForm() {
         return;
       }
 
-      // Redirect to dashboard or the originally requested page
       const rawRedirect = searchParams.get("redirect");
       let redirect = "/admin/dashboard";
 
       if (rawRedirect) {
-        // Validate redirect URL - only allow relative paths within admin area
         try {
-          const url = new URL(rawRedirect, "http://localhost"); // Use dummy base for validation
-
-          // Only allow relative paths starting with /admin/
+          const url = new URL(rawRedirect, "http://localhost");
           if (url.pathname.startsWith("/admin/") && url.hostname === "localhost") {
             redirect = rawRedirect;
           }
@@ -59,8 +49,6 @@ function LoginForm() {
         }
       }
 
-      // Use window.location.href for full page reload to ensure cookie is set
-      // This ensures the middleware can read the cookie on the next request
       window.location.href = redirect;
     } catch (err) {
       setError("An error occurred. Please try again.");
@@ -69,36 +57,93 @@ function LoginForm() {
   };
 
   return (
-    <div>
-      <h1>Admin Login</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="username">Username:</label>
-          <input
-            id="username"
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-            disabled={loading}
-          />
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
+      <div className="max-w-md w-full">
+        {/* Logo & Header */}
+        <div className="text-center mb-8">
+          <Link href="/" className="inline-flex items-center gap-3">
+            <img src="/images/logo 2.svg" alt="Canaan International Hotel Logo" className="h-12 w-auto" />
+          </Link>
+          <h1 className="mt-6 text-2xl font-bold text-gray-900 dark:text-white">
+            Admin Portal
+          </h1>
+          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+            Sign in to access the hotel management dashboard
+          </p>
         </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            disabled={loading}
-          />
+
+        {/* Login Card */}
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {error && (
+              <div className="p-4 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
+                <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+              </div>
+            )}
+
+            <div>
+              <label htmlFor="username" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Username
+              </label>
+              <input
+                id="username"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+                disabled={loading}
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-primary transition-colors disabled:opacity-50"
+                placeholder="Enter your username"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                disabled={loading}
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-primary transition-colors disabled:opacity-50"
+                placeholder="Enter your password"
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full flex items-center justify-center py-3 px-4 rounded-lg bg-primary text-white font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 transition-opacity"
+            >
+              {loading ? (
+                <span className="flex items-center gap-2">
+                  <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                  </svg>
+                  Signing in...
+                </span>
+              ) : (
+                "Sign In"
+              )}
+            </button>
+          </form>
+
+          <div className="mt-6 text-center">
+            <Link href="/" className="text-sm text-primary hover:underline">
+              ← Back to Website
+            </Link>
+          </div>
         </div>
-        {error && <div>{error}</div>}
-        <button type="submit" disabled={loading}>
-          {loading ? "Logging in..." : "Login"}
-        </button>
-      </form>
+
+        {/* Footer */}
+        <p className="mt-8 text-center text-xs text-gray-500 dark:text-gray-400">
+          © 2025 Canaan International Hotel. All rights reserved.
+        </p>
+      </div>
     </div>
   );
 }

@@ -5,7 +5,8 @@ import Hero from "../../components/Hero";
 import BookingCard from "../../components/BookingCard";
 import RoomCard from "../../components/RoomCard";
 import OptimizedImage from "../../components/OptimizedImage";
-import Testimonials from "../../components/Testimonials";
+import BlogSection from "../../components/BlogSection";
+import TrustWidgets from "../../components/TrustWidgets";
 import { FEATURED_ROOMS } from "@/lib/featuredRooms";
 
 export const metadata: Metadata = {
@@ -62,6 +63,9 @@ export default function HomePage() {
               </Link>
             </div>
           </section>
+
+          <BlogSection />
+
           <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24" aria-labelledby="why-book-direct">
             <div className="text-center">
               <h2 id="why-book-direct" className="text-3xl font-bold tracking-tight text-text-primary dark:text-background-light">Why Book Direct?</h2>
@@ -100,7 +104,7 @@ export default function HomePage() {
 
 
 
-          <Testimonials />
+          <TrustWidgets />
 
           <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24" aria-labelledby="explore-tigray">
             <div className="text-center">

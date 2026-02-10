@@ -5,15 +5,15 @@ export interface HeroImage {
 
 export const HERO_SLIDER_IMAGES: HeroImage[] = [
   {
-    src: "/images/HotelExterior.svg",
+    src: "/images/Adigrat.svg",
     alt: "Canaan International Hotel Exterior",
   },
   {
-    src: "/images/Lobby.svg",
-    alt: "Hotel Lobby",
+    src: "/images/Compound.svg",
+    alt: "Hotel Exterior View",
   },
   {
-    src: "/images/Garden.svg",
-    alt: "Hotel Garden",
+    src: "/images/Gate.svg",
+    alt: "Hotel Gate",
   },
 ];

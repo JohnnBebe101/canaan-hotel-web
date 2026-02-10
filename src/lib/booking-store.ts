@@ -1,4 +1,4 @@
-import { supabase } from './supabase';
+import { getSupabase } from './supabase';
 
 // ============================================
 // BOOKING STORE (Supabase)
@@ -23,6 +23,7 @@ export interface Booking {
 }
 
 export async function getBookings(): Promise<Booking[]> {
+  const supabase = getSupabase();
   const { data, error } = await supabase
     .from('bookings')
     .select('*')
@@ -37,6 +38,7 @@ export async function getBookings(): Promise<Booking[]> {
 }
 
 export async function getBookingById(id: string): Promise<Booking | null> {
+  const supabase = getSupabase();
   const { data, error } = await supabase
     .from('bookings')
     .select('*')
@@ -53,6 +55,7 @@ export async function getBookingById(id: string): Promise<Booking | null> {
 }
 
 export async function createBooking(booking: Omit<Booking, 'id' | 'created_at'>): Promise<Booking> {
+  const supabase = getSupabase();
   const { data, error } = await supabase
     .from('bookings')
     .insert(booking)
@@ -68,6 +71,7 @@ export async function createBooking(booking: Omit<Booking, 'id' | 'created_at'>)
 }
 
 export async function updateBooking(id: string, updates: Partial<Booking>): Promise<Booking | null> {
+  const supabase = getSupabase();
   const { data, error } = await supabase
     .from('bookings')
     .update(updates)

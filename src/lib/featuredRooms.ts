@@ -12,7 +12,7 @@ export interface FeaturedRoom {
 export const FEATURED_ROOMS: FeaturedRoom[] = [
   {
     slug: "standard-room",
-    imageSrc: "/images/rooms/standard.svg",
+    imageSrc: "/images/Bed-Single.svg",
     imageAlt: "Standard Room with comfortable amenities",
     name: "Standard Room",
     description: "Comfortable room with essential amenities for a pleasant stay.",
@@ -22,7 +22,7 @@ export const FEATURED_ROOMS: FeaturedRoom[] = [
   },
   {
     slug: "deluxe-room",
-    imageSrc: "/images/rooms/deluxe.svg",
+    imageSrc: "/images/Twin-Room.svg",
     imageAlt: "Deluxe Room with premium furnishings",
     name: "Deluxe Room",
     description: "Spacious room with premium furnishings and enhanced amenities.",
@@ -32,7 +32,7 @@ export const FEATURED_ROOMS: FeaturedRoom[] = [
   },
   {
     slug: "suite",
-    imageSrc: "/images/rooms/suite.svg",
+    imageSrc: "/images/Room-Best-View.svg",
     imageAlt: "Luxury Suite with living area",
     name: "Luxury Suite",
     description: "Expansive suite with separate living area and premium finishes.",

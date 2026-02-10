@@ -138,14 +138,6 @@ export default function AboutPage() {
                 <span className="truncate">Explore Our Rooms</span>
               </Link>
             </div>
-            <div className="flex flex-col sm:flex-row gap-2 mt-4">
-              <button className="px-6 py-3 rounded-lg bg-amber-500 hover:bg-amber-600 text-white" data-demo="true">
-                Demo: View Reviews
-              </button>
-              <button className="px-6 py-3 rounded-lg bg-amber-500 hover:bg-amber-600 text-white" data-demo="true">
-                Demo: Community Impact
-              </button>
-            </div>
           </div>
         </section>
       </div>

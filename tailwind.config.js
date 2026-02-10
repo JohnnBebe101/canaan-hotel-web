@@ -7,12 +7,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#f97316',
-        'background-light': '#f8f8f5',
-        'background-dark': '#181611',
-        'text-primary': '#172554',
-        'text-secondary': '#64748b',
-        'border-color': '#e2e8f0',
+        primary: '#f59e0b',
+        'background-light': '#fafaf9',
+        'background-dark': '#0c0a09',
+        'text-primary': '#1c1917',
+        'text-secondary': '#78716c',
+        'border-color': '#e7e5e4',
       },
       fontFamily: {
         display: ['Plus Jakarta Sans', 'Noto Sans', 'sans-serif'],

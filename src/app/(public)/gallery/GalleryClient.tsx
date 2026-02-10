@@ -233,9 +233,7 @@ export default function GalleryClient() {
                 <h2 className="text-3xl font-bold tracking-tight text-text-primary dark:text-background-light mb-4">
                     Ready to Experience It In Person?
                 </h2>
-                <p className="mx-auto max-w-2xl text-text-secondary dark:text-text-secondary/90 mb-8" data-demo="true">
-                    Book your stay today and create your own memories at Canaan International Hotel.
-                </p>
+                <p className="mx-auto max-w-2xl text-text-secondary dark:text-text-secondary/90 mb-8"></p>
                 <a
                     href="/rooms"
                     className="inline-flex items-center justify-center rounded-lg bg-primary px-8 py-4 text-base font-bold text-white transition-opacity hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"

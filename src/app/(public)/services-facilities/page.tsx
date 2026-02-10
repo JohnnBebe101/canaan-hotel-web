@@ -139,12 +139,6 @@ export default function ServicesPage() {
               <span className="truncate">Book Your Stay</span>
             </Link>
             <div className="flex flex-col sm:flex-row gap-3 mt-4">
-              <button className="px-6 py-3 rounded-lg bg-amber-500 hover:bg-amber-600 text-white" data-demo="true">
-                Demo: Service Requests
-              </button>
-              <button className="px-6 py-3 rounded-lg bg-amber-500 hover:bg-amber-600 text-white" data-demo="true">
-                Demo: Facility Booking
-              </button>
             </div>
           </div>
         </div>

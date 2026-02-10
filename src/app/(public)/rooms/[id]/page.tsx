@@ -183,14 +183,6 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
                   <p className="text-xs text-gray-500 dark:text-gray-400">
                     Total for 1 night: <span className="font-bold text-text-primary dark:text-background-light">$120</span>
                   </p>
-                  <div className="flex justify-center gap-2 mt-2">
-                    <span className="inline-block px-2 py-1 rounded-full bg-green-100 text-green-800 text-xs" data-demo="true">
-                      Payment Processed
-                    </span>
-                    <span className="inline-block px-2 py-1 rounded-full bg-primary/10 text-primary text-xs" data-demo="true">
-                      Email Sent
-                    </span>
-                  </div>
                 </div>
               </div>
             </div>
@@ -204,15 +196,7 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
                   <h1 className="text-4xl font-black leading-tight tracking-tighter text-primary dark:text-white">
                     {room?.name || "Comfort Double"}
                   </h1>
-                <div className="flex gap-2">
-                  <span className="inline-block px-2 py-1 rounded-full bg-green-100 text-green-800 text-xs font-medium" data-demo="true">
-                    Available
-                  </span>
-                  <span className="inline-block px-2 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium" data-demo="true">
-                    Best Seller
-                  </span>
                 </div>
-              </div>
               <p className="mt-4 text-base font-normal leading-relaxed">
                 {room?.description || "Experience unparalleled comfort in our spacious room. Perfect for couples or business travelers."}
               </p>

@@ -1,4 +1,4 @@
-import { supabase, type Booking, type Payment, type Room, type Attraction } from './supabase';
+import { getSupabase, type Booking, type Payment, type Room, type Attraction } from './supabase';
 
 // Flag to track if Supabase is connected
 let isConnected = false;
@@ -13,13 +13,14 @@ export async function initializeDatabase(): Promise<boolean> {
   }
 
   try {
+    const supabase = getSupabase();
     const { error } = await supabase.from('rooms').select('count').limit(1);
-    
+
     if (error) {
       console.error('[Database] Connection failed:', error.message);
       return false;
     }
-    
+
     isConnected = true;
     console.log('[Database] Connected to Supabase successfully');
     return true;
@@ -38,6 +39,7 @@ export function isDatabaseAvailable(): boolean {
 // ============================================
 
 export async function getBookings(): Promise<Booking[]> {
+  const supabase = getSupabase();
   const { data, error } = await supabase
     .from('bookings')
     .select('*')
@@ -52,6 +54,7 @@ export async function getBookings(): Promise<Booking[]> {
 }
 
 export async function getBookingById(id: string): Promise<Booking | null> {
+  const supabase = getSupabase();
   const { data, error } = await supabase
     .from('bookings')
     .select('*')
@@ -70,6 +73,7 @@ export async function getBookingById(id: string): Promise<Booking | null> {
 }
 
 export async function createBooking(booking: Omit<Booking, 'id' | 'created_at'>): Promise<Booking> {
+  const supabase = getSupabase();
   const { data, error } = await supabase
     .from('bookings')
     .insert(booking)
@@ -85,6 +89,7 @@ export async function createBooking(booking: Omit<Booking, 'id' | 'created_at'>)
 }
 
 export async function updateBooking(id: string, updates: Partial<Booking>): Promise<Booking> {
+  const supabase = getSupabase();
   const { data, error } = await supabase
     .from('bookings')
     .update(updates)
@@ -101,6 +106,7 @@ export async function updateBooking(id: string, updates: Partial<Booking>): Prom
 }
 
 export async function deleteBooking(id: string): Promise<boolean> {
+  const supabase = getSupabase();
   const { error } = await supabase
     .from('bookings')
     .delete()
@@ -119,6 +125,7 @@ export async function deleteBooking(id: string): Promise<boolean> {
 // ============================================
 
 export async function getRooms(): Promise<Room[]> {
+  const supabase = getSupabase();
   const { data, error } = await supabase
     .from('rooms')
     .select('*')
@@ -134,6 +141,7 @@ export async function getRooms(): Promise<Room[]> {
 }
 
 export async function getRoomById(id: string): Promise<Room | null> {
+  const supabase = getSupabase();
   const { data, error } = await supabase
     .from('rooms')
     .select('*')
@@ -152,6 +160,7 @@ export async function getRoomById(id: string): Promise<Room | null> {
 }
 
 export async function getRoomBySlug(slug: string): Promise<Room | null> {
+  const supabase = getSupabase();
   const slugToName: Record<string, string> = {
     'economy-single': 'Economy Single Room',
     'comfort-double': 'Comfort Double Room',
@@ -180,6 +189,7 @@ export async function getRoomBySlug(slug: string): Promise<Room | null> {
 }
 
 export async function createRoom(room: Omit<Room, 'id' | 'created_at'>): Promise<Room> {
+  const supabase = getSupabase();
   const { data, error } = await supabase
     .from('rooms')
     .insert(room)
@@ -195,6 +205,7 @@ export async function createRoom(room: Omit<Room, 'id' | 'created_at'>): Promise
 }
 
 export async function updateRoom(id: string, updates: Partial<Room>): Promise<Room> {
+  const supabase = getSupabase();
   const { data, error } = await supabase
     .from('rooms')
     .update(updates)
@@ -211,6 +222,7 @@ export async function updateRoom(id: string, updates: Partial<Room>): Promise<Ro
 }
 
 export async function deleteRoom(id: string): Promise<boolean> {
+  const supabase = getSupabase();
   const { error } = await supabase
     .from('rooms')
     .delete()
@@ -229,6 +241,7 @@ export async function deleteRoom(id: string): Promise<boolean> {
 // ============================================
 
 export async function getAttractions(): Promise<Attraction[]> {
+  const supabase = getSupabase();
   const { data, error } = await supabase
     .from('attractions')
     .select('*')
@@ -244,6 +257,7 @@ export async function getAttractions(): Promise<Attraction[]> {
 }
 
 export async function getAttractionById(id: string): Promise<Attraction | null> {
+  const supabase = getSupabase();
   const { data, error } = await supabase
     .from('attractions')
     .select('*')
@@ -262,6 +276,7 @@ export async function getAttractionById(id: string): Promise<Attraction | null> 
 }
 
 export async function createAttraction(attraction: Omit<Attraction, 'id' | 'created_at'>): Promise<Attraction> {
+  const supabase = getSupabase();
   const { data, error } = await supabase
     .from('attractions')
     .insert(attraction)
@@ -277,6 +292,7 @@ export async function createAttraction(attraction: Omit<Attraction, 'id' | 'crea
 }
 
 export async function updateAttraction(id: string, updates: Partial<Attraction>): Promise<Attraction> {
+  const supabase = getSupabase();
   const { data, error } = await supabase
     .from('attractions')
     .update(updates)
@@ -293,6 +309,7 @@ export async function updateAttraction(id: string, updates: Partial<Attraction>)
 }
 
 export async function deleteAttraction(id: string): Promise<boolean> {
+  const supabase = getSupabase();
   const { error } = await supabase
     .from('attractions')
     .delete()
@@ -311,6 +328,7 @@ export async function deleteAttraction(id: string): Promise<boolean> {
 // ============================================
 
 export async function getPayments(): Promise<Payment[]> {
+  const supabase = getSupabase();
   const { data, error } = await supabase
     .from('payments')
     .select('*')
@@ -325,6 +343,7 @@ export async function getPayments(): Promise<Payment[]> {
 }
 
 export async function createPayment(payment: Omit<Payment, 'id' | 'created_at'>): Promise<Payment> {
+  const supabase = getSupabase();
   const { data, error } = await supabase
     .from('payments')
     .insert(payment)
@@ -344,6 +363,8 @@ export async function createPayment(payment: Omit<Payment, 'id' | 'created_at'>)
 // ============================================
 
 export async function getBookingStats() {
+  const supabase = getSupabase();
+
   const { data: totalBookings } = await supabase
     .from('bookings')
     .select('count', { count: 'exact' });

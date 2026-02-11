@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 
 interface HeaderProps {
   variant?: "public" | "admin";
@@ -11,36 +11,12 @@ interface HeaderProps {
 
 export default function Header({ variant = "public", currentPage }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsDropdownOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  const navItems = variant === "public" 
+  const navItems = variant === "public"
     ? [
         { name: "Home", href: "/", current: currentPage === "home" },
         { name: "Rooms", href: "/rooms", current: currentPage === "rooms" },
-        { 
-          name: "Services", 
-          href: "/services", 
-          current: currentPage === "services",
-          dropdown: [
-            { name: "All Services", href: "/services" },
-            { name: "Dining", href: "/services/dining" },
-            { name: "Spa & Wellness", href: "/services/spa" },
-            { name: "Transportation", href: "/services/transportation" }
-          ]
-        },
+        { name: "Services", href: "/services", current: currentPage === "services" },
         { name: "About Us", href: "/about", current: currentPage === "about" },
         { name: "Contact", href: "/contact", current: currentPage === "contact" },
       ]
@@ -86,53 +62,18 @@ export default function Header({ variant = "public", currentPage }: HeaderProps)
           <nav className="hidden md:block">
             <div className="ml-10 flex items-center space-x-8">
               {navItems.map((item) => (
-                item.dropdown ? (
-                  <div key={item.name} className="relative" ref={dropdownRef}>
-                    <button
-                      onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                      className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                        item.current
-                          ? "bg-primary text-white"
-                          : "text-text-primary dark:text-background-light hover:text-primary dark:hover:text-primary hover:bg-background-light/50"
-                      }`}
-                      aria-expanded={isDropdownOpen}
-                      aria-haspopup="true"
-                    >
-                      {item.name}
-                      <span className={`material-symbols-outlined text-sm ml-1 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`}>
-                        expand_more
-                      </span>
-                    </button>
-                    
-                    {isDropdownOpen && (
-                      <div className="absolute top-full left-0 mt-2 w-48 bg-background-light dark:bg-background-dark border border-border-color dark:border-text-secondary/20 rounded-lg shadow-lg py-2 z-50">
-                        {item.dropdown.map((dropdownItem) => (
-                          <Link
-                            key={dropdownItem.name}
-                            href={dropdownItem.href}
-                            className="block px-4 py-2 text-sm text-text-primary dark:text-background-light hover:bg-background-light/50 dark:hover:bg-text-secondary/10 transition-colors"
-                            onClick={() => setIsDropdownOpen(false)}
-                          >
-                            {dropdownItem.name}
-                          </Link>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                      item.current
-                        ? "bg-primary text-white"
-                        : "text-text-primary dark:text-background-light hover:text-primary dark:hover:text-primary hover:bg-background-light/50"
-                    }`}
-                    aria-current={item.current ? "page" : undefined}
-                  >
-                    {item.name}
-                  </Link>
-                )
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    item.current
+                      ? "bg-primary text-white"
+                      : "text-text-primary dark:text-background-light hover:text-primary dark:hover:text-primary hover:bg-background-light/50"
+                  }`}
+                  aria-current={item.current ? "page" : undefined}
+                >
+                  {item.name}
+                </Link>
               ))}
             </div>
           </nav>
@@ -149,41 +90,11 @@ export default function Header({ variant = "public", currentPage }: HeaderProps)
               </Link>
             )}
             
-            {/* Demo Controls - Desktop */}
-            <div className="hidden md:flex items-center gap-1">
-              <span className="text-xs text-text-secondary dark:text-text-secondary/90 mr-1">Demo:</span>
-              <button 
-                type="button" 
-                className="flex h-8 w-8 cursor-pointer items-center justify-center overflow-hidden rounded bg-background-light text-text-primary ring-1 ring-inset ring-border-color hover:bg-border-color dark:bg-background-dark dark:text-background-light dark:ring-text-secondary dark:hover:bg-text-secondary/20"
-                aria-label="Demo: Admin Dashboard" 
-                title="Demo: Admin Dashboard"
-                data-demo="true"
-              >
-                <span className="material-symbols-outlined text-sm" aria-hidden="true">admin_panel_settings</span>
-              </button>
-              <button 
-                type="button" 
-                className="flex h-8 w-8 cursor-pointer items-center justify-center overflow-hidden rounded bg-background-light text-text-primary ring-1 ring-inset ring-border-color hover:bg-border-color dark:bg-background-dark dark:text-background-light dark:ring-text-secondary dark:hover:bg-text-secondary/20"
-                aria-label="Demo: CRM System" 
-                title="Demo: CRM System"
-                data-demo="true"
-              >
-                <span className="material-symbols-outlined text-sm" aria-hidden="true">people</span>
-              </button>
-            </div>
-            
-            {/* Status Badges */}
-            <div className="hidden md:flex items-center gap-2 ml-2">
-              <span className="inline-block px-2 py-1 rounded-full bg-green-100 text-green-800 text-xs font-medium" data-demo="true">Live</span>
-              <span className="inline-block px-2 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-medium" data-demo="true">Tier-3</span>
-            </div>
-            
             {/* Language Selector */}
             <button 
               type="button" 
               className="flex h-10 w-10 cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-background-light text-text-primary ring-1 ring-inset ring-border-color hover:bg-border-color dark:bg-background-dark dark:text-background-light dark:ring-text-secondary dark:hover:bg-text-secondary/20"
               aria-label="Change language" 
-              data-demo="true"
             >
               <span className="material-symbols-outlined text-xl" aria-hidden="true">language</span>
             </button>
@@ -225,41 +136,19 @@ export default function Header({ variant = "public", currentPage }: HeaderProps)
       >
         <div className="px-4 py-4 space-y-2">
           {navItems.map((item) => (
-            item.dropdown ? (
-              <div key={item.name} className="space-y-1">
-                <div className={`px-3 py-2 rounded-md text-base font-medium ${
-                  item.current ? "bg-primary text-white" : "text-text-primary dark:text-background-light"
-                }`}>
-                  {item.name}
-                </div>
-                <div className="ml-4 space-y-1">
-                  {item.dropdown.map((dropdownItem) => (
-                    <Link
-                      key={dropdownItem.name}
-                      href={dropdownItem.href}
-                      className="block px-3 py-2 rounded-md text-sm text-text-secondary dark:text-text-secondary/90 hover:text-primary dark:hover:text-primary hover:bg-background-light/50 transition-colors"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      {dropdownItem.name}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${
-                  item.current
-                    ? "bg-primary text-white"
-                    : "text-text-primary dark:text-background-light hover:text-primary dark:hover:text-primary hover:bg-background-light/50"
-                }`}
-                aria-current={item.current ? "page" : undefined}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {item.name}
-              </Link>
-            )
+            <Link
+              key={item.name}
+              href={item.href}
+              className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${
+                item.current
+                  ? "bg-primary text-white"
+                  : "text-text-primary dark:text-background-light hover:text-primary dark:hover:text-primary hover:bg-background-light/50"
+              }`}
+              aria-current={item.current ? "page" : undefined}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              {item.name}
+            </Link>
           ))}
         </div>
       </div>

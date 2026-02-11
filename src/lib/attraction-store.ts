@@ -1,7 +1,8 @@
 import { supabase } from './supabase';
+import { offlineStorage } from './offline-storage';
 
 // ============================================
-// ATTRACTION STORE (Supabase)
+// ATTRACTION STORE (Supabase with Offline Fallback)
 // ============================================
 
 export interface Attraction {
@@ -16,78 +17,85 @@ export interface Attraction {
 }
 
 export async function getAttractions(): Promise<Attraction[]> {
-  const { data, error } = await supabase
-    .from('attractions')
-    .select('*')
-    .eq('is_active', true)
-    .order('name');
+  try {
+    const { data, error } = await supabase
+      .from('attractions')
+      .select('*')
+      .eq('is_active', true)
+      .order('name');
 
-  if (error) {
-    console.error('[AttractionStore] Error fetching attractions:', error);
-    throw new Error('Failed to fetch attractions');
+    if (error) throw error;
+    return data || [];
+  } catch (error) {
+    console.warn('[AttractionStore] Supabase unavailable, using offline storage');
+    return offlineStorage.getAttractions();
   }
-
-  return data || [];
 }
 
 export async function getAttractionById(id: string): Promise<Attraction | null> {
-  const { data, error } = await supabase
-    .from('attractions')
-    .select('*')
-    .eq('id', id)
-    .single();
+  try {
+    const { data, error } = await supabase
+      .from('attractions')
+      .select('*')
+      .eq('id', id)
+      .single();
 
-  if (error) {
-    if (error.code === 'PGRST116') return null;
-    console.error('[AttractionStore] Error fetching attraction:', error);
-    throw new Error('Failed to fetch attraction');
+    if (error) {
+      if (error.code === 'PGRST116') return null;
+      throw error;
+    }
+    return data;
+  } catch (error) {
+    console.warn('[AttractionStore] Supabase unavailable, using offline storage');
+    const attractions = offlineStorage.getAttractions();
+    return attractions.find(a => a.id === id) || null;
   }
-
-  return data;
 }
 
 export async function createAttraction(attraction: Omit<Attraction, 'id' | 'created_at'>): Promise<Attraction> {
-  const { data, error } = await supabase
-    .from('attractions')
-    .insert(attraction)
-    .select()
-    .single();
+  try {
+    const { data, error } = await supabase
+      .from('attractions')
+      .insert(attraction)
+      .select()
+      .single();
 
-  if (error) {
-    console.error('[AttractionStore] Error creating attraction:', error);
-    throw new Error('Failed to create attraction');
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.warn('[AttractionStore] Supabase unavailable, using offline storage');
+    return offlineStorage.createAttraction(attraction);
   }
-
-  return data;
 }
 
 export async function updateAttraction(id: string, updates: Partial<Attraction>): Promise<Attraction | null> {
-  const { data, error } = await supabase
-    .from('attractions')
-    .update(updates)
-    .eq('id', id)
-    .select()
-    .single();
+  try {
+    const { data, error } = await supabase
+      .from('attractions')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
 
-  if (error) {
-    console.error('[AttractionStore] Error updating attraction:', error);
-    throw new Error('Failed to update attraction');
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.warn('[AttractionStore] Supabase unavailable, using offline storage');
+    return offlineStorage.updateAttraction(id, updates);
   }
-
-  return data;
 }
 
 export async function deleteAttraction(id: string): Promise<boolean> {
-  // Soft delete - set is_active to false
-  const { error } = await supabase
-    .from('attractions')
-    .update({ is_active: false })
-    .eq('id', id);
+  try {
+    const { error } = await supabase
+      .from('attractions')
+      .update({ is_active: false })
+      .eq('id', id);
 
-  if (error) {
-    console.error('[AttractionStore] Error deleting attraction:', error);
-    throw new Error('Failed to delete attraction');
+    if (error) throw error;
+    return true;
+  } catch (error) {
+    console.warn('[AttractionStore] Supabase unavailable, using offline storage');
+    return offlineStorage.deleteAttraction(id);
   }
-
-  return true;
 }

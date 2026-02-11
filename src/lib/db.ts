@@ -1,4 +1,5 @@
 import { getSupabase, type Booking, type Payment, type Room, type Attraction } from './supabase';
+import { offlineStorage } from './offline-storage';
 
 // Flag to track if Supabase is connected
 let isConnected = false;
@@ -35,361 +36,388 @@ export function isDatabaseAvailable(): boolean {
 }
 
 // ============================================
-// BOOKINGS OPERATIONS
+// BOOKINGS OPERATIONS (with Offline Fallback)
 // ============================================
 
 export async function getBookings(): Promise<Booking[]> {
-  const supabase = getSupabase();
-  const { data, error } = await supabase
-    .from('bookings')
-    .select('*')
-    .order('created_at', { ascending: false });
+  try {
+    const supabase = getSupabase();
+    const { data, error } = await supabase
+      .from('bookings')
+      .select('*')
+      .order('created_at', { ascending: false });
 
-  if (error) {
-    console.error('[Database] Error fetching bookings:', error);
-    throw new Error('Failed to fetch bookings');
+    if (error) throw error;
+    return data || [];
+  } catch (error) {
+    console.warn('[Database] Using offline storage for bookings');
+    return offlineStorage.getBookings();
   }
-
-  return data || [];
 }
 
 export async function getBookingById(id: string): Promise<Booking | null> {
-  const supabase = getSupabase();
-  const { data, error } = await supabase
-    .from('bookings')
-    .select('*')
-    .eq('id', id)
-    .single();
+  try {
+    const supabase = getSupabase();
+    const { data, error } = await supabase
+      .from('bookings')
+      .select('*')
+      .eq('id', id)
+      .single();
 
-  if (error) {
-    if (error.code === 'PGRST116') {
-      return null;
+    if (error) {
+      if (error.code === 'PGRST116') return null;
+      throw error;
     }
-    console.error('[Database] Error fetching booking:', error);
-    throw new Error('Failed to fetch booking');
+    return data;
+  } catch (error) {
+    console.warn('[Database] Using offline storage for booking');
+    return offlineStorage.getBooking(id);
   }
-
-  return data;
 }
 
 export async function createBooking(booking: Omit<Booking, 'id' | 'created_at'>): Promise<Booking> {
-  const supabase = getSupabase();
-  const { data, error } = await supabase
-    .from('bookings')
-    .insert(booking)
-    .select()
-    .single();
+  try {
+    const supabase = getSupabase();
+    const { data, error } = await supabase
+      .from('bookings')
+      .insert(booking)
+      .select()
+      .single();
 
-  if (error) {
-    console.error('[Database] Error creating booking:', error);
-    throw new Error('Failed to create booking');
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.warn('[Database] Using offline storage for createBooking');
+    return offlineStorage.createBooking(booking);
   }
-
-  return data;
 }
 
 export async function updateBooking(id: string, updates: Partial<Booking>): Promise<Booking> {
-  const supabase = getSupabase();
-  const { data, error } = await supabase
-    .from('bookings')
-    .update(updates)
-    .eq('id', id)
-    .select()
-    .single();
+  try {
+    const supabase = getSupabase();
+    const { data, error } = await supabase
+      .from('bookings')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
 
-  if (error) {
-    console.error('[Database] Error updating booking:', error);
-    throw new Error('Failed to update booking');
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.warn('[Database] Using offline storage for updateBooking');
+    const result = offlineStorage.updateBooking(id, updates);
+    if (!result) throw new Error('Booking not found');
+    return result;
   }
-
-  return data;
 }
 
 export async function deleteBooking(id: string): Promise<boolean> {
-  const supabase = getSupabase();
-  const { error } = await supabase
-    .from('bookings')
-    .delete()
-    .eq('id', id);
-
-  if (error) {
-    console.error('[Database] Error deleting booking:', error);
-    throw new Error('Failed to delete booking');
+  try {
+    const supabase = getSupabase();
+    const { error } = await supabase.from('bookings').delete().eq('id', id);
+    if (error) throw error;
+    return true;
+  } catch (error) {
+    console.warn('[Database] Using offline storage for deleteBooking');
+    return offlineStorage.deleteBooking(id);
   }
-
-  return true;
 }
 
 // ============================================
-// ROOMS OPERATIONS
+// ROOMS OPERATIONS (with Offline Fallback)
 // ============================================
 
 export async function getRooms(): Promise<Room[]> {
-  const supabase = getSupabase();
-  const { data, error } = await supabase
-    .from('rooms')
-    .select('*')
-    .eq('is_active', true)
-    .order('price_per_night', { ascending: true });
+  try {
+    const supabase = getSupabase();
+    const { data, error } = await supabase
+      .from('rooms')
+      .select('*')
+      .eq('is_active', true)
+      .order('price_per_night', { ascending: true });
 
-  if (error) {
-    console.error('[Database] Error fetching rooms:', error);
-    throw new Error('Failed to fetch rooms');
+    if (error) throw error;
+    return data || [];
+  } catch (error) {
+    console.warn('[Database] Using offline storage for rooms');
+    return offlineStorage.getRooms();
   }
-
-  return data || [];
 }
 
 export async function getRoomById(id: string): Promise<Room | null> {
-  const supabase = getSupabase();
-  const { data, error } = await supabase
-    .from('rooms')
-    .select('*')
-    .eq('id', id)
-    .single();
+  try {
+    const supabase = getSupabase();
+    const { data, error } = await supabase
+      .from('rooms')
+      .select('*')
+      .eq('id', id)
+      .single();
 
-  if (error) {
-    if (error.code === 'PGRST116') {
-      return null;
+    if (error) {
+      if (error.code === 'PGRST116') return null;
+      throw error;
     }
-    console.error('[Database] Error fetching room:', error);
-    throw new Error('Failed to fetch room');
+    return data;
+  } catch (error) {
+    console.warn('[Database] Using offline storage for room');
+    const rooms = offlineStorage.getRooms();
+    return rooms.find(r => r.id === id) || null;
   }
-
-  return data;
 }
 
 export async function getRoomBySlug(slug: string): Promise<Room | null> {
-  const supabase = getSupabase();
-  const slugToName: Record<string, string> = {
-    'economy-single': 'Economy Single Room',
-    'comfort-double': 'Comfort Double Room',
-    'family-suite': 'Family Suite',
-    'deluxe': 'Deluxe Ocean Suite',
-    'executive': 'Executive Garden Room',
-  };
+  try {
+    const supabase = getSupabase();
+    const slugToName: Record<string, string> = {
+      'standard-room': 'Standard Room',
+      'deluxe-room': 'Deluxe Room',
+      'family-room': 'Family Room',
+      'suite': 'Luxury Suite',
+    };
 
-  const roomName = slugToName[slug.toLowerCase()] || slug;
+    const roomName = slugToName[slug.toLowerCase()] || slug;
 
-  const { data, error } = await supabase
-    .from('rooms')
-    .select('*')
-    .ilike('name', roomName)
-    .single();
+    const { data, error } = await supabase
+      .from('rooms')
+      .select('*')
+      .ilike('name', roomName)
+      .single();
 
-  if (error) {
-    if (error.code === 'PGRST116') {
-      return null;
+    if (error) {
+      if (error.code === 'PGRST116') return null;
+      throw error;
     }
-    console.error('[Database] Error fetching room by slug:', error);
-    throw new Error('Failed to fetch room');
+    return data;
+  } catch (error) {
+    console.warn('[Database] Using offline storage for room by slug');
+    const rooms = offlineStorage.getRooms();
+    return rooms.find(r => 
+      r.name.toLowerCase().replace(/\s+/g, '-') === slug.toLowerCase()
+    ) || null;
   }
-
-  return data;
 }
 
 export async function createRoom(room: Omit<Room, 'id' | 'created_at'>): Promise<Room> {
-  const supabase = getSupabase();
-  const { data, error } = await supabase
-    .from('rooms')
-    .insert(room)
-    .select()
-    .single();
+  try {
+    const supabase = getSupabase();
+    const { data, error } = await supabase
+      .from('rooms')
+      .insert(room)
+      .select()
+      .single();
 
-  if (error) {
-    console.error('[Database] Error creating room:', error);
-    throw new Error('Failed to create room');
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.warn('[Database] Using offline storage for createRoom');
+    return offlineStorage.createRoom(room);
   }
-
-  return data;
 }
 
 export async function updateRoom(id: string, updates: Partial<Room>): Promise<Room> {
-  const supabase = getSupabase();
-  const { data, error } = await supabase
-    .from('rooms')
-    .update(updates)
-    .eq('id', id)
-    .select()
-    .single();
+  try {
+    const supabase = getSupabase();
+    const { data, error } = await supabase
+      .from('rooms')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
 
-  if (error) {
-    console.error('[Database] Error updating room:', error);
-    throw new Error('Failed to update room');
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.warn('[Database] Using offline storage for updateRoom');
+    const result = offlineStorage.updateRoom(id, updates);
+    if (!result) throw new Error('Room not found');
+    return result;
   }
-
-  return data;
 }
 
 export async function deleteRoom(id: string): Promise<boolean> {
-  const supabase = getSupabase();
-  const { error } = await supabase
-    .from('rooms')
-    .delete()
-    .eq('id', id);
-
-  if (error) {
-    console.error('[Database] Error deleting room:', error);
-    throw new Error('Failed to delete room');
+  try {
+    const supabase = getSupabase();
+    const { error } = await supabase.from('rooms').delete().eq('id', id);
+    if (error) throw error;
+    return true;
+  } catch (error) {
+    console.warn('[Database] Using offline storage for deleteRoom');
+    return offlineStorage.deleteRoom(id);
   }
-
-  return true;
 }
 
 // ============================================
-// ATTRACTIONS OPERATIONS
+// ATTRACTIONS OPERATIONS (with Offline Fallback)
 // ============================================
 
 export async function getAttractions(): Promise<Attraction[]> {
-  const supabase = getSupabase();
-  const { data, error } = await supabase
-    .from('attractions')
-    .select('*')
-    .eq('is_active', true)
-    .order('name');
+  try {
+    const supabase = getSupabase();
+    const { data, error } = await supabase
+      .from('attractions')
+      .select('*')
+      .eq('is_active', true)
+      .order('name');
 
-  if (error) {
-    console.error('[Database] Error fetching attractions:', error);
-    throw new Error('Failed to fetch attractions');
+    if (error) throw error;
+    return data || [];
+  } catch (error) {
+    console.warn('[Database] Using offline storage for attractions');
+    return offlineStorage.getAttractions();
   }
-
-  return data || [];
 }
 
 export async function getAttractionById(id: string): Promise<Attraction | null> {
-  const supabase = getSupabase();
-  const { data, error } = await supabase
-    .from('attractions')
-    .select('*')
-    .eq('id', id)
-    .single();
+  try {
+    const supabase = getSupabase();
+    const { data, error } = await supabase
+      .from('attractions')
+      .select('*')
+      .eq('id', id)
+      .single();
 
-  if (error) {
-    if (error.code === 'PGRST116') {
-      return null;
+    if (error) {
+      if (error.code === 'PGRST116') return null;
+      throw error;
     }
-    console.error('[Database] Error fetching attraction:', error);
-    throw new Error('Failed to fetch attraction');
+    return data;
+  } catch (error) {
+    console.warn('[Database] Using offline storage for attraction');
+    const attractions = offlineStorage.getAttractions();
+    return attractions.find(a => a.id === id) || null;
   }
-
-  return data;
 }
 
 export async function createAttraction(attraction: Omit<Attraction, 'id' | 'created_at'>): Promise<Attraction> {
-  const supabase = getSupabase();
-  const { data, error } = await supabase
-    .from('attractions')
-    .insert(attraction)
-    .select()
-    .single();
+  try {
+    const supabase = getSupabase();
+    const { data, error } = await supabase
+      .from('attractions')
+      .insert(attraction)
+      .select()
+      .single();
 
-  if (error) {
-    console.error('[Database] Error creating attraction:', error);
-    throw new Error('Failed to create attraction');
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.warn('[Database] Using offline storage for createAttraction');
+    return offlineStorage.createAttraction(attraction);
   }
-
-  return data;
 }
 
 export async function updateAttraction(id: string, updates: Partial<Attraction>): Promise<Attraction> {
-  const supabase = getSupabase();
-  const { data, error } = await supabase
-    .from('attractions')
-    .update(updates)
-    .eq('id', id)
-    .select()
-    .single();
+  try {
+    const supabase = getSupabase();
+    const { data, error } = await supabase
+      .from('attractions')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
 
-  if (error) {
-    console.error('[Database] Error updating attraction:', error);
-    throw new Error('Failed to update attraction');
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.warn('[Database] Using offline storage for updateAttraction');
+    const result = offlineStorage.updateAttraction(id, updates);
+    if (!result) throw new Error('Attraction not found');
+    return result;
   }
-
-  return data;
 }
 
 export async function deleteAttraction(id: string): Promise<boolean> {
-  const supabase = getSupabase();
-  const { error } = await supabase
-    .from('attractions')
-    .delete()
-    .eq('id', id);
-
-  if (error) {
-    console.error('[Database] Error deleting attraction:', error);
-    throw new Error('Failed to delete attraction');
+  try {
+    const supabase = getSupabase();
+    const { error } = await supabase.from('attractions').delete().eq('id', id);
+    if (error) throw error;
+    return true;
+  } catch (error) {
+    console.warn('[Database] Using offline storage for deleteAttraction');
+    return offlineStorage.deleteAttraction(id);
   }
-
-  return true;
 }
 
 // ============================================
-// PAYMENTS OPERATIONS
+// PAYMENTS OPERATIONS (with Offline Fallback)
 // ============================================
 
 export async function getPayments(): Promise<Payment[]> {
-  const supabase = getSupabase();
-  const { data, error } = await supabase
-    .from('payments')
-    .select('*')
-    .order('created_at', { ascending: false });
+  try {
+    const supabase = getSupabase();
+    const { data, error } = await supabase
+      .from('payments')
+      .select('*')
+      .order('created_at', { ascending: false });
 
-  if (error) {
-    console.error('[Database] Error fetching payments:', error);
-    throw new Error('Failed to fetch payments');
+    if (error) throw error;
+    return data || [];
+  } catch (error) {
+    console.warn('[Database] Using offline storage for payments');
+    return offlineStorage.getPayments();
   }
-
-  return data || [];
 }
 
 export async function createPayment(payment: Omit<Payment, 'id' | 'created_at'>): Promise<Payment> {
-  const supabase = getSupabase();
-  const { data, error } = await supabase
-    .from('payments')
-    .insert(payment)
-    .select()
-    .single();
+  try {
+    const supabase = getSupabase();
+    const { data, error } = await supabase
+      .from('payments')
+      .insert(payment)
+      .select()
+      .single();
 
-  if (error) {
-    console.error('[Database] Error creating payment:', error);
-    throw new Error('Failed to create payment');
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.warn('[Database] Using offline storage for createPayment');
+    return offlineStorage.createPayment(payment);
   }
-
-  return data;
 }
 
 // ============================================
-// UTILITY FUNCTIONS
+// UTILITY FUNCTIONS (with Offline Fallback)
 // ============================================
 
 export async function getBookingStats() {
-  const supabase = getSupabase();
+  try {
+    const supabase = getSupabase();
 
-  const { data: totalBookings } = await supabase
-    .from('bookings')
-    .select('count', { count: 'exact' });
+    const { data: totalBookings } = await supabase
+      .from('bookings')
+      .select('count', { count: 'exact' });
 
-  const { data: confirmedBookings } = await supabase
-    .from('bookings')
-    .select('count', { count: 'exact' })
-    .eq('status', 'confirmed');
+    const { data: confirmedBookings } = await supabase
+      .from('bookings')
+      .select('count', { count: 'exact' })
+      .eq('status', 'confirmed');
 
-  const { data: pendingBookings } = await supabase
-    .from('bookings')
-    .select('count', { count: 'exact' })
-    .eq('status', 'pending');
+    const { data: pendingBookings } = await supabase
+      .from('bookings')
+      .select('count', { count: 'exact' })
+      .eq('status', 'pending');
 
-  const { data: revenueData } = await supabase
-    .from('bookings')
-    .select('total_price')
-    .eq('status', 'confirmed');
+    const { data: revenueData } = await supabase
+      .from('bookings')
+      .select('total_price')
+      .eq('status', 'confirmed');
 
-  const revenue = revenueData?.reduce((sum, b) => sum + (b.total_price || 0), 0) || 0;
+    const revenue = revenueData?.reduce((sum, b) => sum + (b.total_price || 0), 0) || 0;
 
-  return {
-    totalBookings: totalBookings?.[0]?.count || 0,
-    confirmedBookings: confirmedBookings?.[0]?.count || 0,
-    pendingBookings: pendingBookings?.[0]?.count || 0,
-    totalRevenue: revenue,
-  };
+    return {
+      totalBookings: totalBookings?.[0]?.count || 0,
+      confirmedBookings: confirmedBookings?.[0]?.count || 0,
+      pendingBookings: pendingBookings?.[0]?.count || 0,
+      totalRevenue: revenue,
+    };
+  } catch (error) {
+    console.warn('[Database] Using offline storage for stats');
+    const stats = offlineStorage.getStats();
+    return {
+      totalBookings: stats.totalBookings,
+      confirmedBookings: stats.confirmedBookings,
+      pendingBookings: stats.pendingBookings,
+      totalRevenue: 0,
+    };
+  }
 }

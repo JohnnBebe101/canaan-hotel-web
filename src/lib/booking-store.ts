@@ -1,7 +1,8 @@
 import { getSupabase } from './supabase';
+import { offlineStorage } from './offline-storage';
 
 // ============================================
-// BOOKING STORE (Supabase)
+// BOOKING STORE (Supabase with Offline Fallback)
 // ============================================
 
 export interface Booking {
@@ -23,66 +24,84 @@ export interface Booking {
 }
 
 export async function getBookings(): Promise<Booking[]> {
-  const supabase = getSupabase();
-  const { data, error } = await supabase
-    .from('bookings')
-    .select('*')
-    .order('created_at', { ascending: false });
+  try {
+    const supabase = getSupabase();
+    const { data, error } = await supabase
+      .from('bookings')
+      .select('*')
+      .order('created_at', { ascending: false });
 
-  if (error) {
-    console.error('[BookingStore] Error fetching bookings:', error);
-    throw new Error('Failed to fetch bookings');
+    if (error) throw error;
+    return data || [];
+  } catch (error) {
+    console.warn('[BookingStore] Using offline storage');
+    return offlineStorage.getBookings();
   }
-
-  return data || [];
 }
 
 export async function getBookingById(id: string): Promise<Booking | null> {
-  const supabase = getSupabase();
-  const { data, error } = await supabase
-    .from('bookings')
-    .select('*')
-    .eq('id', id)
-    .single();
+  try {
+    const supabase = getSupabase();
+    const { data, error } = await supabase
+      .from('bookings')
+      .select('*')
+      .eq('id', id)
+      .single();
 
-  if (error) {
-    if (error.code === 'PGRST116') return null;
-    console.error('[BookingStore] Error fetching booking:', error);
-    throw new Error('Failed to fetch booking');
+    if (error) {
+      if (error.code === 'PGRST116') return null;
+      throw error;
+    }
+    return data;
+  } catch (error) {
+    console.warn('[BookingStore] Using offline storage');
+    return offlineStorage.getBooking(id);
   }
-
-  return data;
 }
 
 export async function createBooking(booking: Omit<Booking, 'id' | 'created_at'>): Promise<Booking> {
-  const supabase = getSupabase();
-  const { data, error } = await supabase
-    .from('bookings')
-    .insert(booking)
-    .select()
-    .single();
+  try {
+    const supabase = getSupabase();
+    const { data, error } = await supabase
+      .from('bookings')
+      .insert(booking)
+      .select()
+      .single();
 
-  if (error) {
-    console.error('[BookingStore] Error creating booking:', error);
-    throw new Error('Failed to create booking');
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.warn('[BookingStore] Using offline storage');
+    return offlineStorage.createBooking(booking);
   }
-
-  return data;
 }
 
 export async function updateBooking(id: string, updates: Partial<Booking>): Promise<Booking | null> {
-  const supabase = getSupabase();
-  const { data, error } = await supabase
-    .from('bookings')
-    .update(updates)
-    .eq('id', id)
-    .select()
-    .single();
+  try {
+    const supabase = getSupabase();
+    const { data, error } = await supabase
+      .from('bookings')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
 
-  if (error) {
-    console.error('[BookingStore] Error updating booking:', error);
-    throw new Error('Failed to update booking');
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.warn('[BookingStore] Using offline storage');
+    return offlineStorage.updateBooking(id, updates);
   }
+}
 
-  return data;
+export async function deleteBooking(id: string): Promise<boolean> {
+  try {
+    const supabase = getSupabase();
+    const { error } = await supabase.from('bookings').delete().eq('id', id);
+    if (error) throw error;
+    return true;
+  } catch (error) {
+    console.warn('[BookingStore] Using offline storage');
+    return offlineStorage.deleteBooking(id);
+  }
 }

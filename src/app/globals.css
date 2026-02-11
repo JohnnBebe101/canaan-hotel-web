@@ -23,7 +23,7 @@
   position: absolute;
   top: -40px;
   left: 0;
-  background: #f59e0b;
+  background: #d4b996;
   color: white;
   padding: 8px;
   text-decoration: none;
@@ -37,7 +37,7 @@
 
 /* Focus styles for accessibility */
 *:focus-visible {
-  outline: 2px solid #f59e0b;
+  outline: 2px solid #d4b996;
   outline-offset: 2px;
 }
 

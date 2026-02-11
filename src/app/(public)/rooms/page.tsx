@@ -60,6 +60,32 @@ export default function RoomsPage() {
           </div>
         </div>
 
+        <section className="mb-12" aria-labelledby="amenities">
+          <h2 id="amenities" className="text-2xl font-bold tracking-tight text-text-primary dark:text-background-light mb-6">
+            Essential Professional Amenities
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {[
+              { icon: "wifi", text: "High-Speed WiFi" },
+              { icon: "restaurant", text: "Breakfast Included" },
+              { icon: "concierge", text: "24/7 Front Desk" },
+              { icon: "local_parking", text: "Secure Parking" },
+              { icon: "ac_unit", text: "Air Conditioning" },
+              { icon: "room_service", text: "Room Service" },
+            ].map((amenity) => (
+              <div
+                key={amenity.text}
+                className="flex items-center gap-3 p-4 rounded-lg bg-background-light dark:bg-background-dark/50 border border-border-color dark:border-text-secondary/20"
+              >
+                <span className="material-symbols-outlined text-primary">{amenity.icon}</span>
+                <span className="text-sm font-medium text-text-primary dark:text-background-light">
+                  {amenity.text}
+                </span>
+              </div>
+            ))}
+          </div>
+        </section>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {FEATURED_ROOMS.map((room) => (
             <RoomCard

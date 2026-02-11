@@ -115,57 +115,57 @@ export default function HomePage() {
                 <a className="group block overflow-hidden rounded-xl" href="#debre-damo" aria-label="Learn more about Debre Damo Monastery">
                   <div className="relative">
                     <OptimizedImage
-                      src="/images/Adigrat.svg"
-                    alt="The ancient cliff-face monastery of Debre Damo"
-                    width={600}
-                    height={400}
-                    className="h-64 w-full object-cover rounded-xl border border-border-color dark:border-text-secondary/30"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    quality={75}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                  <div className="absolute bottom-0 p-6">
-                    <h3 className="text-xl font-bold text-white">Debre Damo Monastery</h3>
-                    <p className="mt-1 text-sm text-gray-300">An ancient monastery perched atop a flat-topped mountain.</p>
+                      src="/assets/images/Debre-Damo-Abune-Aregawi-monaster--1920x1080.svg"
+                      alt="The ancient cliff-face monastery of Debre Damo"
+                      width={600}
+                      height={400}
+                      className="h-64 w-full object-cover rounded-xl border border-border-color dark:border-text-secondary/30"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      quality={75}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div className="absolute bottom-0 p-6">
+                      <h3 className="text-xl font-bold text-white">Debre Damo Monastery</h3>
+                      <p className="mt-1 text-sm text-gray-300">An ancient monastery perched atop a flat-topped mountain.</p>
+                    </div>
                   </div>
-                </div>
-              </a>
+                </a>
                 <a className="group block overflow-hidden rounded-xl" href="#gheralta" aria-label="Learn more about Gheralta Mountains">
                   <div className="relative">
                     <OptimizedImage
-                      src="/images/Adigrat.svg"
-                    alt="Dramatic sandstone cliffs of the Gheralta Mountains at sunset"
-                    width={600}
-                    height={400}
-                    className="h-64 w-full object-cover rounded-xl border border-border-color dark:border-text-secondary/30"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    quality={75}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                  <div className="absolute bottom-0 p-6">
-                    <h3 className="text-xl font-bold text-white">Gheralta Mountains</h3>
-                    <p className="mt-1 text-sm text-gray-300">Home to stunning rock-hewn churches and panoramic views.</p>
+                      src="/assets/images/Gheralta.svg"
+                      alt="Dramatic sandstone cliffs of the Gheralta Mountains at sunset"
+                      width={600}
+                      height={400}
+                      className="h-64 w-full object-cover rounded-xl border border-border-color dark:border-text-secondary/30"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      quality={75}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div className="absolute bottom-0 p-6">
+                      <h3 className="text-xl font-bold text-white">Gheralta Mountains</h3>
+                      <p className="mt-1 text-sm text-gray-300">Home to stunning rock-hewn churches and panoramic views.</p>
+                    </div>
                   </div>
-                </div>
-              </a>
+                </a>
                 <a className="group block overflow-hidden rounded-xl" href="#al-nejashi" aria-label="Learn more about Al-Nejashi Mosque">
                   <div className="relative">
                     <OptimizedImage
-                      src="/images/Gate.svg"
-                    alt="The historic Al-Nejashi Mosque with its white minarets"
-                    width={600}
-                    height={400}
-                    className="h-64 w-full object-cover rounded-xl border border-border-color dark:border-text-secondary/30"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    quality={75}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                  <div className="absolute bottom-0 p-6">
-                    <h3 className="text-xl font-bold text-white">Al-Nejashi Mosque</h3>
-                    <p className="mt-1 text-sm text-gray-300">One of the earliest mosques in Africa, a site of great historical importance.</p>
+                      src="/assets/images/Al Najashi5.svg"
+                      alt="The historic Al-Nejashi Mosque with its white minarets"
+                      width={600}
+                      height={400}
+                      className="h-64 w-full object-cover rounded-xl border border-border-color dark:border-text-secondary/30"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      quality={75}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div className="absolute bottom-0 p-6">
+                      <h3 className="text-xl font-bold text-white">Al-Nejashi Mosque</h3>
+                      <p className="mt-1 text-sm text-gray-300">One of the earliest mosques in Africa, a site of great historical importance.</p>
+                    </div>
                   </div>
-                </div>
-              </a>
+                </a>
             </div>
           </section>
           <section className="px-4 py-16 sm:px-6 lg:px-8" aria-labelledby="trusted-partners">

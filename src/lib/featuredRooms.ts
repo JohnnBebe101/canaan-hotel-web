@@ -31,6 +31,16 @@ export const FEATURED_ROOMS: FeaturedRoom[] = [
     rating: 4.8,
   },
   {
+    slug: "family-room",
+    imageSrc: "/images/Room-Larger.svg",
+    imageAlt: "Family Room with multiple beds",
+    name: "Family Room",
+    description: "Spacious accommodation perfect for families, with multiple beds and extra space.",
+    priceLabel: "From $95/night",
+    badges: ["Free WiFi", "Breakfast Included", "Extra Beds"],
+    rating: 4.7,
+  },
+  {
     slug: "suite",
     imageSrc: "/images/Room-Best-View.svg",
     imageAlt: "Luxury Suite with living area",

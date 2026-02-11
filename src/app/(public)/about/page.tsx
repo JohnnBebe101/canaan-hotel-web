@@ -23,16 +23,16 @@ export default function AboutPage() {
                 backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.5) 100%), url("/images/Team.svg")'
               }}
             >
-              <div className="flex flex-col gap-4">
-                <div className="flex justify-center mb-4">
+                <div className="flex flex-col gap-4">
+                  <div className="flex justify-center mb-4">
                   <div className="flex gap-2">
-                    <span className="inline-block px-2 py-1 rounded-full bg-green-100 text-green-800 text-xs font-medium" data-demo="true">
+                    <span className="inline-block px-2 py-1 rounded-full bg-green-100 text-green-800 text-xs font-medium">
                       Established 2010
                     </span>
-                    <span className="inline-block px-2 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-medium" data-demo="true">
+                    <span className="inline-block px-2 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-medium">
                       4.8★ Rating
                     </span>
-                    <span className="inline-block px-2 py-1 rounded-full bg-purple-100 text-purple-800 text-xs font-medium" data-demo="true">
+                    <span className="inline-block px-2 py-1 rounded-full bg-purple-100 text-purple-800 text-xs font-medium">
                       Award Winner
                     </span>
                   </div>

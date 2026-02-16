@@ -36,7 +36,7 @@ export default function Header({ variant = "public", currentPage }: HeaderProps)
             <Link href={variant === "public" ? "/" : "/admin/dashboard"} className="flex items-center gap-3">
               <div className="h-10 w-auto">
                 <Image
-                  src="/images/logo 2.svg"
+                  src="/images/ui/Canaan-logo-100x100.svg"
                   alt="Canaan International Hotel Logo"
                   width={40}
                   height={40}

@@ -62,7 +62,7 @@ function LoginForm() {
         {/* Logo & Header */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-3">
-            <img src="/images/logo 2.svg" alt="Canaan International Hotel Logo" className="h-12 w-auto" />
+            <img src="/images/ui/Canaan-logo-100x100.svg" alt="Canaan International Hotel Logo" className="h-12 w-auto" />
           </Link>
           <h1 className="mt-6 text-2xl font-bold text-gray-900 dark:text-white">
             Admin Portal

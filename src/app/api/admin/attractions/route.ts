@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
       description: body.description?.trim() || "",
       category: body.category?.trim() || "Uncategorized",
       distance: body.distance?.trim() || "Unknown",
-      image: body.image || "/images/Adigrat.svg",
+      image: body.image || "/images/heroes/Ext-Compund.webp",
       is_active: body.is_active !== undefined ? Boolean(body.is_active) : true,
     });
     

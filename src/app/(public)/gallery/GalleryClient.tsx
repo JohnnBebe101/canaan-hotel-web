@@ -15,63 +15,63 @@ interface GalleryImage {
 const galleryImages: GalleryImage[] = [
     {
         id: "1",
-        src: "/images/Compound.svg",
+        src: "/images/heroes/Ext-Compund.webp",
         alt: "Hotel exterior view showing the main building",
         category: "exterior",
         title: "Hotel Exterior",
     },
     {
         id: "2",
-        src: "/images/Gate.svg",
+        src: "/images/heroes/Gate-Corrdor.webp",
         alt: "Hotel entrance with welcoming design",
         category: "exterior",
         title: "Main Entrance",
     },
     {
         id: "3",
-        src: "/images/Room-Larger.svg",
+        src: "/images/rooms/single-room-view.webp",
         alt: "Comfortable hotel room interior",
         category: "rooms",
         title: "Comfort Room",
     },
     {
         id: "4",
-        src: "/images/Twin-Room.svg",
+        src: "/images/rooms/twin-room.webp",
         alt: "Spacious family suite",
         category: "rooms",
         title: "Family Suite",
     },
     {
         id: "5",
-        src: "/images/Room-Bed.svg",
+        src: "/images/rooms/Bed-view-Single.webp",
         alt: "Economy single room with city view",
         category: "rooms",
         title: "Economy Single",
     },
     {
         id: "6",
-        src: "/images/Room-Best-View.svg",
+        src: "/images/rooms/single-room-best-view.webp",
         alt: "Deluxe double room with balcony",
         category: "rooms",
         title: "Deluxe Double",
     },
     {
         id: "7",
-        src: "/images/Adigrat.svg",
+        src: "/images/attractions/Debre-Damo-Abune-Aregawi-monaster--1920x1080.svg",
         alt: "Debre Damo Monastery",
         category: "attractions",
         title: "Debre Damo",
     },
     {
         id: "8",
-        src: "/images/Adigrat.svg",
+        src: "/images/attractions/Gheralta.svg",
         alt: "Gheralta Mountains at sunset",
         category: "attractions",
         title: "Gheralta Mountains",
     },
     {
         id: "9",
-        src: "/images/Gate.svg",
+        src: "/images/attractions/Al Najashi5.svg",
         alt: "Al-Nejashi Mosque historic site",
         category: "attractions",
         title: "Al-Nejashi Mosque",
@@ -101,7 +101,7 @@ export default function GalleryClient() {
                 aria-label="Gallery hero section"
             >
                 <HeroImage
-                    src="/images/Compound.svg"
+                    src="/images/heroes/Ext-Compund.webp"
                     alt="Canaan International Hotel exterior"
                     overlayOpacity={0.5}
                     className="absolute inset-0 -z-10"

@@ -17,13 +17,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Canaan International Hotel - Your Gateway to Tigray's History and Comfort",
     description: "Experience unparalleled hospitality in the heart of Adigrat. Book direct for best rates and exclusive offers.",
-    images: ["/images/Compound.svg"],
+    images: ["/images/heroes/Ext-Compund.webp"],
   },
   twitter: {
     card: "summary_large_image",
     title: "Canaan International Hotel - Your Gateway to Tigray's History and Comfort",
     description: "Experience unparalleled hospitality in the heart of Adigrat.",
-    images: ["/images/Compound.svg"],
+    images: ["/images/heroes/Ext-Compund.webp"],
   },
 };
 
@@ -115,7 +115,7 @@ export default function HomePage() {
                 <a className="group block overflow-hidden rounded-xl" href="#debre-damo" aria-label="Learn more about Debre Damo Monastery">
                   <div className="relative">
                     <OptimizedImage
-                      src="/assets/images/Debre-Damo-Abune-Aregawi-monaster--1920x1080.svg"
+                      src="/images/attractions/Debre-Damo-Abune-Aregawi-monaster--1920x1080.svg"
                       alt="The ancient cliff-face monastery of Debre Damo"
                       width={600}
                       height={400}
@@ -133,7 +133,7 @@ export default function HomePage() {
                 <a className="group block overflow-hidden rounded-xl" href="#gheralta" aria-label="Learn more about Gheralta Mountains">
                   <div className="relative">
                     <OptimizedImage
-                      src="/assets/images/Gheralta.svg"
+                      src="/images/attractions/Gheralta.svg"
                       alt="Dramatic sandstone cliffs of the Gheralta Mountains at sunset"
                       width={600}
                       height={400}
@@ -151,7 +151,7 @@ export default function HomePage() {
                 <a className="group block overflow-hidden rounded-xl" href="#al-nejashi" aria-label="Learn more about Al-Nejashi Mosque">
                   <div className="relative">
                     <OptimizedImage
-                      src="/assets/images/Al Najashi5.svg"
+                      src="/images/attractions/Al Najashi5.svg"
                       alt="The historic Al-Nejashi Mosque with its white minarets"
                       width={600}
                       height={400}

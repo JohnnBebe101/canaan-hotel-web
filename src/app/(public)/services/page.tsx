@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Premium Services & Facilities in Adigrat - Canaan Hotel",
     description: "Explore our amenities including 24-hour concierge, secure parking, and professional business facilities.",
-    images: ["/images/Compound.svg"],
+    images: ["/images/heroes/Ext-Compund.webp"],
   },
 };
 
@@ -23,7 +23,7 @@ export default function ServicesPage() {
           aria-label="Hero section with hotel services"
         >
           <HeroImage
-            src="/images/Compound.svg"
+            src="/images/heroes/Ext-Compund.webp"
             alt="Canaan International Hotel services and facilities"
             overlayOpacity={0.5}
             className="absolute inset-0 -z-10"

@@ -37,7 +37,7 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
                 <Image
                   className="w-full h-full object-cover"
                   alt={`${room?.name || 'Hotel room'} - ${room?.description || 'Comfortable accommodation'}`}
-                  src="/images/Room-Larger.svg"
+                  src="/images/rooms/single-room-view.webp"
                   width={800}
                   height={600}
                   priority
@@ -52,7 +52,7 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
                   <Image
                     className="w-full h-full object-cover cursor-pointer border-2 border-primary"
                     alt="Bedroom view"
-                    src="/images/Bed-Best-View.svg"
+                    src="/images/rooms/single-room-best-view.webp"
                     width={200}
                     height={200}
                   />
@@ -61,7 +61,7 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
                   <Image
                     className="w-full h-full object-cover cursor-pointer opacity-70 hover:opacity-100 transition-opacity"
                     alt="Room amenities"
-                    src="/images/Rooms-Corridor.svg"
+                    src="/images/rooms/corridor-rooms.webp"
                     width={200}
                     height={200}
                   />
@@ -70,7 +70,7 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
                   <Image
                     className="w-full h-full object-cover cursor-pointer opacity-70 hover:opacity-100 transition-opacity"
                     alt="Bathroom facilities"
-                    src="/images/Bath-Portrait.svg"
+                    src="/images/rooms/bath-room.webp"
                     width={200}
                     height={200}
                   />
@@ -79,7 +79,7 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
                   <Image
                     className="w-full h-full object-cover cursor-pointer opacity-70 hover:opacity-100 transition-opacity"
                     alt="The view from the hotel room window."
-                    src="/images/Room-Bed.svg"
+                    src="/images/rooms/Bed-view-Single.webp"
                     width={200}
                     height={200}
                   />

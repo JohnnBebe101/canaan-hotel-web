@@ -24,7 +24,7 @@ export async function generateMetadata({
     openGraph: {
       title: blog.title,
       description: blog.excerpt,
-      images: [blog.featured_image || "/images/Adigrat.svg"],
+      images: [blog.featured_image || "/images/heroes/Ext-Compund.webp"],
     },
   };
 }

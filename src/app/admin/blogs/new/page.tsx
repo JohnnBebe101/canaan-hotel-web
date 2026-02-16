@@ -14,7 +14,7 @@ export default function NewBlogPage() {
     slug: "",
     excerpt: "",
     content: "",
-    featured_image: "/images/Adigrat.svg",
+    featured_image: "/images/heroes/Ext-Compund.webp",
     author: "Canaan Hotel Team",
     is_published: false,
   });

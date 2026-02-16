@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
       slug,
       excerpt: body.excerpt?.trim() || "",
       content: body.content || "",
-      featured_image: body.featured_image || "/images/Adigrat.svg",
+      featured_image: body.featured_image || "/images/heroes/Ext-Compund.webp",
       author: body.author?.trim() || "Canaan Hotel Team",
       is_published: body.is_published || false,
       published_at: body.is_published ? new Date().toISOString() : null,

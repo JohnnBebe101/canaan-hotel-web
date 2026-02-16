@@ -20,7 +20,7 @@ export default function AboutPage() {
               className="flex min-h-[480px] flex-col gap-6 rounded-xl bg-cover bg-center bg-no-repeat @[480px]:gap-8 items-center justify-center p-8 text-center"
               aria-label="Hero section with hotel staff photo"
               style={{
-                backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.5) 100%), url("/images/Team.svg")'
+                backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.5) 100%), url("/images/Team.jpg")'
               }}
             >
                 <div className="flex flex-col gap-4">
@@ -64,7 +64,7 @@ export default function AboutPage() {
             className="w-full bg-center bg-no-repeat bg-cover aspect-square rounded-xl"
             role="img"
             aria-label="A black and white historical photo of the hotel's founder."
-            style={{ backgroundImage: 'url("/images/Adigrat.svg")' }}
+            style={{ backgroundImage: 'url("/images/attractions/Gheralta.svg")' }}
           ></div>
         </section>
 

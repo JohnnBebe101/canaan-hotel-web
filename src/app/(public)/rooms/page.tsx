@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Accommodations at Canaan International Hotel - Adigrat",
     description: "Discover comfortable and elegant rooms designed for a restful stay. Book direct for the best available rates.",
-    images: ["/images/Compound.svg"],
+    images: ["/images/heroes/Ext-Compund.webp"],
   },
 };
 

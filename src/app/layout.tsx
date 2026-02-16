@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     description: "Experience unparalleled hospitality in the heart of Adigrat. Book direct for best rates and exclusive offers.",
     images: [
       {
-        url: "/images/Compound.svg",
+        url: "/images/heroes/Ext-Compund.webp",
         width: 1200,
         height: 630,
         alt: "Canaan International Hotel Exterior",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Canaan International Hotel - Your Gateway to Tigray's History and Comfort",
     description: "Experience unparalleled hospitality in the heart of Adigrat.",
-    images: ["/images/Compound.svg"],
+    images: ["/images/heroes/Ext-Compund.webp"],
   },
 };
 
@@ -47,7 +47,7 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
           rel="stylesheet"
         />
-        <link rel="icon" type="image/svg+xml" href="/images/logo 2.svg" />
+        <link rel="icon" type="image/svg+xml" href="/images/ui/Canaan-logo-100x100.svg" />
       </head>
       <body className="bg-background-light text-text-primary font-display antialiased">
         {children}

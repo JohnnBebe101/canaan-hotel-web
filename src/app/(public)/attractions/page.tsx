@@ -96,7 +96,7 @@ export default function AttractionsPage() {
           aria-label="Local attractions hero section"
         >
           <HeroImage
-            src="/images/Compound.svg"
+            src="/images/heroes/Ext-Compund.webp"
             alt="Beautiful landscape of Tigray region"
             overlayOpacity={0.5}
             className="absolute inset-0 -z-10"

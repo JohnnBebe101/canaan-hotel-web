@@ -32,7 +32,7 @@ export default async function BlogPage() {
             >
               <div className="relative h-48 overflow-hidden">
                 <Image
-                  src={blog.featured_image || "/images/Adigrat.svg"}
+                  src={blog.featured_image || "/images/heroes/Ext-Compund.webp"}
                   alt={blog.title}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-300"

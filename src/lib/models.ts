@@ -1,1 +1,1 @@
-export type { Room, Booking, Payment, Attraction } from './supabase';
+export type { Room, Booking, Payment, Attraction, Blog } from './supabase';

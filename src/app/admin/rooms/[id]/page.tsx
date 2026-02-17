@@ -21,16 +21,13 @@ export default function EditRoomPage() {
   const loadRoom = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/admin/rooms`);
-      if (!response.ok) throw new Error("Failed to load rooms");
-
-      const rooms: Room[] = await response.json();
-      const foundRoom = rooms.find(r => r.id === id);
-
-      if (!foundRoom) {
-        throw new Error("Room not found");
+      const response = await fetch(`/api/admin/rooms/${id}`);
+      if (!response.ok) {
+        if (response.status === 404) throw new Error("Room not found");
+        throw new Error("Failed to load room details");
       }
 
+      const foundRoom = await response.json();
       setRoom(foundRoom);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load room");

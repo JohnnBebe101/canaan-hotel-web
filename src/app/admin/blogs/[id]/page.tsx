@@ -4,17 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 
-interface Blog {
-  id: string;
-  title: string;
-  slug: string;
-  excerpt: string;
-  content: string;
-  featured_image: string;
-  author: string;
-  is_published: boolean;
-  published_at: string | null;
-}
+import { Blog } from "@/lib/models";
 
 export default function EditBlogPage() {
   const router = useRouter();

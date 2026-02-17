@@ -226,12 +226,19 @@ export const offlineStorage = {
   },
 
   // Stats
-  getStats: () => ({
-    totalBookings: storage.bookings.size,
-    totalRooms: storage.rooms.size,
-    totalAttractions: storage.attractions.size,
-    totalBlogs: storage.blogs.size,
-    pendingBookings: Array.from(storage.bookings.values()).filter(b => b.status === 'pending').length,
-    confirmedBookings: Array.from(storage.bookings.values()).filter(b => b.status === 'confirmed').length,
-  }),
+  getStats: () => {
+    const bArr = Array.from(storage.bookings.values());
+    const cArr = bArr.filter(b => b.status === "confirmed");
+    return {
+      totalBookings: storage.bookings.size,
+      totalRooms: storage.rooms.size,
+      totalAttractions: storage.attractions.size,
+      totalBlogs: storage.blogs.size,
+      pendingBookings: bArr.filter(b => b.status === "pending").length,
+      confirmedBookings: cArr.length,
+      totalRevenue: cArr.reduce((s, b) => s + (Number(b.total_price) || 0), 0),
+      activeGuests: cArr.reduce((s, b) => s + (Number(b.number_of_guests) || 0), 0),
+      occupancyRate: Math.round((cArr.length / Math.max(1, storage.rooms.size)) * 100),
+    };
+  },
 };

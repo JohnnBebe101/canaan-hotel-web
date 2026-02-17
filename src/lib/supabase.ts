@@ -2,15 +2,13 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 let supabaseClient: SupabaseClient | null = null;
 
-export function getSupabase(): SupabaseClient {
-  const supabaseUrl = process.env.SUPABASE_URL;
-  const supabaseKey = process.env.SUPABASE_ANON_KEY;
+export function getSupabase(): SupabaseClient | null {
+  const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   if (!supabaseUrl || !supabaseKey) {
-    throw new Error(
-      'Supabase environment variables are missing. ' +
-      'Please set SUPABASE_URL and SUPABASE_ANON_KEY in your environment.'
-    );
+    console.warn('Supabase environment variables are missing. Some features may be unavailable.');
+    return null;
   }
 
   if (!supabaseClient) {
@@ -20,13 +18,14 @@ export function getSupabase(): SupabaseClient {
   return supabaseClient;
 }
 
-export const supabase = getSupabase();
+export const supabase = getSupabase() as SupabaseClient;
 
 // Type definitions for our database
 export interface Booking {
   id: string;
   guest_name: string;
   email: string;
+  phone?: string;
   check_in_date: string;
   check_out_date: string;
   number_of_guests: number;
@@ -70,4 +69,17 @@ export interface Attraction {
   image?: string;
   is_active: boolean;
   created_at: string;
+}
+
+export interface Blog {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  featured_image: string;
+  author: string;
+  is_published: boolean;
+  published_at: string | null;
+  created_at?: string;
 }

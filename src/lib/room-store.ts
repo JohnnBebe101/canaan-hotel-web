@@ -1,24 +1,10 @@
 import { supabase } from './supabase';
 import { offlineStorage } from './offline-storage';
+import { Room } from './models';
 
 // ============================================
 // ROOM STORE (Supabase with Offline Fallback)
 // ============================================
-
-export interface Room {
-  id: string;
-  name: string;
-  description: string;
-  price_per_night: number;
-  max_guests: number;
-  is_active: boolean;
-  image_src?: string;
-  image_alt?: string;
-  price_label?: string;
-  badges?: string[];
-  rating?: number;
-  created_at: string;
-}
 
 export async function getRooms(): Promise<Room[]> {
   try {
@@ -101,5 +87,27 @@ export async function deleteRoom(id: string): Promise<boolean> {
   } catch (error) {
     console.warn('[RoomStore] Supabase unavailable, using offline storage');
     return offlineStorage.deleteRoom(id);
+  }
+}
+
+export async function getRoomBySlug(slug: string): Promise<Room | null> {
+  try {
+    const { data, error } = await supabase
+      .from('rooms')
+      .select('*')
+      .ilike('name', slug.replace(/-/g, ' '))
+      .single();
+
+    if (error) {
+      if (error.code === 'PGRST116') return null;
+      throw error;
+    }
+    return data;
+  } catch (error) {
+    console.warn('[RoomStore] Supabase unavailable, using offline storage');
+    const rooms = offlineStorage.getRooms();
+    return rooms.find(r =>
+      r.name.toLowerCase().replace(/\s+/g, '-') === slug.toLowerCase()
+    ) || null;
   }
 }

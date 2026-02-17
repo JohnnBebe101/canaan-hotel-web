@@ -3,15 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-interface Room {
-  id: string;
-  name: string;
-  description: string;
-  price_per_night: number;
-  max_guests: number;
-  is_active: boolean;
-  created_at: string;
-}
+import { Room } from "@/lib/models";
 
 export default function AdminRoomsPage() {
   const [rooms, setRooms] = useState<Room[]>([]);
@@ -130,9 +122,8 @@ export default function AdminRoomsPage() {
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
                     <h3 className="text-lg font-semibold text-gray-900">{room.name}</h3>
-                    <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                      room.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                    }`}>
+                    <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${room.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                      }`}>
                       {room.is_active ? 'Active' : 'Inactive'}
                     </span>
                   </div>
@@ -143,11 +134,10 @@ export default function AdminRoomsPage() {
                 <div className="flex items-center gap-2 ml-4">
                   <button
                     onClick={() => handleToggleActive(room.id)}
-                    className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-                      room.is_active
+                    className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${room.is_active
                         ? 'bg-green-100 text-green-800 hover:bg-green-200'
                         : 'bg-red-100 text-red-800 hover:bg-red-200'
-                    }`}
+                      }`}
                   >
                     {room.is_active ? 'Deactivate' : 'Activate'}
                   </button>

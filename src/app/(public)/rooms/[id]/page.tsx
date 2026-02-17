@@ -55,6 +55,7 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
                     src="/images/rooms/single-room-best-view.webp"
                     width={200}
                     height={200}
+                    loading="lazy"
                   />
                 </div>
                 <div className="overflow-hidden rounded-lg aspect-square">
@@ -64,6 +65,7 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
                     src="/images/rooms/corridor-rooms.webp"
                     width={200}
                     height={200}
+                    loading="lazy"
                   />
                 </div>
                 <div className="overflow-hidden rounded-lg aspect-square">
@@ -73,6 +75,7 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
                     src="/images/rooms/bath-room.webp"
                     width={200}
                     height={200}
+                    loading="lazy"
                   />
                 </div>
                 <div className="overflow-hidden rounded-lg aspect-square">
@@ -82,6 +85,7 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
                     src="/images/rooms/Bed-view-Single.webp"
                     width={200}
                     height={200}
+                    loading="lazy"
                   />
                 </div>
                 <div className="overflow-hidden rounded-lg aspect-square">

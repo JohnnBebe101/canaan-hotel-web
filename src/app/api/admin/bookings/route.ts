@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { offlineStorage } from "@/lib/offline-storage";
+import { getBookings, updateBooking, deleteBooking } from "@/lib/booking-store";
 
 // GET - List all bookings
 export async function GET() {
   try {
-    const bookings = offlineStorage.getBookings();
+    const bookings = await getBookings();
     return NextResponse.json(bookings);
   } catch (error) {
     console.error("Error fetching bookings:", error);
@@ -27,6 +27,7 @@ export async function PATCH(request: NextRequest) {
       );
     }
 
+    const updates: any = {};
     if (body.status) {
       const validStatuses = ['pending', 'confirmed', 'cancelled'];
       if (!validStatuses.includes(body.status)) {
@@ -35,26 +36,25 @@ export async function PATCH(request: NextRequest) {
           { status: 400 }
         );
       }
-
-      const updated = offlineStorage.updateBooking(body.id, { status: body.status });
-      if (!updated) {
-        return NextResponse.json({ error: "Booking not found" }, { status: 404 });
-      }
-      return NextResponse.json(updated);
+      updates.status = body.status;
     }
 
     if (body.notes !== undefined) {
-      const updated = offlineStorage.updateBooking(body.id, { notes: body.notes });
-      if (!updated) {
-        return NextResponse.json({ error: "Booking not found" }, { status: 404 });
-      }
-      return NextResponse.json(updated);
+      updates.notes = body.notes;
     }
 
-    return NextResponse.json(
-      { error: "Invalid request" },
-      { status: 400 }
-    );
+    if (Object.keys(updates).length === 0) {
+      return NextResponse.json(
+        { error: "No valid updates provided" },
+        { status: 400 }
+      );
+    }
+
+    const updated = await updateBooking(body.id, updates);
+    if (!updated) {
+      return NextResponse.json({ error: "Booking not found" }, { status: 404 });
+    }
+    return NextResponse.json(updated);
   } catch (error) {
     console.error("Error updating booking:", error);
     return NextResponse.json(
@@ -68,7 +68,7 @@ export async function PATCH(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   try {
     const body = await request.json();
-    
+
     if (!body.id) {
       return NextResponse.json(
         { error: "Booking ID is required" },
@@ -76,8 +76,8 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    const deleted = offlineStorage.deleteBooking(body.id);
-    if (!deleted) {
+    const success = await deleteBooking(body.id);
+    if (!success) {
       return NextResponse.json({ error: "Booking not found" }, { status: 404 });
     }
 

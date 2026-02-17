@@ -3,16 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-interface Blog {
-  id: string;
-  title: string;
-  slug: string;
-  excerpt: string;
-  author: string;
-  is_published: boolean;
-  published_at: string | null;
-  created_at: string;
-}
+import { Blog } from "@/lib/models";
 
 export default function AdminBlogsPage() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
@@ -110,31 +101,28 @@ export default function AdminBlogsPage() {
       <div className="mb-6 flex gap-2">
         <button
           onClick={() => setFilter("all")}
-          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-            filter === "all"
+          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${filter === "all"
               ? "bg-primary text-white"
               : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-          }`}
+            }`}
         >
           All ({blogs.length})
         </button>
         <button
           onClick={() => setFilter("published")}
-          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-            filter === "published"
+          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${filter === "published"
               ? "bg-primary text-white"
               : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-          }`}
+            }`}
         >
           Published ({blogs.filter((b) => b.is_published).length})
         </button>
         <button
           onClick={() => setFilter("draft")}
-          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-            filter === "draft"
+          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${filter === "draft"
               ? "bg-primary text-white"
               : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-          }`}
+            }`}
         >
           Drafts ({blogs.filter((b) => !b.is_published).length})
         </button>
@@ -157,11 +145,10 @@ export default function AdminBlogsPage() {
                       {blog.title}
                     </h3>
                     <span
-                      className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                        blog.is_published
+                      className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${blog.is_published
                           ? "bg-green-100 text-green-800"
                           : "bg-yellow-100 text-yellow-800"
-                      }`}
+                        }`}
                     >
                       {blog.is_published ? "Published" : "Draft"}
                     </span>

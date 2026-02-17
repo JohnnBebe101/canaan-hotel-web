@@ -10,15 +10,7 @@ import { useState, useEffect } from "react";
  * PERSISTENT: Connected to /api/admin/attractions
  */
 
-interface Attraction {
-  id: string;
-  name: string;
-  description: string;
-  category: string;
-  distance: string;
-  image?: string;
-  is_active: boolean;
-}
+import { Attraction } from "@/lib/models";
 
 export default function AdminAttractionsPage() {
   const [attractions, setAttractions] = useState<Attraction[]>([]);
@@ -149,8 +141,8 @@ export default function AdminAttractionsPage() {
                     <div className="flex items-center space-x-3 mb-2">
                       <h3 className="text-lg font-medium text-gray-900">{attraction.name}</h3>
                       <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${attraction.is_active
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-gray-100 text-gray-800'
+                        ? 'bg-green-100 text-green-800'
+                        : 'bg-gray-100 text-gray-800'
                         }`}>
                         {attraction.is_active ? 'Active' : 'Inactive'}
                       </span>
@@ -167,11 +159,11 @@ export default function AdminAttractionsPage() {
                   </div>
 
                   <div className="flex items-center space-x-2 ml-4">
-<button
+                    <button
                       onClick={() => toggleActive(attraction.id, attraction.is_active)}
                       className={`px-3 py-1 text-xs font-medium rounded ${attraction.is_active
-                          ? 'bg-red-100 text-red-700 hover:bg-red-200'
-                          : 'bg-green-100 text-green-700 hover:bg-green-200'
+                        ? 'bg-red-100 text-red-700 hover:bg-red-200'
+                        : 'bg-green-100 text-green-700 hover:bg-green-200'
                         }`}
                     >
                       {attraction.is_active ? 'Deactivate' : 'Activate'}
@@ -250,9 +242,9 @@ export default function AdminAttractionsPage() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
-<select
-                    value={editForm.is_active ? 'is_active' : 'inactive'}
-                    onChange={(e) => setEditForm({ ...editForm, is_active: e.target.value === 'is_active' })}
+                  <select
+                    value={editForm.is_active ? 'active' : 'inactive'}
+                    onChange={(e) => setEditForm({ ...editForm, is_active: e.target.value === 'active' })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
                   >
                     <option value="active">Active</option>

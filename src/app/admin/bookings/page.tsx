@@ -3,21 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
-// Simplified booking interface matching Supabase schema
-interface Booking {
-  id: string;
-  guest_name: string;
-  email: string;
-  phone?: string;
-  check_in_date: string;
-  check_out_date: string;
-  number_of_guests: number;
-  room_type: string;
-  total_price: number;
-  status: 'pending' | 'confirmed' | 'cancelled';
-  notes?: string;
-  created_at: string;
-}
+import { Booking } from "@/lib/models";
 
 export default function AdminBookingsPage() {
   const [bookings, setBookings] = useState<Booking[]>([]);

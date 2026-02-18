@@ -20,19 +20,19 @@ export default function AboutPage() {
               className="flex min-h-[480px] flex-col gap-6 rounded-xl bg-cover bg-center bg-no-repeat @[480px]:gap-8 items-center justify-center p-8 text-center"
               aria-label="Hero section with hotel staff photo"
               style={{
-                backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.5) 100%), url("/images/Team.svg")'
+                backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.5) 100%), url("/images/Team.jpg")'
               }}
             >
-              <div className="flex flex-col gap-4">
-                <div className="flex justify-center mb-4">
+                <div className="flex flex-col gap-4">
+                  <div className="flex justify-center mb-4">
                   <div className="flex gap-2">
-                    <span className="inline-block px-2 py-1 rounded-full bg-green-100 text-green-800 text-xs font-medium" data-demo="true">
+                    <span className="inline-block px-2 py-1 rounded-full bg-green-100 text-green-800 text-xs font-medium">
                       Established 2010
                     </span>
-                    <span className="inline-block px-2 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-medium" data-demo="true">
+                    <span className="inline-block px-2 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-medium">
                       4.8★ Rating
                     </span>
-                    <span className="inline-block px-2 py-1 rounded-full bg-purple-100 text-purple-800 text-xs font-medium" data-demo="true">
+                    <span className="inline-block px-2 py-1 rounded-full bg-purple-100 text-purple-800 text-xs font-medium">
                       Award Winner
                     </span>
                   </div>
@@ -64,7 +64,7 @@ export default function AboutPage() {
             className="w-full bg-center bg-no-repeat bg-cover aspect-square rounded-xl"
             role="img"
             aria-label="A black and white historical photo of the hotel's founder."
-            style={{ backgroundImage: 'url("/images/Adigrat.svg")' }}
+            style={{ backgroundImage: 'url("/images/attractions/Gheralta.svg")' }}
           ></div>
         </section>
 
@@ -137,14 +137,6 @@ export default function AboutPage() {
               >
                 <span className="truncate">Explore Our Rooms</span>
               </Link>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-2 mt-4">
-              <button className="px-6 py-3 rounded-lg bg-amber-500 hover:bg-amber-600 text-white" data-demo="true">
-                Demo: View Reviews
-              </button>
-              <button className="px-6 py-3 rounded-lg bg-amber-500 hover:bg-amber-600 text-white" data-demo="true">
-                Demo: Community Impact
-              </button>
             </div>
           </div>
         </section>

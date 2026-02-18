@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Canaan International Hotel Gallery - A Visual Journey",
     description: "Browse our photos to see why Canaan International Hotel is the premier choice for accommodation in Adigrat.",
-    images: ["/images/Compound.svg"],
+    images: ["/images/heroes/Ext-Compund.webp"],
   },
 };
 

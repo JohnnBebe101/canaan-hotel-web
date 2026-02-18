@@ -35,6 +35,7 @@ export default function RoomCard({
           className="h-52 w-full object-cover transition-transform duration-500 group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 33vw"
           quality={80}
+          loading="lazy"
         />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/45 via-black/0 to-black/0" />
         <div className="absolute bottom-3 left-3 rounded-full bg-black/70 px-3 py-1 text-xs font-semibold text-white shadow-sm backdrop-blur">

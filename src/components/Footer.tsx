@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Footer() {
   return (
@@ -7,7 +8,7 @@ export default function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
           <div className="col-span-2 lg:col-span-1">
             <div className="flex items-center gap-3">
-              <img src="/images/logo 2.svg" alt="Canaan International Hotel Logo" className="h-12 w-auto" />
+              <Image src="/images/ui/Canaan-logo-100x100.svg" alt="Canaan International Hotel Logo" width={48} height={48} className="h-12 w-auto" />
             </div>
             <p className="mt-4 text-sm text-text-secondary dark:text-text-secondary/90">
               Your home in the heart of Tigray. Experience comfort, history, and warm Ethiopian hospitality.

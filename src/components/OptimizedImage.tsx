@@ -10,6 +10,7 @@ interface OptimizedImageProps {
   height?: number;
   className?: string;
   priority?: boolean;
+  loading?: "eager" | "lazy";
   sizes?: string;
   quality?: number;
   fill?: boolean;
@@ -27,6 +28,7 @@ export default function OptimizedImage({
   height,
   className = "",
   priority = false,
+  loading = "lazy",
   sizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
   quality = 75,
   fill = false,
@@ -66,6 +68,7 @@ export default function OptimizedImage({
           sizes={sizes}
           quality={quality}
           priority={priority}
+          loading={loading}
           className={`${className} ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
           onError={handleError}
           onLoad={handleLoad}
@@ -92,6 +95,7 @@ export default function OptimizedImage({
         sizes={sizes}
         quality={quality}
         priority={priority}
+        loading={loading}
         className={`${className} ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
         onError={handleError}
         onLoad={handleLoad}

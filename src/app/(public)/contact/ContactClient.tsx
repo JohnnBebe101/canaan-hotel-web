@@ -21,19 +21,11 @@ export default function ContactClient() {
                                 Get in touch with us or find our exact location in Adigrat.
                             </p>
                         </div>
-                        <div className="flex gap-2">
-                            <span className="inline-block px-2 py-1 rounded-full bg-green-100 text-green-800 text-xs font-medium" data-demo="true">
-                                24/7 Support
-                            </span>
-                            <span className="inline-block px-2 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-medium" data-demo="true">
-                                Response {'<'}24h
-                            </span>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div className="mb-12">
+                <div className="mb-12">
                 <div
                     className="w-full h-64 md:h-96 bg-center bg-no-repeat bg-cover rounded-xl object-cover border border-border-color dark:border-text-secondary/20"
                     role="img"
@@ -156,30 +148,6 @@ export default function ContactClient() {
                             </button>
                         </div>
                     </form>
-
-                    {/* Demo: Contact Management */}
-                    <div className="mt-6 p-4 border border-gray-300 rounded-lg shadow-sm" data-demo="true">
-                        <div className="flex items-center justify-between mb-3">
-                            <h4 className="font-semibold text-gray-900">Demo: Contact Management</h4>
-                            <span className="inline-block px-2 py-1 rounded-full bg-blue-100 text-blue-800 text-xs">CRM</span>
-                        </div>
-                        <div className="flex flex-wrap gap-2 mb-3">
-                            <span className="inline-block px-2 py-1 rounded-full bg-yellow-100 text-yellow-800 text-xs">NEW</span>
-                            <span className="inline-block px-2 py-1 rounded-full bg-blue-100 text-blue-800 text-xs">RESPONDED</span>
-                            <span className="inline-block px-2 py-1 rounded-full bg-green-100 text-green-800 text-xs">RESOLVED</span>
-                        </div>
-                        <div className="flex gap-2">
-                            <button className="px-3 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-sm" data-demo="true">
-                                Demo: Auto-Reply
-                            </button>
-                            <button className="px-3 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-sm" data-demo="true">
-                                Demo: Ticket System
-                            </button>
-                            <button className="px-3 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-sm" data-demo="true">
-                                Demo: Follow-up
-                            </button>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

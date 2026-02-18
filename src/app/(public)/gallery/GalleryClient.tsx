@@ -15,63 +15,63 @@ interface GalleryImage {
 const galleryImages: GalleryImage[] = [
     {
         id: "1",
-        src: "/images/Compound.svg",
+        src: "/images/heroes/Ext-Compund.webp",
         alt: "Hotel exterior view showing the main building",
         category: "exterior",
         title: "Hotel Exterior",
     },
     {
         id: "2",
-        src: "/images/Gate.svg",
+        src: "/images/heroes/Gate-Corrdor.webp",
         alt: "Hotel entrance with welcoming design",
         category: "exterior",
         title: "Main Entrance",
     },
     {
         id: "3",
-        src: "/images/Room-Larger.svg",
+        src: "/images/rooms/single-room-view.webp",
         alt: "Comfortable hotel room interior",
         category: "rooms",
         title: "Comfort Room",
     },
     {
         id: "4",
-        src: "/images/Twin-Room.svg",
+        src: "/images/rooms/twin-room.webp",
         alt: "Spacious family suite",
         category: "rooms",
         title: "Family Suite",
     },
     {
         id: "5",
-        src: "/images/Room-Bed.svg",
+        src: "/images/rooms/Bed-view-Single.webp",
         alt: "Economy single room with city view",
         category: "rooms",
         title: "Economy Single",
     },
     {
         id: "6",
-        src: "/images/Room-Best-View.svg",
+        src: "/images/rooms/single-room-best-view.webp",
         alt: "Deluxe double room with balcony",
         category: "rooms",
         title: "Deluxe Double",
     },
     {
         id: "7",
-        src: "/images/Adigrat.svg",
+        src: "/images/attractions/Debre-Damo-Abune-Aregawi-monaster--1920x1080.svg",
         alt: "Debre Damo Monastery",
         category: "attractions",
         title: "Debre Damo",
     },
     {
         id: "8",
-        src: "/images/Adigrat.svg",
+        src: "/images/attractions/Gheralta.svg",
         alt: "Gheralta Mountains at sunset",
         category: "attractions",
         title: "Gheralta Mountains",
     },
     {
         id: "9",
-        src: "/images/Gate.svg",
+        src: "/images/attractions/Al Najashi5.svg",
         alt: "Al-Nejashi Mosque historic site",
         category: "attractions",
         title: "Al-Nejashi Mosque",
@@ -101,7 +101,7 @@ export default function GalleryClient() {
                 aria-label="Gallery hero section"
             >
                 <HeroImage
-                    src="/images/Compound.svg"
+                    src="/images/heroes/Ext-Compund.webp"
                     alt="Canaan International Hotel exterior"
                     overlayOpacity={0.5}
                     className="absolute inset-0 -z-10"
@@ -147,10 +147,11 @@ export default function GalleryClient() {
                             <div className="relative overflow-hidden">
                                 <div className="aspect-video relative">
                                     {image.src.startsWith("/") ? (
-                                        <Image
+                                    <Image
                                             src={image.src}
                                             alt={image.alt}
                                             fill
+                                            loading="lazy"
                                             className="object-cover group-hover:scale-105 transition-transform duration-300"
                                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                                         />
@@ -233,9 +234,7 @@ export default function GalleryClient() {
                 <h2 className="text-3xl font-bold tracking-tight text-text-primary dark:text-background-light mb-4">
                     Ready to Experience It In Person?
                 </h2>
-                <p className="mx-auto max-w-2xl text-text-secondary dark:text-text-secondary/90 mb-8" data-demo="true">
-                    Book your stay today and create your own memories at Canaan International Hotel.
-                </p>
+                <p className="mx-auto max-w-2xl text-text-secondary dark:text-text-secondary/90 mb-8"></p>
                 <a
                     href="/rooms"
                     className="inline-flex items-center justify-center rounded-lg bg-primary px-8 py-4 text-base font-bold text-white transition-opacity hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"

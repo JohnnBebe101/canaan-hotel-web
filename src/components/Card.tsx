@@ -91,6 +91,7 @@ export default function Card({
           className="w-full h-48 object-cover rounded-t-xl group-hover:scale-105 transition-transform duration-300"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           quality={75}
+          loading="lazy"
         />
       </div>
       <div className="p-5 flex flex-col flex-1">

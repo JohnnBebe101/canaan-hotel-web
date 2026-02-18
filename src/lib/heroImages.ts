@@ -1,6 +1,19 @@
-export const HERO_SLIDER_IMAGES = [
-  { src: "/images/Compound.svg", alt: "Canaan International Hotel compound and facilities" },
-  { src: "/images/Gate.svg", alt: "Welcoming entrance to Canaan International Hotel" },
-  { src: "/images/Team.svg", alt: "Professional hospitality team ready to serve you" },
-  { src: "/images/Adigrat.svg", alt: "Historic city of Adigrat, Tigray region" },
+export interface HeroImage {
+  src: string;
+  alt: string;
+}
+
+export const HERO_SLIDER_IMAGES: HeroImage[] = [
+  {
+    src: "/images/heroes/Main-ENt.webp",
+    alt: "Canaan International Hotel Main Entrance",
+  },
+  {
+    src: "/images/heroes/Ext-Compund.webp",
+    alt: "Hotel Exterior Compound View",
+  },
+  {
+    src: "/images/heroes/Gate-Corrdor.webp",
+    alt: "Hotel Gate and Corridor",
+  },
 ];

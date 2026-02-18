@@ -8,24 +8,24 @@ export default function NewRoomPage() {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    pricePerNight: "",
-    maxGuests: "2"
+    price_per_night: "",
+    max_guests: "2"
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e?: React.SyntheticEvent) => {
+    e?.preventDefault();
     setError("");
     setLoading(true);
 
     try {
       // Validate required fields
-      if (!formData.name.trim() || !formData.pricePerNight) {
+      if (!formData.name.trim() || !formData.price_per_night) {
         throw new Error("Room name and price are required");
       }
 
-      const price = parseFloat(formData.pricePerNight);
+      const price = parseFloat(formData.price_per_night);
       if (isNaN(price) || price <= 0) {
         throw new Error("Price must be a positive number");
       }
@@ -36,8 +36,8 @@ export default function NewRoomPage() {
         body: JSON.stringify({
           name: formData.name.trim(),
           description: formData.description.trim(),
-          pricePerNight: price,
-          maxGuests: parseInt(formData.maxGuests) || 2,
+          price_per_night: price,
+          max_guests: parseInt(formData.max_guests) || 2,
         })
       });
 
@@ -107,8 +107,8 @@ export default function NewRoomPage() {
                 <span className="absolute left-3 top-2 text-gray-500">$</span>
                 <input
                   type="number"
-                  value={formData.pricePerNight}
-                  onChange={(e) => handleChange("pricePerNight", e.target.value)}
+                  value={formData.price_per_night}
+                  onChange={(e) => handleChange("price_per_night", e.target.value)}
                   className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
                   placeholder="120"
                   min="1"
@@ -123,8 +123,8 @@ export default function NewRoomPage() {
                 Maximum Guests
               </label>
               <select
-                value={formData.maxGuests}
-                onChange={(e) => handleChange("maxGuests", e.target.value)}
+                value={formData.max_guests}
+                onChange={(e) => handleChange("max_guests", e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
               >
                 <option value="1">1 Guest</option>

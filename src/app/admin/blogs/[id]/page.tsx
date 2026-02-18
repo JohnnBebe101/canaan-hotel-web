@@ -3,18 +3,24 @@
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
-
 import { Blog } from "@/lib/models";
+import { useToast } from "@/components/ui/Toast";
+import { useFormGuard } from "@/lib/hooks/useFormGuard";
+import Button from "@/components/ui/Button";
+import OptimizedImage from "@/components/OptimizedImage";
+import ConfirmModal from "@/components/ui/ConfirmModal";
 
 export default function EditBlogPage() {
   const router = useRouter();
   const params = useParams();
   const blogId = params.id as string;
+  const { showToast } = useToast();
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [blog, setBlog] = useState<Blog | null>(null);
+  const [isDirty, setIsDirty] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -25,6 +31,9 @@ export default function EditBlogPage() {
     author: "",
     is_published: false,
   });
+
+  // Attach navigation guard
+  useFormGuard(isDirty);
 
   useEffect(() => {
     loadBlog();
@@ -40,7 +49,6 @@ export default function EditBlogPage() {
       if (!found) {
         throw new Error("Blog not found");
       }
-      setBlog(found);
       setFormData({
         title: found.title,
         slug: found.slug,
@@ -65,22 +73,29 @@ export default function EditBlogPage() {
       ...prev,
       [name]: type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
     }));
+    setIsDirty(true);
   };
 
   const handleContentChange = (content: string) => {
     setFormData((prev) => ({ ...prev, content }));
+    setIsDirty(true);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e?: React.SyntheticEvent, statusOverride?: boolean) => {
+    e?.preventDefault();
     setSaving(true);
     setError(null);
+
+    const payload = {
+      ...formData,
+      is_published: statusOverride !== undefined ? statusOverride : formData.is_published,
+    };
 
     try {
       const response = await fetch("/api/admin/blogs", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: blogId, ...formData }),
+        body: JSON.stringify({ id: blogId, ...payload }),
       });
 
       if (!response.ok) {
@@ -88,17 +103,21 @@ export default function EditBlogPage() {
         throw new Error(data.error || "Failed to update blog");
       }
 
-      router.push("/admin/blogs");
+      showToast("success", "Blog post updated successfully.");
+      setIsDirty(false);
+
+      setTimeout(() => {
+        router.push("/admin/blogs");
+      }, 500);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to update blog");
+      showToast("error", "Failed to save changes.");
     } finally {
       setSaving(false);
     }
   };
 
-  const handleDelete = async () => {
-    if (!confirm("Are you sure you want to delete this blog post?")) return;
-
+  const executeDelete = async () => {
     try {
       const response = await fetch("/api/admin/blogs", {
         method: "DELETE",
@@ -108,203 +127,177 @@ export default function EditBlogPage() {
 
       if (!response.ok) throw new Error("Failed to delete blog");
 
+      showToast("success", "Blog post deleted.");
+      setIsDirty(false);
       router.push("/admin/blogs");
     } catch (err) {
-      alert(err instanceof Error ? err.message : "Failed to delete blog");
+      showToast("error", "Failed to delete blog post.");
     }
   };
 
   if (loading) {
     return (
-      <div className="p-6">
-        <div className="text-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading blog...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error || !blog) {
-    return (
-      <div className="p-6">
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-          <h3 className="text-red-900 font-medium">Error</h3>
-          <p className="text-red-700 text-sm mt-1">
-            {error || "Blog not found"}
-          </p>
-          <Link
-            href="/admin/blogs"
-            className="mt-3 inline-block px-4 py-2 bg-red-600 text-white text-sm rounded hover:bg-red-700"
-          >
-            Back to Blogs
-          </Link>
-        </div>
+      <div className="flex flex-col items-center justify-center py-20">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+        <p className="mt-4 text-text-secondary font-bold uppercase tracking-widest text-xs">Loading Post...</p>
       </div>
     );
   }
 
   return (
-    <div className="p-6">
-      <div className="mb-8">
-        <Link
-          href="/admin/blogs"
-          className="text-primary hover:underline text-sm mb-4 inline-block"
-        >
-          ← Back to Blogs
-        </Link>
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-gray-900">Edit Blog Post</h1>
-          <button
-            onClick={handleDelete}
-            className="px-4 py-2 bg-red-100 text-red-800 rounded-lg text-sm font-medium hover:bg-red-200"
-          >
+    <div className="space-y-8 pb-12">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-100 dark:border-gray-700 pb-6">
+        <div>
+          <h1 className="text-3xl font-black text-text-primary dark:text-white tracking-tight">Edit Post</h1>
+          <p className="text-text-secondary dark:text-gray-400 mt-1">Refining: {formData.title}</p>
+        </div>
+        <div className="flex gap-3">
+          <Button variant="ghost" className="text-red-600 hover:bg-red-50" onClick={() => setIsDeleteModalOpen(true)}>
             Delete
-          </button>
+          </Button>
+          <Button variant="outline" onClick={() => handleSubmit(undefined, false)} disabled={saving}>
+            Save as Draft
+          </Button>
+          <Button onClick={() => handleSubmit(undefined, true)} isLoading={saving}>
+            Update & Publish
+          </Button>
         </div>
       </div>
 
-      {error && (
-        <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
-          <p className="text-red-700 text-sm">{error}</p>
-        </div>
-      )}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <form className="lg:col-span-2 space-y-6">
+          <div className="bg-white dark:bg-gray-800 p-8 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-xl space-y-6">
+            <div>
+              <label className="flex items-center gap-2 text-sm font-black text-text-primary dark:text-white uppercase tracking-widest mb-2">
+                Blog Title
+                <span className="material-symbols-outlined text-xs cursor-help" title="The primary headline for your blog post.">help</span>
+              </label>
+              <input
+                type="text"
+                name="title"
+                required
+                value={formData.title}
+                onChange={handleChange}
+                className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 focus:ring-2 focus:ring-primary outline-none transition-all"
+              />
+            </div>
 
-      <form onSubmit={handleSubmit} className="max-w-4xl">
-        <div className="space-y-6">
-          <div>
-            <label
-              htmlFor="title"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Title *
-            </label>
-            <input
-              type="text"
-              id="title"
-              name="title"
-              required
-              value={formData.title}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
-            />
+            <div>
+              <label className="text-sm font-black text-text-primary dark:text-white uppercase tracking-widest mb-2 block">
+                Excerpt
+              </label>
+              <textarea
+                name="excerpt"
+                rows={3}
+                value={formData.excerpt}
+                onChange={handleChange}
+                className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 focus:ring-2 focus:ring-primary outline-none transition-all resize-none"
+                placeholder="A short summary..."
+              />
+            </div>
+
+            <div>
+              <label className="text-sm font-black text-text-primary dark:text-white uppercase tracking-widest mb-2 block">
+                Content (Markdown)
+              </label>
+              <textarea
+                value={formData.content}
+                onChange={(e) => handleContentChange(e.target.value)}
+                rows={15}
+                className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 focus:ring-2 focus:ring-primary outline-none transition-all font-mono text-sm leading-relaxed"
+              />
+            </div>
+          </div>
+        </form>
+
+        <aside className="space-y-6">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-xl">
+            <h3 className="text-sm font-black text-text-primary dark:text-white uppercase tracking-widest mb-6">
+              Publishing Info
+            </h3>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-[10px] font-black text-text-secondary uppercase tracking-[0.2em] mb-1.5">
+                  URL Slug
+                </label>
+                <input
+                  type="text"
+                  name="slug"
+                  value={formData.slug}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-900 focus:ring-2 focus:ring-primary outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[10px] font-black text-text-secondary uppercase tracking-[0.2em] mb-1.5">
+                  Author
+                </label>
+                <input
+                  type="text"
+                  name="author"
+                  value={formData.author}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-900 focus:ring-2 focus:ring-primary outline-none"
+                />
+              </div>
+
+              <div className="pt-4">
+                <label className="block text-[10px] font-black text-text-secondary uppercase tracking-[0.2em] mb-2">
+                  Featured Image Preview
+                </label>
+                <div className="aspect-video rounded-xl border border-gray-100 dark:border-gray-700 overflow-hidden bg-gray-100 mb-3 relative group">
+                  {formData.featured_image ? (
+                    <OptimizedImage
+                      src={formData.featured_image}
+                      alt="Preview"
+                      fill
+                      className="object-cover"
+                      unoptimized={!formData.featured_image.startsWith("/")}
+                    />
+                  ) : (
+                    <div className="flex items-center justify-center h-full text-gray-300">
+                      <span className="material-symbols-outlined text-4xl">image</span>
+                    </div>
+                  )}
+                </div>
+                <input
+                  type="text"
+                  name="featured_image"
+                  value={formData.featured_image}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 text-xs border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-900 focus:ring-2 focus:ring-primary outline-none"
+                  placeholder="Paste URL here..."
+                />
+              </div>
+            </div>
           </div>
 
-          <div>
-            <label
-              htmlFor="slug"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              URL Slug
-            </label>
-            <input
-              type="text"
-              id="slug"
-              name="slug"
-              value={formData.slug}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
-            />
+          <div className="p-6 bg-primary/5 rounded-3xl border border-primary/10">
+            <div className="flex items-center gap-3 text-primary mb-2">
+              <span className="material-symbols-outlined">publish</span>
+              <span className="text-sm font-bold uppercase tracking-widest">Status: {formData.is_published ? 'Published' : 'Draft'}</span>
+            </div>
+            <p className="text-xs text-text-secondary leading-relaxed font-medium">
+              {formData.is_published
+                ? "This post is currently live on your website and visible to all guests."
+                : "This post is currently a draft. Use 'Update & Publish' to make it live."
+              }
+            </p>
           </div>
+        </aside>
+      </div>
 
-          <div>
-            <label
-              htmlFor="excerpt"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Excerpt
-            </label>
-            <textarea
-              id="excerpt"
-              name="excerpt"
-              rows={3}
-              value={formData.excerpt}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Content *
-            </label>
-            <textarea
-              value={formData.content}
-              onChange={(e) => handleContentChange(e.target.value)}
-              rows={10}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary font-mono text-sm"
-              placeholder="Write your blog post content here..."
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="featured_image"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Featured Image URL
-            </label>
-            <input
-              type="url"
-              id="featured_image"
-              name="featured_image"
-              value={formData.featured_image}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="author"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Author
-            </label>
-            <input
-              type="text"
-              id="author"
-              name="author"
-              value={formData.author}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
-            />
-          </div>
-
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="is_published"
-              name="is_published"
-              checked={formData.is_published}
-              onChange={handleChange}
-              className="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary"
-            />
-            <label
-              htmlFor="is_published"
-              className="ml-2 text-sm text-gray-700"
-            >
-              Published
-            </label>
-          </div>
-
-          <div className="flex gap-4 pt-4">
-            <button
-              type="submit"
-              disabled={saving}
-              className="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 disabled:opacity-50"
-            >
-              {saving ? "Saving..." : "Save Changes"}
-            </button>
-            <Link
-              href="/admin/blogs"
-              className="px-6 py-3 rounded-lg font-medium border border-gray-300 text-gray-700 hover:bg-gray-50"
-            >
-              Cancel
-            </Link>
-          </div>
-        </div>
-      </form>
+      <ConfirmModal
+        isOpen={isDeleteModalOpen}
+        title="Delete Blog Post"
+        message={`Are you sure you want to delete "${formData.title}"? This action is permanent and cannot be reversed.`}
+        confirmLabel="Yes, Delete Post"
+        variant="danger"
+        onConfirm={executeDelete}
+        onCancel={() => setIsDeleteModalOpen(false)}
+      />
     </div>
   );
 }

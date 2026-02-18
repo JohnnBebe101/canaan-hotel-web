@@ -2,14 +2,31 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-
 import { Blog } from "@/lib/models";
+import { useToast } from "@/components/ui/Toast";
+import ConfirmModal from "@/components/ui/ConfirmModal";
+import Badge from "@/components/ui/Badge";
+import Button from "@/components/ui/Button";
+import OptimizedImage from "@/components/OptimizedImage";
 
 export default function AdminBlogsPage() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState<"all" | "published" | "draft">("all");
+  const { showToast } = useToast();
+
+  const [confirmConfig, setConfirmConfig] = useState<{
+    isOpen: boolean;
+    blogId: string;
+    title: string;
+    message: string;
+  }>({
+    isOpen: false,
+    blogId: "",
+    title: "",
+    message: "",
+  });
 
   useEffect(() => {
     loadBlogs();
@@ -29,8 +46,21 @@ export default function AdminBlogsPage() {
     }
   };
 
-  const handleDelete = async (blogId: string) => {
-    if (!confirm("Are you sure you want to delete this blog post?")) return;
+  const handleDeleteRequest = (blogId: string) => {
+    const blog = blogs.find((b) => b.id === blogId);
+    if (!blog) return;
+
+    setConfirmConfig({
+      isOpen: true,
+      blogId,
+      title: "Delete Blog Post",
+      message: `Are you sure you want to delete "${blog.title}"? This action is permanent.`,
+    });
+  };
+
+  const executeDelete = async () => {
+    const { blogId } = confirmConfig;
+    if (!blogId) return;
 
     try {
       const response = await fetch("/api/admin/blogs", {
@@ -42,8 +72,11 @@ export default function AdminBlogsPage() {
       if (!response.ok) throw new Error("Failed to delete blog");
 
       setBlogs(blogs.filter((b) => b.id !== blogId));
+      showToast("success", "Blog post deleted successfully.");
     } catch (err) {
-      alert(err instanceof Error ? err.message : "Failed to delete blog");
+      showToast("error", "An error occurred while deleting the post.");
+    } finally {
+      setConfirmConfig((prev) => ({ ...prev, isOpen: false }));
     }
   };
 
@@ -55,173 +88,139 @@ export default function AdminBlogsPage() {
 
   if (loading) {
     return (
-      <div className="p-6">
-        <div className="text-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading blogs...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="p-6">
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-          <h3 className="text-red-900 font-medium">Error loading blogs</h3>
-          <p className="text-red-700 text-sm mt-1">{error}</p>
-          <button
-            onClick={loadBlogs}
-            className="mt-3 px-4 py-2 bg-red-600 text-white text-sm rounded hover:bg-red-700"
-          >
-            Retry
-          </button>
-        </div>
+      <div className="flex flex-col items-center justify-center py-20">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+        <p className="mt-4 text-text-secondary font-bold uppercase tracking-widest text-xs">Syncing Stories...</p>
       </div>
     );
   }
 
   return (
-    <div className="p-6">
-      <div className="mb-8 flex items-center justify-between">
+    <div className="space-y-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
-            Blog Management
-          </h1>
-          <p className="text-gray-600">Create and manage blog posts</p>
+          <h1 className="text-3xl font-black text-text-primary dark:text-white tracking-tight">Blog Management</h1>
+          <p className="text-text-secondary dark:text-gray-400 mt-1">Curate and publish hotel updates and travel tips.</p>
         </div>
-        <Link
-          href="/admin/blogs/new"
-          className="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:opacity-90"
-        >
-          Add New Post
-        </Link>
+        <Button onClick={() => window.location.href = '/admin/blogs/new'} size="lg">
+          <span className="material-symbols-outlined mr-2">add</span>
+          New Post
+        </Button>
       </div>
 
-      <div className="mb-6 flex gap-2">
+      <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none">
         <button
           onClick={() => setFilter("all")}
-          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${filter === "all"
-              ? "bg-primary text-white"
-              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+          className={`flex-shrink-0 px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all ${filter === "all"
+              ? "bg-primary text-white shadow-lg shadow-primary/30"
+              : "bg-gray-100 dark:bg-gray-800 text-gray-500 hover:bg-gray-200"
             }`}
         >
           All ({blogs.length})
         </button>
         <button
           onClick={() => setFilter("published")}
-          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${filter === "published"
-              ? "bg-primary text-white"
-              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+          className={`flex-shrink-0 px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all ${filter === "published"
+              ? "bg-green-600 text-white shadow-lg shadow-green-600/30"
+              : "bg-gray-100 dark:bg-gray-800 text-gray-500 hover:bg-gray-200"
             }`}
         >
           Published ({blogs.filter((b) => b.is_published).length})
         </button>
         <button
           onClick={() => setFilter("draft")}
-          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${filter === "draft"
-              ? "bg-primary text-white"
-              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+          className={`flex-shrink-0 px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all ${filter === "draft"
+              ? "bg-amber-500 text-white shadow-lg shadow-amber-500/30"
+              : "bg-gray-100 dark:bg-gray-800 text-gray-500 hover:bg-gray-200"
             }`}
         >
           Drafts ({blogs.filter((b) => !b.is_published).length})
         </button>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border">
-        <div className="p-6 border-b">
-          <h2 className="text-lg font-semibold text-gray-900">
-            All Posts ({filteredBlogs.length})
-          </h2>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {filteredBlogs.map((blog) => (
+          <div key={blog.id} className="bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-xl overflow-hidden flex flex-col group hover:shadow-2xl transition-all duration-300">
+            <div className="relative h-48 w-full overflow-hidden">
+              <OptimizedImage
+                src={blog.featured_image || "/images/heroes/Ext-Compund.webp"}
+                alt={blog.title}
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-500"
+                unoptimized={!blog.featured_image?.startsWith("/")}
+              />
+              <div className="absolute top-4 left-4">
+                <Badge variant={blog.is_published ? "success" : "warning"} size="sm" className="bg-white/90 backdrop-blur-md shadow-sm uppercase tracking-widest font-black">
+                  {blog.is_published ? "Published" : "Draft"}
+                </Badge>
+              </div>
+            </div>
+            <div className="p-8 flex-1 flex flex-col justify-between">
+              <div>
+                <h3 className="text-xl font-black text-text-primary dark:text-white leading-tight mb-3 line-clamp-2">
+                  {blog.title}
+                </h3>
+                <p className="text-text-secondary dark:text-gray-400 text-sm line-clamp-2 mb-6 font-medium">
+                  {blog.excerpt || "No excerpt provided for this post."}
+                </p>
+              </div>
 
-        <div className="divide-y">
-          {filteredBlogs.map((blog) => (
-            <div key={blog.id} className="p-6">
-              <div className="flex items-center justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      {blog.title}
-                    </h3>
-                    <span
-                      className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${blog.is_published
-                          ? "bg-green-100 text-green-800"
-                          : "bg-yellow-100 text-yellow-800"
-                        }`}
-                    >
-                      {blog.is_published ? "Published" : "Draft"}
-                    </span>
+              <div className="flex items-center justify-between border-t border-gray-50 dark:border-gray-700 pt-6 mt-2">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-[10px] font-black text-primary uppercase">
+                    {blog.author.substring(0, 2).toUpperCase()}
                   </div>
-                  <p className="text-sm text-gray-600 line-clamp-2 mb-2">
-                    {blog.excerpt || "No excerpt"}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    {blog.author} •{" "}
-                    {blog.published_at
-                      ? new Date(blog.published_at).toLocaleDateString()
-                      : "Not published"}
-                  </p>
+                  <div className="text-[10px] text-text-secondary font-black uppercase tracking-[0.1em]">
+                    {blog.author} • {blog.published_at ? new Date(blog.published_at).toLocaleDateString() : 'Unpublished'}
+                  </div>
                 </div>
 
-                <div className="flex items-center gap-2 ml-4">
+                <div className="flex items-center gap-2">
                   <Link
                     href={`/admin/blogs/${blog.id}`}
-                    className="px-3 py-2 text-sm font-medium bg-primary text-white rounded-md hover:opacity-90"
+                    className="p-2.5 bg-gray-100 dark:bg-gray-700 text-text-primary dark:text-white rounded-xl hover:bg-primary hover:text-white transition-all"
+                    title="Edit Post"
                   >
-                    Edit
-                  </Link>
-                  <Link
-                    href={`/blog/${blog.slug}`}
-                    target="_blank"
-                    className="px-3 py-2 text-sm font-medium bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200"
-                  >
-                    View
+                    <span className="material-symbols-outlined text-xl">edit_note</span>
                   </Link>
                   <button
-                    onClick={() => handleDelete(blog.id)}
-                    className="px-3 py-2 text-sm font-medium bg-red-100 text-red-800 rounded-md hover:bg-red-200"
+                    onClick={() => handleDeleteRequest(blog.id)}
+                    className="p-2.5 bg-red-50 text-red-600 rounded-xl hover:bg-red-600 hover:text-white transition-all"
+                    title="Delete Post"
                   >
-                    Delete
+                    <span className="material-symbols-outlined text-xl">delete</span>
                   </button>
                 </div>
               </div>
             </div>
-          ))}
-        </div>
-
-        {filteredBlogs.length === 0 && (
-          <div className="p-12 text-center">
-            <div className="text-gray-400 mb-4">
-              <svg
-                className="w-16 h-16 mx-auto"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
-                />
-              </svg>
-            </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              No blog posts yet
-            </h3>
-            <p className="text-gray-600 mb-4">
-              Get started by creating your first blog post
-            </p>
-            <Link
-              href="/admin/blogs/new"
-              className="inline-block bg-primary text-white px-6 py-3 rounded-lg font-medium hover:opacity-90"
-            >
-              Create First Post
-            </Link>
           </div>
-        )}
+        ))}
       </div>
+
+      {filteredBlogs.length === 0 && (
+        <div className="bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 p-20 text-center">
+          <div className="w-20 h-20 bg-gray-50 dark:bg-gray-700/50 rounded-full flex items-center justify-center mx-auto mb-6">
+            <span className="material-symbols-outlined text-4xl text-gray-300">article</span>
+          </div>
+          <h2 className="text-2xl font-black text-text-primary dark:text-white mb-2">No Stories Yet</h2>
+          <p className="text-text-secondary dark:text-gray-400 mb-8 max-w-sm mx-auto font-medium">
+            Start building your hotel's presence by sharing interesting stories and local tips.
+          </p>
+          <Button onClick={() => window.location.href = '/admin/blogs/new'} size="lg">
+            Create First Post
+          </Button>
+        </div>
+      )}
+
+      <ConfirmModal
+        isOpen={confirmConfig.isOpen}
+        title={confirmConfig.title}
+        message={confirmConfig.message}
+        variant="danger"
+        confirmLabel="Delete Permanently"
+        onConfirm={executeDelete}
+        onCancel={() => setConfirmConfig((prev) => ({ ...prev, isOpen: false }))}
+      />
     </div>
   );
 }

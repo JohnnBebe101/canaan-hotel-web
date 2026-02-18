@@ -1,6 +1,7 @@
 import { supabase } from './supabase';
 import { offlineStorage } from './offline-storage';
 import { Room } from './models';
+export type { Room };
 
 // ============================================
 // ROOM STORE (Supabase with Offline Fallback)

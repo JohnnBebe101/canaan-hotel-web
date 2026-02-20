@@ -61,7 +61,10 @@ describe('POST /api/bookings', () => {
       roomType: 'Economy Single Room',
       checkIn: '2024-08-01',
       checkOut: '2024-08-05',
+      numberOfGuests: 1,
+      totalPrice: 200,
       notes: 'Test message',
+      status: 'pending',
     });
   });
 

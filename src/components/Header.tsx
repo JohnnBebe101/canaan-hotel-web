@@ -47,9 +47,9 @@ export default function Header({ variant = 'public' }: HeaderProps) {
     <header className="relative z-50">
       <nav
         aria-label="Main navigation"
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${isScrolled
-          ? "bg-forest/95 backdrop-blur-md shadow-2xl py-4"
-          : "bg-transparent py-10"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${isScrolled
+          ? "bg-white/90 backdrop-blur-md shadow-2xl py-4"
+          : "bg-white/90/90 backdrop-blur-md py-6"
           }`}
       >
         <div className="max-w-7xl mx-auto px-8 flex justify-between items-center">
@@ -93,14 +93,7 @@ export default function Header({ variant = 'public' }: HeaderProps) {
             })}
 
             <Link href="/rooms">
-              <button
-                className={`px-10 py-3 text-[9px] uppercase tracking-[0.4em] font-bold transition-all duration-500 border ${isScrolled
-                  ? "bg-cactus text-sandstone border-cactus hover:bg-transparent hover:text-cactus"
-                  : "bg-sandstone text-forest border-sandstone hover:bg-transparent hover:text-sandstone"
-                  }`}
-              >
-                Reserve
-              </button>
+              <Button variant="primary" size="md" className="px-6 py-3 text-[9px] uppercase tracking-[0.4em]">Reserve</Button>
             </Link>
           </div>
 
@@ -122,7 +115,7 @@ export default function Header({ variant = 'public' }: HeaderProps) {
           </button>
         </div>
 
-        {isMobileMenuOpen && (
+          {isMobileMenuOpen && (
           <div className="lg:hidden fixed inset-0 bg-forest z-50 p-12 flex flex-col justify-center items-center space-y-10 animate-in slide-in-from-top duration-700">
             <button
               className="absolute top-10 right-10 p-2"

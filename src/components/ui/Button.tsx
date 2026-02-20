@@ -20,7 +20,7 @@ export default function Button({
     ...props
 }: ButtonProps) {
     const baseStyles =
-        "uppercase tracking-[0.3em] font-bold transition-all duration-500 shadow-sm flex items-center justify-center gap-3 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed";
+        "uppercase tracking-[0.3em] font-bold transition-all duration-500 shadow-sm flex items-center justify-center gap-3 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed rounded-full";
 
     const variants = {
         primary: "bg-cactus text-sandstone hover:bg-forest hover:text-white shadow-xl",

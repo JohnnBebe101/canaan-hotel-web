@@ -2,6 +2,20 @@ import { supabase } from './supabase';
 import { offlineStorage } from './offline-storage';
 import { Booking } from './models';
 
+// CamelCase input type for bookings (during transition to camelCase API)
+export interface BookingCamel {
+  guestName: string;
+  email: string;
+  phone?: string;
+  roomType: string;
+  checkIn: string;
+  checkOut: string;
+  numberOfGuests?: number;
+  totalPrice?: number;
+  status?: string;
+  notes?: string;
+}
+
 // ============================================
 // BOOKING STORE (Supabase with Offline Fallback)
 // ============================================
@@ -42,12 +56,19 @@ export async function getBookingById(id: string): Promise<Booking | null> {
   }
 }
 
-export async function createBooking(booking: Omit<Booking, 'id' | 'created_at'>): Promise<Booking> {
+// Overloads to support both camelCase input and snake_case storage payloads
+export async function createBooking(booking: BookingCamel): Promise<Booking>;
+export async function createBooking(booking: Omit<Booking, 'id' | 'created_at'>): Promise<Booking>;
+export async function createBooking(booking: any): Promise<Booking> {
+  // Map camelCase input to snake_case if needed
+  const isCamel = booking && (booking as BookingCamel).guestName !== undefined;
+  const payload = isCamel ? camelToSnake(booking as BookingCamel) : booking as Omit<Booking, 'id' | 'created_at'>;
+
   try {
     if (!supabase) throw new Error('Supabase not initialized');
-    const { data, error } = await supabase
+    const { data, error } = await (supabase as any)
       .from('bookings')
-      .insert(booking)
+      .insert(payload)
       .select()
       .single();
 
@@ -57,6 +78,22 @@ export async function createBooking(booking: Omit<Booking, 'id' | 'created_at'>)
     console.warn('[BookingStore] Supabase unavailable, using offline storage');
     return offlineStorage.createBooking(booking);
   }
+}
+
+// Convert camelCase booking input to snake_case for storage
+function camelToSnake(b: BookingCamel): Omit<Booking, 'id' | 'created_at'> {
+  return {
+    guest_name: b.guestName,
+    email: b.email,
+    phone: b.phone,
+    room_type: b.roomType,
+    check_in_date: b.checkIn,
+    check_out_date: b.checkOut,
+    number_of_guests: b.numberOfGuests ?? 1,
+    total_price: b.totalPrice ?? 0,
+    status: b.status ?? 'pending',
+    notes: b.notes,
+  } as any;
 }
 
 export async function updateBooking(id: string, updates: Partial<Booking>): Promise<Booking | null> {

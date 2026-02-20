@@ -54,18 +54,18 @@ export async function POST(request: NextRequest) {
     const nights = Math.max(1, Math.ceil((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24)));
     const totalPrice = pricePerNight * nights;
 
-    // Create booking using BookingStore
+    // Create booking using BookingStore (camelCase input; store will map to snake_case)
     const booking = await createBooking({
-      guest_name: body.guest_name.trim(),
+      guestName: body.guest_name.trim(),
       email: body.email.trim().toLowerCase(),
       phone: body.phone.trim(),
-      room_type: body.room_type.trim(),
-      check_in_date: body.dates.check_in,
-      check_out_date: body.dates.check_out,
-      number_of_guests: body.number_of_guests || 1,
-      total_price: totalPrice,
-      status: 'pending',
+      roomType: body.room_type.trim(),
+      checkIn: body.dates.check_in,
+      checkOut: body.dates.check_out,
+      numberOfGuests: body.number_of_guests ?? 1,
+      totalPrice: totalPrice,
       notes: body.message?.trim(),
+      status: 'pending',
     });
 
     return NextResponse.json(

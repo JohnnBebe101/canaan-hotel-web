@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Button from "./ui/Button";
+import Badge from "./ui/Badge";
 
 interface BookingFormData {
   guest_name: string;
@@ -75,7 +77,7 @@ export default function BookingCard() {
         }),
       });
 
-      const data: BookingResponse = await response.json();
+      const data = await response.json();
 
       if (response.ok) {
         setSubmitStatus({
@@ -112,31 +114,31 @@ export default function BookingCard() {
 
   return (
     <div className="w-full">
-      <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg rounded-2xl shadow-2xl p-6 sm:p-8 border border-white/30 dark:border-white/10 ring-1 ring-black/5">
-        <div className="mb-4 flex items-center justify-between">
+      <div className="bg-white/80 backdrop-blur-xl rounded-sm shadow-2xl p-8 md:p-10 border border-forest/5 relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-forest via-cactus to-forest"></div>
+
+        <div className="mb-8 flex items-center justify-between relative z-10">
           <div>
-            <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-              Book Your Stay
+            <h2 className="text-3xl font-serif text-forest mb-2">
+              Secure Your Stay
             </h2>
-            <p className="text-sm text-gray-700 dark:text-gray-300">
-              Reserve directly for best rates
+            <p className="text-xs uppercase tracking-widest text-gray-500 font-bold">
+              Direct Reservation Privilege
             </p>
           </div>
-          <div className="flex items-center gap-1.5 bg-green-100 dark:bg-green-900/30 px-2.5 py-1.5 rounded-full">
-            <span className="material-symbols-outlined text-green-600 dark:text-green-400 text-sm">verified</span>
-            <span className="text-xs font-semibold text-green-700 dark:text-green-400">Best Price Guarantee</span>
-          </div>
+          <Badge variant="cactus" size="sm" className="gap-2 px-3 py-1">
+            <span className="material-symbols-outlined text-sm">verified</span>
+            <span>Best Rate</span>
+          </Badge>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {/* Guest Name */}
-            <div>
-              <label
-                htmlFor="guest_name"
-                className="block text-sm font-medium text-text-primary dark:text-background-light mb-2"
-              >
-                Full Name *
+            <div className="space-y-2">
+              <label htmlFor="guest_name" className="block text-[10px] uppercase font-bold tracking-widest text-forest/60">
+                Full Name
               </label>
               <input
                 type="text"
@@ -145,18 +147,15 @@ export default function BookingCard() {
                 value={formData.guest_name}
                 onChange={handleInputChange}
                 required
-                className="w-full px-4 py-3 border border-border-color rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-white dark:bg-background-light/10 text-text-primary dark:text-background-light placeholder-text-secondary dark:placeholder-text-secondary/70"
-                placeholder="Enter your full name"
+                className="w-full px-4 py-3 border-b-2 border-forest/10 bg-transparent text-forest font-serif text-lg focus:border-cactus outline-none transition-colors placeholder:text-gray-300 placeholder:font-sans placeholder:text-sm"
+                placeholder="E.g. Alexander Mesob"
               />
             </div>
 
             {/* Email */}
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-text-primary dark:text-background-light mb-2"
-              >
-                Email Address *
+            <div className="space-y-2">
+              <label htmlFor="email" className="block text-[10px] uppercase font-bold tracking-widest text-forest/60">
+                Email Address
               </label>
               <input
                 type="email"
@@ -165,18 +164,15 @@ export default function BookingCard() {
                 value={formData.email}
                 onChange={handleInputChange}
                 required
-                className="w-full px-4 py-3 border border-border-color rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-white dark:bg-background-light/10 text-text-primary dark:text-background-light placeholder-text-secondary dark:placeholder-text-secondary/70"
-                placeholder="guest@mail.com"
+                className="w-full px-4 py-3 border-b-2 border-forest/10 bg-transparent text-forest font-serif text-lg focus:border-cactus outline-none transition-colors placeholder:text-gray-300 placeholder:font-sans placeholder:text-sm"
+                placeholder="guest@example.com"
               />
             </div>
 
             {/* Phone */}
-            <div>
-              <label
-                htmlFor="phone"
-                className="block text-sm font-medium text-text-primary dark:text-background-light mb-2"
-              >
-                Phone Number *
+            <div className="space-y-2">
+              <label htmlFor="phone" className="block text-[10px] uppercase font-bold tracking-widest text-forest/60">
+                Phone Number
               </label>
               <input
                 type="tel"
@@ -185,41 +181,40 @@ export default function BookingCard() {
                 value={formData.phone}
                 onChange={handleInputChange}
                 required
-                className="w-full px-4 py-3 border border-border-color rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-white dark:bg-background-light/10 text-text-primary dark:text-background-light placeholder-text-secondary dark:placeholder-text-secondary/70"
-                placeholder="+251 XXX XXX XXX"
+                className="w-full px-4 py-3 border-b-2 border-forest/10 bg-transparent text-forest font-serif text-lg focus:border-cactus outline-none transition-colors placeholder:text-gray-300 placeholder:font-sans placeholder:text-sm"
+                placeholder="+251 ..."
               />
             </div>
 
             {/* Room Type */}
-            <div>
-              <label
-                htmlFor="room_type"
-                className="block text-sm font-medium text-text-primary dark:text-background-light mb-2"
-              >
-                Room Type *
+            <div className="space-y-2">
+              <label htmlFor="room_type" className="block text-[10px] uppercase font-bold tracking-widest text-forest/60">
+                Chamber Preference
               </label>
-              <select
-                id="room_type"
-                name="room_type"
-                value={formData.room_type}
-                onChange={handleInputChange}
-                required
-                className="w-full px-4 py-3 border border-border-color rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-white dark:bg-background-light/10 text-text-primary dark:text-background-light"
-              >
-                <option value="">Select a room type</option>
-                <option value="Economy Single Room">Economy Single Room - $50/night</option>
-                <option value="Comfort Double Room">Comfort Double Room - $75/night</option>
-                <option value="Family Suite">Family Suite - $110/night</option>
-              </select>
+              <div className="relative">
+                <select
+                  id="room_type"
+                  name="room_type"
+                  value={formData.room_type}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-4 py-3 border-b-2 border-forest/10 bg-transparent text-forest font-serif text-lg focus:border-cactus outline-none transition-colors appearance-none cursor-pointer"
+                >
+                  <option value="">Select Chamber</option>
+                  <option value="Economy Single Room">Economy Single Room</option>
+                  <option value="Comfort Double Room">Comfort Double Room</option>
+                  <option value="Family Suite">Family Suite</option>
+                </select>
+                <div className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-forest/30">
+                  <span className="material-symbols-outlined text-sm">expand_more</span>
+                </div>
+              </div>
             </div>
 
             {/* Number of Guests */}
-            <div>
-              <label
-                htmlFor="number_of_guests"
-                className="block text-sm font-medium text-text-primary dark:text-background-light mb-2"
-              >
-                Number of Guests *
+            <div className="space-y-2">
+              <label htmlFor="number_of_guests" className="block text-[10px] uppercase font-bold tracking-widest text-forest/60">
+                Guests
               </label>
               <input
                 type="number"
@@ -229,40 +224,27 @@ export default function BookingCard() {
                 onChange={handleInputChange}
                 required
                 min={1}
-                className="w-full px-4 py-3 border border-border-color rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-white dark:bg-background-light/10 text-text-primary dark:text-background-light placeholder-text-secondary dark:placeholder-text-secondary/70"
-                placeholder="Number of guests"
+                className="w-full px-4 py-3 border-b-2 border-forest/10 bg-transparent text-forest font-serif text-lg focus:border-cactus outline-none transition-colors"
               />
             </div>
 
-            {/* Total Price */}
-            <div>
-              <label
-                htmlFor="total_price"
-                className="block text-sm font-medium text-text-primary dark:text-background-light mb-2"
-              >
-                Total Price (USD) *
+            {/* Total Price (USD) Placeholder - usually calc'd */}
+            <div className="space-y-2 opacity-50 pointer-events-none">
+              <label className="block text-[10px] uppercase font-bold tracking-widest text-forest/60">
+                Est. Investment (USD)
               </label>
               <input
                 type="number"
-                id="total_price"
-                name="total_price"
+                disabled
                 value={formData.total_price}
-                onChange={handleInputChange}
-                required
-                min={0}
-                step="0.01"
-                className="w-full px-4 py-3 border border-border-color rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-white dark:bg-background-light/10 text-text-primary dark:text-background-light placeholder-text-secondary dark:placeholder-text-secondary/70"
-                placeholder="e.g., 150.00"
+                className="w-full px-4 py-3 border-b-2 border-forest/10 bg-transparent text-forest font-serif text-lg"
               />
             </div>
 
             {/* Check-in Date */}
-            <div>
-              <label
-                htmlFor="check_in"
-                className="block text-sm font-medium text-text-primary dark:text-background-light mb-2"
-              >
-                Check-in Date *
+            <div className="space-y-2">
+              <label htmlFor="check_in" className="block text-[10px] uppercase font-bold tracking-widest text-forest/60">
+                Arrival
               </label>
               <input
                 type="date"
@@ -272,17 +254,14 @@ export default function BookingCard() {
                 onChange={handleInputChange}
                 required
                 min={new Date().toISOString().split('T')[0]}
-                className="w-full px-4 py-3 border border-border-color rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-white dark:bg-background-light/10 text-text-primary dark:text-background-light"
+                className="w-full px-4 py-3 border-b-2 border-forest/10 bg-transparent text-forest font-serif text-lg focus:border-cactus outline-none transition-colors"
               />
             </div>
 
             {/* Check-out Date */}
-            <div>
-              <label
-                htmlFor="check_out"
-                className="block text-sm font-medium text-text-primary dark:text-background-light mb-2"
-              >
-                Check-out Date *
+            <div className="space-y-2">
+              <label htmlFor="check_out" className="block text-[10px] uppercase font-bold tracking-widest text-forest/60">
+                Departure
               </label>
               <input
                 type="date"
@@ -292,73 +271,28 @@ export default function BookingCard() {
                 onChange={handleInputChange}
                 required
                 min={formData.check_in || new Date().toISOString().split('T')[0]}
-                className="w-full px-4 py-3 border border-border-color rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-white dark:bg-background-light/10 text-text-primary dark:text-background-light"
+                className="w-full px-4 py-3 border-b-2 border-forest/10 bg-transparent text-forest font-serif text-lg focus:border-cactus outline-none transition-colors"
               />
             </div>
           </div>
 
-          {/* Special Requests */}
-          <div>
-            <label
-              htmlFor="message"
-              className="block text-sm font-medium text-text-primary dark:text-background-light mb-2"
-            >
-              Special Requests (Optional)
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              value={formData.message}
-              onChange={handleInputChange}
-              rows={4}
-              className="w-full px-4 py-3 border border-border-color rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-white dark:bg-background-light/10 text-text-primary dark:text-background-light placeholder-text-secondary dark:placeholder-text-secondary/70 resize-none"
-              placeholder="Any special requests or additional information..."
-            />
-          </div>
-
-          {/* Submit Button */}
-          <div className="flex justify-center">
-            <button
+          <div className="flex justify-center pt-8">
+            <Button
               type="submit"
-              disabled={isSubmitting}
-              className="inline-flex items-center justify-center rounded-lg bg-primary px-8 py-4 text-base font-bold text-white transition-opacity hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              size="lg"
+              variant="primary"
+              className="w-full md:w-auto min-w-[200px]"
+              isLoading={isSubmitting}
             >
-              {isSubmitting ? (
-                <>
-                  <svg
-                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    />
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    />
-                  </svg>
-                  Submitting...
-                </>
-              ) : (
-                <span>Submit Booking Inquiry</span>
-              )}
-            </button>
+              Initiate Reservation
+            </Button>
           </div>
 
-          {/* Status Message */}
           {submitStatus.type && (
             <div
-              className={`p-4 rounded-lg ${submitStatus.type === "success"
-                ? "bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-200 border border-green-200 dark:border-green-800"
-                : "bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-200 border border-red-200 dark:border-red-800"
+              className={`p-4 rounded-sm text-xs font-bold uppercase tracking-widest border ${submitStatus.type === "success"
+                ? "bg-cactus/10 text-cactus border-cactus/20"
+                : "bg-red-50 text-red-800 border-red-200"
                 }`}
             >
               {submitStatus.message}
@@ -367,6 +301,5 @@ export default function BookingCard() {
         </form>
       </div>
     </div>
-
   );
 }

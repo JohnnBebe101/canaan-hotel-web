@@ -5,10 +5,10 @@ import Link from "next/link";
 import BookingCard from "./BookingCard";
 import HeroSlider from "./HeroSlider";
 import { HERO_SLIDER_IMAGES } from "@/lib/heroImages";
+import Button from "./ui/Button";
+import Badge from "./ui/Badge";
 
 export default function Hero() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   return (
     <div className="relative min-h-screen bg-background-light dark:bg-background-dark overflow-hidden">
       {/* Hero Slider Background */}
@@ -25,12 +25,12 @@ export default function Hero() {
             <div className="text-center lg:text-left space-y-4 sm:space-y-6">
               {/* Badge */}
               <div className="inline-flex items-center gap-2.5 rounded-full border border-white/20 bg-white/10 backdrop-blur-sm px-4 py-2">
-                <span className="badge badge-primary shrink-0 rounded-full text-xs font-bold">Premium</span>
+                <Badge variant="primary" size="xs">Premium</Badge>
                 <span className="text-white/90 text-sm font-medium">Experience Luxury Hospitality</span>
               </div>
 
               {/* Main Heading */}
-              <h1 className="relative text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight text-white">
+              <h1 className="relative text-4xl sm:text-5xl lg:text-5xl font-black leading-tight text-white tracking-tight">
                 <span className="block">Your Gateway to</span>
                 <span className="block text-primary">Tigray's History</span>
                 <span className="block">and Comfort</span>
@@ -61,18 +61,16 @@ export default function Hero() {
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
-                <Link
-                  href="/rooms"
-                  className="btn btn-lg bg-primary hover:bg-orange-600 text-white border-none min-h-[52px] px-8"
-                >
-                  View Our Rooms
-                  <span className="icon-[tabler--arrow-right] size-5"></span>
+                <Link href="/rooms">
+                  <Button size="lg" className="w-full sm:w-auto px-10 gap-2">
+                    <span>View Our Rooms</span>
+                    <span className="material-symbols-outlined">arrow_forward</span>
+                  </Button>
                 </Link>
-                <Link
-                  href="/contact"
-                  className="btn btn-lg btn-outline border-2 border-white text-white hover:bg-white hover:text-primary min-h-[52px] px-8"
-                >
-                  Contact Us
+                <Link href="/contact">
+                  <Button variant="outline" size="lg" className="w-full sm:w-auto px-10 border-white text-white hover:bg-white hover:text-text-primary">
+                    Contact Us
+                  </Button>
                 </Link>
               </div>
             </div>

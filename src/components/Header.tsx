@@ -1,157 +1,157 @@
+
 "use client";
 
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { useState, useRef } from "react";
+import { usePathname } from "next/navigation";
+import Button from "@/components/ui/Button";
+
+import CanaanLogo from "@/components/ui/CanaanLogo";
+
+const navItems = [
+  { label: "Sanctuary", href: "/" },
+  { label: "Chambers", href: "/rooms" },
+  { label: "Heritage", href: "/about" },
+  { label: "Journals", href: "/blog" },
+  { label: "Contact", href: "/contact" },
+];
 
 interface HeaderProps {
-  variant?: "public" | "admin";
-  currentPage?: string;
+  variant?: 'public' | 'admin';
 }
 
-export default function Header({ variant = "public", currentPage }: HeaderProps) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+export default function Header({ variant = 'public' }: HeaderProps) {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
-  const navItems = variant === "public"
-    ? [
-        { name: "Home", href: "/", current: currentPage === "home" },
-        { name: "Rooms", href: "/rooms", current: currentPage === "rooms" },
-        { name: "Services", href: "/services", current: currentPage === "services" },
-        { name: "About Us", href: "/about", current: currentPage === "about" },
-        { name: "Contact", href: "/contact", current: currentPage === "contact" },
-      ]
-    : [
-        { name: "Dashboard", href: "/admin/dashboard", current: currentPage === "dashboard" },
-        { name: "Rooms", href: "/admin/rooms", current: currentPage === "rooms" },
-        { name: "Bookings", href: "/admin/bookings", current: currentPage === "bookings" },
-        { name: "Attractions", href: "/admin/attractions", current: currentPage === "attractions" },
-      ];
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // If admin, maybe render differently or just same for now to fix build
+  // For now, we return the same header but the prop is accepted.
+  // We could hide it for admin if needed, but existing code used it.
+
+
+  // Close menu on route change
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
 
   return (
-    <header className="sticky top-0 z-50 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-sm border-b border-border-color dark:border-text-secondary/20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <div className="flex-shrink-0 flex items-center gap-3">
-            <Link href={variant === "public" ? "/" : "/admin/dashboard"} className="flex items-center gap-3">
-              <div className="h-10 w-auto">
-                <Image
-                  src="/images/ui/Canaan-logo-100x100.svg"
-                  alt="Canaan International Hotel Logo"
-                  width={40}
-                  height={40}
-                  className="h-10 w-auto object-contain"
-                  priority
-                />
-              </div>
-              <div className="hidden sm:flex flex-col">
-                <span className="text-base font-bold text-text-primary dark:text-background-light">
-                  {variant === "public" ? "Canaan International Hotel" : "Admin Panel"}
-                </span>
-                {variant === "public" && (
-                  <span className="text-xs text-text-secondary/80 flex items-center gap-1">
-                    <span className="material-symbols-outlined text-green-600 text-xs">verified</span>
-                    Best Price Guarantee
-                  </span>
-                )}
-              </div>
+    <header className="relative z-50">
+      <nav
+        aria-label="Main navigation"
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${isScrolled
+          ? "bg-forest/95 backdrop-blur-md shadow-2xl py-4"
+          : "bg-transparent py-10"
+          }`}
+      >
+        <div className="max-w-7xl mx-auto px-8 flex justify-between items-center">
+          <Link
+            href="/"
+            className="flex items-center space-x-4 cursor-pointer group focus:outline-none"
+            aria-label="Canaan International Hotel Home"
+          >
+            <CanaanLogo
+              className={`w-8 h-8 transition-all duration-500 ${isScrolled ? "text-cactus" : "text-sandstone scale-110"
+                }`}
+            />
+            <div
+              className={`text-xl font-serif font-bold tracking-tight transition-colors duration-500 text-sandstone`}
+            >
+              Canaan Hotel
+            </div>
+          </Link>
+
+          <div className="hidden lg:flex items-center space-x-10" role="menubar">
+            {navItems.map((item) => {
+              const isActive = pathname === item.href;
+              return (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  role="menuitem"
+                  className={`text-[9px] uppercase tracking-[0.4em] font-bold transition-all duration-500 relative group ${isScrolled
+                    ? "text-sandstone/70 hover:text-sandstone"
+                    : "text-sandstone/70 hover:text-sandstone"
+                    } ${isActive ? "opacity-100 text-cactus" : "opacity-60"}`}
+                >
+                  {item.label}
+                  <span
+                    className={`absolute -bottom-1 left-0 h-px bg-cactus transition-all duration-500 ${isActive ? "w-full" : "w-0 group-hover:w-full"
+                      }`}
+                    aria-hidden="true"
+                  ></span>
+                </Link>
+              );
+            })}
+
+            <Link href="/rooms">
+              <button
+                className={`px-10 py-3 text-[9px] uppercase tracking-[0.4em] font-bold transition-all duration-500 border ${isScrolled
+                  ? "bg-cactus text-sandstone border-cactus hover:bg-transparent hover:text-cactus"
+                  : "bg-sandstone text-forest border-sandstone hover:bg-transparent hover:text-sandstone"
+                  }`}
+              >
+                Reserve
+              </button>
             </Link>
           </div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:block">
-            <div className="ml-10 flex items-center space-x-8">
-              {navItems.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                    item.current
-                      ? "bg-primary text-white"
-                      : "text-text-primary dark:text-background-light hover:text-primary dark:hover:text-primary hover:bg-background-light/50"
-                  }`}
-                  aria-current={item.current ? "page" : undefined}
-                >
-                  {item.name}
-                </Link>
-              ))}
-            </div>
-          </nav>
-
-          {/* Right side controls */}
-          <div className="flex items-center gap-2">
-            {variant === "public" && (
-              <Link
-                href="/rooms"
-                className="hidden md:flex h-10 min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-primary px-4 text-sm font-bold text-white transition-opacity hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-                aria-label="Book a room now"
-              >
-                <span className="truncate">Book Now</span>
-              </Link>
+          <button
+            className="lg:hidden p-2 focus:outline-none transition-transform active:scale-90"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-expanded={isMobileMenuOpen}
+            aria-label="Toggle menu"
+          >
+            {isMobileMenuOpen ? (
+              <span className="material-symbols-outlined text-sandstone text-4xl">
+                close
+              </span>
+            ) : (
+              <span className="material-symbols-outlined text-sandstone text-4xl">
+                menu
+              </span>
             )}
-            
-            {/* Language Selector */}
-            <button 
-              type="button" 
-              className="flex h-10 w-10 cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-background-light text-text-primary ring-1 ring-inset ring-border-color hover:bg-border-color dark:bg-background-dark dark:text-background-light dark:ring-text-secondary dark:hover:bg-text-secondary/20"
-              aria-label="Change language" 
-            >
-              <span className="material-symbols-outlined text-xl" aria-hidden="true">language</span>
-            </button>
-          </div>
+          </button>
+        </div>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden flex items-center space-x-2">
-            {variant === "public" && (
-              <Link
-                href="/rooms"
-                className="px-3 py-2 bg-primary text-white text-sm font-bold rounded-lg hover:opacity-90 transition-opacity"
-              >
-                Book
-              </Link>
-            )}
-            
+        {isMobileMenuOpen && (
+          <div className="lg:hidden fixed inset-0 bg-forest z-50 p-12 flex flex-col justify-center items-center space-y-10 animate-in slide-in-from-top duration-700">
             <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-text-primary dark:text-background-light hover:text-primary dark:hover:text-primary hover:bg-background-light/50 focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
-              aria-expanded={isMenuOpen}
-              aria-controls="mobile-menu"
-              aria-label="Toggle navigation"
+              className="absolute top-10 right-10 p-2"
+              onClick={() => setIsMobileMenuOpen(false)}
+              aria-label="Close menu"
             >
-              <span className="sr-only">Open main menu</span>
-              <span className={`material-symbols-outlined text-xl transition-transform duration-200 ${isMenuOpen ? 'rotate-90' : ''}`}>
-                {isMenuOpen ? 'close' : 'menu'}
+              <span className="material-symbols-outlined text-sandstone text-5xl">
+                close
               </span>
             </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile menu */}
-      <div 
-        id="mobile-menu"
-        className={`md:hidden bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm border-t border-border-color dark:border-text-secondary/20 overflow-hidden transition-all duration-300 ${
-          isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-        }`}
-      >
-        <div className="px-4 py-4 space-y-2">
-          {navItems.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${
-                item.current
-                  ? "bg-primary text-white"
-                  : "text-text-primary dark:text-background-light hover:text-primary dark:hover:text-primary hover:bg-background-light/50"
-              }`}
-              aria-current={item.current ? "page" : undefined}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              {item.name}
+            <CanaanLogo className="w-16 h-16 text-cactus mb-8" />
+            {navItems.map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="text-4xl font-serif text-sandstone hover:text-cactus transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {item.label}
+              </Link>
+            ))}
+            <Link href="/rooms" onClick={() => setIsMobileMenuOpen(false)}>
+              <button className="px-16 py-6 bg-cactus text-sandstone font-serif text-2xl shadow-2xl mt-8">
+                Experience Sanctuary
+              </button>
             </Link>
-          ))}
-        </div>
-      </div>
+          </div>
+        )}
+      </nav>
     </header>
   );
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import Link from 'next/link';
 import Button from '@/components/ui/Button';
 
 interface ErrorPageProps {
@@ -36,13 +37,14 @@ export default function AdminErrorPage({ error, reset }: ErrorPageProps) {
           >
             Attempt Reconciliation
           </Button>
-          <Button
-            onClick={() => window.location.href = '/admin/dashboard'}
-            className="w-full"
-            variant="ghost"
-          >
-            Return to Dashboard
-          </Button>
+          <Link href="/admin/dashboard" className="w-full block">
+            <Button
+              className="w-full"
+              variant="ghost"
+            >
+              Return to Dashboard
+            </Button>
+          </Link>
         </div>
       </div>
     </div>

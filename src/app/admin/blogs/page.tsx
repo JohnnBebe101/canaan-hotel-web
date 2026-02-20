@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Blog } from "@/lib/models";
 import { useToast } from "@/components/ui/Toast";
@@ -10,6 +11,7 @@ import Button from "@/components/ui/Button";
 import OptimizedImage from "@/components/OptimizedImage";
 
 export default function AdminBlogsPage() {
+  const router = useRouter();
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -102,7 +104,7 @@ export default function AdminBlogsPage() {
           <h1 className="text-3xl font-black text-text-primary dark:text-white tracking-tight">Blog Management</h1>
           <p className="text-text-secondary dark:text-gray-400 mt-1">Curate and publish hotel updates and travel tips.</p>
         </div>
-        <Button onClick={() => window.location.href = '/admin/blogs/new'} size="lg">
+        <Button onClick={() => router.push('/admin/blogs/new')} size="lg">
           <span className="material-symbols-outlined mr-2">add</span>
           New Post
         </Button>
@@ -112,8 +114,8 @@ export default function AdminBlogsPage() {
         <button
           onClick={() => setFilter("all")}
           className={`flex-shrink-0 px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all ${filter === "all"
-              ? "bg-primary text-white shadow-lg shadow-primary/30"
-              : "bg-gray-100 dark:bg-gray-800 text-gray-500 hover:bg-gray-200"
+            ? "bg-primary text-white shadow-lg shadow-primary/30"
+            : "bg-gray-100 dark:bg-gray-800 text-gray-500 hover:bg-gray-200"
             }`}
         >
           All ({blogs.length})
@@ -121,8 +123,8 @@ export default function AdminBlogsPage() {
         <button
           onClick={() => setFilter("published")}
           className={`flex-shrink-0 px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all ${filter === "published"
-              ? "bg-green-600 text-white shadow-lg shadow-green-600/30"
-              : "bg-gray-100 dark:bg-gray-800 text-gray-500 hover:bg-gray-200"
+            ? "bg-green-600 text-white shadow-lg shadow-green-600/30"
+            : "bg-gray-100 dark:bg-gray-800 text-gray-500 hover:bg-gray-200"
             }`}
         >
           Published ({blogs.filter((b) => b.is_published).length})
@@ -130,8 +132,8 @@ export default function AdminBlogsPage() {
         <button
           onClick={() => setFilter("draft")}
           className={`flex-shrink-0 px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all ${filter === "draft"
-              ? "bg-amber-500 text-white shadow-lg shadow-amber-500/30"
-              : "bg-gray-100 dark:bg-gray-800 text-gray-500 hover:bg-gray-200"
+            ? "bg-amber-500 text-white shadow-lg shadow-amber-500/30"
+            : "bg-gray-100 dark:bg-gray-800 text-gray-500 hover:bg-gray-200"
             }`}
         >
           Drafts ({blogs.filter((b) => !b.is_published).length})
@@ -206,7 +208,7 @@ export default function AdminBlogsPage() {
           <p className="text-text-secondary dark:text-gray-400 mb-8 max-w-sm mx-auto font-medium">
             Start building your hotel's presence by sharing interesting stories and local tips.
           </p>
-          <Button onClick={() => window.location.href = '/admin/blogs/new'} size="lg">
+          <Button onClick={() => router.push('/admin/blogs/new')} size="lg">
             Create First Post
           </Button>
         </div>

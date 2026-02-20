@@ -1,6 +1,7 @@
 import { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
+import OptimizedImage from "@/components/OptimizedImage";
+import RoomBookingForm from "@/components/RoomBookingForm";
 import { FEATURED_ROOMS } from "@/lib/featuredRooms";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
@@ -27,29 +28,33 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 export default async function RoomDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const room = FEATURED_ROOMS.find(r => r.slug === id);
+
   return (
     <main className="flex-1 px-4 sm:px-10 lg:px-20 py-10 sm:py-16">
       <div className="mx-auto max-w-7xl">
+        {/* Back Link */}
+        <Link href="/rooms" className="inline-flex items-center gap-2 text-sm font-bold text-text-secondary hover:text-primary transition-colors mb-8">
+          <span className="material-symbols-outlined text-base">arrow_back</span>
+          All Rooms
+        </Link>
+
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+          {/* Gallery */}
           <div className="lg:col-span-3">
             <div className="relative w-full">
               <div className="relative w-full overflow-hidden rounded-xl aspect-[4/3]">
-                <Image
+                <OptimizedImage
                   className="w-full h-full object-cover"
                   alt={`${room?.name || 'Hotel room'} - ${room?.description || 'Comfortable accommodation'}`}
-                  src="/images/rooms/single-room-view.webp"
+                  src={room?.imageSrc || "/images/rooms/single-room-view.webp"}
                   width={800}
                   height={600}
                   priority
                 />
-                <button className="absolute top-4 right-4 flex items-center gap-2 rounded-full bg-black/50 px-3 py-1.5 text-white text-xs font-semibold backdrop-blur-sm hover:bg-black/70">
-                  <span className="material-symbols-outlined text-base">fullscreen</span>
-                  View All
-                </button>
               </div>
               <div className="mt-3 grid grid-cols-5 gap-3">
                 <div className="overflow-hidden rounded-lg aspect-square">
-                  <Image
+                  <OptimizedImage
                     className="w-full h-full object-cover cursor-pointer border-2 border-primary"
                     alt="Bedroom view"
                     src="/images/rooms/single-room-best-view.webp"
@@ -59,7 +64,7 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
                   />
                 </div>
                 <div className="overflow-hidden rounded-lg aspect-square">
-                  <Image
+                  <OptimizedImage
                     className="w-full h-full object-cover cursor-pointer opacity-70 hover:opacity-100 transition-opacity"
                     alt="Room amenities"
                     src="/images/rooms/corridor-rooms.webp"
@@ -69,7 +74,7 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
                   />
                 </div>
                 <div className="overflow-hidden rounded-lg aspect-square">
-                  <Image
+                  <OptimizedImage
                     className="w-full h-full object-cover cursor-pointer opacity-70 hover:opacity-100 transition-opacity"
                     alt="Bathroom facilities"
                     src="/images/rooms/bath-room.webp"
@@ -79,7 +84,7 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
                   />
                 </div>
                 <div className="overflow-hidden rounded-lg aspect-square">
-                  <Image
+                  <OptimizedImage
                     className="w-full h-full object-cover cursor-pointer opacity-70 hover:opacity-100 transition-opacity"
                     alt="The view from the hotel room window."
                     src="/images/rooms/Bed-view-Single.webp"
@@ -89,7 +94,7 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
                   />
                 </div>
                 <div className="overflow-hidden rounded-lg aspect-square">
-                  <div className="w-full h-full bg-black/50 flex items-center justify-center cursor-pointer hover:bg-black/60 transition-colors">
+                  <div className="w-full h-full bg-black/50 flex items-center justify-center cursor-pointer hover:bg-black/60 transition-colors rounded-lg">
                     <span className="text-white font-bold text-lg">+5</span>
                   </div>
                 </div>
@@ -97,111 +102,24 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
             </div>
           </div>
 
+          {/* Booking Card */}
           <div className="lg:col-span-2 mt-8 lg:mt-0">
             <div className="sticky top-24">
-              <div className="flex flex-col gap-8 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800/50 p-6 shadow-lg">
-                <div className="flex flex-col gap-2">
-                  <p className="text-sm font-bold text-primary">Starting From</p>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-3xl font-black text-primary dark:text-white">$120</span>
-                    <span className="text-sm font-medium text-gray-500 dark:text-gray-400">/ night</span>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-text-primary dark:text-background-light mb-1" htmlFor="checkin">
-                      Check-in
-                    </label>
-                    <div className="relative">
-                      <input
-                        className="w-full rounded-lg border border-border-color dark:border-text-secondary/50 dark:bg-background-light/10 dark:text-background-light focus:ring-primary focus:border-primary"
-                        id="checkin"
-                        placeholder="Select Date"
-                        type="text"
-                      />
-                      <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
-                        calendar_today
-                      </span>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-text-primary dark:text-background-light mb-1" htmlFor="checkout">
-                      Check-out
-                    </label>
-                    <div className="relative">
-                      <input
-                        className="w-full rounded-lg border border-border-color dark:border-text-secondary/50 dark:bg-background-light/10 dark:text-background-light focus:ring-primary focus:border-primary"
-                        id="checkout"
-                        placeholder="Select Date"
-                        type="text"
-                      />
-                      <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
-                        calendar_today
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-text-primary dark:text-background-light mb-1" htmlFor="adults">
-                      Adults
-                    </label>
-                    <select
-                      className="w-full rounded-lg border border-border-color dark:border-text-secondary/50 dark:bg-background-light/10 dark:text-background-light focus:ring-primary focus:border-primary"
-                      id="adults"
-                      defaultValue="2"
-                    >
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-text-primary dark:text-background-light mb-1" htmlFor="children">
-                      Children
-                    </label>
-                    <select
-                      className="w-full rounded-lg border border-border-color dark:border-text-secondary/50 dark:bg-background-light/10 dark:text-background-light focus:ring-primary focus:border-primary"
-                      id="children"
-                      defaultValue="0"
-                    >
-                      <option value="0">0</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                    </select>
-                  </div>
-                </div>
-
-                <Link
-                  href="/#booking"
-                  className="w-full flex items-center justify-center rounded-lg h-12 px-6 bg-primary text-white text-base font-bold hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-                >
-                  <span>Reserve Your Stay</span>
-                </Link>
-
-                <div className="text-center mt-3">
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Total for 1 night: <span className="font-bold text-text-primary dark:text-background-light">$120</span>
-                  </p>
-                </div>
-              </div>
+              <RoomBookingForm pricePerNight={room?.pricePerNight ?? 120} />
             </div>
           </div>
         </div>
 
-        <div className="lg:col-span-3 mt-12 lg:mt-0">
+        {/* Room Details */}
+        <div className="mt-12">
           <div className="flex flex-col gap-6">
             <div>
-                <div className="flex justify-between items-start mb-4">
-                  <h1 className="text-4xl font-black leading-tight tracking-tighter text-primary dark:text-white">
-                    {room?.name || "Comfort Double"}
-                  </h1>
-                </div>
-              <p className="mt-4 text-base font-normal leading-relaxed">
+              <div className="flex justify-between items-start mb-4">
+                <h1 className="text-4xl font-black leading-tight tracking-tighter text-primary dark:text-white">
+                  {room?.name || "Comfort Double"}
+                </h1>
+              </div>
+              <p className="mt-4 text-base font-normal leading-relaxed text-text-secondary dark:text-gray-300">
                 {room?.description || "Experience unparalleled comfort in our spacious room. Perfect for couples or business travelers."}
               </p>
             </div>
@@ -244,14 +162,14 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
               <h3 className="text-xl font-bold text-primary dark:text-white">What Our Guests Say</h3>
               <div className="mt-4 flex flex-col gap-6">
                 <div className="border-l-4 border-primary pl-4">
-                  <p className="italic">
-                    "Absolutely wonderful stay. The room was immaculate and the service was top-notch. Highly recommended for anyone visiting Adigrat."
+                  <p className="italic text-text-secondary dark:text-gray-300">
+                    &quot;Absolutely wonderful stay. The room was immaculate and the service was top-notch. Highly recommended for anyone visiting Adigrat.&quot;
                   </p>
                   <p className="mt-2 font-bold text-sm">— Jane D.</p>
                 </div>
                 <div className="border-l-4 border-primary pl-4">
-                  <p className="italic">
-                    "A true gem in the heart of the city. Comfortable, clean, and convenient. The booking process was seamless. We'll be back!"
+                  <p className="italic text-text-secondary dark:text-gray-300">
+                    &quot;A true gem in the heart of the city. Comfortable, clean, and convenient. The booking process was seamless. We&apos;ll be back!&quot;
                   </p>
                   <p className="mt-2 font-bold text-sm">— Mark S.</p>
                 </div>

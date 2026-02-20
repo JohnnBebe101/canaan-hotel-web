@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
-import HeroImage from "@/components/HeroImage";
+import Link from "next/link";
+import OptimizedImage from "@/components/OptimizedImage";
+import Button from "@/components/ui/Button";
+import Badge from "@/components/ui/Badge";
 
 interface GalleryImage {
     id: string;
@@ -94,38 +96,43 @@ export default function GalleryClient() {
         : galleryImages.filter((img) => img.category === activeCategory);
 
     return (
-        <div className="w-full max-w-7xl">
+        <div className="w-full">
             {/* Hero Section */}
             <section
-                className="relative flex min-h-[50vh] w-full flex-col items-center justify-center p-4 py-20 text-center text-white"
+                className="relative flex min-h-[40vh] w-full flex-col items-center justify-center p-4 py-20 text-center text-white overflow-hidden"
                 aria-label="Gallery hero section"
             >
-                <HeroImage
-                    src="/images/heroes/Ext-Compund.webp"
-                    alt="Canaan International Hotel exterior"
-                    overlayOpacity={0.5}
-                    className="absolute inset-0 -z-10"
-                />
-                <div className="flex flex-col gap-4 relative z-10">
-                    <h1 className="text-4xl font-black leading-tight tracking-tighter md:text-6xl">
+                <div className="absolute inset-0 -z-10">
+                    <OptimizedImage
+                        src="/images/heroes/Ext-Compund.webp"
+                        alt="Canaan International Hotel exterior"
+                        fill
+                        priority
+                        className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px]" />
+                </div>
+                <div className="flex flex-col gap-4 relative z-10 max-w-4xl">
+                    <Badge variant="primary" className="mx-auto border-white/20 bg-white/10 text-white backdrop-blur-md">Visual Journey</Badge>
+                    <h1 className="text-4xl font-black leading-tight tracking-tight md:text-6xl text-white">
                         Photo Gallery
                     </h1>
-                    <p className="mx-auto max-w-2xl text-base font-normal leading-normal text-gray-200 md:text-lg">
-                        Take a visual journey through our hotel and discover the beauty of Adigrat.
+                    <p className="mx-auto max-w-2xl text-lg font-medium text-gray-200">
+                        Explore the comfort of our rooms and the historic beauty of Tigray.
                     </p>
                 </div>
             </section>
 
             {/* Category Filters */}
-            <section className="px-4 py-8 sm:px-6 lg:px-8" aria-label="Gallery filters">
-                <div className="flex flex-wrap justify-center gap-3">
+            <section className="px-4 py-12 sm:px-6 lg:px-8 border-b border-border-color dark:border-text-secondary/10 bg-white dark:bg-background-dark/50 sticky top-16 z-30 backdrop-blur-md" aria-label="Gallery filters">
+                <div className="flex flex-wrap justify-center gap-2 max-w-7xl mx-auto">
                     {categories.map((category) => (
                         <button
                             key={category.id}
                             onClick={() => setActiveCategory(category.id)}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeCategory === category.id
-                                    ? "bg-primary text-white"
-                                    : "bg-white text-text-secondary border border-border-color hover:bg-gray-50 dark:bg-background-dark dark:border-text-secondary/20 dark:hover:bg-text-secondary/10"
+                            className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all ${activeCategory === category.id
+                                ? "bg-primary text-white shadow-lg shadow-primary/20 scale-105"
+                                : "bg-white text-text-secondary border border-border-color hover:border-primary hover:text-primary dark:bg-background-dark dark:border-text-secondary/20"
                                 }`}
                         >
                             {category.label}
@@ -135,50 +142,35 @@ export default function GalleryClient() {
             </section>
 
             {/* Gallery Grid */}
-            <section className="px-4 pb-16 sm:px-6 lg:px-8" aria-labelledby="gallery-grid">
-                <h2 id="gallery-grid" className="sr-only">Photo Gallery</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+            <section className="px-4 py-16 sm:px-6 lg:px-8" aria-labelledby="gallery-grid">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
                     {filteredImages.map((image) => (
                         <button
                             key={image.id}
                             onClick={() => setSelectedImage(image)}
-                            className="group block overflow-hidden rounded-xl border border-border-color dark:border-text-secondary/10 bg-white dark:bg-background-dark/50 hover:shadow-lg transition-all duration-300 text-left"
+                            className="group block overflow-hidden rounded-2xl bg-white dark:bg-background-dark/50 border border-border-color dark:border-text-secondary/10 hover:shadow-2xl transition-all duration-500 text-left"
                         >
-                            <div className="relative overflow-hidden">
-                                <div className="aspect-video relative">
-                                    {image.src.startsWith("/") ? (
-                                    <Image
-                                            src={image.src}
-                                            alt={image.alt}
-                                            fill
-                                            loading="lazy"
-                                            className="object-cover group-hover:scale-105 transition-transform duration-300"
-                                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                                        />
-                                    ) : (
-                                        <div
-                                            className="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-300"
-                                            style={{ backgroundImage: `url("${image.src}")` }}
-                                            role="img"
-                                            aria-label={image.alt}
-                                        />
-                                    )}
+                            <div className="relative overflow-hidden aspect-[4/3]">
+                                <OptimizedImage
+                                    src={image.src}
+                                    alt={image.alt}
+                                    fill
+                                    className="object-cover group-hover:scale-110 transition-transform duration-700"
+                                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                    unoptimized={!image.src.startsWith("/")}
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
+                                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                    <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-500">
+                                        <span className="material-symbols-outlined text-white text-2xl">zoom_in</span>
+                                    </div>
                                 </div>
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                                <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                                    <p className="text-white font-medium">{image.title}</p>
+                                <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                                    <Badge variant="primary" size="xs" className="mb-2 bg-white text-primary border-none">{categories.find(c => c.id === image.category)?.label}</Badge>
+                                    <h3 className="text-xl font-bold text-white leading-tight">
+                                        {image.title}
+                                    </h3>
                                 </div>
-                            </div>
-                            <div className="p-4">
-                                <h3 className="text-text-primary dark:text-background-light font-semibold">
-                                    {image.title}
-                                </h3>
-                                <p className="text-sm text-text-secondary dark:text-text-secondary/90 mt-1">
-                                    {image.alt}
-                                </p>
-                                <span className="inline-block px-2 py-1 rounded-full bg-gray-100 text-gray-700 text-xs mt-2 dark:bg-text-secondary/10 dark:text-text-secondary">
-                                    {categories.find((c) => c.id === image.category)?.label}
-                                </span>
                             </div>
                         </button>
                     ))}
@@ -188,59 +180,61 @@ export default function GalleryClient() {
             {/* Lightbox Modal */}
             {selectedImage && (
                 <div
-                    className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
+                    className="fixed inset-0 z-[60] bg-black/95 flex items-center justify-center p-4 backdrop-blur-lg animate-in fade-in duration-300"
                     onClick={() => setSelectedImage(null)}
                     role="dialog"
                     aria-modal="true"
-                    aria-label="Image viewer"
                 >
                     <button
-                        className="absolute top-4 right-4 text-white hover:text-primary transition-colors"
+                        className="absolute top-6 right-6 w-12 h-12 flex items-center justify-center rounded-full bg-white/10 text-white hover:bg-primary transition-colors z-10"
                         onClick={() => setSelectedImage(null)}
-                        aria-label="Close image viewer"
                     >
-                        <span className="material-symbols-outlined text-3xl">close</span>
+                        <span className="material-symbols-outlined text-2xl">close</span>
                     </button>
-                    <div className="max-w-5xl w-full" onClick={(e) => e.stopPropagation()}>
-                        <div className="relative aspect-video rounded-lg overflow-hidden">
-                            {selectedImage.src.startsWith("/") ? (
-                                <Image
-                                    src={selectedImage.src}
-                                    alt={selectedImage.alt}
-                                    fill
-                                    className="object-contain"
-                                    sizes="100vw"
-                                    priority
-                                />
-                            ) : (
-                                <div
-                                    className="w-full h-full bg-cover bg-center"
-                                    style={{ backgroundImage: `url("${selectedImage.src}")` }}
-                                    role="img"
-                                    aria-label={selectedImage.alt}
-                                />
-                            )}
+                    <div className="max-w-6xl w-full flex flex-col items-center" onClick={(e) => e.stopPropagation()}>
+                        <div className="relative w-full aspect-[3/2] md:aspect-[16/9] rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-black">
+                            <OptimizedImage
+                                src={selectedImage.src}
+                                alt={selectedImage.alt}
+                                fill
+                                className="object-contain"
+                                sizes="100vw"
+                                priority
+                                unoptimized={!selectedImage.src.startsWith("/")}
+                            />
                         </div>
-                        <div className="text-center mt-4">
-                            <h3 className="text-white text-xl font-bold">{selectedImage.title}</h3>
-                            <p className="text-gray-300 mt-1">{selectedImage.alt}</p>
+                        <div className="mt-8 text-center max-w-2xl px-4 scale-in-95 animate-in fade-in slide-in-from-bottom-4 duration-500 delay-150">
+                            <Badge variant="primary" className="mb-4">{categories.find(c => c.id === selectedImage.category)?.label}</Badge>
+                            <h3 className="text-2xl md:text-3xl font-black text-white mb-2">{selectedImage.title}</h3>
+                            <p className="text-gray-400 text-lg leading-relaxed">{selectedImage.alt}</p>
                         </div>
                     </div>
                 </div>
             )}
 
             {/* CTA Section */}
-            <section className="px-4 py-16 sm:px-6 lg:px-8 bg-white dark:bg-background-light/5 text-center">
-                <h2 className="text-3xl font-bold tracking-tight text-text-primary dark:text-background-light mb-4">
-                    Ready to Experience It In Person?
-                </h2>
-                <p className="mx-auto max-w-2xl text-text-secondary dark:text-text-secondary/90 mb-8"></p>
-                <a
-                    href="/rooms"
-                    className="inline-flex items-center justify-center rounded-lg bg-primary px-8 py-4 text-base font-bold text-white transition-opacity hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-                >
-                    Book Your Stay
-                </a>
+            <section className="px-4 py-24 sm:px-6 lg:px-8 bg-gray-50 dark:bg-background-light/5 text-center overflow-hidden relative">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+                <div className="relative z-10 max-w-3xl mx-auto">
+                    <h2 className="text-4xl font-black tracking-tight text-text-primary dark:text-background-light mb-6">
+                        Ready to Visit Us?
+                    </h2>
+                    <p className="text-lg text-text-secondary dark:text-text-secondary/90 mb-10">
+                        Experience the elegance and comfort of Canaan International Hotel for yourself. Book your room today for the best rates.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                        <Link href="/rooms">
+                            <Button size="lg" className="px-10">
+                                Book Your Stay
+                            </Button>
+                        </Link>
+                        <Link href="/contact">
+                            <Button variant="outline" size="lg" className="px-10">
+                                Contact Us
+                            </Button>
+                        </Link>
+                    </div>
+                </div>
             </section>
         </div>
     );

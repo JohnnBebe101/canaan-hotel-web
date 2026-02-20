@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { getLatestBlogs } from "@/lib/blog-store";
+import Badge from "./ui/Badge";
 
 export default async function BlogSection() {
   const blogs = await getLatestBlogs(2);
@@ -13,6 +14,7 @@ export default async function BlogSection() {
     <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24" aria-labelledby="latest-blogs">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
+          <Badge variant="primary" className="mb-3">Our Blog</Badge>
           <h2 id="latest-blogs" className="text-3xl font-bold tracking-tight text-text-primary dark:text-background-light mb-4">
             Latest from Our Blog
           </h2>
@@ -41,11 +43,11 @@ export default async function BlogSection() {
               </div>
               <div className="p-5">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="text-xs text-text-secondary dark:text-text-secondary/70">
+                  <Badge variant="neutral" size="xs">
                     {blog.published_at
                       ? new Date(blog.published_at).toLocaleDateString()
-                      : ""}
-                  </span>
+                      : "Recent"}
+                  </Badge>
                 </div>
                 <h3 className="text-lg font-bold text-text-primary dark:text-background-light mb-2 group-hover:text-primary transition-colors">
                   {blog.title}
@@ -53,8 +55,9 @@ export default async function BlogSection() {
                 <p className="text-sm text-text-secondary dark:text-text-secondary/90 line-clamp-2">
                   {blog.excerpt}
                 </p>
-                <span className="inline-block mt-3 text-primary font-medium text-sm group-hover:underline">
-                  Read More →
+                <span className="inline-flex items-center gap-1 mt-3 text-primary font-bold text-sm uppercase tracking-wider group-hover:gap-2 transition-all">
+                  <span>Read More</span>
+                  <span className="material-symbols-outlined text-sm">arrow_forward</span>
                 </span>
               </div>
             </Link>
@@ -62,10 +65,10 @@ export default async function BlogSection() {
         </div>
 
         {blogs.length > 0 && (
-          <div className="text-center mt-8">
+          <div className="text-center mt-10">
             <Link
               href="/blog"
-              className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-bold text-white transition-opacity hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+              className="inline-flex items-center justify-center rounded-lg bg-primary px-8 py-3 text-sm font-bold text-white transition-opacity hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
             >
               View All Posts
             </Link>

@@ -3,6 +3,7 @@
 import { useState, FormEvent, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 
 function LoginForm() {
   const router = useRouter();
@@ -62,7 +63,13 @@ function LoginForm() {
         {/* Logo & Header */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-3">
-            <img src="/images/ui/Canaan-logo-100x100.svg" alt="Canaan International Hotel Logo" className="h-12 w-auto" />
+            <Image
+              src="/images/ui/Canaan-logo-100x100.svg"
+              alt="Canaan International Hotel Logo"
+              width={48}
+              height={48}
+              className="h-12 w-auto"
+            />
           </Link>
           <h1 className="mt-6 text-2xl font-bold text-gray-900 dark:text-white">
             Admin Portal

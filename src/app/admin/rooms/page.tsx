@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Room } from "@/lib/models";
 import { useToast } from "@/components/ui/Toast";
@@ -9,6 +10,7 @@ import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 
 export default function AdminRoomsPage() {
+  const router = useRouter();
   const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -126,7 +128,7 @@ export default function AdminRoomsPage() {
           <h1 className="text-3xl font-black text-text-primary dark:text-white tracking-tight">Room Management</h1>
           <p className="text-text-secondary dark:text-gray-400 mt-1">Configure your hotel's room inventory and pricing.</p>
         </div>
-        <Button onClick={() => window.location.href = '/admin/rooms/new'} size="lg">
+        <Button onClick={() => router.push('/admin/rooms/new')} size="lg">
           <span className="material-symbols-outlined mr-2">add</span>
           Add New Room
         </Button>
@@ -166,7 +168,7 @@ export default function AdminRoomsPage() {
                   variant="outline"
                   size="sm"
                   className="flex-1"
-                  onClick={() => window.location.href = `/admin/rooms/${room.id}`}
+                  onClick={() => router.push(`/admin/rooms/${room.id}`)}
                 >
                   Edit
                 </Button>
@@ -201,7 +203,7 @@ export default function AdminRoomsPage() {
           <p className="text-text-secondary dark:text-gray-400 mb-8 max-w-sm mx-auto">
             Your room inventory is empty. Add your first room to start accepting bookings.
           </p>
-          <Button onClick={() => window.location.href = '/admin/rooms/new'} size="lg">
+          <Button onClick={() => router.push('/admin/rooms/new')} size="lg">
             Create First Room
           </Button>
         </div>

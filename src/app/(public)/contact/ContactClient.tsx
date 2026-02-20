@@ -1,6 +1,7 @@
 "use client";
 
-import Image from "next/image";
+import OptimizedImage from "@/components/OptimizedImage";
+import Button from "@/components/ui/Button";
 
 export default function ContactClient() {
     const handleSubmit = (e: React.FormEvent) => {
@@ -14,35 +15,37 @@ export default function ContactClient() {
                 <div className="flex min-w-72 flex-col gap-3">
                     <div className="flex justify-between items-start">
                         <div>
-                            <h1 className="text-4xl font-black leading-tight tracking-[-0.033em] text-text-primary dark:text-background-light">
+                            <h1 className="text-4xl font-black leading-tight tracking-tight text-text-primary dark:text-background-light">
                                 Contact & Location
                             </h1>
                             <p className="text-base font-normal leading-normal text-text-secondary dark:text-text-secondary/90">
                                 Get in touch with us or find our exact location in Adigrat.
                             </p>
                         </div>
-                        </div>
                     </div>
                 </div>
+            </div>
 
-                <div className="mb-12">
-                <div
-                    className="w-full h-64 md:h-96 bg-center bg-no-repeat bg-cover rounded-xl object-cover border border-border-color dark:border-text-secondary/20"
-                    role="img"
-                    aria-label="An interactive map showing the location of Canaan International Hotel in Adigrat, Tigray"
-                    style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuCW_Sq-6MxdZfXT6k0KVoAvToBcuaJQo1Pb0KSpz82y-aMoeeiwIEzyhdqqC1KDdSHxqtpaZP3zRwaYZ60UD6u3ThZnxGfZVf4EmCBx5FwFlnQ2RNHW1hprL2RnUFRyBjKg7Guc6N_ZNCpd-E9b8ySUje61I67QcQA7XLj2p0cEMdYKTKWaSY4-TYghE6qO0izjKtXCZ8-4xeWvGI7R3Qk3DWhLqveHDCd7GZUR7YsRZi8QPxYtSs-raDbPEopy8i7QrcaTGNllj6nQ")' }}
-                ></div>
+            <div className="mb-12 overflow-hidden rounded-xl border border-border-color dark:border-text-secondary/20 shadow-xl">
+                <OptimizedImage
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCW_Sq-6MxdZfXT6k0KVoAvToBcuaJQo1Pb0KSpz82y-aMoeeiwIEzyhdqqC1KDdSHxqtpaZP3zRwaYZ60UD6u3ThZnxGfZVf4EmCBx5FwFlnQ2RNHW1hprL2RnUFRyBjKg7Guc6N_ZNCpd-E9b8ySUje61I67QcQA7XLj2p0cEMdYKTKWaSY4-TYghE6qO0izjKtXCZ8-4xeWvGI7R3Qk3DWhLqveHDCd7GZUR7YsRZi8QPxYtSs-raDbPEopy8i7QrcaTGNllj6nQ"
+                    alt="Interactive map showing the location of Canaan International Hotel in Adigrat"
+                    width={1200}
+                    height={600}
+                    className="w-full h-64 md:h-96 object-cover"
+                    unoptimized
+                />
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
                 <address className="flex flex-col not-italic">
                     <div className="space-y-6">
-                        <div className="flex items-start gap-4">
+                        <div className="flex items-start gap-4 p-4 rounded-xl bg-gray-50 dark:bg-gray-800/50">
                             <div className="flex-shrink-0 text-primary pt-1" aria-hidden="true">
                                 <span className="material-symbols-outlined">location_on</span>
                             </div>
                             <div>
-                                <p className="text-sm font-medium leading-normal text-text-secondary dark:text-text-secondary/90">
+                                <p className="text-sm font-bold uppercase tracking-wider text-text-secondary dark:text-text-secondary/70">
                                     Address
                                 </p>
                                 <p className="mt-1 text-base font-normal leading-normal text-text-primary dark:text-background-light">
@@ -51,16 +54,16 @@ export default function ContactClient() {
                             </div>
                         </div>
 
-                        <div className="flex items-start gap-4">
+                        <div className="flex items-start gap-4 p-4 rounded-xl bg-gray-50 dark:bg-gray-800/50">
                             <div className="flex-shrink-0 text-primary pt-1" aria-hidden="true">
                                 <span className="material-symbols-outlined">call</span>
                             </div>
                             <div>
-                                <p className="text-sm font-medium leading-normal text-text-secondary dark:text-text-secondary/90">
+                                <p className="text-sm font-bold uppercase tracking-wider text-text-secondary dark:text-text-secondary/70">
                                     Phone
                                 </p>
                                 <a
-                                    className="mt-1 block text-base font-normal leading-normal text-text-primary dark:text-background-light hover:text-primary transition-colors"
+                                    className="mt-1 block text-base font-bold leading-normal text-text-primary dark:text-background-light hover:text-primary transition-colors"
                                     href="tel:+251123456789"
                                 >
                                     +251 12 345 6789
@@ -68,16 +71,16 @@ export default function ContactClient() {
                             </div>
                         </div>
 
-                        <div className="flex items-start gap-4">
+                        <div className="flex items-start gap-4 p-4 rounded-xl bg-gray-50 dark:bg-gray-800/50">
                             <div className="flex-shrink-0 text-primary pt-1" aria-hidden="true">
                                 <span className="material-symbols-outlined">mail</span>
                             </div>
                             <div>
-                                <p className="text-sm font-medium leading-normal text-text-secondary dark:text-text-secondary/90">
+                                <p className="text-sm font-bold uppercase tracking-wider text-text-secondary dark:text-text-secondary/70">
                                     Email
                                 </p>
                                 <a
-                                    className="mt-1 block text-base font-normal leading-normal text-text-primary dark:text-background-light hover:text-primary transition-colors"
+                                    className="mt-1 block text-base font-bold leading-normal text-text-primary dark:text-background-light hover:text-primary transition-colors"
                                     href="mailto:contact@cannanhotel.com"
                                 >
                                     contact@cannanhotel.com
@@ -88,64 +91,58 @@ export default function ContactClient() {
                 </address>
 
                 <div className="flex flex-col">
-                    <h2 className="text-[22px] font-bold leading-tight tracking-[-0.015em] mb-6">
+                    <h2 className="text-2xl font-black text-text-primary dark:text-white mb-6">
                         Ask a Question
                     </h2>
                     <form onSubmit={handleSubmit} className="space-y-6" aria-label="Contact form">
                         <div>
-                            <label className="block text-sm font-medium text-text-primary dark:text-background-light mb-1" htmlFor="name">
-                                Name
+                            <label className="block text-sm font-bold text-text-primary dark:text-background-light mb-1.5" htmlFor="name">
+                                Full Name
                             </label>
                             <input
                                 autoComplete="name"
-                                className="block w-full rounded-lg border border-border-color dark:border-text-secondary/50 bg-white dark:bg-background-light/10 px-3 py-2 focus:border-primary focus:ring-2 focus:ring-primary dark:placeholder:text-text-secondary/70 transition"
+                                className="block w-full rounded-lg border border-border-color dark:border-text-secondary/50 bg-white dark:bg-background-light/10 px-4 py-3 focus:border-primary focus:ring-2 focus:ring-primary dark:placeholder:text-text-secondary/70 transition"
                                 id="name"
                                 name="name"
-                                placeholder="Your Name"
+                                placeholder="What's your name?"
                                 type="text"
                                 required
-                                aria-required="true"
                             />
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-text-primary dark:text-background-light mb-1" htmlFor="email">
-                                Email
+                            <label className="block text-sm font-bold text-text-primary dark:text-background-light mb-1.5" htmlFor="email">
+                                Email Address
                             </label>
                             <input
                                 autoComplete="email"
-                                className="block w-full rounded-lg border border-border-color dark:border-text-secondary/50 bg-white dark:bg-background-light/10 px-3 py-2 focus:border-primary focus:ring-2 focus:ring-primary dark:placeholder:text-text-secondary/70 transition"
+                                className="block w-full rounded-lg border border-border-color dark:border-text-secondary/50 bg-white dark:bg-background-light/10 px-4 py-3 focus:border-primary focus:ring-2 focus:ring-primary dark:placeholder:text-text-secondary/70 transition"
                                 id="email"
                                 name="email"
-                                placeholder="Your Email Address"
+                                placeholder="How can we reach you back?"
                                 type="email"
                                 required
-                                aria-required="true"
                             />
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-text-primary dark:text-background-light mb-1" htmlFor="message">
-                                Message
+                            <label className="block text-sm font-bold text-text-primary dark:text-background-light mb-1.5" htmlFor="message">
+                                Your Message
                             </label>
                             <textarea
-                                className="block w-full rounded-lg border border-border-color dark:border-text-secondary/50 bg-white dark:bg-background-light/10 px-3 py-2 focus:border-primary focus:ring-2 focus:ring-primary dark:placeholder:text-text-secondary/70 transition"
+                                className="block w-full rounded-lg border border-border-color dark:border-text-secondary/50 bg-white dark:bg-background-light/10 px-4 py-3 focus:border-primary focus:ring-2 focus:ring-primary dark:placeholder:text-text-secondary/70 transition resize-none"
                                 id="message"
                                 name="message"
-                                placeholder="Your Message..."
+                                placeholder="Tell us how we can help..."
                                 rows={4}
                                 required
-                                aria-required="true"
                             ></textarea>
                         </div>
 
-                        <div>
-                            <button
-                                className="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-amber-500 text-white text-base font-bold leading-normal tracking-[0.015em] hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 dark:focus:ring-offset-background-dark"
-                                type="submit"
-                            >
-                                <span className="truncate">SUBMIT</span>
-                            </button>
+                        <div className="pt-2">
+                            <Button type="submit" size="lg" className="w-full py-4 uppercase tracking-widest">
+                                Send Message
+                            </Button>
                         </div>
                     </form>
                 </div>

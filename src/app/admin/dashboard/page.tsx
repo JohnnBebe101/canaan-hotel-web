@@ -110,7 +110,7 @@ export default function AdminDashboardPage() {
               { label: "Media / CMS", href: "/admin/attractions", icon: "place", color: "text-purple-600" },
               { label: "Live Site", href: "/", icon: "visibility", color: "text-amber-600" },
               { label: "Storytelling", href: "/admin/blogs", icon: "article", color: "text-blue-600" },
-              { label: "Settings", href: "/admin/dashboard", icon: "settings", color: "text-gray-600" },
+              { label: "Settings", href: "/admin/payments", icon: "settings", color: "text-gray-600" },
             ].map((action, i) => (
               <Link
                 key={i}

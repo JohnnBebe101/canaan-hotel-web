@@ -143,11 +143,11 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
                     <div className="relative z-10 space-y-6 hidden md:block mt-12 pt-8 border-t border-white/5">
                         <div className="flex items-center space-x-4 text-cactus/40 hover:text-cactus transition-colors duration-500 cursor-default">
                             <Icon name="verified_user" className="text-xl" />
-                            <span className="text-[9px] uppercase font-bold tracking-[0.3em]">Stability Guaranteed</span>
+                            <span className="text-[9px] uppercase font-bold tracking-[0.3em]">Best Rate Guaranteed</span>
                         </div>
                         <div className="flex items-center space-x-4 text-cactus/40 hover:text-cactus transition-colors duration-500 cursor-default">
                             <Icon name="lock" className="text-xl" />
-                            <span className="text-[9px] uppercase font-bold tracking-[0.3em]">Secure Sanctuary Checkout</span>
+                            <span className="text-[9px] uppercase font-bold tracking-[0.3em]">Reserve Your Room</span>
                         </div>
                     </div>
                 </div>
@@ -284,7 +284,7 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
                             <div className="bg-white p-8 border border-cactus/10 rounded-sm shadow-sm relative overflow-hidden group">
                                 <div className="absolute top-0 left-0 w-1 h-full bg-cactus"></div>
                                 <p className="text-sm text-gray-500 leading-relaxed italic relative z-10">
-                                    &quot;By completing this transaction, you become a guardian of our highland heritage. We look forward to your arrival at the Grand Mesob Tower.&quot;
+                                    &quot;By completing this reservation, you become a guest of Canaan International Hotel. We look forward to your arrival in Adigrat.&quot;
                                 </p>
                             </div>
 

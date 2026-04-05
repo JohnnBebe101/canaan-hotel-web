@@ -21,25 +21,25 @@ import BookingWidget from "@/components/booking/BookingWidget";
 // Assets / Data
 const HERO_SLIDES = [
   {
-    image: "/images/heroes/Ext-Compund.webp", // Note: Filename has unique spelling in repo
-    label: "Gateway to the Northern Heritage",
-    title: "Canaan Adigrat",
-    desc: "A biophilic landmark inspired by the ancient Axumite Mesob. Experience a sanctuary where architectural stability meets spiritual crossroads.",
-    cta: "Secure Sanctuary"
+    image: "/images/heroes/Ext-Compund.webp",
+    label: "Authentic Canaan with Persistency",
+    title: "Canaan International Hotel",
+    desc: "A landmark of contemporary Ethiopian design in the heart of Adigrat, 0.2km from the city centre. Where the ancient tradition of highland craftsmanship meets the comfort and service of an international hotel.",
+    cta: "Book Your Stay"
   },
   {
     image: "/images/rooms/Bed-view-Single.webp",
     label: "Sandstone Cliffs & Ancient Spirits",
-    title: "Highland Heights",
+    title: "Tigray's Finest Address",
     desc: "Discover the vertical world of the Gheralta mountains. From rock-hewn legacies to contemporary luxury in the heart of Tigray.",
-    cta: "Explore Sanctuaries"
+    cta: "View Our Rooms"
   },
   {
-    image: "/images/heroes/Lobby.webp", // Ensure this exists or fallback
-    label: "A Cultural Sanctuary",
-    title: "Ancient Echoes",
-    desc: "Stay where history breathes. Our Grand Mesob Tower is a bridge between the 6th-century rock churches and tomorrow's prosperity.",
-    cta: "View Heritage"
+    image: "/images/heroes/Lobby.webp",
+    label: "A Cultural Destination",
+    title: "Ancient Tigray, Modern Comfort",
+    desc: "Stay where history breathes. Canaan International Hotel stands as a bridge between Tigray's 6th-century rock churches and the demands of the modern traveler.",
+    cta: "Discover Our Story"
   }
 ];
 
@@ -165,7 +165,7 @@ export default function Home() {
                     <button
                       className="text-sandstone text-[11px] uppercase tracking-[0.5em] font-bold flex items-center group py-4"
                     >
-                      Sanctuary Gallery
+                      Explore Rooms
                       <Icon name="arrow_forward" className="ml-4 text-cactus group-hover:translate-x-4 transition-transform" />
                     </button>
                   </Link>
@@ -221,10 +221,10 @@ export default function Home() {
         {/* Verified Recognition Trust Bar */}
         <section className="relative z-30 -mt-16 max-w-7xl mx-auto px-4 md:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 bg-white shadow-2xl border border-forest/5 overflow-hidden">
-            <SocialRatingWidget platform="google" rating="4.9" reviews="482" />
-            <SocialRatingWidget platform="tripadvisor" rating="5.0" reviews="156" />
-            <SocialRatingWidget platform="booking" rating="9.8" reviews="1.2k" />
-            <SocialRatingWidget platform="expedia" rating="4.7" reviews="340" />
+            <SocialRatingWidget platform="google" rating="4.1" reviews="57" />
+            <SocialRatingWidget platform="tripadvisor" rating="4.1" reviews="8" />
+            <SocialRatingWidget platform="google" rating="10.0" reviews="1" />
+            <SocialRatingWidget platform="tripadvisor" rating="#1" reviews="Best Value" />
           </div>
         </section>
 
@@ -234,7 +234,7 @@ export default function Home() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 lg:gap-32 items-center">
               <div className="animate-in slide-in-from-left duration-1000">
                 <SectionTitle
-                  label="The Stability Branch"
+                  label="Our Commitment"
                   title="Architecture of Resilience"
                   description="Inspired by the Mesob tower, our structure utilizes indigenous basalt foundations and sandstone composites, creating a haven that breathes with the highland winds while offering the security of ancient forts."
                 />
@@ -282,9 +282,9 @@ export default function Home() {
           <Container className="relative z-10">
             <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-12">
               <SectionTitle
-                label="Sanctuary Surroundings"
+                label="Local Wonders"
                 title="Discover the Highlands"
-                description="Gateway to the spiritual heart of the Horn. Explore rock-hewn legacies and spiritual verticalities."
+                description="Gateway to the spiritual heart of the Horn of Africa. Canaan Hotel places you within reach of Tigray's most extraordinary ancient sites — from cliff-carved monasteries to the first mosque on the African continent."
                 dark
               />
               <Link href="/admin/attractions">
@@ -319,7 +319,7 @@ export default function Home() {
         {/* Global Testimonials Section */}
         <section className="py-32 md:py-40 bg-sandstone">
           <Container>
-            <SectionTitle label="Voices of the World" title="Highland Experiences" centered />
+            <SectionTitle label="Voices of the World" title="Guest Stories" centered />
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
               <TestimonialCard
                 text="Canaan is the architectural dialogue Ethiopia has been waiting for. It captures the ruggedness of Tigray in a silk-lined sanctuary."
@@ -328,13 +328,13 @@ export default function Home() {
                 date="Nov 2025"
               />
               <TestimonialCard
-                text="The Grand Mesob Tower isn't just a hotel; it's a structural promise. I've never felt more connected to the ancient soil of the highlands."
-                author="Elena Rodriguez"
-                role="Solo Traveler & Architect"
-                date="Dec 2025"
+                text="The hospitality and service at Canaan hotel was amazing. The staff are so polite, welcoming, eager to serve always with a smile. The room was spacious, very clean with toiletries."
+                author="Verified Guest"
+                role="Trip.com — Verified Review"
+                date="Oct 2025"
               />
               <TestimonialCard
-                text="Incredible stability and service. We hosted our regional summit here and the energy of the space is truly transcendental."
+                text="Incredible hospitality and service. We hosted our regional summit here and the energy of the space is truly transcendental."
                 author="Dr. Abiy Tadesse"
                 role="Regional Director"
                 date="Jan 2026"
@@ -365,7 +365,7 @@ export default function Home() {
               centered
               dark
             />
-            <Button onClick={() => setIsBookingModalOpen(true)} className="mx-auto mt-10 px-20 py-6 text-xs">Begin Your Legacy</Button>
+            <Button onClick={() => setIsBookingModalOpen(true)} className="mx-auto mt-10 px-20 py-6 text-xs">Book Your Stay</Button>
           </Container>
         </section>
       </main>

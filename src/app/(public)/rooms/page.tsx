@@ -25,7 +25,7 @@ export default function RoomsPage() {
                   Rooms & Suites
                 </h1>
                 <p className="text-base font-normal leading-normal text-text-secondary dark:text-text-secondary/90">
-                  Discover our comfortable accommodations designed for your perfect stay.
+                  24 guestrooms in the heart of Adigrat.
                 </p>
               </div>
             </div>
@@ -57,16 +57,16 @@ export default function RoomsPage() {
 
         <section className="mb-12" aria-labelledby="amenities">
           <h2 id="amenities" className="text-2xl font-bold tracking-tight text-text-primary dark:text-background-light mb-6">
-            Essential Professional Amenities
+            What's Included in Every Room
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {[
-              { icon: "wifi", text: "High-Speed WiFi" },
-              { icon: "restaurant", text: "Breakfast Included" },
-              { icon: "concierge", text: "24/7 Front Desk" },
-              { icon: "local_parking", text: "Secure Parking" },
-              { icon: "ac_unit", text: "Air Conditioning" },
-              { icon: "room_service", text: "Room Service" },
+              { icon: "wifi", text: "Free Wi-Fi in Every Room" },
+              { icon: "restaurant", text: "Complimentary Breakfast (6AM-10AM)" },
+              { icon: "concierge", text: "24-Hour Front Desk" },
+              { icon: "local_parking", text: "Free On-Site Parking" },
+              { icon: "ac_unit", text: "Climate Control" },
+              { icon: "room_service", text: "Restaurant & Bar On-Site" },
             ].map((amenity) => (
               <div
                 key={amenity.text}

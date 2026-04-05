@@ -10,10 +10,10 @@ import { Icon } from "@/components/ui/Icons";
 import CanaanLogo from "@/components/ui/CanaanLogo";
 
 const navItems = [
-  { label: "Sanctuary", href: "/" },
-  { label: "Chambers", href: "/rooms" },
-  { label: "Heritage", href: "/about" },
-  { label: "Journals", href: "/blog" },
+  { label: "Home", href: "/" },
+  { label: "Rooms", href: "/rooms" },
+  { label: "Our Story", href: "/about" },
+  { label: "Journal", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -94,7 +94,7 @@ function Header({ variant = 'public' }: HeaderProps) {
             })}
 
             <Link href="/rooms">
-              <Button variant="primary" size="md" className="px-6 py-3 text-[9px] uppercase tracking-[0.4em]">Reserve</Button>
+              <Button variant="primary" size="md" className="px-6 py-3 text-[9px] uppercase tracking-[0.4em]">Book Now</Button>
             </Link>
           </div>
 
@@ -134,7 +134,7 @@ function Header({ variant = 'public' }: HeaderProps) {
             ))}
             <Link href="/rooms" onClick={() => setIsMobileMenuOpen(false)}>
               <button className="px-16 py-6 bg-cactus text-sandstone font-serif text-2xl shadow-2xl mt-8">
-                Experience Sanctuary
+                Book Now
               </button>
             </Link>
           </div>

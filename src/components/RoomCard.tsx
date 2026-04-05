@@ -90,7 +90,7 @@ function RoomCard({
             href={`/rooms/${slug}`}
             className="group/btn inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-forest hover:text-cactus transition-colors"
           >
-            <span>View Chamber</span>
+            <span>View Room</span>
             <Icon name="arrow_forward" className="text-base transition-transform duration-300 group-hover/btn:translate-x-1" />
           </Link>
         </div>

@@ -60,23 +60,6 @@ export default function RootLayout({
         <link rel="icon" type="image/svg+xml" href="/images/ui/Canaan-logo-100x100.svg" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
-        />
-        <style>{`
-          .material-symbols-outlined {
-            font-family: 'Material Symbols Outlined', sans-serif !important;
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-            display: inline-block;
-            line-height: 1;
-            text-transform: none;
-            white-space: nowrap;
-            word-wrap: normal;
-            direction: ltr;
-            -webkit-font-smoothing: antialiased;
-          }
-        `}</style>
       </head>
       <body className="bg-sandstone text-forest font-sans antialiased selection:bg-cactus selection:text-white">
         {children}

@@ -17,11 +17,11 @@ export default function ContactClient() {
                     <div className="flex justify-between items-start">
                         <div>
                             <h1 className="text-4xl font-black leading-tight tracking-tight text-text-primary dark:text-background-light">
-                                Contact & Location
-                            </h1>
-                            <p className="text-base font-normal leading-normal text-text-secondary dark:text-text-secondary/90">
-                                Get in touch with us or find our exact location in Adigrat.
-                            </p>
+                                Contact Us
+                              </h1>
+                              <p className="text-base font-normal leading-normal text-text-secondary dark:text-text-secondary/90">
+                                We&apos;re here to help plan your stay.
+                              </p>
                         </div>
                     </div>
                 </div>
@@ -50,7 +50,7 @@ export default function ContactClient() {
                                     Address
                                 </p>
                                 <p className="mt-1 text-base font-normal leading-normal text-text-primary dark:text-background-light">
-                                    123 Hotel Street, Adigrat, Tigray, Ethiopia
+                                    Kebele 03, Adigrat, Tigray, 1000, Ethiopia
                                 </p>
                             </div>
                         </div>
@@ -65,9 +65,9 @@ export default function ContactClient() {
                                 </p>
                                 <a
                                     className="mt-1 block text-base font-bold leading-normal text-text-primary dark:text-background-light hover:text-primary transition-colors"
-                                    href="tel:+251123456789"
+                                    href="tel:+251935406334"
                                 >
-                                    +251 12 345 6789
+                                    +251 935 406 334
                                 </a>
                             </div>
                         </div>
@@ -82,9 +82,9 @@ export default function ContactClient() {
                                 </p>
                                 <a
                                     className="mt-1 block text-base font-bold leading-normal text-text-primary dark:text-background-light hover:text-primary transition-colors"
-                                    href="mailto:contact@cannanhotel.com"
+                                    href="mailto:stay@canaanhotel.com"
                                 >
-                                    contact@cannanhotel.com
+                                    stay@canaanhotel.com
                                 </a>
                             </div>
                         </div>

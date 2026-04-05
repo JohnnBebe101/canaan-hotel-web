@@ -29,21 +29,21 @@ export default function AboutPage() {
                   <div className="flex justify-center mb-4">
                   <div className="flex gap-2">
                     <span className="inline-block px-2 py-1 rounded-full bg-green-100 text-green-800 text-xs font-medium">
-                      Established 2010
+                      24 Guestrooms
                     </span>
                     <span className="inline-block px-2 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-medium">
-                      4.8★ Rating
+                      4.1★ Rating
                     </span>
                     <span className="inline-block px-2 py-1 rounded-full bg-purple-100 text-purple-800 text-xs font-medium">
-                      Award Winner
+                      #1 Best Value
                     </span>
                   </div>
                 </div>
                 <h2 className="text-white text-4xl font-black leading-tight tracking-[-0.033em] @[480px]:text-5xl">
-                  Rooted in Adigrat
+                  Our Story
                 </h2>
                 <p className="text-white text-base font-normal leading-normal @[480px]:text-lg max-w-2xl">
-                  Discover the story of Canaan International Hotel, a testament to Tigrayan hospitality and the resilient spirit of our community.
+                  A hotel born from Tigray&apos;s highlands, built for the world.
                 </p>
               </div>
             </div>
@@ -59,7 +59,7 @@ export default function AboutPage() {
               Discover the journey of the Canaan International Hotel, from its humble beginnings to becoming a cornerstone of hospitality in Adigrat. Our founders envisioned a place that not only offers comfort but also embodies the rich culture and resilient spirit of Tigray. We are dedicated to providing an authentic experience that honors our heritage and welcomes the world.
             </p>
             <p className="text-[#2D2424]/80 dark:text-background-light/80 text-base font-normal leading-relaxed pt-2">
-              Founded with a vision to create a haven of comfort and culture, our hotel has grown with the community, becoming a cherished landmark for locals and travelers alike.
+              Canaan International Hotel is located in Kebele 03, Adigrat — just 0.2 kilometres from the city centre. Adigrat is the commercial capital of eastern Tigray, set at 2,457 metres above sea level on the Ethiopian Highlands plateau. The hotel is within easy reach of the city&apos;s Cathedral of the Holy Saviour (3.5km), the Piyasa market district (810m), and serves as the ideal base for day trips to Tigray&apos;s most celebrated heritage sites.
             </p>
           </div>
           <div

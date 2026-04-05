@@ -48,10 +48,10 @@ function Header({ variant = 'public' }: HeaderProps) {
     <header className="relative z-50">
       <nav
         aria-label="Main navigation"
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${isScrolled
-          ? "bg-forest/95 backdrop-blur-sm shadow-2xl py-4"
-          : "bg-forest/80 backdrop-blur-md py-6"
-        }`}
+          className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${isScrolled
+            ? "bg-forest/95 backdrop-blur-md shadow-2xl py-4"
+            : "bg-transparent py-6"
+          }`}
       >
         <div className="max-w-7xl mx-auto px-8 flex justify-between items-center h-20">
           <Link
@@ -81,7 +81,7 @@ function Header({ variant = 'public' }: HeaderProps) {
                   className={`text-[11px] uppercase tracking-[0.4em] font-bold transition-all duration-500 relative group ${isScrolled
                     ? "text-sandstone/70 hover:text-sandstone"
                     : "text-sandstone/70 hover:text-sandstone"
-                    } ${isActive ? "opacity-100 text-cactus" : "opacity-60"}`}
+                    } ${isActive ? "opacity-100 text-sandstone" : "opacity-60"}`}
                 >
                   {item.label}
                   <span
@@ -98,12 +98,12 @@ function Header({ variant = 'public' }: HeaderProps) {
             </Link>
           </div>
 
-          <button
-            className="lg:hidden p-2 focus:outline-none transition-transform active:scale-90"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-expanded={isMobileMenuOpen}
-            aria-label="Toggle menu"
-          >
+            <button
+              className="lg:hidden p-3 min-w-[44px] min-h-[44px] flex items-center justify-center focus:outline-none transition-transform active:scale-90"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-expanded={isMobileMenuOpen}
+              aria-label="Toggle menu"
+            >
             {isMobileMenuOpen ? (
               <Icon name="close" className="text-sandstone text-4xl" />
             ) : (
@@ -126,7 +126,7 @@ function Header({ variant = 'public' }: HeaderProps) {
               <Link
                 key={item.label}
                 href={item.href}
-                className="text-4xl font-serif text-sandstone hover:text-cactus transition-colors"
+                className="text-3xl font-serif text-sandstone hover:text-cactus transition-colors py-3 w-full text-center"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {item.label}

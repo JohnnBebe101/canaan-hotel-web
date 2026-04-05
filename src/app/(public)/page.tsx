@@ -52,6 +52,7 @@ const AttractionCard = ({ image, title, distance, description }: { image: string
         src={image}
         alt={title}
         fill
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         className="object-cover transform group-hover:scale-110 transition-transform duration-[1.5s]"
       />
       <div className="absolute top-6 right-6 z-20">
@@ -90,6 +91,7 @@ export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const router = useRouter();
+  const timerRef = React.useRef<ReturnType<typeof setInterval> | null>(null);
 
   const nextSlide = useCallback(() => {
     if (isTransitioning) return;
@@ -106,8 +108,21 @@ export default function Home() {
   }, [isTransitioning]);
 
   useEffect(() => {
-    const timer = setInterval(nextSlide, 10000);
-    return () => clearInterval(timer);
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        clearInterval(timerRef.current!);
+      } else {
+        timerRef.current = setInterval(nextSlide, 10000);
+      }
+    };
+
+    timerRef.current = setInterval(nextSlide, 10000);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      clearInterval(timerRef.current!);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
   }, [nextSlide]);
 
   return (
@@ -132,10 +147,12 @@ export default function Home() {
                 alt={slide.title}
                 fill
                 priority={index === 0}
+                placeholder="empty"
+                sizes="100vw"
                 className={`object-cover grayscale-[15%] brightness-[0.7] transition-transform duration-[10000ms] ease-linear ${index === currentSlide ? 'scale-110' : 'scale-100'
                   }`}
               />
-              <div className="absolute inset-0 bg-gradient-to-b from-forest/60 via-transparent to-forest/90"></div>
+              <div className="absolute inset-0 bg-gradient-to-b from-forest/70 via-forest/40 to-forest/95"></div>
             </div>
 
             {/* Content Overlay with Staggered Animations */}
@@ -147,12 +164,16 @@ export default function Home() {
                 </div>
 
                 <h1 className={`text-4xl md:text-6xl lg:text-7xl font-serif mt-10 mb-8 leading-[0.85] tracking-tighter transform transition-all duration-1000 delay-500 text-sandstone ${index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
-                  }`}>
+                  }`}
+                  style={{ textShadow: "0 2px 20px rgba(11, 34, 26, 0.8), 0 1px 4px rgba(11, 34, 26, 0.6)" }}
+                >
                   {slide.title}
                 </h1>
 
                 <p className={`max-w-3xl mx-auto text-xl md:text-2xl font-light leading-relaxed mb-16 text-gray-200 italic transform transition-all duration-1000 delay-700 ${index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-                  }`}>
+                  }`}
+                  style={{ textShadow: "0 1px 8px rgba(11, 34, 26, 0.7)" }}
+                >
                   &quot;{slide.desc}&quot;
                 </p>
 
@@ -191,7 +212,9 @@ export default function Home() {
                 />
               </div>
               <span className={`absolute -top-4 left-0 text-[8px] font-bold tracking-widest transition-opacity duration-500 ${i === currentSlide ? 'opacity-100 text-cactus' : 'opacity-0'
-                }`}>
+                }`}
+                style={{ textShadow: "0 1px 4px rgba(11, 34, 26, 0.9)" }}
+              >
                 0{i + 1}
               </span>
             </button>
@@ -266,6 +289,7 @@ export default function Home() {
                     src="/images/heroes/Lobby.webp"
                     alt="Detail of the basalt and glass fusion architecture"
                     fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
                     className="object-cover grayscale-[30%] transition-all duration-700 group-hover:grayscale-0"
                   />
                 </div>

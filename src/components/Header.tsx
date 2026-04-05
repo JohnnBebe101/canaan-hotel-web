@@ -69,7 +69,7 @@ function Header({ variant = 'public' }: HeaderProps) {
             </div>
           </Link>
 
-          <div className="hidden lg:flex items-center space-x-10" role="menubar">
+          <div className="hidden lg:flex items-center gap-10" role="menubar">
             {navItems.map((item) => {
               const isActive = pathname === item.href;
               return (

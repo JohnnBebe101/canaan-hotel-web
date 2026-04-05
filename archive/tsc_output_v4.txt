@@ -1,4 +1,0 @@
-﻿src/app/(public)/gallery/GalleryClient.tsx(169,62): error TS2322: Type '"xs"' is not assignable to type 'BadgeSize | undefined'.
-src/app/admin/attractions/page.tsx(152,48): error TS2322: Type '"xs"' is not assignable to type 'BadgeSize | undefined'.
-src/components/BlogSection.tsx(46,44): error TS2322: Type '"xs"' is not assignable to type 'BadgeSize | undefined'.
-src/components/Hero.tsx(28,42): error TS2322: Type '"xs"' is not assignable to type 'BadgeSize | undefined'.

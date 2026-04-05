@@ -148,14 +148,14 @@ export async function getBookingStats() {
       .select('total_price')
       .eq('status', 'confirmed');
 
-    const revenue = revenueData?.reduce((sum, b) => sum + (Number(b.total_price) || 0), 0) || 0;
+    const revenue = revenueData?.reduce((sum: number, b: { total_price: number | string }) => sum + (Number(b.total_price) || 0), 0) || 0;
 
     const { data: guestData } = await supabase
       .from('bookings')
       .select('number_of_guests')
       .eq('status', 'confirmed');
 
-    const activeGuests = guestData?.reduce((sum, b) => sum + (Number(b.number_of_guests) || 0), 0) || 0;
+    const activeGuests = guestData?.reduce((sum: number, b: { number_of_guests: number | string }) => sum + (Number(b.number_of_guests) || 0), 0) || 0;
 
     return {
       totalBookings: totalBookings?.length || 0,

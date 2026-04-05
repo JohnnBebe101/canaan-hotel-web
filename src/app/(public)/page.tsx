@@ -146,7 +146,7 @@ export default function Home() {
                   <Badge variant="cactus">{slide.label}</Badge>
                 </div>
 
-                <h1 className={`text-6xl md:text-[8rem] lg:text-[10rem] font-serif mt-10 mb-8 leading-[0.85] tracking-tighter transform transition-all duration-1000 delay-500 text-sandstone ${index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
+                <h1 className={`text-4xl md:text-6xl lg:text-7xl font-serif mt-10 mb-8 leading-[0.85] tracking-tighter transform transition-all duration-1000 delay-500 text-sandstone ${index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
                   }`}>
                   {slide.title}
                 </h1>
@@ -218,6 +218,9 @@ export default function Home() {
       </header>
 
       <main>
+        {/* ⚠️ VERIFY WITH OWNER: Rating numbers updated to verified data from OTAs.
+            Previous unverified: Google 4.9/482, TripAdvisor 5.0/156, Booking 9.8/1.2k, Expedia 4.7/340
+            Current (verified): Google 4.1/57, TripAdvisor 4.1/8, Trip.com 10.0/1, TripAdvisor #1 Best Value */}
         {/* Verified Recognition Trust Bar */}
         <section className="relative z-30 -mt-16 max-w-7xl mx-auto px-4 md:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 bg-white shadow-2xl border border-forest/5 overflow-hidden">
@@ -235,14 +238,14 @@ export default function Home() {
               <div className="animate-in slide-in-from-left duration-1000">
                 <SectionTitle
                   label="Our Commitment"
-                  title="Architecture of Resilience"
-                  description="Inspired by the Mesob tower, our structure utilizes indigenous basalt foundations and sandstone composites, creating a haven that breathes with the highland winds while offering the security of ancient forts."
+                  title="Why Guests Choose Canaan"
+                  description="Rated #1 Best Value in Adigrat on TripAdvisor. 24 rooms, 24-hour service, complimentary breakfast every morning, and a team that turns work trips into vacations — in the words of our guests."
                 />
                 <div className="space-y-12">
                   {[
-                    { icon: 'verified_user', title: 'Seismic Integrity', desc: 'Precision engineered for the unique structural profile of the Ethiopian Highlands.' },
-                    { icon: 'bolt', title: 'Solar Harvesting', desc: 'Integrated facade technology providing zero-carbon, reliable 24/7 highland power.' },
-                    { icon: 'groups', title: 'Community Pillar', desc: 'Employing hundreds of local artisans and supporting Adigrat small-hold farmers.' },
+                    { icon: 'verified_user', title: 'Complimentary Breakfast Daily', desc: 'A generous continental breakfast served every morning from 6:00 AM to 10:00 AM. Western and Ethiopian options, freshly prepared — included in every room rate.' },
+                    { icon: 'wifi', title: 'Free Wi-Fi & Free Parking', desc: 'Complimentary high-speed Wi-Fi in all 24 rooms and public areas. Free on-site self-parking for all guests. No hidden extras.' },
+                    { icon: 'groups', title: 'Rated #1 in Adigrat', desc: 'TripAdvisor\'s #1 Best Value of 30 properties in Adigrat. 4.1 stars on Google across 57 reviews. Our guests keep coming back.' },
                   ].map((item, i) => (
                     <div key={i} className="flex gap-8 group">
                       <div className="flex-shrink-0 w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg border border-cactus/5 group-hover:bg-cactus group-hover:text-white transition-all duration-500">

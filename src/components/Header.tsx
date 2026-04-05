@@ -49,11 +49,11 @@ function Header({ variant = 'public' }: HeaderProps) {
       <nav
         aria-label="Main navigation"
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${isScrolled
-          ? "bg-white/90 backdrop-blur-md shadow-2xl py-4"
-          : "bg-white/90/90 backdrop-blur-md py-6"
-          }`}
+          ? "bg-forest/95 backdrop-blur-sm shadow-2xl py-4"
+          : "bg-forest/80 backdrop-blur-md py-6"
+        }`}
       >
-        <div className="max-w-7xl mx-auto px-8 flex justify-between items-center">
+        <div className="max-w-7xl mx-auto px-8 flex justify-between items-center h-20">
           <Link
             href="/"
             className="flex items-center space-x-4 cursor-pointer group focus:outline-none"
@@ -70,7 +70,7 @@ function Header({ variant = 'public' }: HeaderProps) {
             </div>
           </Link>
 
-          <div className="hidden lg:flex items-center gap-10" role="menubar">
+          <div className="hidden lg:flex items-center gap-6 lg:gap-8 xl:gap-10" role="menubar">
             {navItems.map((item) => {
               const isActive = pathname === item.href;
               return (
@@ -78,7 +78,7 @@ function Header({ variant = 'public' }: HeaderProps) {
                   key={item.label}
                   href={item.href}
                   role="menuitem"
-                  className={`text-[9px] uppercase tracking-[0.4em] font-bold transition-all duration-500 relative group ${isScrolled
+                  className={`text-[11px] uppercase tracking-[0.4em] font-bold transition-all duration-500 relative group ${isScrolled
                     ? "text-sandstone/70 hover:text-sandstone"
                     : "text-sandstone/70 hover:text-sandstone"
                     } ${isActive ? "opacity-100 text-cactus" : "opacity-60"}`}
@@ -94,7 +94,7 @@ function Header({ variant = 'public' }: HeaderProps) {
             })}
 
             <Link href="/rooms">
-              <Button variant="primary" size="md" className="px-6 py-3 text-[9px] uppercase tracking-[0.4em]">Book Now</Button>
+              <Button variant="primary" size="md" className="px-5 py-2.5 text-[10px] uppercase tracking-[0.4em]">Book Now</Button>
             </Link>
           </div>
 

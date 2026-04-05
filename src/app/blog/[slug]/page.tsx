@@ -53,7 +53,7 @@ export default async function BlogPostPage({
           href="/blog"
           className="text-primary hover:underline text-sm mb-6 inline-block"
         >
-          ← Back to Blog
+          ← Back to Journal
         </Link>
 
         <header className="mb-8">
@@ -103,7 +103,7 @@ export default async function BlogPostPage({
             href="/blog"
             className="text-primary hover:underline font-medium"
           >
-            ← Back to All Posts
+            ← Back to Journal
           </Link>
         </div>
       </article>

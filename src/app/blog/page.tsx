@@ -14,12 +14,12 @@ export default async function BlogPage() {
   return (
     <main id="main-content" className="flex flex-1 flex-col items-center">
       <div className="w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-        <div className="text-center mb-12">
+          <div className="text-center mb-12">
           <h1 className="text-4xl font-bold tracking-tight text-text-primary dark:text-background-light mb-4">
-            Our Blog
+            Journal
           </h1>
           <p className="mx-auto max-w-2xl text-text-secondary dark:text-text-secondary/90">
-            Discover travel tips, local attractions, and stories from Adigrat and Tigray.
+            Stories from the highlands — travel guides, cultural insights, and news from Canaan International Hotel.
           </p>
         </div>
 
@@ -44,7 +44,11 @@ export default async function BlogPage() {
                 <div className="flex items-center gap-2 mb-3">
                   <span className="text-xs text-text-secondary dark:text-text-secondary/70">
                     {blog.published_at
-                      ? new Date(blog.published_at).toLocaleDateString()
+                      ? new Date(blog.published_at).toLocaleDateString('en-GB', {
+                          day: 'numeric',
+                          month: 'long',
+                          year: 'numeric'
+                        })
                       : ""}
                   </span>
                 </div>
@@ -55,7 +59,7 @@ export default async function BlogPage() {
                   {blog.excerpt}
                 </p>
                 <span className="inline-block mt-4 text-primary font-medium text-sm group-hover:underline">
-                  Read More →
+                  Read More
                 </span>
               </div>
             </Link>

@@ -1,4 +1,4 @@
-import type NextConfig from "next";
+import type { NextConfig } from "next";
 
 const baseConfig: NextConfig = {
   images: {
@@ -31,7 +31,6 @@ const baseConfig: NextConfig = {
   experimental: {
     optimizeCss: true,
   },
-  poweredByHeader: false,
   compress: true,
   ...(process.env.NEXT_ALLOWED_DEV_ORIGINS && {
     allowedDevOrigins: process.env.NEXT_ALLOWED_DEV_ORIGINS.split(",").map(

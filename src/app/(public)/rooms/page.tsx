@@ -1,4 +1,4 @@
-import type Metadata from "next";
+import type { Metadata } from "next/types";
 import RoomCard from "@/components/RoomCard";
 import { FEATURED_ROOMS } from "@/lib/featuredRooms";
 

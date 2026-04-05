@@ -1,7 +1,9 @@
 
-import { Metadata } from "next";
+import type { Metadata } from "next/types";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
+
+export const dynamic = 'force-dynamic';
 
 const playfair = Playfair_Display({
   subsets: ["latin"],

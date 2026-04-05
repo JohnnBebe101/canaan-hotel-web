@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import type { Metadata } from "next/types";
 import GalleryClient from "./GalleryClient";
 
 export const metadata: Metadata = {

@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import type { Metadata } from "next/types";
 import Link from "next/link";
 import Image from "next/image";
 import { getPublishedBlogs } from "@/lib/blog-store";

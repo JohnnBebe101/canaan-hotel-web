@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import type { Metadata } from "next/types";
 import ContactClient from "./ContactClient";
 
 export const metadata: Metadata = {

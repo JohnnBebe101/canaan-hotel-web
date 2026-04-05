@@ -5,6 +5,8 @@ import AdminSidebar from "@/components/admin/AdminSidebar";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import { ToastProvider } from "@/components/ui/Toast";
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminLayout({
   children,
 }: {

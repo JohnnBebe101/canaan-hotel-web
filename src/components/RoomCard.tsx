@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import React from "react";
 import OptimizedImage from "./OptimizedImage";
 import StarRating from "./ui/StarRating";
 import Badge from "./ui/Badge";
@@ -16,7 +17,7 @@ interface RoomCardProps {
   rating?: number;
 }
 
-export default function RoomCard({
+function RoomCard({
   slug,
   imageSrc,
   imageAlt,
@@ -96,3 +97,4 @@ export default function RoomCard({
     </article>
   );
 }
+export default React.memo(RoomCard);

@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import BookingCard from "./BookingCard";
+import dynamic from 'next/dynamic';
+const BookingCardDynamic = dynamic(() => import('./BookingCard'), { ssr: false, loading: () => null });
 import HeroSlider from "./HeroSlider";
 import { HERO_SLIDER_IMAGES } from "@/lib/heroImages";
 import Button from "./ui/Button";
@@ -75,10 +76,10 @@ export default function Hero() {
               </div>
             </div>
 
-            {/* Right Column: Transparent Booking Card (Desktop) / Below Content (Mobile) */}
+            {/* Right Column: Booking Card is lazy-loaded to optimize initial render */}
             <div className="w-full lg:justify-self-end lg:max-w-lg">
               <div className="mx-auto lg:mx-0 lg:ml-auto">
-                <BookingCard />
+                <BookingCardDynamic />
               </div>
             </div>
 

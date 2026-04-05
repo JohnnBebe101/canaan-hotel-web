@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+const { addIconSelectors } = require("@iconify/tailwind4");
 module.exports = {
   content: [
     './src/**/*.{ts,tsx}',
@@ -46,5 +47,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [addIconSelectors(["tabler"])],
 }

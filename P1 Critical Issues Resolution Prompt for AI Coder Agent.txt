@@ -1,0 +1,221 @@
+# ️ P1 Critical Issues Resolution Prompt for AI Coder Agent
+
+## 📋 Context Setting
+
+You are working on the **Canaan International Hotel** project — a Next.js 16.1.0 + React 19.2.3 + Tailwind v4 hospitality website for Adigrat, Tigray, Ethiopia.
+
+**Project Location**: `C:\USERS\TEST\ONEDRIVE\DOCUMENTS\CANAAN\CANAAN-HOTEL-WEB`  
+**Dev Server**: `http://localhost:3000/`  
+**Current State**: Development mode with 3 P1 critical frontend bugs blocking further progress
+
+**Key Configuration Files**:
+- `tailwind.config.js` — Design tokens (forest, cactus, sandstone, bronze), missing @iconify plugin — 来源：tailwind.config.js
+- `tsconfig.json` — Strict TypeScript enabled (strict: true, no `any`) — 来源：tsconfig.json
+- `package.json` — 6 production dependencies, 11 dev dependencies including @iconify/tailwind4 ^1.2.1 — 来源：package.json
+- `globals.css` — Material Icons CSS class defined but font not imported — 来源：globals.css
+- `Header.tsx` — Navigation component with spacing issues — 来源：Header.tsx
+- `.gitignore_edited.txt` — Missing AI artifact patterns — 来源：.gitignore_edited.txt
+
+---
+
+## 🎯 Mission: Resolve All P1 Critical Issues
+
+You must fix the following 3 P1 issues **within 24 hours**:
+
+| Priority | Issue | Impact | Files Affected |
+|----------|-------|--------|----------------|
+| **P1-1** | Icon Rendering Failures | Broken visual design, raw text visible (verified_user, bolt, groups, chevron_left, chevron_right, location_on, arrow_forward) | tailwind.config.js, globals.css |
+| **P1-2** | Duplicate RESERVE Buttons | Confusing UX, potential double-submission | Header.tsx, .next/ cache |
+| **P1-3** | File Bloat (17 AI Artifacts) | Repository pollution, merge conflict risk | Root directory (build_log_*, tsc_output*, *.bak) |
+
+**Non-Blocking**: Placeholder images and their folders/paths should NOT block progress. Mark them for later review.
+
+---
+
+## 📝 Implementation Instructions
+
+### Step 1: Analyze Current State (READ-ONLY)
+
+Before making any changes, perform the following analysis:
+
+```bash
+# 1. Check current icon system configuration
+cat tailwind.config.js
+cat globals.css
+cat package.json | grep iconify
+
+# 2. Verify duplicate button source
+grep -r "Reserve" src/ --include="*.tsx"
+grep -r "RESERVE" src/ --include="*.tsx"
+
+# 3. List bloat files
+dir build_log_*.txt tsc_output*.txt *.bak /b
+
+
+🛑 STOP & ASK USER CONFIRMATION:
+
+"I've completed the initial analysis. Here's what I found:
+
+Icon system: [summary]
+Duplicate buttons: [count and locations]
+Bloat files: [list]
+
+Shall I proceed with the fixes? (yes/no)"
+
+
+Step 2: Fix Icon Rendering (Choose ONE Approach)
+Option A: @iconify/tailwind4 (RECOMMENDED)​
+javascriptExecuteCopy// tailwind.config.js - Add at top:const { addIconSelectors } = require("@iconify/tailwind4");
+module.exports = {  content: ['./src/**/*.{ts,tsx}', ...],  theme: { extend: { ... } },  plugins: [addIconSelectors(["tabler"])], // Add this line}
+
+Option B: Material Icons Font
+cssCopy/* globals.css - Add at top */@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
+
+​🛑 STOP & ASK USER CONFIRMATION:
+
+"For icon rendering, I recommend Option A (@iconify/tailwind4) because:
+
+Package already installed in package.json
+Better tree-shaking and performance
+Aligns with existing dependency structure
+
+Shall I proceed with Option A? Or would you prefer Option B? (A/B)"
+
+
+Step 3: Fix Duplicate RESERVE Buttons
+bashCopy# Clear build cacherm -rf .next/
+# Verify single button in Header.tsx# Expected: Only 1 RESERVE button (lines 84-86)
+
+​🛑 STOP & ASK USER CONFIRMATION:
+
+"I'm about to clear the .next/ build cache and restart the dev server.
+This will temporarily stop the dev server but is safe.
+Proceed? (yes/no)"
+
+
+Step 4: Delete Bloat Files
+Files to Delete (17 total):
+bashCopy# Build logs (2 files)build_log_7.txt, build_log_8.txt
+# TypeScript output (7 files)tsc_output.txt, tsc_output_utf8.txt, tsc_output_v2.txt, tsc_output_v3.txt, tsc_output_v4.txt, tsc_output_v5.txt, tsc_output_verification.txt
+# Backup files (3 files)tailwind.config.js.bak, globals.css.bak, db.json.bak
+# Build artifacts (auto-generated).next/ folder
+
+​🛑 STOP & ASK USER CONFIRMATION:
+
+"I've identified 17 bloat files for deletion:
+[List files]
+These are AI iteration artifacts and safe to remove.
+Delete now? (yes/no)"
+
+
+Step 5: Update .gitignore
+Add the following to .gitignore:
+gitignoreCopy# AI iteration artifactsbuild_log_*.txttsc_output*.txt*.bak
+
+​🛑 STOP & ASK USER CONFIRMATION:
+
+"I'll update .gitignore to prevent future AI artifact accumulation.
+Proceed? (yes/no)"
+
+
+Step 6: Verify All Fixes
+Verification Checklist:
+bashCopy# Restart dev servernpm run dev
+# Open http://localhost:3000/ and verify:# ✅ Icons render correctly (no raw text visible)# ✅ Only 1 RESERVE button in navbar# ✅ Navigation has proper spacing (SANCTUARY CHAMBERS HERITAGE...)# ✅ No Next.js DevTools indicator in production build# ✅ All 17 bloat files deleted
+
+​🛑 STOP & ASK USER CONFIRMATION:
+
+"All P1 fixes have been applied. Please verify:
+
+Open http://localhost:3000/
+Check icons render correctly
+Check only 1 RESERVE button visible
+Check navigation spacing is correct
+
+Are all issues resolved? (yes/no - if no, specify which)"
+
+
+🔍 Dependency Analysis (Non-Blocking)
+APIs
+
+Audit /integrations/ folder for unused endpoints
+Check /src/app/api/ routes against actual usage
+Action: Create list, do NOT delete yet
+
+Fonts
+
+Verify Playfair Display loading (Google Fonts)
+Verify Inter loading (Google Fonts)
+Verify Material Symbols OR @iconify (choose one)
+Action: Fix icon font as P1, audit others as P3
+
+Images
+
+Placeholder images are NON-BLOCKING — mark for later review
+Verify all images use next/image component
+Check /public/images/ folder structure
+Action: Document missing images, do NOT block on them
+
+Dependencies
+
+Run npm ls --depth=0 to list all packages
+Run npx knip --include-libs to find unused code
+Action: Create report, do NOT delete yet
+
+​🛑 STOP & ASK USER CONFIRMATION:
+
+"I've completed the dependency analysis:
+
+APIs: [summary]
+Fonts: [summary]
+Images: [summary - placeholders marked non-blocking]
+Dependencies: [summary]
+
+Shall I create a detailed report for P2/P3 sprint planning? (yes/no)"
+
+
+📊 Output Requirements
+After completing all steps, generate:
+
+Fix Summary Report — What was changed, files modified
+Verification Screenshots — Before/after comparison
+Dependency Audit Report — APIs, fonts, images, dependencies analysis
+Git Commit Message — Ready-to-use commit message
+Next Steps — P2/P3 issues ready for next sprint
+
+
+⚠️ Critical Rules
+
+
+ALWAYS ask for user confirmation before:
+
+Deleting files
+Modifying configuration files
+Clearing build cache
+Installing/uninstalling packages
+
+
+
+NEVER block on placeholder images — mark them for later review
+
+
+ALWAYS verify fixes — restart dev server and check http://localhost:3000/
+
+
+Document everything — create reports for future reference
+
+
+One issue at a time — complete and verify each P1 issue before moving to next
+
+
+
+🎯 Success Criteria
+All P1 issues are resolved when:
+
+✅ Icons render correctly (no raw text: verified_user, bolt, groups, etc.)
+✅ Only 1 RESERVE button visible in navbar
+✅ Navigation has proper spacing (SANCTUARY CHAMBERS HERITAGE...)
+✅ All 17 bloat files deleted
+✅ .gitignore updated with AI artifact patterns
+✅ Git commit made with descriptive message
+

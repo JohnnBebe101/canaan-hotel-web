@@ -1,0 +1,73 @@
+﻿src/app/(public)/contact/ContactClient.tsx(143,51): error TS2322: Type '{ children: string; type: "submit"; size: string; className: string; }' is not assignable to type 'IntrinsicAttributes & ButtonProps'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & ButtonProps'.
+src/app/(public)/gallery/GalleryClient.tsx(116,28): error TS2322: Type '"primary"' is not assignable to type 'BadgeVariant | undefined'.
+src/app/(public)/gallery/GalleryClient.tsx(169,44): error TS2322: Type '"primary"' is not assignable to type 'BadgeVariant | undefined'.
+src/app/(public)/gallery/GalleryClient.tsx(207,36): error TS2322: Type '"primary"' is not assignable to type 'BadgeVariant | undefined'.
+src/app/(public)/gallery/GalleryClient.tsx(227,37): error TS2322: Type '{ children: string; size: string; className: string; }' is not assignable to type 'IntrinsicAttributes & ButtonProps'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & ButtonProps'.
+src/app/(public)/gallery/GalleryClient.tsx(232,55): error TS2322: Type '{ children: string; variant: "outline"; size: string; className: string; }' is not assignable to type 'IntrinsicAttributes & ButtonProps'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & ButtonProps'.
+src/app/admin/attractions/page.tsx(143,28): error TS2322: Type '"success" | "neutral"' is not assignable to type 'BadgeVariant | undefined'.
+  Type '"success"' is not assignable to type 'BadgeVariant | undefined'.
+src/app/admin/attractions/page.tsx(152,30): error TS2322: Type '"primary"' is not assignable to type 'BadgeVariant | undefined'.
+src/app/admin/attractions/page.tsx(166,47): error TS2322: Type '{ children: string; variant: "outline"; size: string; className: string; onClick: () => void; }' is not assignable to type 'IntrinsicAttributes & ButtonProps'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & ButtonProps'.
+src/app/admin/attractions/page.tsx(171,23): error TS2322: Type '{ children: string; variant: "ghost"; size: string; className: string; onClick: () => Promise<void>; }' is not assignable to type 'IntrinsicAttributes & ButtonProps'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & ButtonProps'.
+src/app/admin/blogs/[id]/page.tsx(161,65): error TS2322: Type '{ children: string; onClick: () => Promise<void>; isLoading: boolean; }' is not assignable to type 'IntrinsicAttributes & ButtonProps'.
+  Property 'isLoading' does not exist on type 'IntrinsicAttributes & ButtonProps'.
+src/app/admin/blogs/page.tsx(107,65): error TS2322: Type '{ children: (string | Element)[]; onClick: () => void; size: string; }' is not assignable to type 'IntrinsicAttributes & ButtonProps'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & ButtonProps'.
+src/app/admin/blogs/page.tsx(155,24): error TS2322: Type '"success" | "warning"' is not assignable to type 'BadgeVariant | undefined'.
+  Type '"success"' is not assignable to type 'BadgeVariant | undefined'.
+src/app/admin/blogs/page.tsx(211,67): error TS2322: Type '{ children: string; onClick: () => void; size: string; }' is not assignable to type 'IntrinsicAttributes & ButtonProps'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & ButtonProps'.
+src/app/admin/bookings/[id]/page.tsx(88,36): error TS2322: Type '"error" | "success" | "warning"' is not assignable to type 'BadgeVariant | undefined'.
+  Type '"error"' is not assignable to type 'BadgeVariant | undefined'.
+src/app/admin/bookings/[id]/page.tsx(188,36): error TS2322: Type '"neutral"' is not assignable to type 'BadgeVariant | undefined'.
+src/app/admin/bookings/page.tsx(160,71): error TS2322: Type '{ children: "confirmed" | "pending" | "cancelled"; variant: any; size: string; className: string; }' is not assignable to type 'IntrinsicAttributes & BadgeProps'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & BadgeProps'.
+src/app/admin/dashboard/page.tsx(132,22): error TS2322: Type '"success" | "neutral"' is not assignable to type 'BadgeVariant | undefined'.
+  Type '"success"' is not assignable to type 'BadgeVariant | undefined'.
+src/app/admin/dashboard/page.tsx(136,22): error TS2322: Type '"success" | "neutral"' is not assignable to type 'BadgeVariant | undefined'.
+  Type '"success"' is not assignable to type 'BadgeVariant | undefined'.
+src/app/admin/dashboard/page.tsx(140,22): error TS2322: Type '"success" | "neutral"' is not assignable to type 'BadgeVariant | undefined'.
+  Type '"success"' is not assignable to type 'BadgeVariant | undefined'.
+src/app/admin/dashboard/page.tsx(190,30): error TS2322: Type '"error" | "success" | "warning"' is not assignable to type 'BadgeVariant | undefined'.
+  Type '"error"' is not assignable to type 'BadgeVariant | undefined'.
+src/app/admin/layout.tsx(22,17): error TS2322: Type '{ variant: string; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'variant' does not exist on type 'IntrinsicAttributes'.
+src/app/admin/payments/page.tsx(29,28): error TS2322: Type '"neutral"' is not assignable to type 'BadgeVariant | undefined'.
+src/app/admin/payments/page.tsx(30,28): error TS2322: Type '"neutral"' is not assignable to type 'BadgeVariant | undefined'.
+src/app/admin/rooms/[id]/page.tsx(123,42): error TS2322: Type '{ children: string; onClick: (e?: SyntheticEvent<Element, Event> | undefined) => Promise<void>; isLoading: boolean; }' is not assignable to type 'IntrinsicAttributes & ButtonProps'.
+  Property 'isLoading' does not exist on type 'IntrinsicAttributes & ButtonProps'.
+src/app/admin/rooms/page.tsx(131,65): error TS2322: Type '{ children: (string | Element)[]; onClick: () => void; size: string; }' is not assignable to type 'IntrinsicAttributes & ButtonProps'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & ButtonProps'.
+src/app/admin/rooms/page.tsx(145,24): error TS2322: Type '"error" | "success"' is not assignable to type 'BadgeVariant | undefined'.
+  Type '"error"' is not assignable to type 'BadgeVariant | undefined'.
+src/app/admin/rooms/page.tsx(169,19): error TS2322: Type '{ children: string; variant: "outline"; size: string; className: string; onClick: () => void; }' is not assignable to type 'IntrinsicAttributes & ButtonProps'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & ButtonProps'.
+src/app/admin/rooms/page.tsx(177,19): error TS2322: Type '{ children: string; variant: "ghost"; size: string; className: string; onClick: () => void; }' is not assignable to type 'IntrinsicAttributes & ButtonProps'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & ButtonProps'.
+src/app/admin/rooms/page.tsx(185,19): error TS2322: Type '{ children: Element; variant: "ghost"; size: string; className: string; onClick: () => void; }' is not assignable to type 'IntrinsicAttributes & ButtonProps'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & ButtonProps'.
+src/app/admin/rooms/page.tsx(206,67): error TS2322: Type '{ children: string; onClick: () => void; size: string; }' is not assignable to type 'IntrinsicAttributes & ButtonProps'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & ButtonProps'.
+src/components/BlogSection.tsx(17,18): error TS2322: Type '"primary"' is not assignable to type 'BadgeVariant | undefined'.
+src/components/BlogSection.tsx(46,26): error TS2322: Type '"neutral"' is not assignable to type 'BadgeVariant | undefined'.
+src/components/BookingCard.tsx(127,18): error TS2322: Type '"success"' is not assignable to type 'BadgeVariant | undefined'.
+src/components/BookingCard.tsx(279,15): error TS2322: Type '{ children: string; type: "submit"; size: string; className: string; isLoading: boolean; }' is not assignable to type 'IntrinsicAttributes & ButtonProps'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & ButtonProps'.
+src/components/Hero.tsx(28,24): error TS2322: Type '"primary"' is not assignable to type 'BadgeVariant | undefined'.
+src/components/Hero.tsx(65,27): error TS2322: Type '{ children: Element[]; size: string; className: string; }' is not assignable to type 'IntrinsicAttributes & ButtonProps'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & ButtonProps'.
+src/components/Hero.tsx(71,45): error TS2322: Type '{ children: string; variant: "outline"; size: string; className: string; }' is not assignable to type 'IntrinsicAttributes & ButtonProps'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & ButtonProps'.
+src/components/RoomCard.tsx(52,34): error TS2322: Type '"primary"' is not assignable to type 'BadgeVariant | undefined'.
+src/components/TrustWidgets.tsx(68,14): error TS2322: Type '"success" | "info"' is not assignable to type 'BadgeVariant | undefined'.
+  Type '"success"' is not assignable to type 'BadgeVariant | undefined'.
+src/components/TrustWidgets.tsx(146,19): error TS2322: Type '{ children: Element; size: string; className: string; }' is not assignable to type 'IntrinsicAttributes & ButtonProps'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & ButtonProps'.
+src/components/ui/ConfirmModal.tsx(94,25): error TS2322: Type '{ children: string; variant: "primary"; className: string; onClick: () => void; isLoading: boolean; }' is not assignable to type 'IntrinsicAttributes & ButtonProps'.
+  Property 'isLoading' does not exist on type 'IntrinsicAttributes & ButtonProps'.
+src/components/ui/SectionTitle.tsx(3,24): error TS2307: Cannot find module 'classnames' or its corresponding type declarations.

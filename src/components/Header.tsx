@@ -20,7 +20,7 @@ interface HeaderProps {
   variant?: 'public' | 'admin';
 }
 
-export default function Header({ variant = 'public' }: HeaderProps) {
+function Header({ variant = 'public' }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
@@ -148,3 +148,5 @@ export default function Header({ variant = 'public' }: HeaderProps) {
     </header>
   );
 }
+
+export default React.memo(Header);

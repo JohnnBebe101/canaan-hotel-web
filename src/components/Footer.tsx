@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import CanaanLogo from "@/components/ui/CanaanLogo";
+import { Icon } from "@/components/ui/Icons";
 
 export default function Footer() {
   return (
@@ -18,16 +19,16 @@ export default function Footer() {
             <p className="text-sm text-gray-200">Where the basalt of the highlands meets sanctuary and comfort.</p>
             <div className="flex space-x-3">
               <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 inline-flex items-center justify-center rounded-full border border-white/20 text-white/70 hover:bg-white/20" aria-label="Facebook">
-                <span className="material-symbols-outlined">facebook</span>
+                <Icon name="facebook" className="w-5 h-5" />
               </a>
               <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 inline-flex items-center justify-center rounded-full border border-white/20 text-white/70 hover:bg-white/20" aria-label="Instagram">
-                <span className="material-symbols-outlined">instagram</span>
+                <Icon name="instagram" className="w-5 h-5" />
               </a>
               <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 inline-flex items-center justify-center rounded-full border border-white/20 text-white/70 hover:bg-white/20" aria-label="Twitter">
-                <span className="material-symbols-outlined">twitter</span>
+                <Icon name="twitter" className="w-5 h-5" />
               </a>
               <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 inline-flex items-center justify-center rounded-full border border-white/20 text-white/70 hover:bg-white/20" aria-label="YouTube">
-                <span className="material-symbols-outlined">youtube</span>
+                <Icon name="youtube" className="w-5 h-5" />
               </a>
             </div>
           </div>
@@ -48,9 +49,9 @@ export default function Footer() {
           <div>
             <h4 className="text-[10px] uppercase tracking-widest font-bold mb-3 text-cactus">Sanctuary Info</h4>
             <ul className="space-y-3 text-sm text-gray-200 font-light">
-              <li className="flex items-center gap-2"><span className="material-symbols-outlined">call</span> +251 941 12 34 56</li>
-              <li className="flex items-center gap-2"><span className="material-symbols-outlined">mail</span> stay@canaanhotel.com</li>
-              <li className="flex items-start gap-2"><span className="material-symbols-outlined">location_on</span> Canaan International Hotel, Highland Hub, Adigrat</li>
+              <li className="flex items-center gap-2"><Icon name="call" className="w-4 h-4" /> +251 941 12 34 56</li>
+              <li className="flex items-center gap-2"><Icon name="mail" className="w-4 h-4" /> stay@canaanhotel.com</li>
+              <li className="flex items-start gap-2"><Icon name="location_on" className="w-4 h-4 mt-0.5" /> Canaan International Hotel, Highland Hub, Adigrat</li>
             </ul>
           </div>
 

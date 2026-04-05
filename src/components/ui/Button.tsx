@@ -1,4 +1,5 @@
 import React from 'react';
+import { Icon } from "@/components/ui/Icons";
 
 type ButtonVariant = 'primary' | 'outline' | 'ghost';
 type ButtonSize = 'sm' | 'md' | 'lg';
@@ -40,7 +41,7 @@ export default function Button({
             disabled={isLoading || disabled}
             {...props}
         >
-            {isLoading && <span className="material-symbols-outlined animate-spin text-sm">progress_activity</span>}
+            {isLoading && <Icon name="progress_activity" className="animate-spin text-sm" />}
             {children}
         </button>
     );

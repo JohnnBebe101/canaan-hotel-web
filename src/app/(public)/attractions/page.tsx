@@ -2,6 +2,7 @@ import type { Metadata } from "next/types";
 import Link from "next/link";
 import HeroImage from "@/components/HeroImage";
 import Card from "../../../components/Card";
+import { Icon } from "@/components/ui/Icons";
 
 export const metadata: Metadata = {
   title: "Local Attractions | Explore Adigrat & Tigray",
@@ -175,7 +176,7 @@ export default function AttractionsPage() {
                           {attraction.category}
                         </span>
                         <span className="flex items-center gap-1 text-xs text-text-secondary">
-                          <span className="material-symbols-outlined text-sm">place</span>
+                          <Icon name="place" className="text-sm" />
                           {attraction.distance}
                         </span>
                       </div>
@@ -213,7 +214,7 @@ export default function AttractionsPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             <article className="flex flex-col items-center gap-4 rounded-lg bg-background-light p-6 text-center dark:bg-background-dark">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/20 text-primary" aria-hidden="true">
-                <span className="material-symbols-outlined text-3xl">directions_car</span>
+                <Icon name="directions_car" className="text-3xl" />
               </div>
               <div className="flex flex-col gap-1">
                 <h3 className="text-lg font-bold text-text-primary dark:text-background-light">Private Transfers</h3>
@@ -224,7 +225,7 @@ export default function AttractionsPage() {
             </article>
             <article className="flex flex-col items-center gap-4 rounded-lg bg-background-light p-6 text-center dark:bg-background-dark">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/20 text-primary" aria-hidden="true">
-                <span className="material-symbols-outlined text-3xl">person</span>
+                <Icon name="person" className="text-3xl" />
               </div>
               <div className="flex flex-col gap-1">
                 <h3 className="text-lg font-bold text-text-primary dark:text-background-light">Expert Guides</h3>
@@ -235,7 +236,7 @@ export default function AttractionsPage() {
             </article>
             <article className="flex flex-col items-center gap-4 rounded-lg bg-background-light p-6 text-center dark:bg-background-dark">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/20 text-primary" aria-hidden="true">
-                <span className="material-symbols-outlined text-3xl">calendar_month</span>
+                <Icon name="calendar_month" className="text-3xl" />
               </div>
               <div className="flex flex-col gap-1">
                 <h3 className="text-lg font-bold text-text-primary dark:text-background-light">Custom Itineraries</h3>

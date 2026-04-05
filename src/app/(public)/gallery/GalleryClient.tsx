@@ -5,6 +5,7 @@ import Link from "next/link";
 import OptimizedImage from "@/components/OptimizedImage";
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
+import { Icon } from "@/components/ui/Icons";
 
 interface GalleryImage {
     id: string;
@@ -162,7 +163,7 @@ export default function GalleryClient() {
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
                                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                     <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-500">
-                                        <span className="material-symbols-outlined text-white text-2xl">zoom_in</span>
+                                        <Icon name="zoom_in" className="text-white text-2xl" />
                                     </div>
                                 </div>
                                 <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
@@ -189,7 +190,7 @@ export default function GalleryClient() {
                         className="absolute top-6 right-6 w-12 h-12 flex items-center justify-center rounded-full bg-white/10 text-white hover:bg-primary transition-colors z-10"
                         onClick={() => setSelectedImage(null)}
                     >
-                        <span className="material-symbols-outlined text-2xl">close</span>
+                        <Icon name="close" className="text-2xl" />
                     </button>
                     <div className="max-w-6xl w-full flex flex-col items-center" onClick={(e) => e.stopPropagation()}>
                         <div className="relative w-full aspect-[3/2] md:aspect-[16/9] rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-black">

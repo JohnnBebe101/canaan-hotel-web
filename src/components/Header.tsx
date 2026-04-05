@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Button from "@/components/ui/Button";
+import { Icon } from "@/components/ui/Icons";
 
 import CanaanLogo from "@/components/ui/CanaanLogo";
 
@@ -104,13 +105,9 @@ function Header({ variant = 'public' }: HeaderProps) {
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? (
-              <span className="material-symbols-outlined text-sandstone text-4xl">
-                close
-              </span>
+              <Icon name="close" className="text-sandstone text-4xl" />
             ) : (
-              <span className="material-symbols-outlined text-sandstone text-4xl">
-                menu
-              </span>
+              <Icon name="menu" className="text-sandstone text-4xl" />
             )}
           </button>
         </div>
@@ -122,9 +119,7 @@ function Header({ variant = 'public' }: HeaderProps) {
               onClick={() => setIsMobileMenuOpen(false)}
               aria-label="Close menu"
             >
-              <span className="material-symbols-outlined text-sandstone text-5xl">
-                close
-              </span>
+              <Icon name="close" className="text-sandstone text-5xl" />
             </button>
             <CanaanLogo className="w-16 h-16 text-cactus mb-8" />
             {navItems.map((item) => (

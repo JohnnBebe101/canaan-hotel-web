@@ -1,4 +1,5 @@
 import React from "react";
+import { Star } from "lucide-react";
 
 interface StarRatingProps {
     rating: number;
@@ -20,14 +21,11 @@ export default function StarRating({
             {Array.from({ length: max }).map((_, index) => {
                 const isFilled = index < roundedRating;
                 return (
-                    <span
+                    <Star
                         key={index}
-                        className={`material-symbols-outlined ${iconSize} ${isFilled ? "text-primary" : "text-gray-300 dark:text-gray-600"
+                        className={`${iconSize} ${isFilled ? "fill-primary text-primary" : "text-gray-300 dark:text-gray-600"
                             }`}
-                        style={{ fontVariationSettings: isFilled ? "'FILL' 1" : "'FILL' 0" }}
-                    >
-                        star
-                    </span>
+                    />
                 );
             })}
         </div>

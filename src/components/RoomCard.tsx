@@ -5,6 +5,7 @@ import React from "react";
 import OptimizedImage from "./OptimizedImage";
 import StarRating from "./ui/StarRating";
 import Badge from "./ui/Badge";
+import { Icon } from "@/components/ui/Icons";
 
 interface RoomCardProps {
   slug: string; // e.g. "economy-single"
@@ -90,7 +91,7 @@ function RoomCard({
             className="group/btn inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-forest hover:text-cactus transition-colors"
           >
             <span>View Chamber</span>
-            <span className="material-symbols-outlined text-base transition-transform duration-300 group-hover/btn:translate-x-1">arrow_forward</span>
+            <Icon name="arrow_forward" className="text-base transition-transform duration-300 group-hover/btn:translate-x-1" />
           </Link>
         </div>
       </div>

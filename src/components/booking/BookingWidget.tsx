@@ -4,9 +4,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import Badge from '../ui/Badge';
 import Button from '../ui/Button';
-import Calendar from './Calendar'; // Using relative path for now
-
+import Calendar from './Calendar';
 import CanaanLogo from '../ui/CanaanLogo';
+import { Icon } from "@/components/ui/Icons";
 
 interface BookingWidgetProps {
     isOpen: boolean;
@@ -88,7 +88,7 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
                     className="absolute top-8 right-8 z-50 p-2 text-forest/40 hover:text-cactus hover:bg-forest/5 rounded-full transition-all group"
                     aria-label="Close booking modal"
                 >
-                    <span className="material-symbols-outlined text-3xl transform group-hover:rotate-90 transition-transform duration-500">close</span>
+                    <Icon name="close" className="text-3xl transform group-hover:rotate-90 transition-transform duration-500" />
                 </button>
 
                 {/* Left Summary Sidebar - Enhanced with better typography and hierarchy */}
@@ -142,11 +142,11 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
 
                     <div className="relative z-10 space-y-6 hidden md:block mt-12 pt-8 border-t border-white/5">
                         <div className="flex items-center space-x-4 text-cactus/40 hover:text-cactus transition-colors duration-500 cursor-default">
-                            <span className="material-symbols-outlined text-xl">verified_user</span>
+                            <Icon name="verified_user" className="text-xl" />
                             <span className="text-[9px] uppercase font-bold tracking-[0.3em]">Stability Guaranteed</span>
                         </div>
                         <div className="flex items-center space-x-4 text-cactus/40 hover:text-cactus transition-colors duration-500 cursor-default">
-                            <span className="material-symbols-outlined text-xl">lock</span>
+                            <Icon name="lock" className="text-xl" />
                             <span className="text-[9px] uppercase font-bold tracking-[0.3em]">Secure Sanctuary Checkout</span>
                         </div>
                     </div>
@@ -189,7 +189,7 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
 
                             <div className="space-y-6">
                                 <label className="text-[10px] uppercase font-bold tracking-widest text-forest/40 flex items-center gap-3">
-                                    <span className="material-symbols-outlined text-cactus text-sm">calendar_month</span> Choose Your Window of Stay
+                                    <Icon name="calendar_month" className="text-cactus text-sm" /> Choose Your Window of Stay
                                 </label>
                                 <div className="border border-forest/5 shadow-xl rounded-sm overflow-hidden bg-white">
                                     <Calendar
@@ -220,7 +220,7 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
                                         <option>Adigrat Executive</option>
                                     </select>
                                     <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-cactus">
-                                        <span className="material-symbols-outlined transform rotate-90">arrow_forward</span>
+                                        <Icon name="arrow_forward" className="transform rotate-90" />
                                     </div>
                                 </div>
                             </div>
@@ -231,7 +231,7 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
                                 disabled={!checkIn || !checkOut}
                                 className="w-full py-8 text-xs"
                             >
-                                Proceed to Sanctuary Checkout <span className="material-symbols-outlined text-base ml-2">arrow_forward</span>
+                                Proceed to Sanctuary Checkout <Icon name="arrow_forward" className="text-base ml-2" />
                             </Button>
                         </form>
                     )}
@@ -244,7 +244,7 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
                                     onClick={() => setStep('details')}
                                     className="text-[10px] uppercase font-bold text-cactus flex items-center group"
                                 >
-                                    <span className="material-symbols-outlined text-base mr-2 transform group-hover:-translate-x-2 transition-transform">chevron_left</span> Return to Identification
+                                    <Icon name="chevron_left" className="text-base mr-2 transform group-hover:-translate-x-2 transition-transform" /> Return to Identification
                                 </button>
                                 <div className="text-[10px] uppercase font-bold text-cactus tracking-[0.3em]">Phase 02/02</div>
                             </div>
@@ -266,7 +266,7 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
                                             placeholder="4000 0000 0000 0000"
                                             className="w-full bg-white border border-forest/10 p-6 text-forest font-serif text-xl focus:border-cactus outline-none transition-all shadow-sm"
                                         />
-                                        <span className="material-symbols-outlined absolute right-6 top-1/2 -translate-y-1/2 text-forest/20 text-3xl">credit_card</span>
+                                        <Icon name="credit_card" className="absolute right-6 top-1/2 -translate-y-1/2 text-forest/20 text-3xl" />
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-2 gap-10">
@@ -292,7 +292,7 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
                                 type="submit"
                                 className="w-full py-8 text-xs"
                             >
-                                Seal Your Reservation <span className="material-symbols-outlined text-base ml-2">lock</span>
+                                Seal Your Reservation <Icon name="lock" className="text-base ml-2" />
                             </Button>
                         </form>
                     )}
@@ -302,7 +302,7 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
                             <div className="relative mb-12">
                                 <div className="absolute inset-0 bg-cactus/20 rounded-full animate-ping"></div>
                                 <div className="w-28 h-28 bg-white border-2 border-cactus rounded-full flex items-center justify-center shadow-2xl relative z-10">
-                                    <span className="material-symbols-outlined text-cactus text-6xl">check_circle</span>
+                                    <Icon name="check_circle" className="text-cactus text-6xl" />
                                 </div>
                             </div>
                             <Badge variant="cactus">Experience Secured</Badge>

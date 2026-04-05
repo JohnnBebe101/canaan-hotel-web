@@ -8,6 +8,7 @@ import HeroSlider from "./HeroSlider";
 import { HERO_SLIDER_IMAGES } from "@/lib/heroImages";
 import Button from "./ui/Button";
 import Badge from "./ui/Badge";
+import { Icon } from "@/components/ui/Icons";
 
 export default function Hero() {
   return (
@@ -65,7 +66,7 @@ export default function Hero() {
                 <Link href="/rooms">
                   <Button size="lg" className="w-full sm:w-auto px-10 gap-2">
                     <span>View Our Rooms</span>
-                    <span className="material-symbols-outlined">arrow_forward</span>
+                    <Icon name="arrow_forward" className="ml-1" />
                   </Button>
                 </Link>
                 <Link href="/contact">

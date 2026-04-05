@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Icon } from "@/components/ui/Icons";
 
 export default function Breadcrumbs() {
     const pathname = usePathname();
@@ -31,7 +32,7 @@ export default function Breadcrumbs() {
 
                     return (
                         <li key={path} className="flex items-center space-x-2">
-                            <span className="material-symbols-outlined text-sm text-gray-400">chevron_right</span>
+                            <Icon name="chevron_right" className="text-sm text-gray-400" />
                             {isLast ? (
                                 <span className="text-xs font-bold uppercase tracking-wider text-primary">
                                     {label}

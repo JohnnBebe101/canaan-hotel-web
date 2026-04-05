@@ -2,6 +2,7 @@
 
 import OptimizedImage from "@/components/OptimizedImage";
 import Button from "@/components/ui/Button";
+import { Icon } from "@/components/ui/Icons";
 
 export default function ContactClient() {
     const handleSubmit = (e: React.FormEvent) => {
@@ -42,7 +43,7 @@ export default function ContactClient() {
                     <div className="space-y-6">
                         <div className="flex items-start gap-4 p-4 rounded-xl bg-gray-50 dark:bg-gray-800/50">
                             <div className="flex-shrink-0 text-primary pt-1" aria-hidden="true">
-                                <span className="material-symbols-outlined">location_on</span>
+                                <Icon name="location_on" className="w-5 h-5" />
                             </div>
                             <div>
                                 <p className="text-sm font-bold uppercase tracking-wider text-text-secondary dark:text-text-secondary/70">
@@ -56,7 +57,7 @@ export default function ContactClient() {
 
                         <div className="flex items-start gap-4 p-4 rounded-xl bg-gray-50 dark:bg-gray-800/50">
                             <div className="flex-shrink-0 text-primary pt-1" aria-hidden="true">
-                                <span className="material-symbols-outlined">call</span>
+                                <Icon name="call" className="w-5 h-5" />
                             </div>
                             <div>
                                 <p className="text-sm font-bold uppercase tracking-wider text-text-secondary dark:text-text-secondary/70">
@@ -73,7 +74,7 @@ export default function ContactClient() {
 
                         <div className="flex items-start gap-4 p-4 rounded-xl bg-gray-50 dark:bg-gray-800/50">
                             <div className="flex-shrink-0 text-primary pt-1" aria-hidden="true">
-                                <span className="material-symbols-outlined">mail</span>
+                                <Icon name="mail" className="w-5 h-5" />
                             </div>
                             <div>
                                 <p className="text-sm font-bold uppercase tracking-wider text-text-secondary dark:text-text-secondary/70">

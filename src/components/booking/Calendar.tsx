@@ -2,6 +2,7 @@
 "use client";
 
 import React from "react";
+import { Icon } from "@/components/ui/Icons";
 
 interface CalendarProps {
     startDate: Date | null;
@@ -57,10 +58,10 @@ export default function Calendar({ startDate, endDate, onRangeSelect }: Calendar
                 <div className="flex gap-2">
                     {/* Navigation placeholders */}
                     <button className="p-1 hover:bg-sandstone rounded-full transition-colors text-cactus">
-                        <span className="material-symbols-outlined text-sm">chevron_left</span>
+                        <Icon name="chevron_left" className="text-sm" />
                     </button>
                     <button className="p-1 hover:bg-sandstone rounded-full transition-colors text-cactus">
-                        <span className="material-symbols-outlined text-sm">chevron_right</span>
+                        <Icon name="chevron_right" className="text-sm" />
                     </button>
                 </div>
             </div>

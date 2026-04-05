@@ -1,3 +1,5 @@
+import { Icon } from "@/components/ui/Icons";
+
 interface ServiceCardProps {
   icon: string;
   title: string;
@@ -8,7 +10,7 @@ export default function ServiceCard({ icon, title, description }: ServiceCardPro
   return (
     <article className="flex flex-col items-center gap-4 rounded-lg bg-white p-6 text-center dark:bg-background-light/5">
       <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/20 text-primary" aria-hidden="true">
-        <span className="material-symbols-outlined text-3xl">{icon}</span>
+        <Icon name={icon as any} className="text-3xl" />
       </div>
       <div className="flex flex-col gap-1">
         <h3 className="text-lg font-bold text-text-primary dark:text-background-light">{title}</h3>

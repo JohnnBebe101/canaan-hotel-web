@@ -13,6 +13,7 @@ import SectionTitle from "@/components/ui/SectionTitle";
 import CanaanPattern from "@/components/ui/CanaanPattern";
 import SocialRatingWidget from "@/components/ui/SocialRatingWidget";
 import CanaanLogo from "@/components/ui/CanaanLogo";
+import { Icon } from "@/components/ui/Icons";
 
 // Feature Components
 import BookingWidget from "@/components/booking/BookingWidget";
@@ -165,7 +166,7 @@ export default function Home() {
                       className="text-sandstone text-[11px] uppercase tracking-[0.5em] font-bold flex items-center group py-4"
                     >
                       Sanctuary Gallery
-                      <span className="material-symbols-outlined ml-4 text-cactus group-hover:translate-x-4 transition-transform">arrow_forward</span>
+                      <Icon name="arrow_forward" className="ml-4 text-cactus group-hover:translate-x-4 transition-transform" />
                     </button>
                   </Link>
                 </div>
@@ -204,14 +205,14 @@ export default function Home() {
             className="pointer-events-auto w-16 h-16 flex items-center justify-center text-sandstone/30 hover:text-cactus transition-all duration-500 group border border-white/5 hover:border-cactus/50 rounded-full backdrop-blur-sm"
             aria-label="Previous slide"
           >
-            <span className="material-symbols-outlined text-4xl group-hover:-translate-x-1 transition-transform">chevron_left</span>
+            <Icon name="chevron_left" className="text-4xl group-hover:-translate-x-1 transition-transform" />
           </button>
           <button
             onClick={nextSlide}
             className="pointer-events-auto w-16 h-16 flex items-center justify-center text-sandstone/30 hover:text-cactus transition-all duration-500 group border border-white/5 hover:border-cactus/50 rounded-full backdrop-blur-sm"
             aria-label="Next slide"
           >
-            <span className="material-symbols-outlined text-4xl group-hover:translate-x-1 transition-transform">chevron_right</span>
+            <Icon name="chevron_right" className="text-4xl group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
       </header>
@@ -245,7 +246,7 @@ export default function Home() {
                   ].map((item, i) => (
                     <div key={i} className="flex gap-8 group">
                       <div className="flex-shrink-0 w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg border border-cactus/5 group-hover:bg-cactus group-hover:text-white transition-all duration-500">
-                        <span className="material-symbols-outlined text-3xl">{item.icon}</span>
+                        <Icon name={item.icon as any} className="text-3xl" />
                       </div>
                       <div className="pt-2">
                         <h4 className="font-serif text-2xl mb-3 text-forest">{item.title}</h4>

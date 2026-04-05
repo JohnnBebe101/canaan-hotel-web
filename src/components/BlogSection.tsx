@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { getLatestBlogs } from "@/lib/blog-store";
 import Badge from "./ui/Badge";
+import { Icon } from "@/components/ui/Icons";
 
 export default async function BlogSection() {
   const blogs = await getLatestBlogs(2);
@@ -57,7 +58,7 @@ export default async function BlogSection() {
                 </p>
                 <span className="inline-flex items-center gap-1 mt-3 text-primary font-bold text-sm uppercase tracking-wider group-hover:gap-2 transition-all">
                   <span>Read More</span>
-                  <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                  <Icon name="arrow_forward" className="text-sm" />
                 </span>
               </div>
             </Link>

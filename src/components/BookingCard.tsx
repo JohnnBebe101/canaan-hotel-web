@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Button from "./ui/Button";
 import Badge from "./ui/Badge";
+import { Icon } from "@/components/ui/Icons";
 
 interface BookingFormData {
   guest_name: string;
@@ -128,7 +129,7 @@ export default function BookingCard() {
             </p>
           </div>
           <Badge variant="cactus" size="sm" className="gap-2 px-3 py-1">
-            <span className="material-symbols-outlined text-sm">verified</span>
+            <Icon name="verified" className="text-sm" />
             <span>Best Rate</span>
           </Badge>
         </div>
@@ -206,7 +207,7 @@ export default function BookingCard() {
                   <option value="Family Suite">Family Suite</option>
                 </select>
                 <div className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-forest/30">
-                  <span className="material-symbols-outlined text-sm">expand_more</span>
+                  <Icon name="expand_more" className="text-sm" />
                 </div>
               </div>
             </div>

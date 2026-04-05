@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useCallback, ReactNode } from "react";
+import { Icon } from "@/components/ui/Icons";
 
 type ToastType = "success" | "error" | "info" | "warning";
 
@@ -44,15 +45,13 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                                     : "bg-white border-gray-200 text-gray-700"
                             }`}
                     >
-                        <span className="material-symbols-outlined text-xl">
-                            {toast.type === "success" ? "check_circle" : toast.type === "error" ? "error" : "info"}
-                        </span>
+                        <Icon name={toast.type === "success" ? "check_circle" : toast.type === "error" ? "error" : "info"} className="text-xl" />
                         <p className="text-sm font-bold">{toast.message}</p>
                         <button
                             onClick={() => setToasts((prev) => prev.filter((t) => t.id !== toast.id))}
                             className="ml-2 hover:opacity-70"
                         >
-                            <span className="material-symbols-outlined text-base">close</span>
+                            <Icon name="close" className="text-base" />
                         </button>
                     </div>
                 ))}

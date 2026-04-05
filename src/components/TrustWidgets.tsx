@@ -4,6 +4,7 @@ import Link from "next/link";
 import StarRating from "./ui/StarRating";
 import Badge from "./ui/Badge";
 import Button from "./ui/Button";
+import { Icon } from "@/components/ui/Icons";
 
 interface BusinessProfileCardProps {
   rating: number;
@@ -86,7 +87,7 @@ function WhyBookDirectCard() {
   return (
     <div className="flex flex-col items-center p-6 rounded-xl border border-border-color dark:border-text-secondary/20 bg-amber-50 dark:bg-amber-900/20">
       <div className="mb-4">
-        <span className="material-symbols-outlined text-4xl text-amber-600">verified</span>
+        <Icon name="verified" className="text-4xl text-amber-600" />
       </div>
 
       <h3 className="text-lg font-bold text-text-primary dark:text-background-light mb-4">
@@ -96,7 +97,7 @@ function WhyBookDirectCard() {
       <ul className="space-y-3 w-full">
         {features.map((feature) => (
           <li key={feature.text} className="flex items-center gap-3">
-            <span className="material-symbols-outlined text-primary">check_circle</span>
+            <Icon name="check_circle" className="text-primary" />
             <span className="text-sm text-text-secondary dark:text-text-secondary/90">
               {feature.text}
             </span>

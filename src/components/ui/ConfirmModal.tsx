@@ -2,6 +2,7 @@
 
 import React, { useEffect } from "react";
 import Button from "./Button";
+import { Icon } from "@/components/ui/Icons";
 
 interface ConfirmModalProps {
     isOpen: boolean;
@@ -72,7 +73,7 @@ export default function ConfirmModal({
                 <div className="p-6">
                     <div className="flex items-center gap-4 mb-4">
                         <div className={`w-12 h-12 rounded-full flex items-center justify-center ${getIconColor()}`}>
-                            <span className="material-symbols-outlined text-2xl">{getIcon()}</span>
+                            <Icon name={getIcon() as any} className="text-2xl" />
                         </div>
                         <h2 className="text-xl font-black text-text-primary dark:text-white">{title}</h2>
                     </div>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next/types";
 import RoomCard from "@/components/RoomCard";
 import { FEATURED_ROOMS } from "@/lib/featuredRooms";
+import { Icon } from "@/components/ui/Icons";
 
 export const metadata: Metadata = {
   title: "Our Rooms & Suites | Canaan International Hotel",
@@ -37,25 +38,19 @@ export default function RoomsPage() {
               <p className="text-text-primary dark:text-background-light text-sm font-medium leading-normal">
                 Price
               </p>
-              <span className="material-symbols-outlined text-text-secondary dark:text-gray-400 text-base">
-                expand_more
-              </span>
+              <Icon name="expand_more" className="text-text-secondary dark:text-gray-400 text-base" />
             </button>
             <button className="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full bg-background-light dark:bg-background-dark/80 pl-4 pr-3 border border-border-color dark:border-text-secondary/20 hover:border-text-primary/50 dark:hover:border-text-primary/50 transition-colors">
               <p className="text-text-primary dark:text-background-light text-sm font-medium leading-normal">
                 Beds
               </p>
-              <span className="material-symbols-outlined text-text-secondary dark:text-gray-400 text-base">
-                expand_more
-              </span>
+              <Icon name="expand_more" className="text-text-secondary dark:text-gray-400 text-base" />
             </button>
             <button className="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full bg-background-light dark:bg-background-dark/80 pl-4 pr-3 border border-border-color dark:border-text-secondary/20 hover:border-text-primary/50 dark:hover:border-text-primary/50 transition-colors">
               <p className="text-text-primary dark:text-background-light text-sm font-medium leading-normal">
                 Amenities
               </p>
-              <span className="material-symbols-outlined text-text-secondary dark:text-gray-400 text-base">
-                expand_more
-              </span>
+              <Icon name="expand_more" className="text-text-secondary dark:text-gray-400 text-base" />
             </button>
           </div>
         </div>
@@ -77,7 +72,7 @@ export default function RoomsPage() {
                 key={amenity.text}
                 className="flex items-center gap-3 p-4 rounded-lg bg-background-light dark:bg-background-dark/50 border border-border-color dark:border-text-secondary/20"
               >
-                <span className="material-symbols-outlined text-primary">{amenity.icon}</span>
+                <Icon name={amenity.icon as any} className="text-primary" />
                 <span className="text-sm font-medium text-text-primary dark:text-background-light">
                   {amenity.text}
                 </span>

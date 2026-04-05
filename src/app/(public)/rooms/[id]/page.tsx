@@ -3,6 +3,7 @@ import Link from "next/link";
 import OptimizedImage from "@/components/OptimizedImage";
 import RoomBookingForm from "@/components/RoomBookingForm";
 import { FEATURED_ROOMS } from "@/lib/featuredRooms";
+import { Icon } from "@/components/ui/Icons";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
@@ -34,7 +35,7 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
       <div className="mx-auto max-w-7xl">
         {/* Back Link */}
         <Link href="/rooms" className="inline-flex items-center gap-2 text-sm font-bold text-text-secondary hover:text-primary transition-colors mb-8">
-          <span className="material-symbols-outlined text-base">arrow_back</span>
+          <Icon name="arrow_back" className="text-base" />
           All Rooms
         </Link>
 
@@ -130,27 +131,27 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
               <h3 className="text-xl font-bold text-primary dark:text-white">Key Amenities</h3>
               <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-4">
                 <div className="flex items-center gap-3">
-                  <span className="material-symbols-outlined text-primary">wifi</span>
+                  <Icon name="wifi" className="text-primary" />
                   <span className="text-sm font-medium">Free WiFi</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="material-symbols-outlined text-primary">free_breakfast</span>
+                  <Icon name="free_breakfast" className="text-primary" />
                   <span className="text-sm font-medium">Continental Breakfast</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="material-symbols-outlined text-primary">shower</span>
+                  <Icon name="shower" className="text-primary" />
                   <span className="text-sm font-medium">Rainfall Showerhead</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="material-symbols-outlined text-primary">ac_unit</span>
+                  <Icon name="ac_unit" className="text-primary" />
                   <span className="text-sm font-medium">Air Conditioning</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="material-symbols-outlined text-primary">tv</span>
+                  <Icon name="tv" className="text-primary" />
                   <span className="text-sm font-medium">Flat-screen TV</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="material-symbols-outlined text-primary">lock</span>
+                  <Icon name="lock" className="text-primary" />
                   <span className="text-sm font-medium">In-room Safe</span>
                 </div>
               </div>

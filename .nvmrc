@@ -1,1 +1,8 @@
-20.19.6
+[System.IO.File]::WriteAllText(
+  "$PWD\.nvmrc",
+  "20.19.1`n",
+  [System.Text.Encoding]::ASCII
+)
+
+exactly: 20.19.1
+Get-Content .nvmrc

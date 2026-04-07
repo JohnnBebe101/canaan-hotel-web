@@ -8,6 +8,7 @@ import { useToast } from "@/components/ui/Toast";
 import ConfirmModal from "@/components/ui/ConfirmModal";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
+import { Plus, BedDouble, CreditCard, Users, Delete, Package, Pencil } from "lucide-react";
 
 export default function AdminRoomsPage() {
   const router = useRouter();
@@ -115,61 +116,78 @@ export default function AdminRoomsPage() {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-20">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-        <p className="mt-4 text-text-secondary font-bold uppercase tracking-widest text-xs">Loading Inventory...</p>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cactus mx-auto"></div>
+        <p className="mt-4 text-sm font-medium text-slate-400 uppercase tracking-wider">Loading Inventory...</p>
       </div>
     );
   }
 
   return (
     <div className="space-y-8">
+      {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black text-text-primary dark:text-white tracking-tight">Room Management</h1>
-          <p className="text-text-secondary dark:text-gray-400 mt-1">Configure your hotel's room inventory and pricing.</p>
+          <h1 className="text-2xl font-bold text-forest tracking-tight">Room Management</h1>
+          <p className="text-sm text-slate-500 mt-1">Configure your hotel's room inventory and pricing.</p>
         </div>
         <Button onClick={() => router.push('/admin/rooms/new')} size="lg">
-          <span className="material-symbols-outlined mr-2">add</span>
+          <Plus className="w-4 h-4 mr-2" />
           Add New Room
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      {/* Room Cards Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-6">
         {rooms.map((room) => (
-          <div key={room.id} className="bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-300">
-            <div className="p-6">
-              <div className="flex items-start justify-between mb-4">
-                <div className="h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
-                  <span className="material-symbols-outlined text-2xl">hotel</span>
+          <div key={room.id} className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+            {/* Image Area */}
+            <div className="aspect-video bg-slate-100 relative">
+              {room.image_src ? (
+                <img 
+                  src={room.image_src} 
+                  alt={room.name}
+                  className="object-cover w-full h-full"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <BedDouble className="w-12 h-12 text-slate-300" />
                 </div>
-                <Badge variant={room.is_active ? "success" : "error"} size="sm" className="uppercase tracking-widest font-black">
-                  {room.is_active ? "Live" : "Offline"}
-                </Badge>
+              )}
+              <div className="absolute top-3 left-3">
+                <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                  room.is_active ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'
+                }`}>
+                  {room.is_active ? "Available" : "Offline"}
+                </span>
               </div>
-
-              <h3 className="text-xl font-black text-text-primary dark:text-white mb-2">{room.name}</h3>
-              <p className="text-text-secondary dark:text-gray-400 text-sm line-clamp-2 mb-4 h-10">
-                {room.description}
-              </p>
-
-              <div className="flex items-center gap-4 text-sm font-bold text-text-primary dark:text-gray-200 mb-6">
+            </div>
+            
+            {/* Card Body */}
+            <div className="p-4">
+              <h3 className="text-sm font-semibold text-forest">{room.name}</h3>
+              <p className="text-xs text-slate-400 mt-0.5">{room.description?.substring(0, 60)}...</p>
+              
+              <div className="flex items-center gap-4 mt-3">
                 <div className="flex items-center gap-1">
-                  <span className="material-symbols-outlined text-lg text-primary">payments</span>
-                  ${room.price_per_night}
+                  <CreditCard className="w-4 h-4 text-bronze" />
+                  <span className="text-lg font-bold text-bronze">${room.price_per_night}</span>
+                  <span className="text-xs text-slate-400">/night</span>
                 </div>
-                <div className="flex items-center gap-1 border-l border-gray-100 dark:border-gray-700 pl-4">
-                  <span className="material-symbols-outlined text-lg text-primary">group</span>
-                  {room.max_guests} Guests
+                <div className="flex items-center gap-1 border-l border-slate-100 pl-4">
+                  <Users className="w-4 h-4 text-slate-400" />
+                  <span className="text-xs text-slate-500">{room.max_guests} Guests</span>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 pt-4 border-t border-gray-50 dark:border-gray-700/50">
+              {/* Action Buttons */}
+              <div className="mt-3 flex gap-2">
                 <Button
                   variant="outline"
                   size="sm"
                   className="flex-1"
                   onClick={() => router.push(`/admin/rooms/${room.id}`)}
                 >
+                  <Pencil className="w-3 h-3 mr-1" />
                   Edit
                 </Button>
                 <Button
@@ -183,10 +201,10 @@ export default function AdminRoomsPage() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-red-600 hover:bg-red-50 p-2"
+                  className="text-slate-400 hover:text-red-500 p-2"
                   onClick={() => handleDeleteRequest(room.id)}
                 >
-                  <span className="material-symbols-outlined">delete</span>
+                  <Delete className="w-4 h-4" />
                 </Button>
               </div>
             </div>
@@ -194,17 +212,17 @@ export default function AdminRoomsPage() {
         ))}
       </div>
 
+      {/* Empty State */}
       {rooms.length === 0 && (
-        <div className="bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 p-20 text-center">
-          <div className="w-20 h-20 bg-gray-50 dark:bg-gray-700/50 rounded-full flex items-center justify-center mx-auto mb-6">
-            <span className="material-symbols-outlined text-4xl text-gray-300">inventory_2</span>
-          </div>
-          <h2 className="text-2xl font-black text-text-primary dark:text-white mb-2">No Rooms Defined</h2>
-          <p className="text-text-secondary dark:text-gray-400 mb-8 max-w-sm mx-auto">
-            Your room inventory is empty. Add your first room to start accepting bookings.
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-20 text-center">
+          <Package className="w-16 h-16 text-slate-300 mx-auto mb-4" />
+          <h2 className="text-lg font-semibold text-forest mb-2">No rooms added yet.</h2>
+          <p className="text-sm text-slate-500 mb-8 max-w-sm mx-auto">
+            Add your first room to start accepting bookings.
           </p>
           <Button onClick={() => router.push('/admin/rooms/new')} size="lg">
-            Create First Room
+            <Plus className="w-4 h-4 mr-2" />
+            Add First Room
           </Button>
         </div>
       )}

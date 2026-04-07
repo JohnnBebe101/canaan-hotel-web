@@ -57,6 +57,7 @@ export interface Room {
   price_label?: string;
   badges?: string[];
   rating?: number;
+  images?: string[];
   created_at: string;
 }
 

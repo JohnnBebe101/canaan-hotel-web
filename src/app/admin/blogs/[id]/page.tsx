@@ -9,6 +9,7 @@ import { useFormGuard } from "@/lib/hooks/useFormGuard";
 import Button from "@/components/ui/Button";
 import OptimizedImage from "@/components/OptimizedImage";
 import ConfirmModal from "@/components/ui/ConfirmModal";
+import { CircleHelp, Image, Send } from "lucide-react";
 
 export default function EditBlogPage() {
   const router = useRouter();
@@ -170,7 +171,7 @@ export default function EditBlogPage() {
             <div>
               <label className="flex items-center gap-2 text-sm font-black text-text-primary dark:text-white uppercase tracking-widest mb-2">
                 Blog Title
-                <span className="material-symbols-outlined text-xs cursor-help" title="The primary headline for your blog post.">help</span>
+                <CircleHelp className="w-4 h-4 text-gray-400" />
               </label>
               <input
                 type="text"
@@ -258,7 +259,7 @@ export default function EditBlogPage() {
                     />
                   ) : (
                     <div className="flex items-center justify-center h-full text-gray-300">
-                      <span className="material-symbols-outlined text-4xl">image</span>
+                      <Image className="w-10 h-10" />
                     </div>
                   )}
                 </div>
@@ -276,7 +277,7 @@ export default function EditBlogPage() {
 
           <div className="p-6 bg-primary/5 rounded-3xl border border-primary/10">
             <div className="flex items-center gap-3 text-primary mb-2">
-              <span className="material-symbols-outlined">publish</span>
+              <Send className="w-5 h-5" />
               <span className="text-sm font-bold uppercase tracking-widest">Status: {formData.is_published ? 'Published' : 'Draft'}</span>
             </div>
             <p className="text-xs text-text-secondary leading-relaxed font-medium">

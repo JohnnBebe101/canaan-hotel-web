@@ -7,6 +7,7 @@ import { Booking } from "@/lib/models";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import { useToast } from "@/components/ui/Toast";
+import { AlertCircle, ArrowLeft, BedDouble, Users, CreditCard, StickyNote } from "lucide-react";
 
 export default function BookingDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params);
@@ -63,7 +64,7 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
     if (error || !booking) {
         return (
             <div className="bg-white dark:bg-gray-800 rounded-3xl p-12 text-center border border-gray-100 dark:border-gray-700 shadow-xl">
-                <span className="material-symbols-outlined text-6xl text-red-500 mb-4">error</span>
+                <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
                 <h2 className="text-2xl font-black text-text-primary dark:text-white mb-2">Booking Not Found</h2>
                 <p className="text-text-secondary dark:text-gray-400 mb-8 font-medium">The record you are looking for might have been removed.</p>
                 <Link href="/admin/bookings">
@@ -78,7 +79,7 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pb-6 border-b border-gray-100 dark:border-gray-700">
                 <div className="flex items-center gap-4">
                     <Link href="/admin/bookings" className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors">
-                        <span className="material-symbols-outlined text-2xl">arrow_back</span>
+                        <ArrowLeft className="w-6 h-6" />
                     </Link>
                     <div>
                         <div className="flex items-center gap-3">
@@ -138,14 +139,14 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
                             <div>
                                 <label className="text-[10px] font-black uppercase tracking-widest text-text-secondary block mb-1">Room Type</label>
                                 <div className="flex items-center gap-3">
-                                    <span className="material-symbols-outlined text-primary">hotel</span>
+                                    <BedDouble className="w-5 h-5 text-primary" />
                                     <p className="text-lg font-bold text-text-primary dark:text-white">{booking.room_type}</p>
                                 </div>
                             </div>
                             <div>
                                 <label className="text-[10px] font-black uppercase tracking-widest text-text-secondary block mb-1">Guests</label>
                                 <div className="flex items-center gap-3">
-                                    <span className="material-symbols-outlined text-primary">group</span>
+                                    <Users className="w-5 h-5 text-primary" />
                                     <p className="text-lg font-bold text-text-primary dark:text-white">{booking.number_of_guests} Persons</p>
                                 </div>
                             </div>
@@ -182,7 +183,7 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
 
                         <div className="mt-8 pt-8 border-t border-gray-50 dark:border-gray-700">
                             <div className="flex items-center gap-3 text-primary mb-4">
-                                <span className="material-symbols-outlined">payments</span>
+                                <CreditCard className="w-5 h-5" />
                                 <span className="text-xs font-black uppercase tracking-widest">Payment Status</span>
                             </div>
                             <Badge variant="neutral" size="sm" className="w-full justify-center py-2 opacity-60">Pending Settlement</Badge>
@@ -191,7 +192,7 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
 
                     <div className="p-6 bg-blue-50 dark:bg-blue-900/10 rounded-3xl border border-blue-100 dark:border-blue-900/20">
                         <div className="flex items-center gap-3 text-blue-600 mb-2">
-                            <span className="material-symbols-outlined text-sm">sticky_note_2</span>
+                            <StickyNote className="w-4 h-4" />
                             <span className="text-[10px] font-black uppercase tracking-widest">Internal Notes</span>
                         </div>
                         <p className="text-xs text-text-secondary dark:text-gray-400 italic">

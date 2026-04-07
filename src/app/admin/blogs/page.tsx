@@ -9,6 +9,7 @@ import ConfirmModal from "@/components/ui/ConfirmModal";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import OptimizedImage from "@/components/OptimizedImage";
+import { Plus, FileText, Delete, BookOpen } from "lucide-react";
 
 export default function AdminBlogsPage() {
   const router = useRouter();
@@ -105,7 +106,7 @@ export default function AdminBlogsPage() {
           <p className="text-text-secondary dark:text-gray-400 mt-1">Curate and publish hotel updates and travel tips.</p>
         </div>
         <Button onClick={() => router.push('/admin/blogs/new')} size="lg">
-          <span className="material-symbols-outlined mr-2">add</span>
+          <Plus className="w-4 h-4 mr-2" />
           New Post
         </Button>
       </div>
@@ -183,14 +184,14 @@ export default function AdminBlogsPage() {
                     className="p-2.5 bg-gray-100 dark:bg-gray-700 text-text-primary dark:text-white rounded-xl hover:bg-primary hover:text-white transition-all"
                     title="Edit Post"
                   >
-                    <span className="material-symbols-outlined text-xl">edit_note</span>
+                    <FileText className="w-5 h-5" />
                   </Link>
                   <button
                     onClick={() => handleDeleteRequest(blog.id)}
                     className="p-2.5 bg-red-50 text-red-600 rounded-xl hover:bg-red-600 hover:text-white transition-all"
                     title="Delete Post"
                   >
-                    <span className="material-symbols-outlined text-xl">delete</span>
+                    <Delete className="w-5 h-5" />
                   </button>
                 </div>
               </div>
@@ -202,7 +203,7 @@ export default function AdminBlogsPage() {
       {filteredBlogs.length === 0 && (
         <div className="bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 p-20 text-center">
           <div className="w-20 h-20 bg-gray-50 dark:bg-gray-700/50 rounded-full flex items-center justify-center mx-auto mb-6">
-            <span className="material-symbols-outlined text-4xl text-gray-300">article</span>
+            <BookOpen className="w-10 h-10 text-gray-300" />
           </div>
           <h2 className="text-2xl font-black text-text-primary dark:text-white mb-2">No Stories Yet</h2>
           <p className="text-text-secondary dark:text-gray-400 mb-8 max-w-sm mx-auto font-medium">

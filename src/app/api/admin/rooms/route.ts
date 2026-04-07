@@ -58,6 +58,7 @@ export async function POST(request: NextRequest) {
       image_alt: body.image_alt,
       price_label: body.price_label || `From $${body.price_per_night} / night`,
       badges: body.badges || [],
+      images: body.images || [],
     });
 
     return NextResponse.json(room, { status: 201 });
@@ -98,6 +99,7 @@ export async function PUT(request: NextRequest) {
     if (body.is_active !== undefined) updateData.is_active = Boolean(body.is_active);
     if (body.image_src !== undefined) updateData.image_src = body.image_src;
     if (body.image_alt !== undefined) updateData.image_alt = body.image_alt;
+    if (body.images !== undefined) updateData.images = body.images;
 
     const updated = await updateRoom(body.id, updateData);
     if (!updated) {

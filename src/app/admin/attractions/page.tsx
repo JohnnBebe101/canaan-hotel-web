@@ -7,6 +7,7 @@ import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
 import OptimizedImage from "@/components/OptimizedImage";
 import ConfirmModal from "@/components/ui/ConfirmModal";
+import { Map, MapPin, X, CircleHelp, Image, Info, Globe, Package } from "lucide-react";
 
 export default function AdminAttractionsPage() {
   const [attractions, setAttractions] = useState<Attraction[]>([]);
@@ -124,7 +125,7 @@ export default function AdminAttractionsPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {attractions.length === 0 ? (
           <div className="md:col-span-2 p-20 bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 text-center">
-            <span className="material-symbols-outlined text-6xl text-gray-200 dark:text-gray-700 mb-4">map</span>
+            <Map className="w-16 h-16 text-gray-200 dark:text-gray-700 mx-auto mb-4" />
             <p className="text-text-secondary dark:text-gray-400 font-bold uppercase tracking-widest">No attractions found</p>
           </div>
         ) : (
@@ -157,7 +158,7 @@ export default function AdminAttractionsPage() {
                       {attraction.description}
                     </p>
                     <div className="flex items-center gap-2 text-xs font-bold text-text-primary dark:text-gray-300">
-                      <span className="material-symbols-outlined text-base">near_me</span>
+                      <MapPin className="w-4 h-4" />
                       {attraction.distance} away
                     </div>
                   </div>
@@ -191,12 +192,12 @@ export default function AdminAttractionsPage() {
                 <h2 className="text-2xl font-black text-text-primary dark:text-white tracking-tight">Edit Attraction</h2>
                 <p className="text-xs text-text-secondary font-bold uppercase tracking-widest mt-1">Live Website Preview Enabled</p>
               </div>
-              <button
-                onClick={() => setIsEditing(false)}
-                className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-              >
-                <span className="material-symbols-outlined">close</span>
-              </button>
+                <button
+                  onClick={() => setIsEditing(false)}
+                  className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
             </div>
 
             <div className="flex-1 overflow-y-auto p-8 lg:grid lg:grid-cols-2 lg:gap-8">
@@ -205,7 +206,7 @@ export default function AdminAttractionsPage() {
                 <div>
                   <label className="flex items-center gap-2 text-[10px] font-black text-text-secondary uppercase tracking-[0.2em] mb-2">
                     Attraction Name
-                    <span className="material-symbols-outlined text-xs cursor-help" title="This will be the main heading for the attraction.">help</span>
+                    <CircleHelp className="w-3 h-3 text-gray-400" />
                   </label>
                   <input
                     type="text"
@@ -280,7 +281,7 @@ export default function AdminAttractionsPage() {
                     />
                   ) : (
                     <div className="text-center p-8">
-                      <span className="material-symbols-outlined text-4xl text-gray-300 mb-2">image</span>
+                      <Image className="w-10 h-10 text-gray-300 mx-auto mb-2" />
                       <p className="text-xs text-gray-400 font-bold uppercase tracking-widest">Awaiting valid URL...</p>
                     </div>
                   )}
@@ -291,7 +292,7 @@ export default function AdminAttractionsPage() {
 
                 <div className="p-6 bg-blue-50 dark:bg-blue-900/10 rounded-2xl border border-blue-100 dark:border-blue-900/20">
                   <div className="flex items-center gap-2 text-blue-600 mb-2">
-                    <span className="material-symbols-outlined text-xl">info</span>
+                    <Info className="w-5 h-5" />
                     <span className="text-[10px] font-black uppercase tracking-widest">Image Hint</span>
                   </div>
                   <p className="text-xs text-text-secondary leading-relaxed">
@@ -302,7 +303,7 @@ export default function AdminAttractionsPage() {
                 <div className="p-6 bg-gray-50 dark:bg-gray-900/50 rounded-2xl flex items-center justify-between border border-gray-200 dark:border-gray-700">
                   <div className="flex items-center gap-3">
                     <div className={`w-10 h-10 rounded-full flex items-center justify-center ${editForm.is_active ? 'bg-green-100 text-green-600' : 'bg-amber-100 text-amber-600'}`}>
-                      <span className="material-symbols-outlined">{editForm.is_active ? 'public' : 'inventory'}</span>
+                      {editForm.is_active ? <Globe className="w-5 h-5" /> : <Package className="w-5 h-5" />}
                     </div>
                     <div>
                       <p className="text-[10px] font-black text-text-primary dark:text-white uppercase tracking-widest">Visibility</p>

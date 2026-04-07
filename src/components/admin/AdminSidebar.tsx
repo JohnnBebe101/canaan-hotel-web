@@ -2,15 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { LogOut, LayoutDashboard, Calendar, BedDouble, CreditCard } from "lucide-react";
 import LogoutButton from "@/components/LogoutButton";
 
 const navItems = [
-  { name: "Dashboard", href: "/admin/dashboard", icon: "dashboard" },
-  { name: "Bookings", href: "/admin/bookings", icon: "calendar_today" },
-  { name: "Rooms & Pricing", href: "/admin/rooms", icon: "hotel" },
-  { name: "Blogs / CMS", href: "/admin/blogs", icon: "edit_note" },
-  { name: "Local Attractions", href: "/admin/attractions", icon: "map" },
-  { name: "Payments", href: "/admin/payments", icon: "payments" },
+  { name: "Dashboard", href: "/admin/dashboard", Icon: LayoutDashboard },
+  { name: "Bookings", href: "/admin/bookings", Icon: Calendar },
+  { name: "Rooms", href: "/admin/rooms", Icon: BedDouble },
+  { name: "Payments", href: "/admin/payments", Icon: CreditCard },
 ];
 
 export default function AdminSidebar() {
@@ -19,29 +18,33 @@ export default function AdminSidebar() {
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:flex lg:flex-col w-64 min-h-[calc(100vh-64px)] bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 sticky top-16">
-        <nav className="flex-1 px-4 py-6 space-y-1">
+      <aside className="hidden lg:flex lg:flex-col w-64 min-h-screen bg-forest sticky top-0">
+        <div className="p-6">
+          <h1 className="text-xl font-bold tracking-widest text-white">Canaan</h1>
+        </div>
+        <div className="border-b border-white/10 mx-2"></div>
+        
+        <nav className="flex-1 px-2 py-4 space-y-1">
           {navItems.map((item) => {
             const isActive = pathname.startsWith(item.href);
             return (
               <Link
                 key={item.name}
                 href={item.href}
-                className={`flex items-center gap-3 px-4 py-3 text-sm font-bold rounded-xl transition-all ${isActive
-                  ? "bg-primary/10 text-primary"
-                  : "text-text-secondary dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 hover:text-primary"
-                  }`}
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg mx-2 transition-all ${
+                  isActive
+                    ? "bg-cactus text-white font-semibold"
+                    : "text-white/80 hover:text-white hover:bg-white/10"
+                }`}
               >
-                <span className={`material-symbols-outlined ${isActive ? "filled" : ""}`}>
-                  {item.icon}
-                </span>
+                <item.Icon className={`w-5 h-5 ${isActive ? "text-white" : "text-white/60"}`} />
                 {item.name}
               </Link>
             );
           })}
         </nav>
 
-        <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="p-4 border-t border-white/10">
           <LogoutButton />
         </div>
       </aside>
@@ -49,7 +52,7 @@ export default function AdminSidebar() {
       {/* Mobile Bottom Navigation */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-gray-800/95 backdrop-blur-md border-t border-gray-200 dark:border-gray-700 z-40 px-2 pb-safe">
         <nav className="flex justify-around py-3">
-          {navItems.slice(0, 5).map((item) => {
+          {navItems.map((item) => {
             const isActive = pathname.startsWith(item.href);
             return (
               <Link
@@ -58,9 +61,7 @@ export default function AdminSidebar() {
                 className={`flex flex-col items-center gap-1 px-2 transition-colors ${isActive ? "text-primary" : "text-gray-500"
                   }`}
               >
-                <span className={`material-symbols-outlined text-2xl ${isActive ? "filled" : ""}`}>
-                  {item.icon}
-                </span>
+                <item.Icon className="w-5 h-5" />
                 <span className="text-[10px] font-bold uppercase tracking-widest">{item.name.split(" ")[0]}</span>
               </Link>
             );

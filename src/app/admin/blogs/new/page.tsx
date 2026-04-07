@@ -7,6 +7,7 @@ import { useToast } from "@/components/ui/Toast";
 import { useFormGuard } from "@/lib/hooks/useFormGuard";
 import Button from "@/components/ui/Button";
 import OptimizedImage from "@/components/OptimizedImage";
+import { Info } from "lucide-react";
 
 export default function NewBlogPage() {
   const router = useRouter();
@@ -212,7 +213,7 @@ export default function NewBlogPage() {
 
           <div className="p-6 bg-primary/5 rounded-3xl border border-primary/10">
             <div className="flex items-center gap-3 text-primary mb-2">
-              <span className="material-symbols-outlined">info</span>
+              <Info className="w-5 h-5" />
               <span className="text-sm font-bold">SEO Tip</span>
             </div>
             <p className="text-xs text-text-secondary leading-relaxed">

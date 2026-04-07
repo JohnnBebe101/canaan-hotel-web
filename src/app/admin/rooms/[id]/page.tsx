@@ -7,6 +7,7 @@ import { useToast } from "@/components/ui/Toast";
 import { useFormGuard } from "@/lib/hooks/useFormGuard";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
+import { AlertCircle, CheckCircle, Ban, Shield } from "lucide-react";
 
 export default function EditRoomPage() {
   const { id } = useParams();
@@ -97,7 +98,7 @@ export default function EditRoomPage() {
   if (error && !room) {
     return (
       <div className="bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/50 p-8 rounded-3xl text-center">
-        <span className="material-symbols-outlined text-4xl text-red-600 mb-4 font-black">error</span>
+        <AlertCircle className="w-10 h-10 text-red-600 mx-auto mb-4" />
         <h3 className="text-xl font-black text-red-900 dark:text-red-400 mb-2">Room Not Found</h3>
         <p className="text-red-700 dark:text-red-300/80 mb-6">{error}</p>
         <Button onClick={() => router.push("/admin/rooms")} variant="outline">
@@ -175,7 +176,7 @@ export default function EditRoomPage() {
             <div className="p-6 bg-gray-50 dark:bg-gray-900/50 rounded-2xl flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className={`w-10 h-10 rounded-full flex items-center justify-center ${room.is_active ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}>
-                  <span className="material-symbols-outlined">{room.is_active ? 'check_circle' : 'block'}</span>
+                  {room.is_active ? <CheckCircle className="w-5 h-5" /> : <Ban className="w-5 h-5" />}
                 </div>
                 <div>
                   <p className="text-sm font-black text-text-primary dark:text-white uppercase tracking-widest">Visibility Status</p>
@@ -237,7 +238,7 @@ export default function EditRoomPage() {
 
           <div className="p-6 bg-amber-50 dark:bg-amber-900/10 rounded-3xl border border-amber-100 dark:border-amber-900/20">
             <div className="flex items-center gap-3 text-amber-600 mb-2">
-              <span className="material-symbols-outlined">shield</span>
+              <Shield className="w-5 h-5" />
               <span className="text-sm font-bold uppercase tracking-widest">Editing Safety</span>
             </div>
             <p className="text-xs text-text-secondary leading-relaxed">

@@ -63,6 +63,14 @@ import {
   ChefHat,
   Download,
   Wallet,
+  LayoutDashboard,
+  PlusCircle,
+  AlertCircle,
+  RefreshCw,
+  Filter,
+  ArrowUpDown,
+  MoreVertical,
+  AlertTriangle,
 } from "lucide-react";
 
 export type IconName =
@@ -197,6 +205,15 @@ const iconMap: Record<string, any> = {
   account_balance_wallet: Wallet,
   calendar_today: Calendar,
   place: MapPinIcon,
+  dashboard: LayoutDashboard,
+  add_circle: PlusCircle,
+  alert: AlertCircle,
+  refresh: RefreshCw,
+  filter_list: Filter,
+  sort: ArrowUpDown,
+  more_vert: MoreVertical,
+  expand_more: ChevronDown,
+  cancel: CircleX,
   facebook: () => (
     <svg className="lucide-icon" viewBox="0 0 24 24" fill="currentColor">
       <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
@@ -291,4 +308,11 @@ export {
   Loader2,
   ShoppingBag,
   Shield,
+  LayoutDashboard,
+  PlusCircle,
+  AlertCircle,
+  RefreshCw,
+  Filter,
+  ArrowUpDown,
+  MoreVertical,
 };

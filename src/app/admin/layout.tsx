@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 import { checkAuth } from "@/lib/auth";
-import Header from "@/components/Header";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import { ToastProvider } from "@/components/ui/Toast";
@@ -20,26 +19,29 @@ export default async function AdminLayout({
 
   return (
     <ToastProvider>
-      <div className="min-h-screen bg-background-light dark:bg-background-dark">
-        <Header variant="admin" />
+      <div className="min-h-screen bg-sandstone flex">
+        {/* Sidebar */}
+        <AdminSidebar />
 
-        <div className="flex">
-          {/* Sidebar */}
-          <AdminSidebar />
+        {/* Main Content Area */}
+        <main className="flex-1 flex flex-col overflow-hidden">
+          {/* Mobile Top Bar */}
+          <header className="lg:hidden h-14 bg-white border-b border-slate-200 flex items-center px-4 gap-3">
+            <h1 className="text-forest font-bold">Canaan</h1>
+          </header>
 
-          {/* Main Content Area */}
-          <main className="flex-1 p-4 lg:p-10 pb-24 lg:pb-10 min-w-0">
-            <div className="max-w-7xl mx-auto">
-              {/* Contextual Breadcrumbs */}
-              <Breadcrumbs />
+          {/* Breadcrumb Strip (desktop) */}
+          <div className="hidden lg:block px-8 py-3 border-b border-slate-100 bg-white">
+            <Breadcrumbs />
+          </div>
 
-              {/* Page Content */}
-              <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
-                {children}
-              </div>
+          {/* Page Content */}
+          <div className="flex-1 overflow-y-auto p-6 lg:p-8">
+            <div className="max-w-7xl mx-auto animate-in fade-in slide-in-from-bottom-2 duration-500">
+              {children}
             </div>
-          </main>
-        </div>
+          </div>
+        </main>
       </div>
     </ToastProvider>
   );

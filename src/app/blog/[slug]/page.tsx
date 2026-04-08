@@ -3,6 +3,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPublishedBlogs, getBlogBySlug } from "@/lib/blog-store";
+import { offlineStorage } from "@/lib/offline-storage";
+
+export async function generateStaticParams() {
+  const posts = offlineStorage.getPublishedBlogs();
+  return posts.map((post: { slug: string }) => ({ slug: post.slug }));
+}
+
+export const dynamic = 'force-static';
 
 export async function generateMetadata({
   params,

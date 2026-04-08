@@ -18,7 +18,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://canaanhotel.com"),
+  metadataBase: new URL(
+  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://canaan11.netlify.app'
+),
   title: {
     template: "%s | Canaan International Hotel",
     default: "Canaan International Hotel - Your Gateway to Tigray's History and Comfort",

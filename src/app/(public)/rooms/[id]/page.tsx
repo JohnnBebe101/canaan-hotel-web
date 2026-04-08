@@ -5,6 +5,14 @@ import RoomBookingForm from "@/components/RoomBookingForm";
 import { FEATURED_ROOMS } from "@/lib/featuredRooms";
 import { Icon } from "@/components/ui/Icons";
 
+export async function generateStaticParams() {
+  return FEATURED_ROOMS.map((room: { slug: string }) => ({
+    id: room.slug,
+  }));
+}
+
+export const dynamic = 'force-static';
+
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   const room = FEATURED_ROOMS.find(r => r.slug === id);

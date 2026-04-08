@@ -5,7 +5,7 @@ import { FEATURED_ROOMS } from "@/lib/featuredRooms";
 import { Icon } from "@/components/ui/Icons";
 
 export const metadata: Metadata = {
-  title: "Our Rooms & Suites | Canaan International Hotel",
+  title: 'Rooms & Suites',
   description: "Explore our diverse range of accommodations in Adigrat, from economy singles to deluxe suites. Find the perfect room for your stay in Tigray.",
   openGraph: {
     title: "Accommodations at Canaan International Hotel - Adigrat",

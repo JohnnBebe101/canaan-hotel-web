@@ -4,7 +4,7 @@ import Image from "next/image";
 import { getPublishedBlogs } from "@/lib/blog-store";
 
 export const metadata: Metadata = {
-  title: 'Blog | Canaan Hotel — Travel Stories from Tigray',
+  title: 'Journal — Travel Stories from Tigray',
   description: 'Travel guides, cultural insights, and stories from the highlands of Tigray. Written by the team at Canaan International Hotel, Adigrat.',
 };
 
@@ -16,7 +16,7 @@ export default async function BlogPage() {
       <div className="w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
           <div className="text-center mb-12">
           <h1 className="text-4xl font-bold tracking-tight text-text-primary dark:text-background-light mb-4">
-            Journal
+            Blog
           </h1>
           <p className="mx-auto max-w-2xl text-text-secondary dark:text-text-secondary/90">
             Stories from the highlands — travel guides, cultural insights, and news from Canaan International Hotel.

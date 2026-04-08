@@ -19,15 +19,15 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
   if (!room) {
     return {
-      title: "Room Not Found | Canaan International Hotel",
+      title: "Room Not Found",
     };
   }
 
   return {
-    title: `${room.name} | Canaan International Hotel`,
+    title: `${room.name} — Canaan Hotel`,
     description: room.description,
     openGraph: {
-      title: `${room.name} - Luxury Accommodation in Adigrat`,
+      title: room.name,
       description: room.description,
       images: [room.imageSrc],
     },

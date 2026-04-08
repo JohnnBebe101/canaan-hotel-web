@@ -2,7 +2,7 @@ import type { Metadata } from "next/types";
 import GalleryClient from "./GalleryClient";
 
 export const metadata: Metadata = {
-  title: 'Gallery | Canaan International Hotel — Adigrat, Tigray',
+  title: 'Photo Gallery — Adigrat, Tigray',
   description: 'Photos of Canaan International Hotel — rooms, architecture, highland surroundings, and the cultural landscape of Adigrat, Tigray, Ethiopia.',
 };
 

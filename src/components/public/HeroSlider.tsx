@@ -85,6 +85,7 @@ export default function HeroSlider() {
               priority={index === 0}
               placeholder="empty"
               sizes="100vw"
+              quality={index === 0 ? 90 : 75}
               className={`object-cover grayscale-[15%] brightness-[0.7] transition-transform duration-[10000ms] ease-linear ${index === currentSlide ? 'scale-110' : 'scale-100'
                 }`}
             />

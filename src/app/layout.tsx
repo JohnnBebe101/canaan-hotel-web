@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   process.env.NEXT_PUBLIC_SITE_URL ?? 'https://canaan11.netlify.app'
 ),
   title: {
-    template: "%s | Canaan International Hotel",
+    template: '%s | Canaan Hotel',
     default: "Canaan International Hotel - Your Gateway to Tigray's History and Comfort",
   },
   description: "Experience unparalleled hospitality at Canaan International Hotel in Adigrat, Tigray. Book direct for best rates, exclusive offers, and flexible cancellation.",

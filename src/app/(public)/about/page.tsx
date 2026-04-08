@@ -2,7 +2,7 @@ import type { Metadata } from "next/types";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: 'Our Story | Canaan International Hotel — Adigrat, Tigray',
+  title: 'Our Story — Adigrat, Tigray',
   description: 'Canaan International Hotel — a landmark of contemporary Ethiopian design in Adigrat, 0.2km from the city centre. Built on Tigrayan highland craftsmanship and international hospitality standards.',
   openGraph: {
     title: 'Our Story | Canaan International Hotel',

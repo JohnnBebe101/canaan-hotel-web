@@ -2,7 +2,7 @@ import type { Metadata } from "next/types";
 import ContactClient from "./ContactClient";
 
 export const metadata: Metadata = {
-  title: 'Book Your Stay | Canaan International Hotel — Adigrat',
+  title: 'Book Your Stay — Adigrat',
   description: 'Reserve your room at Canaan International Hotel. +251 911095728 · stay@canaanhotel.com · Kebele 03, Adigrat, Tigray. Direct bookings receive priority confirmation.',
   openGraph: {
     title: 'Book Your Stay | Canaan International Hotel',

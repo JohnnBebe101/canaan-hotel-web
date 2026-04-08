@@ -4,7 +4,7 @@ import HeroImage from "@/components/HeroImage";
 import ServiceCard from "@/components/ServiceCard";
 
 export const metadata: Metadata = {
-  title: 'Services | Canaan International Hotel — Adigrat, Tigray',
+  title: 'Hotel Services & Amenities',
   description: 'Complimentary breakfast, free Wi-Fi, free parking, 24-hour front desk, restaurant and bar. Every service at Canaan International Hotel is included in your room rate.',
 };
 

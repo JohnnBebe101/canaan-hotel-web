@@ -4,8 +4,8 @@ import Image from "next/image";
 import { getPublishedBlogs } from "@/lib/blog-store";
 
 export const metadata: Metadata = {
-  title: "Blog | Canaan International Hotel",
-  description: "Discover travel tips, local attractions, and stories from Adigrat and Tigray.",
+  title: 'Blog | Canaan Hotel — Travel Stories from Tigray',
+  description: 'Travel guides, cultural insights, and stories from the highlands of Tigray. Written by the team at Canaan International Hotel, Adigrat.',
 };
 
 export default async function BlogPage() {

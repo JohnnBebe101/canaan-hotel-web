@@ -5,11 +5,12 @@ import Card from "../../../components/Card";
 import { Icon } from "@/components/ui/Icons";
 
 export const metadata: Metadata = {
-  title: "Local Attractions | Explore Adigrat & Tigray",
-  description: "Discover the rich history and breathtaking landscapes surrounding Canaan International Hotel, including Debre Damo Monastery and Gheralta Mountains.",
+  title: 'Local Attractions | Canaan Hotel — Gheralta, Al-Najashi, Debre Damo',
+  description: "Explore Tigray's ancient wonders from Canaan Hotel. Gheralta rock churches (45km), Al-Najashi Mosque (32km), Debre Damo Monastery (52km). Your highland base camp.",
   openGraph: {
-    title: "Explore Tigray's Heritage - Attractions Near Canaan Hotel",
-    description: "Plan your visit to ancient monasteries, stunning mountains, and historic sites in the Tigray region.",
+    title: 'Discover the Tigray Highlands | Canaan International Hotel',
+    description: 'Gateway to the spiritual heart of the Horn of Africa. Ancient monasteries, sacred mosques, vertical sandstone landscapes.',
+    images: ['/images/heroes/Ext-Compund.webp'],
   },
 };
 

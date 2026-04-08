@@ -2,11 +2,12 @@ import type { Metadata } from "next/types";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "About Us | Canaan International Hotel",
-  description: "Discover the story of Canaan International Hotel, a testament to Tigrayan hospitality and the resilient spirit of our community in Adigrat.",
+  title: 'Our Story | Canaan International Hotel — Adigrat, Tigray',
+  description: 'Canaan International Hotel — a landmark of contemporary Ethiopian design in Adigrat, 0.2km from the city centre. Built on Tigrayan highland craftsmanship and international hospitality standards.',
   openGraph: {
-    title: "About Canaan International Hotel - Our Story & Commitment",
-    description: "Learn about our roots in Adigrat, our commitment to Tigray, and our journey as a cornerstone of hospitality.",
+    title: 'Our Story | Canaan International Hotel',
+    description: 'Where the ancient tradition of highland craftsmanship meets the comfort and service of an international hotel.',
+    images: ['/images/heroes/Ext-Compund.webp'],
   },
 };
 

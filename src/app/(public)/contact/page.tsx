@@ -2,11 +2,12 @@ import type { Metadata } from "next/types";
 import ContactClient from "./ContactClient";
 
 export const metadata: Metadata = {
-  title: "Contact & Location | Canaan International Hotel",
-  description: "Get in touch with Canaan International Hotel in Adigrat. Find our location, contact details, and send us your inquiries.",
+  title: 'Book Your Stay | Canaan International Hotel — Adigrat',
+  description: 'Reserve your room at Canaan International Hotel. +251 911095728 · stay@canaanhotel.com · Kebele 03, Adigrat, Tigray. Direct bookings receive priority confirmation.',
   openGraph: {
-    title: "Contact Canaan International Hotel - Adigrat, Tigray",
-    description: "Reach out to us for bookings, inquiries, or directions. We are here to assist you 24/7.",
+    title: 'Book Your Stay | Canaan International Hotel',
+    description: "Tigray's #1 Best Value hotel. Book direct for the best available rate.",
+    images: ['/images/heroes/Ext-Compund.webp'],
   },
 };
 

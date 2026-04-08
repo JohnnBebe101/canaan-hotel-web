@@ -4,13 +4,8 @@ import HeroImage from "@/components/HeroImage";
 import ServiceCard from "@/components/ServiceCard";
 
 export const metadata: Metadata = {
-  title: "Our Services | Canaan International Hotel",
-  description: "Experience world-class hospitality at Canaan International Hotel. From fine dining to business essentials, discover our comprehensive range of services.",
-  openGraph: {
-    title: "Premium Services & Facilities in Adigrat - Canaan Hotel",
-    description: "Explore our amenities including 24-hour concierge, secure parking, and professional business facilities.",
-    images: ["/images/heroes/Ext-Compund.webp"],
-  },
+  title: 'Services | Canaan International Hotel — Adigrat, Tigray',
+  description: 'Complimentary breakfast, free Wi-Fi, free parking, 24-hour front desk, restaurant and bar. Every service at Canaan International Hotel is included in your room rate.',
 };
 
 export default function ServicesPage() {

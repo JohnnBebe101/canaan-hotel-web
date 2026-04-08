@@ -2,13 +2,8 @@ import type { Metadata } from "next/types";
 import GalleryClient from "./GalleryClient";
 
 export const metadata: Metadata = {
-  title: "Photo Gallery | Canaan International Hotel",
-  description: "Experience the beauty of Canaan International Hotel in Adigrat through our photo gallery. Explore our rooms, dining facilities, and local attractions.",
-  openGraph: {
-    title: "Canaan International Hotel Gallery - A Visual Journey",
-    description: "Browse our photos to see why Canaan International Hotel is the premier choice for accommodation in Adigrat.",
-    images: ["/images/heroes/Ext-Compund.webp"],
-  },
+  title: 'Gallery | Canaan International Hotel — Adigrat, Tigray',
+  description: 'Photos of Canaan International Hotel — rooms, architecture, highland surroundings, and the cultural landscape of Adigrat, Tigray, Ethiopia.',
 };
 
 export default function GalleryPage() {

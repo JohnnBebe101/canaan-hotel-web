@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = 'force-dynamic';
+
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import { Download, Wallet, CreditCard, TrendingUp, Clock } from "lucide-react";

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+export const dynamic = 'force-dynamic';
 import { getBookings, updateBooking, deleteBooking } from "@/lib/booking-store";
 
 // GET - List all bookings

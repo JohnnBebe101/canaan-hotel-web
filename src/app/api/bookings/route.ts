@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+export const dynamic = 'force-dynamic';
 import { createBooking, getBookings } from "@/lib/booking-store";
 
 // POST - Create a new booking inquiry

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+export const dynamic = 'force-dynamic';
 import { getBookingById } from "@/lib/booking-store";
 
 export async function GET(

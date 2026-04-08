@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+export const dynamic = 'force-dynamic';
 import { getPublishedBlogs, getLatestBlogs, getBlogBySlug } from "@/lib/blog-store";
 
 export async function GET(request: Request) {

@@ -1,8 +1,6 @@
 import type { Metadata } from "next/types";
 import Link from "next/link";
 
-export const dynamic = 'force-dynamic';
-
 export const metadata: Metadata = {
   title: "About Us | Canaan International Hotel",
   description: "Discover the story of Canaan International Hotel, a testament to Tigrayan hospitality and the resilient spirit of our community in Adigrat.",

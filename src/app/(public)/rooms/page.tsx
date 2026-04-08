@@ -1,4 +1,5 @@
 import type { Metadata } from "next/types";
+export const revalidate = 3600;
 import RoomCard from "@/components/RoomCard";
 import { FEATURED_ROOMS } from "@/lib/featuredRooms";
 import { Icon } from "@/components/ui/Icons";

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+export const dynamic = 'force-dynamic';
 import { getBookingStats } from "@/lib/booking-store";
 
 // GET /api/admin/stats - Get dashboard statistics

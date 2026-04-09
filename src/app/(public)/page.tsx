@@ -138,19 +138,19 @@ export default function Home() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
               <AttractionCard
-                image="/images/attractions/Gheralta.svg"
+                image="/images/attractions/Gheralta.webp"
                 title="Gheralta Cliffs"
                 distance="45km"
                 description="Climb the vertical sandstone paths to 6th-century monasteries carved directly into the sheer cliffs."
               />
               <AttractionCard
-                image="/images/attractions/Al Najashi4.svg"
+                image="/images/attractions/Al Najashi4.webp"
                 title="Al-Najashi Mosque"
                 distance="32km"
                 description="The site of the first Hijra. A testament to Tigray's historical role as a sanctuary for all spirits."
               />
               <AttractionCard
-                image="/images/attractions/Debre-Damo-Abune-Aregawi-monaster--1920x1080.svg"
+                image="/images/attractions/Debre-Damo-Abune-Aregawi-monaster--1920x1080.webp"
                 title="Debre Damo Monastery"
                 distance="52km"
                 description="Accessible only by a 15-meter leather rope. A living relic of early Christian architecture."

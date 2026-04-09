@@ -65,7 +65,7 @@ export default function AboutPage() {
             className="w-full bg-center bg-no-repeat bg-cover aspect-square rounded-xl"
             role="img"
             aria-label="A black and white historical photo of the hotel's founder."
-            style={{ backgroundImage: 'url("/images/attractions/Gheralta.svg")' }}
+            style={{ backgroundImage: 'url("/images/attractions/Gheralta.webp")' }}
           ></div>
         </section>
 

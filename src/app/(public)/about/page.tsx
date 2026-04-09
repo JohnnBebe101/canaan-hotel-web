@@ -21,7 +21,7 @@ export default function AboutPage() {
               className="flex min-h-[480px] flex-col gap-6 rounded-xl bg-cover bg-center bg-no-repeat @[480px]:gap-8 items-center justify-center p-8 text-center"
               aria-label="Hero section with hotel staff photo"
               style={{
-                backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.5) 100%), url("/images/Team.jpg")'
+                backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.5) 100%), url("/images/Team.webp")'
               }}
             >
                 <div className="flex flex-col gap-4">

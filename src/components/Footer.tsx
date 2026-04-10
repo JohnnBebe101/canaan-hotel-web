@@ -49,8 +49,8 @@ export default function Footer() {
           <div>
             <h4 className="text-[10px] uppercase tracking-widest font-bold mb-3 text-cactus">Contact & Location</h4>
             <ul className="space-y-3 text-sm text-sandstone/90 font-light leading-relaxed">
-              <li className="flex items-center gap-2"><Icon name="call" className="w-4 h-4 text-cactus" /> +251 935 406 334</li>
-              <li className="flex items-center gap-2"><Icon name="mail" className="w-4 h-4 text-cactus" /> stay@canaanhotel.com</li>
+              <li className="flex items-center gap-2"><Icon name="call" className="w-4 h-4 text-cactus" /> +251 911 095 728</li>
+              <li className="flex items-center gap-2"><Icon name="mail" className="w-4 h-4 text-cactus" /> info@canaanhotels.com</li>
               <li className="flex items-start gap-2"><Icon name="location_on" className="w-4 h-4 text-cactus mt-0.5" /> Kebele 03, Adigrat, Tigray, 1000, Ethiopia</li>
             </ul>
           </div>

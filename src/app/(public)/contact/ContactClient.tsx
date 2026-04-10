@@ -65,9 +65,9 @@ export default function ContactClient() {
                                 </p>
                                 <a
                                     className="mt-1 block text-base font-bold leading-normal text-text-primary dark:text-background-light hover:text-primary transition-colors"
-                                    href="tel:+251935406334"
+                                    href="tel:+251911095728"
                                 >
-                                    +251 935 406 334
+                                    +251 911 095 728
                                 </a>
                             </div>
                         </div>
@@ -82,9 +82,9 @@ export default function ContactClient() {
                                 </p>
                                 <a
                                     className="mt-1 block text-base font-bold leading-normal text-text-primary dark:text-background-light hover:text-primary transition-colors"
-                                    href="mailto:stay@canaanhotel.com"
+                                    href="mailto:info@canaanhotels.com"
                                 >
-                                    stay@canaanhotel.com
+                                    info@canaanhotels.com
                                 </a>
                             </div>
                         </div>

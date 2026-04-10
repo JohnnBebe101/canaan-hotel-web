@@ -132,9 +132,9 @@ export default function Home() {
                 description="Gateway to the spiritual heart of the Horn of Africa. Canaan Hotel places you within reach of Tigray's most extraordinary ancient sites — from cliff-carved monasteries to the first mosque on the African continent."
                 dark
               />
-              <Link href="/attractions">
-                <Button variant="outline" className="mb-12 border-white/10 text-sandstone hover:border-cactus">Explore Full Map</Button>
-              </Link>
+              <a href="https://maps.google.com/?q=Canaan+International+Hotel,+Adigrat,+Tigray,+Ethiopia" target="_blank" rel="noopener noreferrer">
+                  <Button variant="outline" className="mb-12 border-white/10 text-sandstone hover:border-cactus">Explore Full Map</Button>
+                </a>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
               <AttractionCard
@@ -187,13 +187,19 @@ export default function Home() {
             </div>
             <div className="mt-24 flex justify-center">
               <div className="flex flex-col items-center gap-6">
-                <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Trusted by travelers worldwide</p>
+                <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Verified by travelers worldwide</p>
                 <div className="flex flex-col md:flex-row items-center gap-6 md:gap-10 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-700">
-                  <span className="text-xl font-serif font-bold text-forest">Forbes Travel Guide</span>
+                  <a href="https://g.page/GfaOOMjriRenNsEqI/review" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                    <Image src="/images/badges/google-business-profile.svg" alt="Google Business Profile" width={100} height={40} className="object-contain" />
+                  </a>
                   <span className="hidden md:inline w-1 h-1 bg-cactus rounded-full"></span>
-                  <span className="text-xl font-serif font-bold text-forest">Condé Nast</span>
+                  <a href="https://www.tripadvisor.com/Hotel_Review-g1401789-d13207473-Reviews-Canaan_Hotel-Adigrat_Tigray_Region.html" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                    <Image src="/images/badges/tripadvisor-3.svg" alt="TripAdvisor" width={100} height={40} className="object-contain" />
+                  </a>
                   <span className="hidden md:inline w-1 h-1 bg-cactus rounded-full"></span>
-                  <span className="text-xl font-serif font-bold text-forest">Travel + Leisure</span>
+                  <a href="https://www.booking.com/hotel/et/canaan-international-adigrat.html" target="_blank" rel="noopener noreferrer" className="text-xl font-serif font-bold text-forest">
+                    Booking.com
+                  </a>
                 </div>
               </div>
             </div>

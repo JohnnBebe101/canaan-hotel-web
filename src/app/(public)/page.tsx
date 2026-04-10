@@ -11,7 +11,6 @@ import CanaanLogo from "@/components/ui/CanaanLogo";
 import { Icon } from "@/components/ui/Icons";
 
 import HeroSlider from "@/components/public/HeroSlider";
-import BookingModalTrigger from "@/components/public/BookingModalTrigger";
 
 const AttractionCard = ({ image, title, distance, description }: { image: string, title: string, distance: string, description: string }) => (
   <div className="group cursor-pointer">
@@ -58,7 +57,6 @@ const Container = ({ children, className = "" }: { children: React.ReactNode, cl
 export default function Home() {
   return (
     <div className="animate-in fade-in duration-1000 bg-sandstone">
-      <BookingModalTrigger />
 
       <HeroSlider />
 

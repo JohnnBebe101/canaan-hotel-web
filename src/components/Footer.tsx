@@ -13,7 +13,7 @@ export default function Footer() {
           {/* Column 1: Brand & Social */}
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
-              <CanaanLogo className="w-9 h-9 text-cactus" />
+              <CanaanLogo size="footer" className="text-cactus" />
               <span className="text-xl font-semibold">Canaan Hotel</span>
             </div>
             <p className="text-sm text-sandstone/90">Where the basalt of the highlands meets sanctuary and comfort.</p>

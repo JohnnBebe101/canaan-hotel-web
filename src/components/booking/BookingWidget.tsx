@@ -80,7 +80,7 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
                 aria-hidden="true"
             />
 
-            <div className="relative bg-sandstone w-full max-w-6xl shadow-2xl rounded-sm overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-10 duration-700 h-[90vh] md:h-auto max-h-[95vh] flex flex-col md:flex-row border border-white/5">
+            <div className="relative bg-sandstone w-full max-w-3xl shadow-2xl rounded-sm overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-10 duration-700 h-[90vh] md:h-auto max-h-[95vh] flex flex-col md:flex-row border border-white/5">
 
                 {/* Close Button - More Premium Position */}
                 <button
@@ -92,7 +92,7 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
                 </button>
 
                 {/* Left Summary Sidebar - Enhanced with better typography and hierarchy */}
-                <div className="md:w-[38%] bg-forest p-12 flex flex-col justify-between relative overflow-hidden flex-shrink-0 border-r border-white/5">
+                <div className="md:w-[38%] bg-forest p-6 flex flex-col justify-between relative overflow-hidden flex-shrink-0 border-r border-white/5">
                     {/* Subtle Decorative Background Pattern */}
                     <div className="absolute inset-0 opacity-[0.03] pointer-events-none canaan-pattern scale-150"></div>
 
@@ -153,7 +153,7 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
                 </div>
 
                 {/* Main Form Content - Clean Sandstone Aesthetic */}
-                <div className="flex-1 p-10 md:p-20 overflow-y-auto bg-sandstone custom-scrollbar relative">
+                <div className="flex-1 p-6 md:p-6 overflow-y-auto bg-sandstone custom-scrollbar relative">
                     {step === 'details' && (
                         <form onSubmit={handleNext} className="space-y-12 animate-in slide-in-from-right-10 duration-700">
                             <div className="flex items-end justify-between border-b border-forest/5 pb-8">

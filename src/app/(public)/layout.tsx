@@ -2,6 +2,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import NavigationProgress from "@/components/ui/NavigationProgress";
+import BookingModalTrigger from "@/components/public/BookingModalTrigger";
 
 export default function PublicLayout({
   children,
@@ -14,6 +15,7 @@ export default function PublicLayout({
       <Header />
       <main className="flex-grow">{children}</main>
       <Footer />
+      <BookingModalTrigger />
     </div>
   );
 }

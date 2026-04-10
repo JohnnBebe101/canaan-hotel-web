@@ -100,7 +100,8 @@ function Header({ variant = 'public' }: HeaderProps) {
             aria-label="Canaan International Hotel Home"
           >
             <CanaanLogo
-              className={`w-8 h-8 transition-all duration-300 ${scrolled ? "text-cactus" : "text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]"
+              size="header"
+              className={`transition-all duration-300 ${scrolled ? "text-cactus" : "text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]"
                 }`}
             />
             <div

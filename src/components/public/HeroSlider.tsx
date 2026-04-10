@@ -101,11 +101,11 @@ export default function HeroSlider() {
                 <Badge variant="cactus" className="drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]">{slide.label}</Badge>
               </div>
 
-              <h1 className={`text-4xl md:text-6xl lg:text-7xl font-serif mt-10 mb-8 leading-[0.85] tracking-tighter transform transition-all duration-1000 delay-500 ${index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-100'
-                }`}
+<h1 className={`text-4xl md:text-6xl lg:text-7xl font-serif mt-10 mb-8 leading-[0.85] tracking-tighter transform transition-all duration-1000 delay-500 ${index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-100'
+                  }`}
                 style={{ 
-                  textShadow: '0 2px 4px rgba(0,0,0,0.5), 0 0 60px rgba(0,0,0,0.25)',
-                  WebkitTextStroke: '0.5px rgba(255,255,255,0.2)',
+                  textShadow: '0 2px 12px rgba(11,34,26,0.9), 0 0 40px rgba(11,34,26,0.6), 0 0 80px rgba(11,34,26,0.3)',
+                  WebkitTextStroke: '0.3px rgba(245,242,233,0.15)',
                 }}
               >
                 {slide.title}

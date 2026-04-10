@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 type Platform = 'tripadvisor' | 'google' | 'booking' | 'expedia';
@@ -7,6 +6,7 @@ interface SocialRatingWidgetProps {
     platform: Platform;
     rating: string;
     reviews: string;
+    href?: string;
 }
 
 const Star = () => (
@@ -48,6 +48,16 @@ const PlatformIcon: React.FC<{ platform: string }> = ({ platform }) => {
                     <path d="M1.5 12c0 5.799 4.701 10.5 10.5 10.5s10.5-4.701 10.5-10.5-4.701-10.5-10.5-10.5-10.5 4.701-10.5 10.5zm3.75 0c0-1.242 1.008-2.25 2.25-2.25s2.25 1.008 2.25 2.25-1.008 2.25-2.25 2.25-2.25-1.008-2.25-2.25zm13.5 0c0 1.242-1.008 2.25-2.25 2.25s-2.25-1.008-2.25-2.25 1.008-2.25 2.25-2.25 2.25 1.008 2.25 2.25z" />
                 </svg>
             );
+        case 'expedia':
+            return (
+                <svg
+                    className="w-5 h-5"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                >
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15l-4-4 1.41-1.41L11 14.17l6.59-6.59L19 9l-8 8z" />
+                </svg>
+            );
         default:
             return null;
     }
@@ -57,6 +67,7 @@ export default function SocialRatingWidget({
     platform,
     rating,
     reviews,
+    href = "#",
 }: SocialRatingWidgetProps) {
     const configs = {
         tripadvisor: { color: '#00AF87', label: 'TripAdvisor' },
@@ -68,7 +79,12 @@ export default function SocialRatingWidget({
     const config = configs[platform];
 
     return (
-        <div className="flex flex-col items-center justify-center p-8 bg-white hover:bg-sandstone/50 transition-colors duration-500 border-r border-forest/5 last:border-r-0">
+        <a 
+            href={href} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex flex-col items-center justify-center p-8 bg-white hover:bg-sandstone/50 transition-colors duration-500 border-r border-forest/5 last:border-r-0 cursor-pointer"
+        >
             <div className="flex items-center space-x-2 mb-4" style={{ color: config.color }}>
                 <PlatformIcon platform={platform} />
                 <span className="text-[10px] uppercase tracking-widest font-bold">
@@ -86,6 +102,6 @@ export default function SocialRatingWidget({
             <div className="text-[9px] uppercase tracking-tighter text-gray-400 font-bold">
                 {reviews} Verified Reviews
             </div>
-        </div>
+        </a>
     );
 }

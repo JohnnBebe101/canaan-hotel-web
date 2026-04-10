@@ -64,10 +64,10 @@ export default function Home() {
         {/* Verified Recognition Trust Bar */}
         <section className="relative z-30 -mt-16 max-w-7xl mx-auto px-4 md:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 bg-white shadow-2xl border border-forest/5 overflow-hidden">
-            <SocialRatingWidget platform="google" rating="4.1" reviews="57" />
-            <SocialRatingWidget platform="tripadvisor" rating="4.1" reviews="8" />
-            <SocialRatingWidget platform="google" rating="10.0" reviews="1" />
-            <SocialRatingWidget platform="tripadvisor" rating="#1" reviews="Best Value" />
+            <SocialRatingWidget platform="google" rating="4.1" reviews="57" href="https://share.google/GfaOOMjriRenNsEqI" />
+            <SocialRatingWidget platform="tripadvisor" rating="4.1" reviews="8" href="https://www.tripadvisor.com/Hotel_Review-g1401789-d13207473-Reviews-Canaan_Hotel-Adigrat_Tigray_Region.html" />
+            <SocialRatingWidget platform="booking" rating="9.2" reviews="56" href="https://www.booking.com/hotel/et/canaan-international-adigrat.html" />
+            <SocialRatingWidget platform="expedia" rating="#1" reviews="Best Value" href="https://www.expedia.com/Canaan-Hotel-International.h48986114.Hotel-Information" />
           </div>
         </section>
 

@@ -42,21 +42,17 @@ function RoomCard({
           loading="lazy"
         />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-forest/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
-        <div className="absolute top-4 right-4">
-          {/* Price Tag - Elegant */}
-          <div className="bg-sandstone/90 backdrop-blur-md px-4 py-2 text-[10px] uppercase tracking-widest font-bold text-forest shadow-lg border border-white/20">
+        <div className="absolute top-3 left-3">
+          <div className="bg-white/90 backdrop-blur-sm text-stone-800 text-sm font-semibold px-3 py-1 rounded-full shadow-sm">
             {priceLabel}
           </div>
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col p-8 bg-white relative">
-        {/* Decorative top border */}
-        <div className="absolute top-0 left-8 right-8 h-px bg-forest/5 group-hover:bg-cactus/30 transition-colors duration-500"></div>
-
+      <div className="flex flex-col flex-1 p-5 gap-3">
         {badges.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-4">
-            {badges.map((badge) => (
+          <div className="flex flex-wrap gap-1.5">
+            {badges.slice(0, 3).map((badge) => (
               <Badge key={badge} variant="cactus" size="xs">
                 {badge}
               </Badge>
@@ -64,34 +60,33 @@ function RoomCard({
           </div>
         )}
 
-        <h3 className="text-2xl font-serif text-forest mb-3 line-clamp-1 group-hover:text-cactus transition-colors duration-300">
+        <h3 className="text-lg font-semibold text-stone-800 leading-snug">
           {name}
         </h3>
 
-        <p className="text-sm leading-relaxed text-gray-500 font-light line-clamp-3 mb-6">
+        <p className="text-sm text-stone-500 leading-relaxed line-clamp-2">
           {description}
         </p>
 
-        <div className="mt-auto flex items-center justify-between pt-6 border-t border-forest/5">
+<div className="mt-auto flex items-center justify-between">
           {typeof rating === "number" ? (
             <div className="flex items-center gap-2">
               <StarRating rating={rating} iconSize="text-sm" />
-              <span className="text-[10px] uppercase tracking-widest font-bold text-cactus">
-                {rating.toFixed(1)} / 5.0
+              <span className="text-sm text-stone-600">
+                {rating.toFixed(1)}
               </span>
             </div>
           ) : (
-            <span className="text-[10px] uppercase tracking-widest font-bold text-gray-400">
+            <span className="text-sm text-stone-400">
               Sanctuary Choice
             </span>
           )}
 
           <Link
             href={`/rooms/${slug}`}
-            className="group/btn inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-forest hover:text-cactus transition-colors"
+            className="text-sm font-medium text-amber-700 hover:text-amber-900 underline underline-offset-2 transition-colors"
           >
-            <span>View Room</span>
-            <Icon name="arrow_forward" className="text-base transition-transform duration-300 group-hover/btn:translate-x-1" />
+            View Room →
           </Link>
         </div>
       </div>

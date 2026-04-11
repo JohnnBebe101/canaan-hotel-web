@@ -86,11 +86,11 @@ export default function HeroSlider() {
               placeholder="empty"
               sizes="100vw"
               quality={index === 0 ? 90 : 75}
-              className={`object-cover grayscale-[15%] brightness-[0.7] transition-transform duration-[10000ms] ease-linear ${index === currentSlide ? 'scale-110' : 'scale-100'
-                }`}
+className={`object-cover transition-transform duration-[10000ms] ease-linear ${index === currentSlide ? 'scale-110' : 'scale-100'
+              }`}
             />
             {/* Gradient scrim overlay for text contrast */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/10 z-10" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-transparent z-10" />
           </div>
 
           {/* Content Overlay with Staggered Animations */}

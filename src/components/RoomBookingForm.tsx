@@ -1,20 +1,23 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import Button from "./ui/Button";
 
 interface RoomBookingFormProps {
     pricePerNight: number;
+    roomName?: string;
 }
 
-export default function RoomBookingForm({ pricePerNight }: RoomBookingFormProps) {
+export default function RoomBookingForm({ pricePerNight, roomName }: RoomBookingFormProps) {
     const [checkIn, setCheckIn] = useState("");
     const [checkOut, setCheckOut] = useState("");
     const [adults, setAdults] = useState(2);
     const [children, setChildren] = useState(0);
     const [totalPrice, setTotalPrice] = useState(pricePerNight);
     const [nights, setNights] = useState(1);
+    const [guestName, setGuestName] = useState("");
+    const [email, setEmail] = useState("");
+    const [phone, setPhone] = useState("");
 
     useEffect(() => {
         if (checkIn && checkOut) {
@@ -35,57 +38,127 @@ export default function RoomBookingForm({ pricePerNight }: RoomBookingFormProps)
 
     const today = new Date().toISOString().split("T")[0];
 
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        
+        const subject = encodeURIComponent(`Booking Request: ${roomName || 'Room'}`);
+        const body = encodeURIComponent(
+            `Hello Canaan Hotel,\n\n` +
+            `I would like to make a booking reservation:\n\n` +
+            `Room: ${roomName || 'Selected room'}\n` +
+            `Guest Name: ${guestName}\n` +
+            `Email: ${email}\n` +
+            `Phone: ${phone}\n` +
+            `Check-in: ${checkIn}\n` +
+            `Check-out: ${checkOut}\n` +
+            `Adults: ${adults}, Children: ${children}\n\n` +
+            `Total: $${totalPrice} (${nights} night${nights > 1 ? 's' : ''})\n\n` +
+            `Please confirm availability and provide payment instructions.\n\n` +
+            `Thank you!`
+        );
+        
+        window.location.href = `mailto:info@canaanhotels.com?subject=${subject}&body=${body}`;
+    };
+
     return (
-        <div className="flex flex-col gap-8 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800/50 p-6 shadow-lg">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-6 rounded-xl border border-stone-200 bg-white p-6 shadow-lg">
             <div className="flex flex-col gap-2">
-                <p className="text-sm font-bold text-primary">Starting From</p>
+                <p className="text-sm font-bold text-stone-600">Starting From</p>
                 <div className="flex items-baseline gap-2">
-                    <span className="text-3xl font-black text-primary dark:text-white">${pricePerNight}</span>
-                    <span className="text-sm font-medium text-gray-500 dark:text-gray-400">/ night</span>
+                    <span className="text-3xl font-black text-stone-800">${pricePerNight}</span>
+                    <span className="text-sm font-medium text-stone-500">/ night</span>
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Guest Details */}
+            <div className="space-y-4">
                 <div>
-                    <label className="block text-sm font-bold text-text-primary dark:text-white mb-2" htmlFor="checkin">
+                    <label className="block text-sm font-bold text-stone-700 mb-1.5" htmlFor="guestName">
+                        Full Name
+                    </label>
+                    <input
+                        className="w-full rounded-lg border border-stone-200 px-4 py-2.5 focus:ring-2 focus:ring-amber-700 focus:border-amber-700 outline-none"
+                        id="guestName"
+                        type="text"
+                        placeholder="Your full name"
+                        value={guestName}
+                        onChange={(e) => setGuestName(e.target.value)}
+                        required
+                    />
+                </div>
+
+                <div>
+                    <label className="block text-sm font-bold text-stone-700 mb-1.5" htmlFor="email">
+                        Email Address
+                    </label>
+                    <input
+                        className="w-full rounded-lg border border-stone-200 px-4 py-2.5 focus:ring-2 focus:ring-amber-700 focus:border-amber-700 outline-none"
+                        id="email"
+                        type="email"
+                        placeholder="your@email.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
+                </div>
+
+                <div>
+                    <label className="block text-sm font-bold text-stone-700 mb-1.5" htmlFor="phone">
+                        Phone Number
+                    </label>
+                    <input
+                        className="w-full rounded-lg border border-stone-200 px-4 py-2.5 focus:ring-2 focus:ring-amber-700 focus:border-amber-700 outline-none"
+                        id="phone"
+                        type="tel"
+                        placeholder="+251 911 000 000"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        required
+                    />
+                </div>
+            </div>
+
+            {/* Dates */}
+            <div className="grid grid-cols-2 gap-4">
+                <div>
+                    <label className="block text-sm font-bold text-stone-700 mb-1.5" htmlFor="checkin">
                         Check-in
                     </label>
-                    <div className="relative">
-                        <input
-                            className="w-full rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white px-4 py-2 focus:ring-2 focus:ring-primary outline-none"
-                            id="checkin"
-                            type="date"
-                            min={today}
-                            value={checkIn}
-                            onChange={(e) => setCheckIn(e.target.value)}
-                        />
-                    </div>
+                    <input
+                        className="w-full rounded-lg border border-stone-200 px-4 py-2.5 focus:ring-2 focus:ring-amber-700 focus:border-amber-700 outline-none"
+                        id="checkin"
+                        type="date"
+                        min={today}
+                        value={checkIn}
+                        onChange={(e) => setCheckIn(e.target.value)}
+                        required
+                    />
                 </div>
 
                 <div>
-                    <label className="block text-sm font-bold text-text-primary dark:text-white mb-2" htmlFor="checkout">
+                    <label className="block text-sm font-bold text-stone-700 mb-1.5" htmlFor="checkout">
                         Check-out
                     </label>
-                    <div className="relative">
-                        <input
-                            className="w-full rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white px-4 py-2 focus:ring-2 focus:ring-primary outline-none"
-                            id="checkout"
-                            type="date"
-                            min={checkIn || today}
-                            value={checkOut}
-                            onChange={(e) => setCheckOut(e.target.value)}
-                        />
-                    </div>
+                    <input
+                        className="w-full rounded-lg border border-stone-200 px-4 py-2.5 focus:ring-2 focus:ring-amber-700 focus:border-amber-700 outline-none"
+                        id="checkout"
+                        type="date"
+                        min={checkIn || today}
+                        value={checkOut}
+                        onChange={(e) => setCheckOut(e.target.value)}
+                        required
+                    />
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Guests */}
+            <div className="grid grid-cols-2 gap-4">
                 <div>
-                    <label className="block text-sm font-bold text-text-primary dark:text-white mb-2" htmlFor="adults">
+                    <label className="block text-sm font-bold text-stone-700 mb-1.5" htmlFor="adults">
                         Adults
                     </label>
                     <select
-                        className="w-full rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white px-4 py-2 focus:ring-2 focus:ring-primary outline-none"
+                        className="w-full rounded-lg border border-stone-200 px-4 py-2.5 focus:ring-2 focus:ring-amber-700 focus:border-amber-700 outline-none"
                         id="adults"
                         value={adults}
                         onChange={(e) => setAdults(Number(e.target.value))}
@@ -98,11 +171,11 @@ export default function RoomBookingForm({ pricePerNight }: RoomBookingFormProps)
                 </div>
 
                 <div>
-                    <label className="block text-sm font-bold text-text-primary dark:text-white mb-2" htmlFor="children">
+                    <label className="block text-sm font-bold text-stone-700 mb-1.5" htmlFor="children">
                         Children
                     </label>
                     <select
-                        className="w-full rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white px-4 py-2 focus:ring-2 focus:ring-primary outline-none"
+                        className="w-full rounded-lg border border-stone-200 px-4 py-2.5 focus:ring-2 focus:ring-amber-700 focus:border-amber-700 outline-none"
                         id="children"
                         value={children}
                         onChange={(e) => setChildren(Number(e.target.value))}
@@ -114,18 +187,15 @@ export default function RoomBookingForm({ pricePerNight }: RoomBookingFormProps)
                 </div>
             </div>
 
-            <Link
-                href={`/#booking?checkIn=${checkIn}&checkOut=${checkOut}&adults=${adults}&children=${children}`}
-                className="w-full flex items-center justify-center rounded-lg h-12 px-6 bg-primary text-white text-base font-bold hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-            >
-                <span>Reserve Your Stay</span>
-            </Link>
+            <Button type="submit" size="lg" className="w-full py-4 uppercase tracking-widest bg-amber-700 hover:bg-amber-800">
+                Reserve Your Stay
+            </Button>
 
-            <div className="text-center mt-3 pt-4 border-t border-gray-50 dark:border-gray-700">
-                <p className="text-xs text-text-secondary dark:text-gray-400">
-                    Total for {nights} {nights === 1 ? 'night' : 'nights'}: <span className="font-black text-text-primary dark:text-white text-base">${totalPrice}</span>
+            <div className="text-center pt-2 border-t border-stone-100">
+                <p className="text-xs text-stone-500">
+                    Total for {nights} {nights === 1 ? 'night' : 'nights'}: <span className="font-black text-stone-800 text-base">${totalPrice}</span>
                 </p>
             </div>
-        </div>
+        </form>
     );
 }

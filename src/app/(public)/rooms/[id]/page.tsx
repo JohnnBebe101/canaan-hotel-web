@@ -1,5 +1,6 @@
 import type { Metadata } from "next/types";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import OptimizedImage from "@/components/OptimizedImage";
 import RoomBookingForm from "@/components/RoomBookingForm";
 import { FEATURED_ROOMS } from "@/lib/featuredRooms";
@@ -34,157 +35,98 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   };
 }
 
+const roomGallery: Record<string, string[]> = {
+  'economy-single': ['Bed-view-Single.webp', 'bed-close-up.webp', 'bath-room.webp'],
+  'economy-double': ['twin-room.webp', 'twin-room-best-view.webp', 'bath-room.webp'],
+  'family-room': ['single-room-view.webp', 'corridor-rooms.webp', 'bath-room.webp'],
+  'comfort-double': ['single-room-best-view.webp', 'single-room-with-light.webp', 'bath-room.webp'],
+};
+
 export default async function RoomDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const room = FEATURED_ROOMS.find(r => r.slug === id);
 
+  if (!room) {
+    notFound();
+  }
+
+  const galleryImages = roomGallery[room.slug] ?? [room.imageSrc, room.imageSrc, room.imageSrc];
+
   return (
     <main className="flex-1 px-4 sm:px-10 lg:px-20 py-10 sm:py-16">
-      <div className="mx-auto max-w-7xl">
-        {/* Back Link */}
-        <Link href="/rooms" className="inline-flex items-center gap-2 text-sm font-bold text-text-secondary hover:text-primary transition-colors mb-8">
-          <Icon name="arrow_back" className="text-base" />
-          All Rooms
-        </Link>
+      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-10">
+        {/* Left Column: Gallery + Details */}
+        <div>
+          {/* Back Link */}
+          <Link href="/rooms" className="inline-flex items-center gap-1.5 text-sm text-stone-500 hover:text-stone-800 transition-colors mb-6">
+            ← All Rooms & Suites
+          </Link>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
           {/* Gallery */}
-          <div className="lg:col-span-3">
-            <div className="relative w-full">
-              <div className="relative w-full overflow-hidden rounded-xl aspect-[4/3]">
-                <OptimizedImage
-                  className="w-full h-full object-cover"
-                  alt={`${room?.name || 'Hotel room'} - ${room?.description || 'Comfortable accommodation'}`}
-                  src={room?.imageSrc || "/images/rooms/single-room-view.webp"}
-                  width={800}
-                  height={600}
-                  priority
+          <div className="relative w-full overflow-hidden rounded-xl aspect-[4/3] mb-4">
+            <OptimizedImage
+              className="w-full h-full object-cover"
+              alt={room.name}
+              src={room.imageSrc}
+              width={800}
+              height={600}
+            />
+          </div>
+          <div className="grid grid-cols-3 gap-2 rounded-2xl overflow-hidden">
+            {galleryImages.map((src, i) => (
+              <div key={i} className="relative aspect-square">
+                <OptimizedImage 
+                  src={`/images/rooms/${src}`} 
+                  alt={`${room.name} view ${i+1}`} 
+                  fill 
+                  className="object-cover" 
                 />
               </div>
-              <div className="mt-3 grid grid-cols-5 gap-3">
-                <div className="overflow-hidden rounded-lg aspect-square">
-                  <OptimizedImage
-                    className="w-full h-full object-cover cursor-pointer border-2 border-primary"
-                    alt="Bedroom view"
-                    src="/images/rooms/single-room-best-view.webp"
-                    width={200}
-                    height={200}
-                    loading="lazy"
-                  />
-                </div>
-                <div className="overflow-hidden rounded-lg aspect-square">
-                  <OptimizedImage
-                    className="w-full h-full object-cover cursor-pointer opacity-70 hover:opacity-100 transition-opacity"
-                    alt="Room amenities"
-                    src="/images/rooms/corridor-rooms.webp"
-                    width={200}
-                    height={200}
-                    loading="lazy"
-                  />
-                </div>
-                <div className="overflow-hidden rounded-lg aspect-square">
-                  <OptimizedImage
-                    className="w-full h-full object-cover cursor-pointer opacity-70 hover:opacity-100 transition-opacity"
-                    alt="Bathroom facilities"
-                    src="/images/rooms/bath-room.webp"
-                    width={200}
-                    height={200}
-                    loading="lazy"
-                  />
-                </div>
-                <div className="overflow-hidden rounded-lg aspect-square">
-                  <OptimizedImage
-                    className="w-full h-full object-cover cursor-pointer opacity-70 hover:opacity-100 transition-opacity"
-                    alt="The view from the hotel room window."
-                    src="/images/rooms/Bed-view-Single.webp"
-                    width={200}
-                    height={200}
-                    loading="lazy"
-                  />
-                </div>
-                <div className="overflow-hidden rounded-lg aspect-square">
-                  <div className="w-full h-full bg-black/50 flex items-center justify-center cursor-pointer hover:bg-black/60 transition-colors rounded-lg">
-                    <span className="text-white font-bold text-lg">+5</span>
+            ))}
+          </div>
+
+          {/* Room Details */}
+          <div className="mt-10">
+            <h1 className="text-3xl font-bold text-stone-800 mb-4">
+              {room.name}
+            </h1>
+            <p className="text-stone-600 leading-relaxed mb-6">
+              {room.description}
+            </p>
+
+            {/* Key Amenities */}
+            <div className="border-t border-stone-200 pt-6 mb-6">
+              <h3 className="text-lg font-semibold text-stone-800 mb-4">Key Amenities</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                {room.badges.map((badge) => (
+                  <div key={badge} className="flex items-center gap-2">
+                    <Icon name="check_circle" className="text-green-600" />
+                    <span className="text-sm text-stone-600">{badge}</span>
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Booking Card */}
-          <div className="lg:col-span-2 mt-8 lg:mt-0">
-            <div className="sticky top-24">
-              <RoomBookingForm pricePerNight={room?.pricePerNight ?? 120} />
-            </div>
-          </div>
-        </div>
-
-        {/* Room Details */}
-        <div className="mt-12">
-          <div className="flex flex-col gap-6">
-            <div>
-              <div className="flex justify-between items-start mb-4">
-                <h1 className="text-4xl font-black leading-tight tracking-tighter text-primary dark:text-white">
-                  {room?.name || "Comfort Double"}
-                </h1>
-              </div>
-              <p className="mt-4 text-base font-normal leading-relaxed text-text-secondary dark:text-gray-300">
-                {room?.description || "Experience unparalleled comfort in our spacious room. Perfect for couples or business travelers."}
-              </p>
-            </div>
-
-            <div className="border-t border-gray-200 dark:border-gray-700"></div>
-
-            <div>
-              <h3 className="text-xl font-bold text-primary dark:text-white">Key Amenities</h3>
-              <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-4">
-                <div className="flex items-center gap-3">
-                  <Icon name="wifi" className="text-primary" />
-                  <span className="text-sm font-medium">Free WiFi</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Icon name="free_breakfast" className="text-primary" />
-                  <span className="text-sm font-medium">Continental Breakfast</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Icon name="shower" className="text-primary" />
-                  <span className="text-sm font-medium">Rainfall Showerhead</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Icon name="ac_unit" className="text-primary" />
-                  <span className="text-sm font-medium">Air Conditioning</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Icon name="tv" className="text-primary" />
-                  <span className="text-sm font-medium">Flat-screen TV</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Icon name="lock" className="text-primary" />
-                  <span className="text-sm font-medium">In-room Safe</span>
-                </div>
+                ))}
               </div>
             </div>
 
-            <div className="border-t border-gray-200 dark:border-gray-700"></div>
-
-            <div>
-              <h3 className="text-xl font-bold text-primary dark:text-white">What Our Guests Say</h3>
-              <div className="mt-4 flex flex-col gap-6">
-                <div className="border-l-4 border-primary pl-4">
-                  <p className="italic text-text-secondary dark:text-gray-300">
-                    &quot;Absolutely wonderful stay. The room was immaculate and the service was top-notch. Highly recommended for anyone visiting Adigrat.&quot;
-                  </p>
+            {/* Guest Reviews */}
+            <div className="border-t border-stone-200 pt-6">
+              <h3 className="text-lg font-semibold text-stone-800 mb-4">What Our Guests Say</h3>
+              <div className="flex flex-col gap-4">
+                <div className="border-l-4 border-amber-700 pl-4">
+                  <p className="text-stone-600 italic">"Absolutely wonderful stay. The room was immaculate and the service was top-notch."</p>
                   <p className="mt-2 font-bold text-sm">— Jane D.</p>
                 </div>
-                <div className="border-l-4 border-primary pl-4">
-                  <p className="italic text-text-secondary dark:text-gray-300">
-                    &quot;A true gem in the heart of the city. Comfortable, clean, and convenient. The booking process was seamless. We&apos;ll be back!&quot;
-                  </p>
+                <div className="border-l-4 border-amber-700 pl-4">
+                  <p className="text-stone-600 italic">"A true gem in the heart of the city. Comfortable and convenient."</p>
                   <p className="mt-2 font-bold text-sm">— Mark S.</p>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Right Column: Booking Form */}
+        <div className="lg:sticky lg:top-24">
+          <RoomBookingForm pricePerNight={room.pricePerNight} roomName={room.name} />
         </div>
       </div>
     </main>

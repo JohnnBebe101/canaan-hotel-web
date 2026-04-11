@@ -8,6 +8,7 @@ export interface FeaturedRoom {
   pricePerNight: number;
   badges: string[];
   rating: number;
+  maxGuests: number;
 }
 
 export const FEATURED_ROOMS: FeaturedRoom[] = [
@@ -20,7 +21,8 @@ export const FEATURED_ROOMS: FeaturedRoom[] = [
     priceLabel: "From $45/night",
     pricePerNight: 45,
     badges: ["Free Wi-Fi", "Rainfall Shower", "TV", "Desk"],
-    rating: 4.1,
+    rating: 4.2,
+    maxGuests: 1,
   },
   {
     slug: "economy-double",
@@ -31,7 +33,8 @@ export const FEATURED_ROOMS: FeaturedRoom[] = [
     priceLabel: "From $75/night",
     pricePerNight: 75,
     badges: ["Free Wi-Fi", "Rainfall Shower", "TV", "Desk"],
-    rating: 4.1,
+    rating: 4.4,
+    maxGuests: 2,
   },
   {
     slug: "family-room",
@@ -42,7 +45,8 @@ export const FEATURED_ROOMS: FeaturedRoom[] = [
     priceLabel: "From $95/night",
     pricePerNight: 95,
     badges: ["Free Wi-Fi", "Breakfast Included", "Extra Beds"],
-    rating: 4.1,
+    rating: 4.6,
+    maxGuests: 4,
   },
   {
     slug: "comfort-double",
@@ -53,6 +57,7 @@ export const FEATURED_ROOMS: FeaturedRoom[] = [
     priceLabel: "From $120/night",
     pricePerNight: 120,
     badges: ["Free Wi-Fi", "Rainfall Shower", "TV", "Desk", "King Bed"],
-    rating: 4.1,
+    rating: 4.8,
+    maxGuests: 2,
   },
 ];

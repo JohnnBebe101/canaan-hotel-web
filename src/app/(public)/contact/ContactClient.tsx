@@ -2,6 +2,7 @@
 
 import OptimizedImage from "@/components/OptimizedImage";
 import Button from "@/components/ui/Button";
+import ScrollReveal from "@/components/ui/ScrollReveal";
 import { Icon } from "@/components/ui/Icons";
 
 export default function ContactClient() {
@@ -92,9 +93,10 @@ export default function ContactClient() {
                 </address>
 
                 <div className="flex flex-col">
-                    <h2 className="text-2xl font-black text-text-primary dark:text-white mb-6">
+                    <h2 className="text-2xl font-serif font-bold text-forest mb-6">
                         Ask a Question
                     </h2>
+                    <ScrollReveal>
                     <form onSubmit={handleSubmit} className="space-y-6" aria-label="Contact form">
                         <div>
                             <label className="block text-sm font-bold text-text-primary dark:text-background-light mb-1.5" htmlFor="name">
@@ -141,11 +143,12 @@ export default function ContactClient() {
                         </div>
 
                         <div className="pt-2">
-                            <Button type="submit" size="lg" className="w-full py-4 uppercase tracking-widest">
+                            <Button type="submit" size="lg" className="w-full py-4 uppercase tracking-widest bg-forest hover:bg-forest/90">
                                 Send Message
                             </Button>
                         </div>
                     </form>
+                    </ScrollReveal>
                 </div>
             </div>
         </div>

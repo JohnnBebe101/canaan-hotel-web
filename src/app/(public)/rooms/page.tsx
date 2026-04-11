@@ -1,6 +1,7 @@
 import type { Metadata } from "next/types";
 export const revalidate = 3600;
 import RoomCard from "@/components/RoomCard";
+import ScrollReveal from "@/components/ui/ScrollReveal";
 import { FEATURED_ROOMS } from "@/lib/featuredRooms";
 import { Icon } from "@/components/ui/Icons";
 
@@ -83,18 +84,19 @@ export default function RoomsPage() {
         </section>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {FEATURED_ROOMS.map((room) => (
-            <RoomCard
-              key={room.slug}
-              slug={room.slug}
-              imageSrc={room.imageSrc}
-              imageAlt={room.imageAlt}
-              name={room.name}
-              description={room.description}
-              priceLabel={room.priceLabel}
-              badges={room.badges}
-              rating={room.rating}
-            />
+          {FEATURED_ROOMS.map((room, index) => (
+            <ScrollReveal key={room.slug} delay={index * 100}>
+              <RoomCard
+                slug={room.slug}
+                imageSrc={room.imageSrc}
+                imageAlt={room.imageAlt}
+                name={room.name}
+                description={room.description}
+                priceLabel={room.priceLabel}
+                badges={room.badges}
+                rating={room.rating}
+              />
+            </ScrollReveal>
           ))}
         </div>
       </div>

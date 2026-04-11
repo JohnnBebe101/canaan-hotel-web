@@ -13,8 +13,24 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <main id="main-content" className="flex-1 px-4 sm:px-10 lg:px-20 py-10 sm:py-16">
-      <ContactClient />
-    </main>
+    <>
+      {/* Hero Section */}
+      <section className="w-full bg-forest py-16 px-4">
+        <div className="max-w-7xl mx-auto text-center">
+          <span className="inline-block px-4 py-1 bg-sandstone/10 text-sandstone text-xs uppercase tracking-widest font-bold mb-4">
+            Get in Touch
+          </span>
+          <h1 className="text-4xl md:text-5xl font-serif font-bold text-sandstone mb-4">
+            Contact Us
+          </h1>
+          <p className="max-w-2xl mx-auto text-sandstone/70 text-lg">
+            We&apos;re here to help plan your perfect stay in Adigrat, Tigray.
+          </p>
+        </div>
+      </section>
+      <main className="flex-1 px-4 sm:px-10 lg:px-20 py-10 sm:py-16">
+        <ContactClient />
+      </main>
+    </>
   );
 }

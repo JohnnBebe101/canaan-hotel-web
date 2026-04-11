@@ -3,6 +3,11 @@ import type { Metadata } from "next/types";
 export const metadata: Metadata = {
   title: "Cookie Policy | Canaan International Hotel",
   description: "Cookie policy for Canaan International Hotel website.",
+  openGraph: {
+    title: 'Cookie Policy | Canaan International Hotel',
+    description: 'Our cookie policy and privacy practices.',
+    images: ['/images/heroes/Ext-Compund.webp'],
+  },
 };
 
 export default function CookiesPage() {

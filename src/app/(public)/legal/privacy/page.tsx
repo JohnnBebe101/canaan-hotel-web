@@ -3,6 +3,11 @@ import type { Metadata } from "next/types";
 export const metadata: Metadata = {
   title: "Privacy Policy | Canaan International Hotel",
   description: "Privacy policy for Canaan International Hotel, Adigrat, Tigray. Your privacy is important to us.",
+  openGraph: {
+    title: 'Privacy Policy | Canaan International Hotel',
+    description: 'Your privacy is important to us. Read our privacy policy.',
+    images: ['/images/heroes/Ext-Compund.webp'],
+  },
 };
 
 export default function PrivacyPage() {

@@ -6,6 +6,11 @@ import ServiceCard from "@/components/ServiceCard";
 export const metadata: Metadata = {
   title: 'Hotel Services & Amenities',
   description: 'Complimentary breakfast, free Wi-Fi, free parking, 24-hour front desk, restaurant and bar. Every service at Canaan International Hotel is included in your room rate.',
+  openGraph: {
+    title: 'Services & Amenities | Canaan International Hotel',
+    description: 'Experience world-class hospitality with our comprehensive range of services designed for your comfort.',
+    images: ['/images/heroes/Ext-Compund.webp'],
+  },
 };
 
 export default function ServicesPage() {

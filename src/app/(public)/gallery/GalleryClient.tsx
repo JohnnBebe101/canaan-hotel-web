@@ -5,6 +5,7 @@ import Link from "next/link";
 import OptimizedImage from "@/components/OptimizedImage";
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
+import ScrollReveal from "@/components/ui/ScrollReveal";
 import { Icon } from "@/components/ui/Icons";
 
 interface GalleryImage {
@@ -145,35 +146,36 @@ export default function GalleryClient() {
             {/* Gallery Grid */}
             <section className="px-4 py-16 sm:px-6 lg:px-8" aria-labelledby="gallery-grid">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-                    {filteredImages.map((image) => (
-                        <button
-                            key={image.id}
-                            onClick={() => setSelectedImage(image)}
-                            className="group block overflow-hidden rounded-2xl bg-white dark:bg-background-dark/50 border border-border-color dark:border-text-secondary/10 hover:shadow-2xl transition-all duration-500 text-left"
-                        >
-                            <div className="relative overflow-hidden aspect-[4/3]">
-                                <OptimizedImage
-                                    src={image.src}
-                                    alt={image.alt}
-                                    fill
-                                    className="object-cover group-hover:scale-110 transition-transform duration-700"
-                                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                                    unoptimized={!image.src.startsWith("/")}
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
-                                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                                    <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-500">
-                                        <Icon name="zoom_in" className="text-white text-2xl" />
+                    {filteredImages.map((image, index) => (
+                        <ScrollReveal key={image.id} delay={index * 100}>
+                            <button
+                                onClick={() => setSelectedImage(image)}
+                                className="group block overflow-hidden rounded-2xl bg-white dark:bg-background-dark/50 border border-border-color dark:border-text-secondary/10 hover:shadow-2xl transition-all duration-500 text-left w-full"
+                            >
+                                <div className="relative overflow-hidden aspect-[4/3]">
+                                    <OptimizedImage
+                                        src={image.src}
+                                        alt={image.alt}
+                                        fill
+                                        className="object-cover group-hover:scale-110 transition-transform duration-700"
+                                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                        unoptimized={!image.src.startsWith("/")}
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
+                                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                        <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-500">
+                                            <Icon name="zoom_in" className="text-white text-2xl" />
+                                        </div>
+                                    </div>
+                                    <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                                        <Badge variant="primary" size="xs" className="mb-2 bg-white text-primary border-none">{categories.find(c => c.id === image.category)?.label}</Badge>
+                                        <h3 className="text-xl font-bold text-white leading-tight">
+                                            {image.title}
+                                        </h3>
                                     </div>
                                 </div>
-                                <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-                                    <Badge variant="primary" size="xs" className="mb-2 bg-white text-primary border-none">{categories.find(c => c.id === image.category)?.label}</Badge>
-                                    <h3 className="text-xl font-bold text-white leading-tight">
-                                        {image.title}
-                                    </h3>
-                                </div>
-                            </div>
-                        </button>
+                            </button>
+                        </ScrollReveal>
                     ))}
                 </div>
             </section>

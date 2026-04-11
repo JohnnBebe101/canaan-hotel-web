@@ -3,6 +3,11 @@ import type { Metadata } from "next/types";
 export const metadata: Metadata = {
   title: "Terms of Service | Canaan International Hotel",
   description: "Terms of service for Canaan International Hotel, Adigrat, Tigray.",
+  openGraph: {
+    title: 'Terms of Service | Canaan International Hotel',
+    description: 'Terms and conditions for Canaan International Hotel guests.',
+    images: ['/images/heroes/Ext-Compund.webp'],
+  },
 };
 
 export default function TermsPage() {

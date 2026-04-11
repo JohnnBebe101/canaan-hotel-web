@@ -98,13 +98,13 @@ className={`object-cover transition-transform duration-[10000ms] ease-linear ${i
             <div className="max-w-5xl text-center text-sandstone">
               <div className={`transform transition-all duration-1000 delay-300 ${index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
                 }`}>
-                <Badge variant="cactus" className="drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]">{slide.label}</Badge>
+                <Badge variant="cactus" className="drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] text-sandstone/80">{slide.label}</Badge>
               </div>
 
 <h1 className={`text-4xl md:text-6xl lg:text-7xl font-serif mt-10 mb-8 leading-[0.85] tracking-tighter transform transition-all duration-1000 delay-500 ${index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-100'
                   }`}
                 style={{ 
-                  textShadow: '0 2px 12px rgba(11,34,26,0.9), 0 0 40px rgba(11,34,26,0.6), 0 0 80px rgba(11,34,26,0.3)',
+                  textShadow: '0 0 40px rgba(142,115,91,0.65), 0 0 80px rgba(142,115,91,0.30), 0 2px 4px rgba(11,34,26,0.6)',
                   WebkitTextStroke: '0.3px rgba(245,242,233,0.15)',
                 }}
               >

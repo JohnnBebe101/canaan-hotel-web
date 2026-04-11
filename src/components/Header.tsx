@@ -99,11 +99,13 @@ function Header({ variant = 'public' }: HeaderProps) {
             className="flex items-center space-x-4 cursor-pointer group focus:outline-none"
             aria-label="Canaan International Hotel Home"
           >
-            <CanaanLogo
-              size="header"
-              className={`transition-all duration-300 ${scrolled ? "text-cactus" : "text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]"
-                }`}
-            />
+            <div className="transition-all duration-300">
+              <CanaanLogo
+                size={scrolled ? "w-14 h-14" : "w-20 h-20"}
+                className={`transition-all duration-300 ${scrolled ? "text-cactus" : "text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]"
+                  }`}
+              />
+            </div>
             <div
               className={`text-xl font-serif font-bold tracking-widest transition-all duration-300 ${
                 scrolled 

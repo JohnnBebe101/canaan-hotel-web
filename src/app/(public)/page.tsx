@@ -8,6 +8,7 @@ import SectionTitle from "@/components/ui/SectionTitle";
 import CanaanPattern from "@/components/ui/CanaanPattern";
 import SocialRatingWidget from "@/components/ui/SocialRatingWidget";
 import CanaanLogo from "@/components/ui/CanaanLogo";
+import ScrollReveal from "@/components/ui/ScrollReveal";
 import { Icon } from "@/components/ui/Icons";
 
 import HeroSlider from "@/components/public/HeroSlider";
@@ -64,10 +65,10 @@ export default function Home() {
         {/* Verified Recognition Trust Bar */}
         <section className="relative z-30 -mt-16 max-w-7xl mx-auto px-4 md:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 bg-white shadow-2xl border border-forest/5 overflow-hidden">
-            <SocialRatingWidget platform="google" rating="4.1" reviews="57" href="https://share.google/GfaOOMjriRenNsEqI" />
-            <SocialRatingWidget platform="tripadvisor" rating="4.1" reviews="8" href="https://www.tripadvisor.com/Hotel_Review-g1401789-d13207473-Reviews-Canaan_Hotel-Adigrat_Tigray_Region.html" />
-            <SocialRatingWidget platform="booking" rating="9.2" reviews="56" href="https://www.booking.com/hotel/et/canaan-international-adigrat.html" />
-            <SocialRatingWidget platform="expedia" rating="#1" reviews="Best Value" href="https://www.expedia.com/Canaan-Hotel-International.h48986114.Hotel-Information" />
+            <ScrollReveal delay={0}><SocialRatingWidget platform="google" rating="4.1" reviews="57" href="https://share.google/GfaOOMjriRenNsEqI" /></ScrollReveal>
+            <ScrollReveal delay={80}><SocialRatingWidget platform="tripadvisor" rating="4.1" reviews="8" href="https://www.tripadvisor.com/Hotel_Review-g1401789-d13207473-Reviews-Canaan_Hotel-Adigrat_Tigray_Region.html" /></ScrollReveal>
+            <ScrollReveal delay={160}><SocialRatingWidget platform="booking" rating="9.2" reviews="56" href="https://www.booking.com/hotel/et/canaan-international-adigrat.html" /></ScrollReveal>
+            <ScrollReveal delay={240}><SocialRatingWidget platform="expedia" rating="#1" reviews="Best Value" href="https://www.expedia.com/Canaan-Hotel-International.h48986114.Hotel-Information" /></ScrollReveal>
           </div>
         </section>
 
@@ -76,17 +77,20 @@ export default function Home() {
           <Container>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 lg:gap-32 items-center">
               <div className="animate-in slide-in-from-left duration-1000">
+                <ScrollReveal direction="up">
                 <SectionTitle
                   label="Our Commitment"
                   title="Why Guests Choose Canaan"
                   description="Rated #1 Best Value in Adigrat on TripAdvisor. 24 rooms, 24-hour service, complimentary breakfast every morning, and a team that turns work trips into vacations — in the words of our guests."
                 />
+                </ScrollReveal>
                 <div className="space-y-12">
                   {[
                     { icon: 'verified_user', title: 'Complimentary Breakfast Daily', desc: 'A generous continental breakfast served every morning from 6:00 AM to 10:00 AM. Western and Ethiopian options, freshly prepared — included in every room rate.' },
                     { icon: 'wifi', title: 'Free Wi-Fi & Free Parking', desc: 'Complimentary high-speed Wi-Fi in all 24 rooms and public areas. Free on-site self-parking for all guests. No hidden extras.' },
                     { icon: 'groups', title: 'Rated #1 in Adigrat', desc: 'TripAdvisor\'s #1 Best Value of 30 properties in Adigrat. 4.1 stars on Google across 57 reviews. Our guests keep coming back.' },
                   ].map((item, i) => (
+                    <ScrollReveal key={i} direction="up" delay={i * 120}>
                     <div key={i} className="flex gap-8 group">
                       <div className="flex-shrink-0 w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg border border-cactus/5 group-hover:bg-cactus group-hover:text-white transition-all duration-500">
                         <Icon name={item.icon as any} className="text-3xl" />
@@ -96,6 +100,7 @@ export default function Home() {
                         <p className="text-base text-gray-500 font-light leading-relaxed">{item.desc}</p>
                       </div>
                     </div>
+                    </ScrollReveal>
                   ))}
                 </div>
               </div>
@@ -135,24 +140,24 @@ export default function Home() {
                 </a>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-              <AttractionCard
+              <ScrollReveal delay={0}><AttractionCard
                 image="/images/attractions/Gheralta.webp"
                 title="Gheralta Cliffs"
                 distance="45km"
                 description="Climb the vertical sandstone paths to 6th-century monasteries carved directly into the sheer cliffs."
-              />
-              <AttractionCard
+              /></ScrollReveal>
+              <ScrollReveal delay={100}><AttractionCard
                 image="/images/attractions/Al Najashi4.webp"
                 title="Al-Najashi Mosque"
                 distance="32km"
                 description="The site of the first Hijra. A testament to Tigray's historical role as a sanctuary for all spirits."
-              />
-              <AttractionCard
+              /></ScrollReveal>
+              <ScrollReveal delay={200}><AttractionCard
                 image="/images/attractions/Debre-Damo-Abune-Aregawi-monaster--1920x1080.webp"
                 title="Debre Damo Monastery"
                 distance="52km"
                 description="Accessible only by a 15-meter leather rope. A living relic of early Christian architecture."
-              />
+              /></ScrollReveal>
             </div>
           </Container>
         </section>
@@ -164,24 +169,24 @@ export default function Home() {
           <Container>
             <SectionTitle label="Voices of the World" title="Guest Stories" centered />
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-              <TestimonialCard
+              <ScrollReveal direction="up" delay={0}><TestimonialCard
                 text="Canaan is the architectural dialogue Ethiopia has been waiting for. It captures the ruggedness of Tigray in a silk-lined sanctuary."
                 author="Jean-Pierre Dubois"
                 role="Global Hospitality Lead"
                 date="Nov 2025"
-              />
-              <TestimonialCard
+              /></ScrollReveal>
+              <ScrollReveal direction="up" delay={150}><TestimonialCard
                 text="The hospitality and service at Canaan hotel was amazing. The staff are so polite, welcoming, eager to serve always with a smile. The room was spacious, very clean with toiletries."
                 author="Verified Guest"
                 role="Trip.com — Verified Review"
                 date="Oct 2025"
-              />
-              <TestimonialCard
+              /></ScrollReveal>
+              <ScrollReveal direction="up" delay={300}><TestimonialCard
                 text="Incredible hospitality and service. We hosted our regional summit here and the energy of the space is truly transcendental."
                 author="Dr. Abiy Tadesse"
                 role="Regional Director"
                 date="Jan 2026"
-              />
+              /></ScrollReveal>
             </div>
             <div className="mt-24 flex justify-center">
               <div className="flex flex-col items-center gap-6">
@@ -208,6 +213,7 @@ export default function Home() {
         <section className="py-32 bg-forest relative overflow-hidden">
           <div className="absolute inset-0 opacity-10 canaan-pattern scale-150"></div>
           <Container className="relative z-10 text-center">
+            <ScrollReveal direction="none">
             <SectionTitle
               title="Your Sanctuary Awaits"
               description="Experience the junction of ancient Tigrayan heritage and contemporary luxury."
@@ -215,6 +221,7 @@ export default function Home() {
               dark
             />
             <BookingCTA />
+            </ScrollReveal>
           </Container>
         </section>
       </main>

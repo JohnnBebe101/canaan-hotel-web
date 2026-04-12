@@ -94,7 +94,7 @@ export default function Footer() {
             <h4 className="text-xs font-semibold tracking-widest uppercase mb-4 text-sandstone/40">Visit</h4>
             <div className="rounded-xl overflow-hidden shadow-lg border border-cactus/20 h-32">
               <iframe
-                src="https://www.google.com/maps/place/International+Canaan+Hotel/@14.2845872,39.459902,17z/data=!4m9!3m8!1s0x166c8f924fda49bb:0xf3d84f15780cf278!5m2!4m1!1i2!8m2!3d14.2845872!4d39.4624769!16s%2Fg%2F11c59546j_?entry=ttu"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3948.533!2d39.4624769!3d14.2845872!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x166c8f924fda49bb%3A0xf3d84f15780cf278!2sInternational%20Canaan%20Hotel!5e0!3m2!1sen!2set!4v"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}

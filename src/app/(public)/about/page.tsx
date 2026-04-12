@@ -262,7 +262,7 @@ export default function AboutPage() {
               <div className="flex flex-col gap-4">
                 <div className="bg-sandstone border border-cactus/20 rounded-2xl h-64 overflow-hidden">
                   <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3948.5!2d39.5!3d14.2!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTRCsDEyJzAuMCJDMzkuNVbwMg!5e0!3m2!1sen!2sus!4v"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3948.533!2d39.4624769!3d14.2845872!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x166c8f924fda49bb%3A0xf3d84f15780cf278!2sInternational%20Canaan%20Hotel!5e0!3m2!1sen!2set!4v"
                     width="100%" 
                     height="100%" 
                     style={{ border: 0 }} 

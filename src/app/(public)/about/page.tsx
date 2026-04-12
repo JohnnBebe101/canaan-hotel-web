@@ -1,5 +1,10 @@
 import type { Metadata } from "next/types";
+import Image from "next/image";
 import Link from "next/link";
+import Button from "@/components/ui/Button";
+import CanaanPattern from "@/components/ui/CanaanPattern";
+import ScrollReveal from "@/components/ui/ScrollReveal";
+import { Icon } from "@/components/ui/Icons";
 
 export const metadata: Metadata = {
   title: 'Our Story — Adigrat, Tigray',
@@ -13,135 +18,311 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <main id="main-content" className="flex w-full flex-col items-center">
-      <div className="flex w-full max-w-7xl flex-col px-4 sm:px-6 lg:px-8">
-        <div className="w-full py-16 sm:py-24">
-          <div className="@container">
-            <div
-              className="flex min-h-[480px] flex-col gap-6 rounded-xl bg-cover bg-center bg-no-repeat @[480px]:gap-8 items-center justify-center p-8 text-center"
-              aria-label="Hero section with hotel staff photo"
-              style={{
-                backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.5) 100%), url("/images/Team.webp")'
-              }}
-            >
-                <div className="flex flex-col gap-4">
-                  <div className="flex justify-center mb-4">
-                  <div className="flex gap-2">
-                    <span className="inline-block px-2 py-1 rounded-full bg-green-100 text-green-800 text-xs font-medium">
-                      24 Guestrooms
-                    </span>
-                    <span className="inline-block px-2 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-medium">
-                      4.1★ Rating
-                    </span>
-                    <span className="inline-block px-2 py-1 rounded-full bg-purple-100 text-purple-800 text-xs font-medium">
-                      #1 Best Value
-                    </span>
-                  </div>
-                </div>
-                <h2 className="text-white text-4xl font-black leading-tight tracking-[-0.033em] @[480px]:text-5xl">
-                  Our Story
+    <main className="min-h-screen">
+      {/* SECTION 1 — HERO */}
+      <section className="relative h-[75vh] min-h-[520px] w-full overflow-hidden">
+        <Image
+          src="/images/heroes/Ext-Compund.webp"
+          alt="Canaan International Hotel exterior, Adigrat"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-forest/80 via-forest/30 to-transparent" />
+        <div className="absolute inset-0 flex flex-col items-center justify-end pb-16 px-6 text-center">
+          <p className="text-bronze text-xs font-semibold tracking-[0.3em] uppercase mb-3">
+            Our Story
+          </p>
+          <h1 className="font-serif text-sandstone text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight max-w-3xl"
+              style={{ textShadow: '0 0 40px rgba(142,115,91,0.5), 0 2px 8px rgba(0,0,0,0.6)' }}>
+            Born from the Highlands
+          </h1>
+          <p className="text-sandstone/70 text-base md:text-lg mt-4 max-w-xl leading-relaxed">
+            Adigrat, Tigray — 2,457 metres above sea level
+          </p>
+        </div>
+      </section>
+
+      {/* SECTION 2 — STAT TRUST BAR */}
+      <section className="bg-forest">
+        <div className="max-w-4xl mx-auto px-6 py-10 grid grid-cols-3 divide-x divide-cactus/30">
+          {[
+            { value: '24',    label: 'Guestrooms'              },
+            { value: '4.1★',  label: 'Google Rating'           },
+            { value: '#1',    label: 'Best Value in Adigrat'   },
+          ].map((stat, i) => (
+            <ScrollReveal key={stat.label} delay={i * 100}>
+              <div className="flex flex-col items-center text-center px-6 py-2">
+                <span className="font-serif text-sandstone text-4xl md:text-5xl font-bold">
+                  {stat.value}
+                </span>
+                <span className="text-sandstone/50 text-xs tracking-widest uppercase mt-1">
+                  {stat.label}
+                </span>
+              </div>
+            </ScrollReveal>
+          ))}
+        </div>
+      </section>
+
+      {/* SECTION 3 — THE CANAAN STORY */}
+      <section className="bg-sandstone py-20 md:py-28">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <ScrollReveal>
+              <div>
+                <p className="text-bronze text-xs font-semibold tracking-[0.3em] uppercase mb-4">
+                  The Canaan Story
+                </p>
+                <h2 className="font-serif text-forest text-4xl md:text-5xl font-bold leading-tight mb-6">
+                  A Landmark Built<br />for Tigray
                 </h2>
-                <p className="text-white text-base font-normal leading-normal @[480px]:text-lg max-w-2xl">
-                  A hotel born from Tigray&apos;s highlands, built for the world.
+                <span className="block font-serif text-bronze text-8xl leading-none -mb-4 select-none">"</span>
+                <p className="text-forest/70 text-base leading-relaxed mb-5">
+                  Discover the journey of the Canaan International Hotel, from its humble beginnings
+                  to becoming a cornerstone of hospitality in Adigrat. Our founders envisioned a place
+                  that not only offers comfort but also embodies the rich culture and resilient spirit
+                  of Tigray.
+                </p>
+                <p className="text-forest/70 text-base leading-relaxed mb-5">
+                  We are dedicated to providing an authentic experience that honours our heritage and
+                  welcomes the world — from the solo researcher to the international delegation.
+                </p>
+                <p className="text-forest/60 text-sm leading-relaxed border-l-2 border-bronze/40 pl-4 italic">
+                  Located in Kebele 03, Adigrat — 0.2 km from the city centre. The commercial capital
+                  of eastern Tigray, set at 2,457 metres above sea level on the Ethiopian Highlands plateau.
                 </p>
               </div>
+            </ScrollReveal>
+
+            <ScrollReveal delay={200}>
+              <div className="relative">
+                <div className="absolute -top-4 -right-4 w-full h-full bg-cactus/10 rounded-2xl" />
+                <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-sandstone">
+                  <Image
+                    src="/images/Team.webp"
+                    alt="The Canaan International Hotel team"
+                    width={600}
+                    height={700}
+                    className="object-cover w-full"
+                  />
+                </div>
+                <div className="absolute -bottom-5 -left-5 bg-forest text-sandstone px-5 py-3 rounded-xl shadow-xl text-sm font-medium">
+                  The Canaan Team · Adigrat
+                </div>
+              </div>
+            </ScrollReveal>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 4 — OUR COMMITMENT TO TIGRAY */}
+      <section className="relative bg-forest py-20 md:py-28 overflow-hidden">
+        <div className="absolute inset-0 opacity-5">
+          <CanaanPattern />
+        </div>
+        <div className="relative max-w-5xl mx-auto px-6">
+          <ScrollReveal>
+            <div className="flex flex-col items-center text-center mb-14">
+              <div className="w-10 h-px bg-bronze mb-5" />
+              <p className="text-bronze text-xs font-semibold tracking-[0.3em] uppercase mb-3">
+                Our Commitment
+              </p>
+              <h2 className="font-serif text-sandstone text-4xl md:text-5xl font-bold leading-tight max-w-2xl">
+                Woven into the Fabric of Adigrat
+              </h2>
+              <p className="text-sandstone/60 text-base leading-relaxed mt-5 max-w-2xl">
+                Canaan International Hotel is more than a place to stay — it is part of the community
+                that built it. We prioritise local sourcing, local artisans, and active participation
+                in the cultural and economic vitality of Tigray.
+              </p>
+            </div>
+          </ScrollReveal>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                icon: 'storefront',
+                title: 'Local Sourcing',
+                desc: 'Our restaurant sources ingredients directly from farmers in the Adigrat plateau, supporting the local agricultural economy.',
+              },
+              {
+                icon: 'brush',
+                title: 'Local Artisans',
+                desc: 'Every decorative element in the hotel was crafted by Tigrayan artisans, preserving traditional highland craft traditions.',
+              },
+              {
+                icon: 'volunteer_activism',
+                title: 'Community Investment',
+                desc: 'Your stay directly contributes to the economic and cultural vitality of Tigray and the people of Adigrat.',
+              },
+            ].map((pillar, i) => (
+              <ScrollReveal key={pillar.title} delay={100 + i * 100}>
+                <div className="bg-cactus/10 border border-cactus/20 rounded-2xl p-7 hover:bg-cactus/20 transition-colors duration-300">
+                  <div className="w-10 h-10 rounded-xl bg-bronze/20 flex items-center justify-center mb-5">
+                    <Icon name={pillar.icon as any} className="text-bronze text-xl" />
+                  </div>
+                  <h3 className="font-serif text-sandstone text-xl font-semibold mb-3">
+                    {pillar.title}
+                  </h3>
+                  <p className="text-sandstone/60 text-sm leading-relaxed">{pillar.desc}</p>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 5 — PHOTO GALLERY */}
+      <section className="bg-sandstone py-20 md:py-24">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <ScrollReveal>
+              <p className="text-bronze text-xs font-semibold tracking-[0.3em] uppercase mb-3">
+                A Glimpse Into Our World
+              </p>
+              <h2 className="font-serif text-forest text-4xl font-bold">
+                The Hotel in Frame
+              </h2>
+            </ScrollReveal>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 auto-rows-[200px]">
+            <div className="row-span-2 rounded-2xl overflow-hidden relative">
+              <ScrollReveal delay={0}>
+                <Image src="/images/gallery/Lobby.webp" alt="Canaan Hotel lobby"
+                       width={400} height={600} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+              </ScrollReveal>
+            </div>
+
+            <div className="rounded-2xl overflow-hidden relative">
+              <ScrollReveal delay={100}>
+                <Image src="/images/gallery/Bed-view-Single.webp" alt="Guest room"
+                       width={300} height={200} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+              </ScrollReveal>
+            </div>
+
+            <div className="rounded-2xl overflow-hidden relative">
+              <ScrollReveal delay={200}>
+                <Image src="/images/gallery/bath-room.webp" alt="En-suite bathroom"
+                       width={300} height={200} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+              </ScrollReveal>
+            </div>
+
+            <div className="rounded-2xl overflow-hidden relative">
+              <ScrollReveal delay={300}>
+                <Image src="/images/gallery/single-room-best-view.webp" alt="Comfort double room"
+                       width={300} height={200} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+              </ScrollReveal>
+            </div>
+
+            <div className="col-span-2 md:col-span-1 rounded-2xl overflow-hidden relative">
+              <ScrollReveal delay={400}>
+                <Image src="/images/gallery/Gate-Corrdor.webp" alt="Hotel entrance corridor"
+                       width={300} height={200} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+              </ScrollReveal>
             </div>
           </div>
         </div>
+      </section>
 
-        <section className="py-16 sm:py-24 grid grid-cols-1 md:grid-cols-2 gap-12 items-center" aria-labelledby="canaan-story">
-          <div className="flex flex-col gap-4">
-            <h2 id="canaan-story" className="text-[#D48135] dark:text-[#D48135] text-[22px] sm:text-3xl font-bold leading-tight tracking-[-0.015em]">
-              The Canaan Story
-            </h2>
-            <p className="text-[#2D2424]/80 dark:text-background-light/80 text-base font-normal leading-relaxed">
-              Discover the journey of the Canaan International Hotel, from its humble beginnings to becoming a cornerstone of hospitality in Adigrat. Our founders envisioned a place that not only offers comfort but also embodies the rich culture and resilient spirit of Tigray. We are dedicated to providing an authentic experience that honors our heritage and welcomes the world.
-            </p>
-            <p className="text-[#2D2424]/80 dark:text-background-light/80 text-base font-normal leading-relaxed pt-2">
-              Canaan International Hotel is located in Kebele 03, Adigrat — just 0.2 kilometres from the city centre. Adigrat is the commercial capital of eastern Tigray, set at 2,457 metres above sea level on the Ethiopian Highlands plateau. The hotel is within easy reach of the city&apos;s Cathedral of the Holy Saviour (3.5km), the Piyasa market district (810m), and serves as the ideal base for day trips to Tigray&apos;s most celebrated heritage sites.
-            </p>
-          </div>
-          <div
-            className="w-full bg-center bg-no-repeat bg-cover aspect-square rounded-xl"
-            role="img"
-            aria-label="A black and white historical photo of the hotel's founder."
-            style={{ backgroundImage: 'url("/images/attractions/Gheralta.webp")' }}
-          ></div>
-        </section>
+      {/* SECTION 6 — LOCATION & CONTEXT */}
+      <section className="bg-white py-20">
+        <div className="max-w-5xl mx-auto px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+            <ScrollReveal>
+              <div>
+                <p className="text-bronze text-xs font-semibold tracking-[0.3em] uppercase mb-4">
+                  Location
+                </p>
+                <h2 className="font-serif text-forest text-3xl md:text-4xl font-bold mb-8">
+                  In the Heart of Adigrat
+                </h2>
+                <ul className="space-y-5">
+                  {[
+                    { icon: 'location_on',  text: 'Kebele 03, Adigrat, Tigray 1000, Ethiopia'       },
+                    { icon: 'near_me',      text: '0.2 km from Adigrat city centre'                 },
+                    { icon: 'church',       text: 'Cathedral of the Holy Saviour — 3.5 km'          },
+                    { icon: 'storefront',   text: 'Piyasa market district — 810 m'                  },
+                    { icon: 'terrain',      text: 'Altitude: 2,457 m above sea level'               },
+                    { icon: 'directions_car', text: 'Gheralta Mountains — 65 km (day trip)'         },
+                  ].map((item, i) => (
+                    <ScrollReveal key={item.text} delay={i * 50}>
+                      <li className="flex items-start gap-3">
+                        <Icon name={item.icon as any} className="text-bronze text-lg mt-0.5 shrink-0" />
+                        <span className="text-forest/70 text-sm leading-relaxed">{item.text}</span>
+                      </li>
+                    </ScrollReveal>
+                  ))}
+                </ul>
+              </div>
+            </ScrollReveal>
 
-        <section className="py-16 sm:py-24 grid grid-cols-1 md:grid-cols-2 gap-12 items-center" aria-labelledby="commitment-tigray">
-          <div
-            className="w-full bg-center bg-no-repeat bg-cover aspect-square rounded-xl md:order-2"
-            role="img"
-            aria-label="Vibrant local Tigrayan market scene with fresh produce."
-            style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuCcMq461Fe3D5wPKSdLrzibjzTTlZsDpQ2E01aqrm-VcLgkNzG9voQibtNRGk2Wio2zJizHzmj0sfPvnjmyd8cWDH_7ZEbfWrt6vdYflicu5-1-emMHwSKBq4yTKd5hEpYtlbF9YRC8y-LshJyXgLLWg-i7QQu5JFDSd-rPneO6f9agDGFU79-90i2AATBPuv6U6yaBZrbJhcbxgtyFS-KXnXN8fuPh7d6IAZI-zDuZ-wYD0w4XPPl8OmGadRvmFtTgCv7HtNYopRyG")' }}
-          ></div>
-          <div className="flex flex-col gap-4 md:order-1">
-            <h2 id="commitment-tigray" className="text-[#D48135] dark:text-[#D48135] text-[22px] sm:text-3xl font-bold leading-tight tracking-[-0.015em]">
-              Our Commitment to Tigray
-            </h2>
-            <p className="text-[#2D2424]/80 dark:text-background-light/80 text-base font-normal leading-relaxed">
-              Canaan International Hotel is more than just a place to stay; it's a part of the fabric of Adigrat. We are deeply committed to our community, prioritizing local sourcing for our restaurant, employing local artisans for our decor, and actively participating in initiatives that support the economic and cultural vitality of Tigray. Your stay with us directly contributes to the well-being of our beloved region.
-            </p>
+            <ScrollReveal delay={200}>
+              <div className="flex flex-col gap-4">
+                <div className="bg-sandstone border border-cactus/20 rounded-2xl h-64 overflow-hidden">
+                  <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3948.5!2d39.5!3d14.2!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTRCsDEyJzAuMCJDMzkuNVbwMg!5e0!3m2!1sen!2sus!4v"
+                    width="100%" 
+                    height="100%" 
+                    style={{ border: 0 }} 
+                    allowFullScreen 
+                    loading="lazy" 
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Canaan International Hotel Location"
+                    className="w-full h-full"
+                  />
+                </div>
+                <a href="https://maps.google.com/?q=Canaan+International+Hotel,+Adigrat,+Tigray,+Ethiopia"
+                   target="_blank" rel="noopener noreferrer"
+                   className="inline-flex items-center justify-center gap-2 bg-forest text-sandstone text-sm font-medium py-3 px-6 rounded-xl hover:bg-cactus transition-colors duration-300">
+                  <Icon name="near_me" className="text-base" />
+                  Open in Google Maps
+                </a>
+                <div className="grid grid-cols-2 gap-3 text-sm">
+                  <div className="bg-sandstone rounded-xl p-4 text-center">
+                    <p className="text-forest/40 text-xs uppercase tracking-wider mb-1">Check-in</p>
+                    <p className="text-forest font-semibold">12:00 PM</p>
+                  </div>
+                  <div className="bg-sandstone rounded-xl p-4 text-center">
+                    <p className="text-forest/40 text-xs uppercase tracking-wider mb-1">Check-out</p>
+                    <p className="text-forest font-semibold">11:00 AM</p>
+                  </div>
+                </div>
+              </div>
+            </ScrollReveal>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="py-16 sm:py-24 flex flex-col items-center" aria-labelledby="glimpse-world">
-          <div className="text-center mb-12">
-            <h2 id="glimpse-world" className="text-[#D48135] dark:text-[#D48135] text-[22px] sm:text-3xl font-bold leading-tight tracking-[-0.015em]">
-              A Glimpse Into Our World
-            </h2>
-            <p className="text-[#2D2424]/80 dark:text-background-light/80 text-base font-normal leading-relaxed mt-2 max-w-2xl mx-auto">
-              Explore images that capture the essence of our hotel, our team, and the vibrant culture of Tigray that inspires us every day.
-            </p>
-          </div>
-          <div className="w-full gap-2 overflow-hidden aspect-[3/2] grid grid-cols-3 grid-rows-2">
-            <div
-              className="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-lg row-span-2 col-span-2"
-              role="img"
-              aria-label="A beautifully decorated hotel room with local art."
-              style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBi9paBMGL3oWDLVhHFlqJBX8RIfFw-T9ruIoH80elseZyLKEtqwSZ0oLFMSt7kRsisIcm_y9MYKPjvURPBVx5JBYbksSFWFX-uyUBIiw9vaJonp3QLEvTPv-VA_IRMdcRhz8zkG8RUUK4NXYIDU--GBaQHtiyBsYVlJwXu_78XaNV60WjpBzxJo4cH-2CXw-LhZT6jYhzQEU1vAaleW7HB40285ltEsXow9kNBx2IXIeK7G8R6yU64Ob2dS-0dNHkrqmBbEM4XvjOr")' }}
-            ></div>
-            <div
-              className="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-lg"
-              role="img"
-              aria-label="A chef preparing a traditional Ethiopian dish in the hotel kitchen."
-              style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuAeKnoGMoESQwjwhfwzIjn7HHiMYM3467IzLQauoNVbRcEW8QuVn1buyd7Aiyq0OraDUvhXuepMGKsMvR1gGsdX3R-nOQgdCsOr__Ms6TpKpJSYEjag9_B2MbwZtGmsrMSAWS3_ht-2HO8vaNV6ZIGV97fqpL_6bSmjQ4lD4wHrWNKRBaavwgkmc7lY_yi_nto2kvhQTEaJIShhHN0CiBDIn9ZdoQEbfcB7gGoPzNtGQL9Wg8pMJbQBMStR7rHnRjd-T49Sh97UURuI")' }}
-            ></div>
-            <div
-              className="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-lg"
-              role="img"
-              aria-label="A stunning landscape view of the mountains surrounding Adigrat."
-              style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBSZxrqC9-cyZgriHaN0PIhHk7atf7JkhUPokmLWwCdx1GIjvu55PwLy_yj5VgYygM776Eyy0gdHo7hp4B7z9c1ufdFOl-2U36zs3c_yz80yT6E96dp5Ee8DEUJx_pzwxT8HyQpvlyBCvZgsuvGXIhyKETbFbNDccwIRghml_UwJZC8uWpTRGXOPM99wprfUGQbdA80854eIHRxR8dVjWKCk1vqHqGnx6SApPpYi6Tm2nDH818A4XFXrzomUSN2zrAB8DIXSmrKSlzM")' }}
-            ></div>
-          </div>
-        </section>
-
-        <section className="w-full py-16 sm:py-24" aria-labelledby="experience-hospitality">
-          <div className="bg-[#D48135]/10 dark:bg-[#D48135]/20 p-8 sm:p-12 lg:p-16 rounded-xl flex flex-col items-center text-center gap-6">
-            <h2 id="experience-hospitality" className="text-[#2D2424] dark:text-background-light text-3xl sm:text-4xl font-bold leading-tight tracking-[-0.015em]">
+      {/* SECTION 7 — CLOSING CTA */}
+      <section className="relative bg-forest py-24 overflow-hidden">
+        <div className="absolute inset-0 opacity-5">
+          <CanaanPattern />
+        </div>
+        <div className="relative max-w-3xl mx-auto px-6 text-center">
+          <ScrollReveal>
+            <p className="text-bronze text-xs font-semibold tracking-[0.3em] uppercase mb-4">
               Experience Our Hospitality
-            </h2>
-            <p className="text-[#2D2424]/80 dark:text-background-light/80 text-base sm:text-lg font-normal leading-normal max-w-2xl">
-              Ready to be a part of our story? Book your stay and discover the warmth, comfort, and authentic culture of the Canaan International Hotel.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 mt-4">
-              <Link
-                href="/rooms"
-                className="flex min-w-[140px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-              >
-                <span className="truncate">Book Your Stay</span>
+            <h2 className="font-serif text-sandstone text-4xl md:text-5xl font-bold leading-tight mb-5">
+              Ready to Be Part<br />of Our Story?
+            </h2>
+            <p className="text-sandstone/60 text-base leading-relaxed mb-10 max-w-xl mx-auto">
+              Book your stay and discover the warmth, comfort, and authentic highland culture
+              of the Canaan International Hotel.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/rooms">
+                <Button variant="primary" size="lg">Book Your Stay</Button>
               </Link>
-              <Link
-                href="/rooms"
-                className="flex min-w-[140px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-              >
-                <span className="truncate">Explore Our Rooms</span>
+              <Link href="/rooms">
+                <Button variant="outline" size="lg">Explore Our Rooms</Button>
               </Link>
             </div>
-          </div>
-        </section>
-      </div>
+          </ScrollReveal>
+        </div>
+      </section>
     </main>
   );
 }

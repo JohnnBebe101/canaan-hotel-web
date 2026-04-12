@@ -92,11 +92,20 @@ export default function Footer() {
           {/* Column 4 — Visit */}
           <div>
             <h4 className="text-xs font-semibold tracking-widest uppercase mb-4 text-sandstone/40">Visit</h4>
-            <div className="bg-forest/40 border border-cactus/20 rounded-lg h-32 flex items-center justify-center">
-              <span className="text-sandstone/40 text-xs text-center">Kebele 03, Adigrat</span>
+            <div className="rounded-xl overflow-hidden shadow-lg border border-cactus/20 h-32">
+              <iframe
+                src="https://www.google.com/maps/place/International+Canaan+Hotel/@14.2845872,39.459902,17z/data=!4m9!3m8!1s0x166c8f924fda49bb:0xf3d84f15780cf278!5m2!4m1!1i2!8m2!3d14.2845872!4d39.4624769!16s%2Fg%2F11c59546j_?entry=ttu"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Canaan International Hotel location"
+              />
             </div>
             <a 
-              href="https://maps.google.com/?q=Adigrat,Tigray,Ethiopia" 
+              href="https://www.google.com/maps/place/International+Canaan+Hotel/@14.2845872,39.459902,17z/data=!4m9!3m8!1s0x166c8f924fda49bb:0xf3d84f15780cf278!5m2!4m1!1i2!8m2!3d14.2845872!4d39.4624769!16s%2Fg%2F11c59546j_?entry=ttu" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-bronze text-xs hover:underline mt-2 inline-block"

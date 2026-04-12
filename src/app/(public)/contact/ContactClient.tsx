@@ -151,27 +151,18 @@ export default function ContactClient() {
             {/* LEFT — Map + location details */}
             <ScrollReveal direction="left">
               <div className="flex flex-col gap-6">
-                {/* Map image */}
+                {/* Map iframe */}
                 <div className="rounded-2xl overflow-hidden shadow-lg border border-cactus/10 h-72 relative">
-                  <OptimizedImage
-                    src="/images/heroes/Ext-Compund.webp"
-                    alt="Interactive map showing the location of Canaan International Hotel in Adigrat"
-                    fill
-                    className="object-cover"
+                  <iframe
+                    src="https://www.google.com/maps/place/International+Canaan+Hotel/@14.2845872,39.459902,17z/data=!4m9!3m8!1s0x166c8f924fda49bb:0xf3d84f15780cf278!5m2!4m1!1i2!8m2!3d14.2845872!4d39.4624769!16s%2Fg%2F11c59546j_?entry=ttu"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Canaan International Hotel location map"
                   />
-                  {/* Map overlay with address pin */}
-                  <div className="absolute inset-0 bg-forest/20 flex items-center justify-center">
-                    <div className="bg-white rounded-xl shadow-xl px-4 py-3 text-center">
-                      <Icon
-                        name="location_on"
-                        className="text-bronze text-xl mx-auto mb-1"
-                      />
-                      <p className="text-forest text-xs font-semibold">
-                        Canaan International Hotel
-                      </p>
-                      <p className="text-forest/60 text-xs">Kebele 03, Adigrat</p>
-                    </div>
-                  </div>
                 </div>
 
                 {/* Open in Maps link */}

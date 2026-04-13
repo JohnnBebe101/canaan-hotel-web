@@ -57,7 +57,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
+    <html lang="en" data-scroll-behavior="smooth" className={`${playfair.variable} ${inter.variable}`}>
       <head>
         <link rel="icon" type="image/svg+xml" href="/images/ui/Canaan-logo-100x100.svg" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />

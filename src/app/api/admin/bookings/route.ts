@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 export const dynamic = 'force-dynamic';
 import { getBookings, updateBooking, deleteBooking } from "@/lib/booking-store";
+import { LEGACY_STATUS_VALUES, isValidLegacyStatus } from "@/lib/types/booking";
 
 // GET - List all bookings
 export async function GET() {
@@ -30,10 +31,10 @@ export async function PATCH(request: NextRequest) {
 
     const updates: any = {};
     if (body.status) {
-      const validStatuses = ['pending', 'confirmed', 'cancelled'];
-      if (!validStatuses.includes(body.status)) {
+      // Use centralized type for validation (Phase 2)
+      if (!isValidLegacyStatus(body.status)) {
         return NextResponse.json(
-          { error: "Invalid status" },
+          { error: "Invalid status. Must be one of: " + LEGACY_STATUS_VALUES.join(", ") },
           { status: 400 }
         );
       }

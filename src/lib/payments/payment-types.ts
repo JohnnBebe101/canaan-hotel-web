@@ -1,3 +1,6 @@
+// DEPRECATED: Use src/lib/types/booking.ts instead
+// This file is kept for backward compatibility with existing admin code
+// @deprecated - import from @/lib/types/booking instead
 export enum PaymentStatus {
   PAID = 'paid',
   FAILED = 'failed',

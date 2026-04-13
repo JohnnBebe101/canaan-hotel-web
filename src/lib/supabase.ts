@@ -1,4 +1,5 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import type { LegacyBookingStatus, PaymentStatus } from './types/booking';
 
 let supabaseClient: SupabaseClient | null = null;
 
@@ -31,12 +32,12 @@ export interface Booking {
   number_of_guests: number;
   room_type: string;
   total_price: number;
-  status: 'pending' | 'confirmed' | 'cancelled';
+  status: LegacyBookingStatus;  // Using centralized type (Phase 2)
   notes?: string;
   created_at: string;
   // Stripe-ready fields (Phase 1 - Foundation)
   booking_version?: 'v1-pre-stripe';
-  payment_status?: 'unpaid' | 'pending' | 'paid' | 'failed' | 'refunded';
+  payment_status?: PaymentStatus;
   total_price_cents?: number;
   stripe_payment_intent?: string;
   currency?: string;

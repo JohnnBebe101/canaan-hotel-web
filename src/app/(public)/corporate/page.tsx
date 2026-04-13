@@ -20,8 +20,8 @@ export default function CorporatePage() {
           priority 
         />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-          <h1 className="text-white text-4xl md:text-5xl font-bold tracking-tight">Corporate & Groups</h1>
-          <p className="text-white/80 text-base mt-2">Meetings, retreats, and group stays in the heart of Tigray</p>
+          <h1 className="text-sandstone text-4xl md:text-5xl font-bold tracking-tight" style={{ textShadow: '0 0 60px rgba(255,255,255,0.5), 0 0 100px rgba(255,255,255,0.25), 0 2px 8px rgba(0,0,0,0.6)' }}>Corporate & Groups</h1>
+          <p className="text-sandstone/80 text-base mt-2" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.6)' }}>Meetings, retreats, and group stays in the heart of Tigray</p>
         </div>
       </section>
 

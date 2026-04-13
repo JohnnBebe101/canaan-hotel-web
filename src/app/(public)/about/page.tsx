@@ -30,14 +30,14 @@ export default function AboutPage() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-forest/80 via-forest/30 to-transparent" />
         <div className="absolute inset-0 flex flex-col items-center justify-end pb-16 px-6 text-center">
-          <p className="text-bronze text-xs font-semibold tracking-[0.3em] uppercase mb-3">
+          <p className="text-white/90 text-xs font-semibold tracking-[0.3em] uppercase mb-3">
             Our Story
           </p>
-          <h1 className="font-serif text-sandstone text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight max-w-3xl"
-              style={{ textShadow: '0 0 40px rgba(142,115,91,0.5), 0 2px 8px rgba(0,0,0,0.6)' }}>
+          <h1 className="font-serif text-white text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight max-w-3xl"
+              style={{ textShadow: '0 0 60px rgba(255,255,255,0.5), 0 0 100px rgba(255,255,255,0.25), 0 2px 8px rgba(0,0,0,0.6)' }}>
             Born from the Highlands
           </h1>
-          <p className="text-sandstone/70 text-base md:text-lg mt-4 max-w-xl leading-relaxed">
+          <p className="text-white/90 text-base md:text-lg mt-4 max-w-xl leading-relaxed">
             Adigrat, Tigray — 2,457 metres above sea level
           </p>
         </div>

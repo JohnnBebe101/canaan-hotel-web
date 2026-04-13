@@ -51,20 +51,20 @@ export default function ContactClient() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-forest/80 via-forest/30 to-transparent" />
         <div className="absolute inset-0 flex flex-col items-center justify-end pb-16 px-6 text-center">
-          <p className="text-bronze text-xs font-semibold tracking-[0.3em] uppercase mb-3">
+          <p className="text-white/90 text-xs font-semibold tracking-[0.3em] uppercase mb-3">
             Get in Touch
           </p>
           <h1
-            className="font-serif text-sandstone text-5xl md:text-6xl font-bold leading-tight"
+            className="font-serif text-white text-5xl md:text-6xl font-bold leading-tight"
             style={{
               textShadow:
-                "0 0 40px rgba(142,115,91,0.6), 0 2px 4px rgba(0,0,0,0.5)",
+                "0 0 60px rgba(255,255,255,0.5), 0 0 100px rgba(255,255,255,0.25), 0 2px 8px rgba(0,0,0,0.6)",
             }}
           >
             We'd Love to Hear<br />
             From You
           </h1>
-          <p className="text-sandstone/70 text-base mt-4 max-w-md leading-relaxed">
+          <p className="text-white/90 text-base mt-4 max-w-md leading-relaxed">
             Direct bookings receive priority confirmation and our best available
             rate.
           </p>

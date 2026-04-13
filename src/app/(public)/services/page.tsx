@@ -29,10 +29,10 @@ export default function ServicesPage() {
             className="absolute inset-0 -z-10"
           />
           <div className="flex flex-col gap-4 relative z-10">
-            <h1 className="text-4xl font-black leading-tight tracking-tighter md:text-6xl">
+            <h1 className="text-4xl font-black leading-tight tracking-tighter md:text-6xl" style={{ textShadow: '0 0 60px rgba(255,255,255,0.5), 0 0 100px rgba(255,255,255,0.25), 0 2px 8px rgba(0,0,0,0.6)' }}>
               Our Services & Facilities
             </h1>
-            <p className="mx-auto max-w-2xl text-base font-normal leading-normal text-gray-200 md:text-lg">
+            <p className="mx-auto max-w-2xl text-base font-normal leading-normal text-sandstone/80 md:text-lg" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.6)' }}>
               Experience world-class hospitality with our comprehensive range of services designed for your comfort.
             </p>
           </div>

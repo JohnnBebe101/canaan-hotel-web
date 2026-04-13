@@ -95,24 +95,23 @@ className={`object-cover transition-transform duration-[10000ms] ease-linear ${i
 
           {/* Content Overlay with Staggered Animations */}
           <div className="relative h-full flex flex-col items-center justify-center z-20 px-8 pt-20">
-            <div className="max-w-5xl text-center text-sandstone">
+            <div className="max-w-5xl text-center text-white">
               <div className={`transform transition-all duration-1000 delay-300 ${index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
                 }`}>
-                <Badge variant="cactus" className="drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] text-sandstone/80">{slide.label}</Badge>
+                <Badge variant="cactus" className="drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] text-white/90">{slide.label}</Badge>
               </div>
 
-<h1 className={`text-4xl md:text-6xl lg:text-7xl font-serif mt-10 mb-8 leading-[0.85] tracking-tighter transform transition-all duration-1000 delay-500 ${index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-100'
+<h1 className={`text-4xl md:text-6xl lg:text-7xl font-serif mt-10 mb-8 leading-[0.85] tracking-tighter text-white transform transition-all duration-1000 delay-500 ${index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-100'
                   }`}
                 style={{ 
-                  textShadow: '0 0 40px rgba(142,115,91,0.65), 0 0 80px rgba(142,115,91,0.30), 0 2px 4px rgba(11,34,26,0.6)',
-                  WebkitTextStroke: '0.3px rgba(245,242,233,0.15)',
+                  textShadow: '0 0 60px rgba(255,255,255,0.5), 0 0 100px rgba(255,255,255,0.25), 0 2px 8px rgba(0,0,0,0.6)',
                 }}
               >
                 {slide.title}
               </h1>
 
-              <p className={`max-w-3xl mx-auto text-lg md:text-xl font-light leading-relaxed mb-16 text-white/85 italic transform transition-all duration-1000 delay-700 ${index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-                }`}
+<p className={`max-w-3xl mx-auto text-lg md:text-xl font-light leading-relaxed mb-16 text-white/90 italic transform transition-all duration-1000 delay-700 ${index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+                  }`}
                 style={{ textShadow: '0 1px 3px rgba(0,0,0,0.6)' }}
               >
                 &quot;{slide.desc}&quot;

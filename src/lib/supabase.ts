@@ -34,6 +34,12 @@ export interface Booking {
   status: 'pending' | 'confirmed' | 'cancelled';
   notes?: string;
   created_at: string;
+  // Stripe-ready fields (Phase 1 - Foundation)
+  booking_version?: 'v1-pre-stripe';
+  payment_status?: 'unpaid' | 'pending' | 'paid' | 'failed' | 'refunded';
+  total_price_cents?: number;
+  stripe_payment_intent?: string;
+  currency?: string;
 }
 
 export interface Payment {

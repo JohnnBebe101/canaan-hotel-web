@@ -40,6 +40,7 @@ export interface Booking {
   payment_status?: PaymentStatus;
   total_price_cents?: number;
   stripe_payment_intent?: string;
+  stripe_webhook_event_id?: string;  // Phase 4 - for idempotency
   currency?: string;
 }
 

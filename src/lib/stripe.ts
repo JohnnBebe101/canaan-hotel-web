@@ -7,7 +7,6 @@ if (!stripeSecretKey) {
 }
 
 export const stripe = new Stripe(stripeSecretKey || 'sk_test_placeholder', {
-  apiVersion: '2024-04-10.base' as never,
   typescript: true,
 });
 

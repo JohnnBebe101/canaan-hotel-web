@@ -33,9 +33,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const amount = booking.total_price || 0;
+    const amountInCents = booking.total_price_cents || (booking.total_price || 0) * 100;
     
-    if (amount <= 0) {
+    if (amountInCents <= 0) {
       return NextResponse.json(
         { error: 'Invalid booking amount' },
         { status: 400 }
@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
               name: `Room Booking - ${booking.room_type}`,
               description: `Guest: ${booking.guest_name}, Check-in: ${booking.check_in_date}, Check-out: ${booking.check_out_date}`,
             },
-            unit_amount: amount * 100,
+            unit_amount: amountInCents,
           },
           quantity: 1,
         },

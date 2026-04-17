@@ -6,9 +6,10 @@ import Button from "./ui/Button";
 interface RoomBookingFormProps {
     pricePerNight: number;
     roomName?: string;
+    roomSlug?: string;
 }
 
-export default function RoomBookingForm({ pricePerNight, roomName }: RoomBookingFormProps) {
+export default function RoomBookingForm({ pricePerNight, roomName, roomSlug }: RoomBookingFormProps) {
     const [checkIn, setCheckIn] = useState("");
     const [checkOut, setCheckOut] = useState("");
     const [adults, setAdults] = useState(2);
@@ -18,6 +19,10 @@ export default function RoomBookingForm({ pricePerNight, roomName }: RoomBooking
     const [guestName, setGuestName] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    const roomType = roomSlug || 'economy-single';
 
     useEffect(() => {
         if (checkIn && checkOut) {
@@ -38,26 +43,51 @@ export default function RoomBookingForm({ pricePerNight, roomName }: RoomBooking
 
     const today = new Date().toISOString().split("T")[0];
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        
-        const subject = encodeURIComponent(`Booking Request: ${roomName || 'Room'}`);
-        const body = encodeURIComponent(
-            `Hello Canaan Hotel,\n\n` +
-            `I would like to make a booking reservation:\n\n` +
-            `Room: ${roomName || 'Selected room'}\n` +
-            `Guest Name: ${guestName}\n` +
-            `Email: ${email}\n` +
-            `Phone: ${phone}\n` +
-            `Check-in: ${checkIn}\n` +
-            `Check-out: ${checkOut}\n` +
-            `Adults: ${adults}, Children: ${children}\n\n` +
-            `Total: $${totalPrice} (${nights} night${nights > 1 ? 's' : ''})\n\n` +
-            `Please confirm availability and provide payment instructions.\n\n` +
-            `Thank you!`
-        );
-        
-        window.location.href = `mailto:info@canaanhotels.com?subject=${subject}&body=${body}`;
+        setIsLoading(true);
+        setError(null);
+
+        try {
+            const bookingRes = await fetch("/api/bookings/create", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    guest_name: guestName,
+                    email,
+                    phone,
+                    check_in_date: checkIn,
+                    check_out_date: checkOut,
+                    number_of_guests: adults + children,
+                    room_type: roomType,
+                }),
+            });
+
+            if (!bookingRes.ok) {
+                const { error: err } = await bookingRes.json();
+                throw new Error(err || "Booking creation failed");
+            }
+
+            const { bookingId } = await bookingRes.json();
+
+            const checkoutRes = await fetch("/api/checkout/create", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ bookingId }),
+            });
+
+            if (!checkoutRes.ok) {
+                throw new Error("Payment session could not be created");
+            }
+
+            const { sessionUrl } = await checkoutRes.json();
+
+            window.location.href = sessionUrl;
+
+        } catch (err) {
+            setError(err instanceof Error ? err.message : "An unexpected error occurred");
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -187,9 +217,20 @@ export default function RoomBookingForm({ pricePerNight, roomName }: RoomBooking
                 </div>
             </div>
 
-            <Button type="submit" size="lg" className="w-full py-4 uppercase tracking-widest bg-amber-700 hover:bg-amber-800">
-                Reserve Your Stay
+            <Button 
+                type="submit" 
+                size="lg" 
+                className="w-full py-4 uppercase tracking-widest bg-amber-700 hover:bg-amber-800"
+                disabled={isLoading}
+            >
+                {isLoading ? "Processing..." : "Reserve Your Stay"}
             </Button>
+
+            {error && (
+                <p className="text-red-600 text-sm mt-2" role="alert">
+                    {error}
+                </p>
+            )}
 
             <div className="text-center pt-2 border-t border-stone-100">
                 <p className="text-xs text-stone-500">

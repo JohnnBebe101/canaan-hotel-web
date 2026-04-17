@@ -103,11 +103,7 @@ export async function POST(req: NextRequest) {
       room_type,
       notes: notes?.trim() || null,
       total_price: pricePerNight * nights,
-      total_price_cents,
-      currency: 'USD',
-      payment_status: DEFAULT_PAYMENT_STATUS,
       status: 'pending',
-      booking_version: DEFAULT_BOOKING_VERSION,
       created_at: new Date().toISOString(),
     };
 

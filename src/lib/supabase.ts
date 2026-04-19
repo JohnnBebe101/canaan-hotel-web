@@ -32,16 +32,20 @@ export interface Booking {
   number_of_guests: number;
   room_type: string;
   total_price: number;
-  status: LegacyBookingStatus;  // Using centralized type (Phase 2)
+  status: LegacyBookingStatus;
   notes?: string;
   created_at: string;
-  // Stripe-ready fields (Phase 1 - Foundation)
-  booking_version?: 'v1-pre-stripe';
+  booking_reference?: string;
+  booking_origin?: 'online' | 'local';
+  booking_version?: 'v1-pre-stripe' | 'v2-hybrid-confirmation';
   payment_status?: PaymentStatus;
   total_price_cents?: number;
   stripe_payment_intent?: string;
-  stripe_webhook_event_id?: string;  // Phase 4 - for idempotency
+  stripe_webhook_event_id?: string;
   currency?: string;
+  hold_expires_at?: string;
+  confirmation_mode?: 'auto' | 'manual' | 'local';
+  confirmed_at?: string;
 }
 
 export interface Payment {

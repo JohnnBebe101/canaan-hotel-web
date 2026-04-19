@@ -6,6 +6,9 @@ import {
   DEFAULT_PAYMENT_STATUS,
   DEFAULT_BOOKING_STATUS,
   DEFAULT_BOOKING_VERSION,
+  DEFAULT_BOOKING_ORIGIN,
+  HOLD_WINDOW_MINUTES,
+  generateBookingReference,
 } from '@/lib/types/booking';
 
 const ROOM_PRICES: Record<string, number> = {
@@ -106,6 +109,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const booking_reference = generateBookingReference();
+    const hold_expires_at = new Date(Date.now() + HOLD_WINDOW_MINUTES * 60 * 1000).toISOString();
+
     const bookingData = {
       guest_name: guest_name.trim(),
       email: email.trim().toLowerCase(),
@@ -116,10 +122,16 @@ export async function POST(req: NextRequest) {
       room_type,
       notes: notes?.trim() || null,
       total_price: pricePerNight * nights,
-      status: 'pending',
-      version: 'v2-hybrid-confirmation',
+      total_price_cents,
+      booking_reference,
+      status: 'held',
+      hold_expires_at,
+      booking_origin: DEFAULT_BOOKING_ORIGIN,
+      booking_version: DEFAULT_BOOKING_VERSION,
+      payment_status: 'unpaid',
       stripe_webhook_event_id: null,
       created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
     };
 
     const { data, error } = await (supabase as any)
@@ -143,8 +155,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         bookingId: data.id,
+        booking_reference: data.booking_reference,
         total_price_cents,
         currency: 'USD',
+        hold_expires_at: data.hold_expires_at,
         message: 'Booking created successfully',
       },
       { status: 201 }

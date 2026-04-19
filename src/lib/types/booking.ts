@@ -10,6 +10,8 @@
 export type BookingStatus =
   | "inquiry"          // Initial inquiry, no commitment yet
   | "booking_created"  // Booking intent created, awaiting confirmation
+  | "held"            // Hold placed, awaiting payment
+  | "hold_pending_confirmation"  // Payment received, verifying availability
   | "confirmed"       // Confirmed by hotel staff
   | "cancelled";      // Cancelled (by guest or hotel)
 
@@ -27,6 +29,8 @@ export type PaymentStatus =
 
 export type BookingVersion = "v1-pre-stripe" | "v2-hybrid-confirmation";
 
+export type BookingOrigin = "online" | "local";
+
 // --------------------------------------------------------
 // DEFAULT VALUES (for new bookings)
 // These should be set explicitly at creation time
@@ -35,6 +39,18 @@ export type BookingVersion = "v1-pre-stripe" | "v2-hybrid-confirmation";
 export const DEFAULT_BOOKING_VERSION: BookingVersion = "v2-hybrid-confirmation";
 export const DEFAULT_PAYMENT_STATUS: PaymentStatus = "unpaid";
 export const DEFAULT_BOOKING_STATUS: BookingStatus = "booking_created";
+export const DEFAULT_BOOKING_ORIGIN: BookingOrigin = "online";
+export const HOLD_WINDOW_MINUTES = 30;
+export const CONFIRMATION_WINDOW_HOURS = 2;
+
+export function generateBookingReference(): string {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  const random = Math.random().toString(36).substring(2, 6).toUpperCase();
+  return `CAN-${year}-${month}${day}-${random}`;
+}
 
 // --------------------------------------------------------
 // LEGACY STATUS MAPPING

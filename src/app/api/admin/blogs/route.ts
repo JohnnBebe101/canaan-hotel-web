@@ -8,9 +8,20 @@ import {
   deleteBlog,
   generateSlug
 } from "@/lib/blog-store";
+import { verifyAdminAuth } from "@/lib/admin-auth";
+
+function adminAuthCheck(request: NextRequest) {
+  if (!verifyAdminAuth(request)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  return null;
+}
 
 // GET - List all blogs
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const authError = adminAuthCheck(request);
+  if (authError) return authError;
+
   try {
     const blogs = await getBlogs();
     return NextResponse.json(blogs);
@@ -25,6 +36,8 @@ export async function GET() {
 
 // POST - Create a new blog post
 export async function POST(request: NextRequest) {
+  const authError = adminAuthCheck(request);
+  if (authError) return authError;
   try {
     const body = await request.json();
 
@@ -58,6 +71,8 @@ export async function POST(request: NextRequest) {
 
 // PUT - Update a blog post
 export async function PUT(request: NextRequest) {
+  const authError = adminAuthCheck(request);
+  if (authError) return authError;
   try {
     const body = await request.json();
 
@@ -90,6 +105,8 @@ export async function PUT(request: NextRequest) {
 
 // DELETE - Delete a blog post
 export async function DELETE(request: NextRequest) {
+  const authError = adminAuthCheck(request);
+  if (authError) return authError;
   try {
     const body = await request.json();
 

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 import { FEATURED_ROOMS } from '@/lib/featuredRooms';
+import { checkRoomAvailability } from '@/lib/availability';
 import {
   DEFAULT_PAYMENT_STATUS,
   DEFAULT_BOOKING_STATUS,
@@ -75,6 +76,18 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const isAvailable = await checkRoomAvailability(room_type, {
+      checkIn: check_in_date,
+      checkOut: check_out_date,
+    });
+
+    if (!isAvailable) {
+      return NextResponse.json(
+        { error: 'Room not available for selected dates' },
+        { status: 409 }
+      );
+    }
+
     const guests = number_of_guests || 1;
     if (guests < 1) {
       return NextResponse.json(
@@ -104,6 +117,8 @@ export async function POST(req: NextRequest) {
       notes: notes?.trim() || null,
       total_price: pricePerNight * nights,
       status: 'pending',
+      version: 'v2-hybrid-confirmation',
+      stripe_webhook_event_id: null,
       created_at: new Date().toISOString(),
     };
 

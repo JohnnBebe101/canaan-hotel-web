@@ -25,14 +25,14 @@ export type PaymentStatus =
 // BOOKING VERSION (for migrations)
 // --------------------------------------------------------
 
-export type BookingVersion = "v1-pre-stripe";
+export type BookingVersion = "v1-pre-stripe" | "v2-hybrid-confirmation";
 
 // --------------------------------------------------------
 // DEFAULT VALUES (for new bookings)
 // These should be set explicitly at creation time
 // --------------------------------------------------------
 
-export const DEFAULT_BOOKING_VERSION: BookingVersion = "v1-pre-stripe";
+export const DEFAULT_BOOKING_VERSION: BookingVersion = "v2-hybrid-confirmation";
 export const DEFAULT_PAYMENT_STATUS: PaymentStatus = "unpaid";
 export const DEFAULT_BOOKING_STATUS: BookingStatus = "booking_created";
 
@@ -54,8 +54,30 @@ export const PAYMENT_TO_BOOKING_STATUS: Record<PaymentStatus, BookingStatus> = {
 };
 
 // --------------------------------------------------------
+// STRIPE WEBHOOK ID TYPE
+// Used for webhook idempotency - prevents duplicate booking creation
+// --------------------------------------------------------
+
+export type StripeWebhookEventId = string;
+
+export function isValidStripeWebhookEventId(id: string | null | undefined): id is StripeWebhookEventId {
+  return typeof id === "string" && id.length > 0;
+}
+
+// --------------------------------------------------------
+// ADMIN CLIENT TYPE
+// Service role client for admin operations (bypasses RLS)
+// --------------------------------------------------------
+
+export type AdminClient = import("@supabase/supabase-js").SupabaseClient;
+
+// --------------------------------------------------------
 // TYPE GUARDS (optional - for defensive coding)
 // --------------------------------------------------------
+
+export function isValidBookingVersion(version: string): version is BookingVersion {
+  return ["v1-pre-stripe", "v2-hybrid-confirmation"].includes(version);
+}
 
 export function isValidBookingStatus(status: string): status is BookingStatus {
   return ["inquiry", "booking_created", "confirmed", "cancelled"].includes(status);

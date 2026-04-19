@@ -7,9 +7,21 @@ import {
   updateAttraction,
   deleteAttraction
 } from "@/lib/attraction-store";
+// Note: Attractions use offline storage - auth check is the security layer
+import { verifyAdminAuth } from "@/lib/admin-auth";
+
+function adminAuthCheck(request: NextRequest) {
+  if (!verifyAdminAuth(request)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  return null;
+}
 
 // GET - List all attractions
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const authError = adminAuthCheck(request);
+  if (authError) return authError;
+
   try {
     const attractions = await getAttractions();
     return NextResponse.json(attractions);
@@ -24,6 +36,8 @@ export async function GET() {
 
 // POST - Create a new attraction
 export async function POST(request: NextRequest) {
+  const authError = adminAuthCheck(request);
+  if (authError) return authError;
   try {
     const body = await request.json();
 
@@ -55,6 +69,8 @@ export async function POST(request: NextRequest) {
 
 // PUT - Update an attraction
 export async function PUT(request: NextRequest) {
+  const authError = adminAuthCheck(request);
+  if (authError) return authError;
   try {
     const body = await request.json();
 
@@ -82,6 +98,8 @@ export async function PUT(request: NextRequest) {
 
 // DELETE - Delete an attraction
 export async function DELETE(request: NextRequest) {
+  const authError = adminAuthCheck(request);
+  if (authError) return authError;
   try {
     const body = await request.json();
 

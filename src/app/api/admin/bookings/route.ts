@@ -1,10 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 export const dynamic = 'force-dynamic';
-import { getBookings, updateBooking, deleteBooking } from "@/lib/booking-store";
+import { getBookings, updateBooking, deleteBooking } from "@/lib/admin-booking-store";
 import { LEGACY_STATUS_VALUES, isValidLegacyStatus } from "@/lib/types/booking";
+import { verifyAdminAuth } from "@/lib/admin-auth";
+
+function adminAuthCheck(request: NextRequest) {
+  if (!verifyAdminAuth(request)) {
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { status: 401 }
+    );
+  }
+  return null;
+}
 
 // GET - List all bookings
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const authError = adminAuthCheck(request);
+  if (authError) return authError;
+
   try {
     const bookings = await getBookings();
     return NextResponse.json(bookings);
@@ -19,6 +33,9 @@ export async function GET() {
 
 // PATCH - Update booking status or notes
 export async function PATCH(request: NextRequest) {
+  const authError = adminAuthCheck(request);
+  if (authError) return authError;
+
   try {
     const body = await request.json();
 
@@ -68,6 +85,9 @@ export async function PATCH(request: NextRequest) {
 
 // DELETE - Delete a booking
 export async function DELETE(request: NextRequest) {
+  const authError = adminAuthCheck(request);
+  if (authError) return authError;
+
   try {
     const body = await request.json();
 

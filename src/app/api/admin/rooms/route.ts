@@ -6,16 +6,21 @@ import {
   updateRoom,
   deleteRoom,
   type Room
-} from "@/lib/room-store";
+} from "@/lib/admin-room-store";
+import { verifyAdminAuth } from "@/lib/admin-auth";
 
-/**
- * Admin Rooms API
- * Protected by middleware - requires admin authentication
- * CRUD operations for room management
- */
+function adminAuthCheck(request: NextRequest) {
+  if (!verifyAdminAuth(request)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  return null;
+}
 
 // GET /api/admin/rooms - List all rooms
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const authError = adminAuthCheck(request);
+  if (authError) return authError;
+
   try {
     const rooms = await getRooms();
     return NextResponse.json(rooms);
@@ -30,6 +35,8 @@ export async function GET() {
 
 // POST /api/admin/rooms - Create new room
 export async function POST(request: NextRequest) {
+  const authError = adminAuthCheck(request);
+  if (authError) return authError;
   try {
     const body = await request.json();
 
@@ -74,6 +81,8 @@ export async function POST(request: NextRequest) {
 
 // PUT /api/admin/rooms - Update existing room
 export async function PUT(request: NextRequest) {
+  const authError = adminAuthCheck(request);
+  if (authError) return authError;
   try {
     const body = await request.json();
 
@@ -119,6 +128,8 @@ export async function PUT(request: NextRequest) {
 
 // DELETE /api/admin/rooms - Delete room (soft delete)
 export async function DELETE(request: NextRequest) {
+  const authError = adminAuthCheck(request);
+  if (authError) return authError;
   try {
     const body = await request.json();
 

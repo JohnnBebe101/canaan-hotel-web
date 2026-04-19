@@ -56,6 +56,26 @@ export async function getBookingById(id: string): Promise<Booking | null> {
   }
 }
 
+export async function getBookingByReference(ref: string): Promise<Booking | null> {
+  try {
+    if (!supabase) throw new Error('Supabase not initialized');
+    const { data, error } = await supabase
+      .from('bookings')
+      .select('*')
+      .eq('booking_reference', ref)
+      .single();
+
+    if (error) {
+      if (error.code === 'PGRST116') return null;
+      throw error;
+    }
+    return data;
+  } catch (error) {
+    console.warn('[BookingStore] Error fetching by reference:', error);
+    return null;
+  }
+}
+
 // Overloads to support both camelCase input and snake_case storage payloads
 export async function createBooking(booking: BookingCamel): Promise<Booking>;
 export async function createBooking(booking: Omit<Booking, 'id' | 'created_at'>): Promise<Booking>;

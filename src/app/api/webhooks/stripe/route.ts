@@ -2,7 +2,16 @@ import { NextRequest, NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 import Stripe from 'stripe';
 import { supabase } from '@/lib/supabase';
-import { isValidPaymentStatus } from '@/lib/types/booking';
+import { getSupabaseAdmin } from '@/lib/supabase-admin';
+import { sendEmail } from '@/lib/email/resend';
+import {
+  emailPaymentReceived,
+  emailStaffNewBookingAlert,
+  emailPaymentFailed,
+  emailSessionExpired,
+} from '@/lib/email/templates';
+import { EMAIL_CONFIG } from '@/lib/email/resend';
+import { CONFIRMATION_WINDOW_HOURS } from '@/lib/types/booking';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder', {
   typescript: true,
@@ -96,7 +105,10 @@ export async function POST(req: NextRequest) {
           .from('bookings')
           .update({
             payment_status: 'paid',
-            status: 'confirmed',
+            status: 'hold_pending_confirmation',
+            hold_expires_at: new Date(
+              Date.now() + CONFIRMATION_WINDOW_HOURS * 60 * 60 * 1000
+            ).toISOString(),
             stripe_webhook_event_id: event.id,
             updated_at: new Date().toISOString(),
           })
@@ -110,7 +122,27 @@ export async function POST(req: NextRequest) {
           );
         }
 
-        console.log('[Stripe Webhook] Booking confirmed:', bookingId);
+        const { data: updatedBooking } = await (supabase as any)
+          .from('bookings')
+          .select('*')
+          .eq('id', bookingId)
+          .single();
+
+        if (updatedBooking?.email) {
+          await sendEmail({
+            to: updatedBooking.email,
+            subject: `Payment Received — Booking ${updatedBooking.booking_reference || bookingId}`,
+            html: emailPaymentReceived(updatedBooking as any),
+          });
+        }
+
+        await sendEmail({
+          to: EMAIL_CONFIG.hotelEmail,
+          subject: `New Paid Booking — Verify Availability: ${updatedBooking?.booking_reference || bookingId}`,
+          html: emailStaffNewBookingAlert(updatedBooking as any),
+        });
+
+        console.log('[Stripe Webhook] Booking moved to hold_pending_confirmation:', bookingId);
         break;
       }
 
@@ -130,6 +162,7 @@ export async function POST(req: NextRequest) {
           .from('bookings')
           .update({
             payment_status: 'failed',
+            status: 'booking_created',
             stripe_webhook_event_id: event.id,
             updated_at: new Date().toISOString(),
           })
@@ -143,9 +176,69 @@ export async function POST(req: NextRequest) {
           );
         }
 
+        const { data: updatedBooking } = await (supabase as any)
+          .from('bookings')
+          .select('*')
+          .eq('id', bookingId)
+          .single();
+
+        if (updatedBooking?.email) {
+          await sendEmail({
+            to: updatedBooking.email,
+            subject: `Payment Unsuccessful — Booking ${updatedBooking.booking_reference || bookingId}`,
+            html: emailPaymentFailed(updatedBooking as any),
+          });
+        }
+
         console.log('[Stripe Webhook] Payment failed for booking:', bookingId, {
           reason: paymentIntent.last_payment_error?.message,
         });
+        break;
+      }
+
+      case 'checkout.session.expired': {
+        const session = event.data.object as Stripe.Checkout.Session;
+        const bookingId = session.metadata?.bookingId;
+
+        if (!bookingId) {
+          console.log('[Stripe Webhook] Missing bookingId in expired session');
+          break;
+        }
+
+        const { data: booking } = await (supabase as any)
+          .from('bookings')
+          .select('*')
+          .eq('id', bookingId)
+          .single();
+
+        if (!booking) {
+          console.log('[Stripe Webhook] Booking not found for expired session:', bookingId);
+          break;
+        }
+
+        if (['held', 'booking_created'].includes(booking.status) || 
+            ['unpaid', 'pending', 'failed'].includes(booking.payment_status)) {
+          await (supabase as any)
+            .from('bookings')
+            .update({
+              payment_status: 'failed',
+              status: 'booking_created',
+              hold_expires_at: null,
+              stripe_webhook_event_id: event.id,
+              updated_at: new Date().toISOString(),
+            })
+            .eq('id', bookingId);
+
+          if (booking.email) {
+            await sendEmail({
+              to: booking.email,
+              subject: `Your Booking Hold Has Expired — ${booking.booking_reference || bookingId}`,
+              html: emailSessionExpired(booking as any),
+            });
+          }
+
+          console.log('[Stripe Webhook] Session expired, hold released:', booking.booking_reference);
+        }
         break;
       }
 

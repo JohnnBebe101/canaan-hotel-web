@@ -2,44 +2,57 @@
 
 export const dynamic = 'force-dynamic';
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { Booking } from "@/lib/models";
 import ConfirmModal from "@/components/ui/ConfirmModal";
 import { useToast } from "@/components/ui/Toast";
 import Badge from "@/components/ui/Badge";
-import { Mail, BedDouble, Calendar, CreditCard, Eye, Plus, CalendarCheck } from "lucide-react";
+import { Mail, BedDouble, Calendar, CreditCard, Eye, Plus, CalendarCheck, RefreshCw, AlertTriangle } from "lucide-react";
+
+const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "";
 
 export default function AdminBookingsPage() {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [filter, setFilter] = useState<string>("all");
+  const [showLocalModal, setShowLocalModal] = useState(false);
   const { showToast } = useToast();
 
   const [confirmConfig, setConfirmConfig] = useState<{
     isOpen: boolean;
     bookingId: string;
-    newStatus: Booking["status"] | "";
+    action: "confirm" | "flag-conflict" | "";
     title: string;
     message: string;
     variant: "primary" | "danger" | "warning";
   }>({
     isOpen: false,
     bookingId: "",
-    newStatus: "",
+    action: "",
     title: "",
     message: "",
     variant: "primary",
   });
 
-  useEffect(() => {
-    loadBookings();
-  }, []);
+  const [localForm, setLocalForm] = useState({
+    guest_name: "",
+    email: "",
+    phone: "",
+    check_in_date: "",
+    check_out_date: "",
+    number_of_guests: 1,
+    room_type: "economy-single",
+    payment_received_locally: false,
+  });
 
-  const loadBookings = async () => {
+  const loadBookings = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await fetch("/api/admin/bookings");
+      const response = await fetch("/api/admin/bookings", {
+        headers: { "x-admin-secret": ADMIN_SECRET },
+      });
       if (!response.ok) throw new Error("Failed to load bookings");
       const data = await response.json();
       setBookings(data);
@@ -48,69 +61,120 @@ export default function AdminBookingsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const handleStatusChangeRequest = (bookingId: string, newStatus: Booking["status"]) => {
+  useEffect(() => {
+    loadBookings();
+    const interval = setInterval(loadBookings, 60000);
+    return () => clearInterval(interval);
+  }, [loadBookings]);
+
+  const handleConfirmRequest = (bookingId: string) => {
     const booking = bookings.find((b) => b.id === bookingId);
     if (!booking) return;
 
-    let config: typeof confirmConfig = {
+    setConfirmConfig({
       isOpen: true,
       bookingId,
-      newStatus,
-      title: "Update Booking Status",
-      message: `Change status for ${booking.guest_name} to ${newStatus}?`,
+      action: "confirm",
+      title: "Confirm Booking",
+      message: `This will confirm the booking for ${booking.guest_name} and send a confirmation email. Continue?`,
       variant: "primary",
-    };
-
-    if (newStatus === "confirmed") {
-      config.title = "Confirm Booking";
-      config.message = `Confirming will notify ${booking.guest_name} and lock the room. Proceed?`;
-      config.variant = "primary";
-    } else if (newStatus === "cancelled") {
-      config.title = "Cancel Booking";
-      config.message = `Are you sure you want to cancel the booking for ${booking.guest_name}? This action cannot be undone.`;
-      config.variant = "danger";
-    }
-
-    setConfirmConfig(config);
+    });
   };
 
-  const executeStatusUpdate = async () => {
-    const { bookingId, newStatus } = confirmConfig;
-    if (!bookingId || !newStatus) return;
+  const handleFlagConflictRequest = (bookingId: string) => {
+    const booking = bookings.find((b) => b.id === bookingId);
+    if (!booking) return;
+
+    setConfirmConfig({
+      isOpen: true,
+      bookingId,
+      action: "flag-conflict",
+      title: "Flag Conflict & Refund",
+      message: `This will cancel the booking, initiate a refund to ${booking.guest_name}, and send an apology email. Are you sure?`,
+      variant: "danger",
+    });
+  };
+
+  const executeAction = async () => {
+    const { bookingId, action } = confirmConfig;
+    if (!bookingId || !action) return;
 
     try {
-      const response = await fetch("/api/admin/bookings", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: bookingId, status: newStatus }),
-      });
+      if (action === "confirm") {
+        const response = await fetch("/api/admin/bookings/confirm", {
+          method: "POST",
+          headers: { 
+            "Content-Type": "application/json",
+            "x-admin-secret": ADMIN_SECRET,
+          },
+          body: JSON.stringify({ bookingId, mode: "manual" }),
+        });
+        if (!response.ok) throw new Error("Failed to confirm booking");
+        showToast("success", "Booking confirmed successfully.");
+      } else if (action === "flag-conflict") {
+        const response = await fetch("/api/admin/bookings/flag-conflict", {
+          method: "POST",
+          headers: { 
+            "Content-Type": "application/json",
+            "x-admin-secret": ADMIN_SECRET,
+          },
+          body: JSON.stringify({ bookingId, reason: "Availability conflict" }),
+        });
+        if (!response.ok) throw new Error("Failed to flag conflict");
+        showToast("success", "Booking flagged and refund initiated.");
+      }
 
-      if (!response.ok) throw new Error("Failed to update status");
-
-      const updated = await response.json();
-      setBookings(bookings.map((b) => (b.id === bookingId ? updated : b)));
-      showToast("success", `Booking ${newStatus} successfully.`);
+      loadBookings();
     } catch (err) {
-      showToast("error", "Failed to update booking status.");
+      showToast("error", "Action failed. Please try again.");
     } finally {
       setConfirmConfig((prev) => ({ ...prev, isOpen: false }));
     }
   };
 
-  const getStatusVariant = (status: string): any => {
-    switch (status) {
-      case "confirmed":
-        return "success";
-      case "pending":
-        return "warning";
-      case "cancelled":
-        return "danger";
-      default:
-        return "neutral";
+  const handleCreateLocalBooking = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("/api/admin/bookings/local", {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "x-admin-secret": ADMIN_SECRET,
+        },
+        body: JSON.stringify(localForm),
+      });
+      if (!response.ok) throw new Error("Failed to create booking");
+      showToast("success", "Local booking created successfully.");
+      setShowLocalModal(false);
+      setLocalForm({
+        guest_name: "",
+        email: "",
+        phone: "",
+        check_in_date: "",
+        check_out_date: "",
+        number_of_guests: 1,
+        room_type: "economy-single",
+        payment_received_locally: false,
+      });
+      loadBookings();
+    } catch (err) {
+      showToast("error", "Failed to create booking.");
     }
   };
+
+  const filteredBookings = bookings.filter((b) => {
+    const status = b.status as string;
+    if (filter === "all") return true;
+    if (filter === "pending") return status === "held" || status === "hold_pending_confirmation" || status === "booking_created";
+    if (filter === "confirmed") return status === "confirmed";
+    if (filter === "today") {
+      const today = new Date().toISOString().split("T")[0];
+      return b.check_in_date === today;
+    }
+    return true;
+  });
 
   if (loading) {
     return (
@@ -209,15 +273,22 @@ export default function AdminBookingsPage() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center gap-2">
-                      <select
-                        value={booking.status}
-                        onChange={(e) => handleStatusChangeRequest(booking.id, e.target.value as Booking["status"])}
-                        className="text-xs font-medium border border-slate-200 rounded-lg px-2 py-1 bg-white focus:ring-2 focus:ring-cactus outline-none"
-                      >
-                        <option value="pending">Pending</option>
-                        <option value="confirmed">Confirm</option>
-                        <option value="cancelled">Cancel</option>
-                      </select>
+                      {((booking.status as string) === "hold_pending_confirmation" || (booking.status as string) === "held") && (
+                        <>
+                          <button
+                            onClick={() => handleConfirmRequest(booking.id)}
+                            className="text-xs font-medium px-2 py-1 bg-emerald-50 text-emerald-700 rounded-lg hover:bg-emerald-100 transition-colors"
+                          >
+                            Confirm
+                          </button>
+                          <button
+                            onClick={() => handleFlagConflictRequest(booking.id)}
+                            className="text-xs font-medium px-2 py-1 bg-red-50 text-red-700 rounded-lg hover:bg-red-100 transition-colors"
+                          >
+                            Conflict
+                          </button>
+                        </>
+                      )}
                       <Link
                         href={`/admin/bookings/${booking.id}`}
                         className="p-1.5 bg-slate-100 text-slate-500 rounded-lg hover:text-cactus transition-colors"
@@ -252,7 +323,7 @@ export default function AdminBookingsPage() {
         message={confirmConfig.message}
         variant={confirmConfig.variant}
         confirmLabel="Continue"
-        onConfirm={executeStatusUpdate}
+        onConfirm={executeAction}
         onCancel={() => setConfirmConfig((prev) => ({ ...prev, isOpen: false }))}
       />
     </div>

@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { stripe, isStripeConfigured } from '@/lib/stripe';
 import { getBookingById, updateBooking } from '@/lib/booking-store';
-import { isValidPaymentStatus } from '@/lib/types/booking';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://canaanhotels.com';
 
@@ -33,6 +32,29 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    if (booking.payment_status === 'paid') {
+      return NextResponse.json(
+        { error: 'This booking has already been paid.' },
+        { status: 409 }
+      );
+    }
+
+    if (booking.payment_status === 'pending' && booking.stripe_payment_intent) {
+      return NextResponse.json(
+        { error: 'A payment session is already in progress for this booking. Please complete or wait for it to expire.' },
+        { status: 409 }
+      );
+    }
+
+    if ((booking as any).status === 'held' && (booking as any).hold_expires_at) {
+      if (new Date((booking as any).hold_expires_at) < new Date()) {
+        return NextResponse.json(
+          { error: 'Your booking hold has expired. Please start a new booking.' },
+          { status: 410 }
+        );
+      }
+    }
+
     const amountInCents = booking.total_price_cents || (booking.total_price || 0) * 100;
     
     if (amountInCents <= 0) {
@@ -58,10 +80,11 @@ export async function POST(req: NextRequest) {
         },
       ],
       mode: 'payment',
-      success_url: `${SITE_URL}/booking/success?session_id={CHECKOUT_SESSION_ID}&booking_id=${bookingId}`,
+      success_url: `${SITE_URL}/booking/success?ref=${booking.booking_reference}&bookingId=${bookingId}`,
       cancel_url: `${SITE_URL}/booking/cancel?booking_id=${bookingId}`,
       metadata: {
         bookingId,
+        bookingReference: booking.booking_reference || '',
         guestName: booking.guest_name,
         roomType: booking.room_type,
       },
@@ -74,12 +97,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (isValidPaymentStatus('pending')) {
-      await updateBooking(bookingId, {
-        payment_status: 'pending',
-        stripe_payment_intent: session.id,
-      } as any);
-    }
+    await updateBooking(bookingId, {
+      payment_status: 'pending',
+      stripe_payment_intent: session.id,
+    } as any);
 
     return NextResponse.json({
       sessionUrl: session.url,

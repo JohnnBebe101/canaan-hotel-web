@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
+import { getSupabaseAdmin } from '@/lib/supabase-admin';
 import { FEATURED_ROOMS } from '@/lib/featuredRooms';
 import { checkRoomAvailability } from '@/lib/availability';
 import {
@@ -33,6 +34,30 @@ function calculateNights(checkIn: string, checkOut: string): number {
   const diffTime = end.getTime() - start.getTime();
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   return diffDays > 0 ? diffDays : 0;
+}
+
+async function insertBookingWithReference(payload: Record<string, unknown>) {
+  const MAX_RETRIES = 3;
+  const supabaseAdmin = getSupabaseAdmin();
+
+  for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+    const ref = generateBookingReference();
+    const { data, error } = await supabaseAdmin
+      .from('bookings')
+      .insert({ ...payload, booking_reference: ref })
+      .select()
+      .single();
+
+    if (!error) return { data, error: null };
+
+    if (error.code !== '23505') {
+      return { data: null, error };
+    }
+
+    console.warn(`[bookings/create] Reference collision on attempt ${attempt + 1}, retrying...`);
+  }
+
+  return { data: null, error: new Error('Failed to generate unique booking reference after 3 attempts') };
 }
 
 export async function POST(req: NextRequest) {
@@ -109,7 +134,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const booking_reference = generateBookingReference();
     const hold_expires_at = new Date(Date.now() + HOLD_WINDOW_MINUTES * 60 * 1000).toISOString();
 
     const bookingData = {
@@ -123,7 +147,6 @@ export async function POST(req: NextRequest) {
       notes: notes?.trim() || null,
       total_price: pricePerNight * nights,
       total_price_cents,
-      booking_reference,
       status: 'held',
       hold_expires_at,
       booking_origin: DEFAULT_BOOKING_ORIGIN,
@@ -134,11 +157,7 @@ export async function POST(req: NextRequest) {
       updated_at: new Date().toISOString(),
     };
 
-    const { data, error } = await (supabase as any)
-      .from('bookings')
-      .insert(bookingData)
-      .select()
-      .single();
+    const { data, error } = await insertBookingWithReference(bookingData);
 
     if (error) {
       console.error('[bookings/create] Database error:', error);

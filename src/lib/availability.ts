@@ -15,7 +15,8 @@ export async function checkRoomAvailability(
     .from('bookings')
     .select('id')
     .eq('room_type', roomType)
-    .eq('status', 'confirmed')
+    .not('status', 'in', '("cancelled","conflict_flagged","booking_created")')
+    .not('payment_status', 'in', '("failed","refunded")')
     .or(`check_in_date.lt.${checkOut},check_out_date.gt.${checkIn})`)
     .not('check_in_date', 'is', null)
     .not('check_out_date', 'is', null);

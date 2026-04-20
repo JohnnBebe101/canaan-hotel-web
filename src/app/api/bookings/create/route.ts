@@ -10,6 +10,9 @@ import {
   DEFAULT_BOOKING_ORIGIN,
   HOLD_WINDOW_MINUTES,
   generateBookingReference,
+  BookingStatus,
+  BookingVersion,
+  PaymentStatus,
 } from '@/lib/types/booking';
 
 const ROOM_PRICES: Record<string, number> = {
@@ -147,11 +150,11 @@ export async function POST(req: NextRequest) {
       notes: notes?.trim() || null,
       total_price: pricePerNight * nights,
       total_price_cents,
-      status: 'held',
+      status: 'held' as BookingStatus,
       hold_expires_at,
       booking_origin: DEFAULT_BOOKING_ORIGIN,
-      booking_version: DEFAULT_BOOKING_VERSION,
-      payment_status: 'unpaid',
+      booking_version: DEFAULT_BOOKING_VERSION as BookingVersion,
+      payment_status: 'unpaid' as PaymentStatus,
       stripe_webhook_event_id: null,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),

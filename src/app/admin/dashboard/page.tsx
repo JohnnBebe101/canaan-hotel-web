@@ -14,10 +14,21 @@ interface Stats {
   confirmedBookings: number;
   pendingBookings: number;
   totalRevenue: number;
+  confirmedRevenueCents: number;
   activeGuests: number;
   occupancyRate: number;
   availableRooms?: number;
   checkedInGuests?: number;
+  checkedInToday?: number;
+}
+
+function formatUSD(cents: number): string {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(cents / 100);
 }
 
 export default function AdminDashboardPage() {
@@ -33,10 +44,19 @@ export default function AdminDashboardPage() {
   useEffect(() => {
     async function loadDashboardData() {
       try {
+        const adminSecret = process.env.NEXT_PUBLIC_ADMIN_PASSWORD ?? "";
+        const headers = { "x-admin-secret": adminSecret };
+
         const [statsRes, bookingsRes] = await Promise.all([
-          fetch("/api/admin/stats"),
-          fetch("/api/admin/bookings")
+          fetch("/api/admin/stats", { headers }),
+          fetch("/api/admin/bookings", { headers })
         ]);
+
+        if (statsRes.status === 401 || bookingsRes.status === 401) {
+          console.error("[dashboard] Auth failed — check ADMIN_API_SECRET");
+          showToast("error", "Authentication failed. Check admin credentials.");
+          return;
+        }
 
         if (statsRes.ok) {
           const statsData = await statsRes.json();
@@ -77,8 +97,8 @@ export default function AdminDashboardPage() {
         {[
           { label: "Total Bookings", value: stats?.totalBookings, Icon: Calendar, sub: "Since inception" },
           { label: "Checked In Today", value: stats?.checkedInGuests || stats?.activeGuests || 0, Icon: Users, sub: "Currently in-house" },
-          { label: "Occupancy Rate", value: `${stats?.occupancyRate}%`, Icon: BedDouble, sub: `${stats?.availableRooms || 0} rooms available` },
-          { label: "Confirmed Revenue", value: `ETB ${(stats?.totalRevenue || 0).toLocaleString()}`, Icon: CreditCard, sub: "Confirmed bookings only" },
+          { label: "Occupancy Rate", value: `${stats?.occupancyRate ?? 0}%`, Icon: BedDouble, sub: `${stats?.availableRooms ?? 0} rooms available` },
+          { label: "Confirmed Revenue", value: formatUSD(stats?.confirmedRevenueCents || 0), Icon: CreditCard, sub: "Confirmed + paid bookings only" },
         ].map((stat, i) => (
           <div key={i} className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
             <div className="flex items-center gap-2">

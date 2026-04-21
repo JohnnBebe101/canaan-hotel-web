@@ -42,7 +42,17 @@ export default function AdminRoomsPage() {
   const loadRooms = async () => {
     try {
       setLoading(true);
-      const response = await fetch("/api/admin/rooms");
+      const adminSecret = process.env.NEXT_PUBLIC_ADMIN_PASSWORD ?? "";
+      const response = await fetch("/api/admin/rooms", {
+        headers: { "x-admin-secret": adminSecret },
+      });
+      
+      if (response.status === 401) {
+        console.error("[rooms] Auth failed — check ADMIN_API_SECRET");
+        setError("Authentication failed. Check admin credentials.");
+        return;
+      }
+      
       if (!response.ok) throw new Error("Failed to load rooms");
       const data = await response.json();
       setRooms(data);

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { stripe, isStripeConfigured } from '@/lib/stripe';
-import { getBookingById, updateBooking } from '@/lib/booking-store';
+import { updateBooking } from '@/lib/booking-store';
+import { getBookingById } from '@/lib/admin-booking-store';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://canaanhotels.com';
 

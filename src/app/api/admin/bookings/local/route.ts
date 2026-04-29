@@ -7,10 +7,12 @@ import { sendEmail } from "@/lib/email/resend";
 import { emailLocalBookingConfirmed } from "@/lib/email/templates";
 
 const ROOM_PRICES: Record<string, number> = {
-  'economy-single': 45,
-  'economy-double': 75,
-  'family-room': 95,
-  'comfort-double': 120,
+  'standard': 25,
+  'delux': 32,
+  'king': 40,
+  'twin': 45,
+  'semi-suit': 50,
+  'suit': 55,
 };
 
 function calculateNights(checkIn: string, checkOut: string): number {

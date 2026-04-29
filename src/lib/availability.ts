@@ -33,10 +33,12 @@ export async function getAvailableRoomsForDates(
   dateRange: DateRange
 ): Promise<string[]> {
   const allRoomTypes = [
-    'economy-single',
-    'economy-double',
-    'family-room',
-    'comfort-double',
+    'standard',
+    'delux',
+    'king',
+    'twin',
+    'semi-suit',
+    'suit',
   ];
 
   const available: string[] = [];

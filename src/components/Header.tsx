@@ -96,24 +96,16 @@ function Header({ variant = 'public' }: HeaderProps) {
         <div className="max-w-7xl mx-auto px-8 flex justify-between items-center h-20">
           <Link
             href="/"
-            className="flex items-center space-x-4 cursor-pointer group focus:outline-none"
+            className="flex items-center cursor-pointer group focus:outline-none"
             aria-label="Canaan International Hotel Home"
           >
-            <div className="transition-all duration-300">
+            <div className="flex flex-col items-start">
               <CanaanLogo
                 size={scrolled ? "w-14 h-14" : "w-20 h-20"}
                 className={`transition-all duration-300 ${scrolled ? "text-cactus" : "text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]"
                   }`}
               />
-            </div>
-            <div
-              className={`text-xl font-serif font-bold tracking-widest transition-all duration-300 ${
-                scrolled 
-                  ? "text-white" 
-                  : "text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]"
-              }`}
-            >
-              Canaan
+              <span className={`text-xs mt-1 transition-all duration-300 ${scrolled ? "text-forest/60" : "text-white/70 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"}`}>Canaan</span>
             </div>
           </Link>
 
@@ -126,9 +118,9 @@ function Header({ variant = 'public' }: HeaderProps) {
                   key={item.label}
                   href={item.href}
                   role="menuitem"
-                  className={`text-[11px] uppercase tracking-[0.4em] font-medium transition-all duration-300 relative group ${
+                  className={`text-[15px] uppercase tracking-wide font-medium transition-all duration-300 relative group ${
                     scrolled
-                      ? "text-white/80 hover:text-white"
+                      ? "text-white/80 hover:text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]"
                       : "text-white/90 hover:text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]"
                   } ${isActive ? "text-bronze font-medium" : ""}`}
                 >
@@ -142,11 +134,11 @@ function Header({ variant = 'public' }: HeaderProps) {
               );
             })}
 
-            <Link href="/rooms" prefetch>
-              <Button 
+            <Button 
                 variant="primary" 
                 size="md" 
-                className={`px-5 py-2.5 text-[10px] uppercase tracking-[0.4em] transition-all duration-200 ${
+                onClick={() => window.dispatchEvent(new CustomEvent('open-booking'))}
+                className={`px-5 py-2.5 text-[10px] uppercase tracking-normal transition-all duration-200 ${
                   scrolled
                     ? "bg-bronze text-white border-2 border-bronze hover:bg-bronze/90"
                     : "bg-bronze text-white border-2 border-bronze hover:bg-white hover:text-forest hover:border-white shadow-[0_2px_12px_rgba(181,129,58,0.5)]"
@@ -154,7 +146,6 @@ function Header({ variant = 'public' }: HeaderProps) {
               >
                 Book Now
               </Button>
-            </Link>
           </div>
 
           {/* Hamburger Button (Mobile) */}
@@ -200,7 +191,7 @@ function Header({ variant = 'public' }: HeaderProps) {
         >
           {/* Top section - wordmark + close button */}
           <div className="h-16 px-6 flex items-center justify-between border-b border-white/10">
-            <span className="text-white font-bold tracking-widest text-lg">Canaan</span>
+            <span className="text-white font-bold tracking-wide text-lg">Canaan</span>
             <button
               ref={closeButtonRef}
               onClick={() => setMenuOpen(false)}
@@ -237,7 +228,7 @@ function Header({ variant = 'public' }: HeaderProps) {
             <Link 
               href="/rooms" 
               onClick={() => setMenuOpen(false)}
-              className="block w-full bg-bronze text-white font-semibold py-3.5 rounded-xl text-center tracking-wide hover:bg-bronze/90 transition-colors"
+              className="block w-full bg-bronze text-white font-semibold py-3.5 rounded-xl text-center tracking-normal hover:bg-bronze/90 transition-colors"
             >
               Book Now
             </Link>

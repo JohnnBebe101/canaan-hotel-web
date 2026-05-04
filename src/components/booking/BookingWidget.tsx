@@ -18,7 +18,7 @@ type Step = 'details' | 'payment' | 'success';
 
 export default function BookingWidget({ isOpen, onClose, initialSuite }: BookingWidgetProps) {
     const [step, setStep] = useState<Step>('details');
-    const [selectedSuite, setSelectedSuite] = useState(initialSuite || 'The Royal Mesob Suite');
+    const [selectedSuite, setSelectedSuite] = useState(initialSuite || 'family-room');
 
     // Date selection state
     const [checkIn, setCheckIn] = useState<Date | null>(null);
@@ -39,11 +39,12 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
 
     const totalPrice = useMemo(() => {
         const rates: Record<string, number> = {
-            'The Royal Mesob Suite': 450,
-            'Gheralta Vista Deluxe': 280,
-            'Adigrat Executive': 350
+            'economy-single': 4500,
+            'economy-double': 7500,
+            'family-room': 9500,
+            'comfort-double': 12000
         };
-        const rate = rates[selectedSuite] || 450;
+        const rate = rates[selectedSuite] || 7500;
         return nights > 0 ? nights * rate : 0;
     }, [nights, selectedSuite]);
 
@@ -80,7 +81,7 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
                 aria-hidden="true"
             />
 
-            <div className="relative bg-sandstone w-full max-w-3xl shadow-2xl rounded-sm overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-10 duration-700 h-[90vh] md:h-auto max-h-[95vh] flex flex-col md:flex-row border border-white/5">
+            <div className="relative bg-sandstone w-full max-w-3xl shadow-2xl rounded-sm overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-10 duration-700 h-auto max-h-[85vh] md:max-h-[95vh] flex flex-col md:flex-row border border-white/5">
 
                 {/* Close Button - More Premium Position */}
                 <button
@@ -110,11 +111,11 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
 
                             <div className="space-y-8">
                                 <div className="space-y-2 group cursor-default">
-                                    <p className="text-[9px] uppercase tracking-widest text-cactus font-bold">Chamber Tier</p>
+                                    <p className="text-[9px] uppercase tracking-widest text-cactus font-bold">Room Type</p>
                                     <p className="text-xl font-serif text-sandstone group-hover:text-cactus transition-colors">{selectedSuite}</p>
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-8 border-y border-white/5 py-8">
+                                <div className="grid grid-cols-2 gap-3 border-y border-white/5 py-4">
                                     <div className="space-y-2">
                                         <p className="text-[9px] uppercase tracking-widest text-cactus font-bold">Check-in</p>
                                         <p className="text-lg font-serif text-sandstone">{checkIn ? checkIn.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : '---'}</p>
@@ -153,18 +154,18 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
                 </div>
 
                 {/* Main Form Content - Clean Sandstone Aesthetic */}
-                <div className="flex-1 p-6 md:p-6 overflow-y-auto bg-sandstone custom-scrollbar relative">
+                <div className="flex-1 p-4 md:p-6 overflow-y-auto bg-sandstone custom-scrollbar relative">
                     {step === 'details' && (
-                        <form onSubmit={handleNext} className="space-y-12 animate-in slide-in-from-right-10 duration-700">
-                            <div className="flex items-end justify-between border-b border-forest/5 pb-8">
+                        <form onSubmit={handleNext} className="space-y-6 animate-in slide-in-from-right-10 duration-700">
+                            <div className="flex items-end justify-between border-b border-forest/5 pb-4">
                                 <div>
                                     <Badge variant="cactus">Phase 01</Badge>
-                                    <h2 className="text-4xl md:text-5xl font-serif text-forest mt-4">Personal Details</h2>
+                                    <h2 className="text-2xl md:text-3xl font-serif text-forest mt-2">Personal Details</h2>
                                 </div>
                                 <div className="text-[10px] uppercase font-bold text-cactus tracking-[0.3em]" aria-label="Step 1 of 2">Identification</div>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="space-y-3">
                                     <label htmlFor="guest-name" className="text-[10px] uppercase font-bold tracking-widest text-forest/40">Full Legal Name</label>
                                     <input
@@ -207,7 +208,7 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
                             </div>
 
                             <div className="space-y-4 pt-4">
-                                <label htmlFor="suite-tier-select" className="text-[10px] uppercase font-bold tracking-widest text-forest/40">Chamber Refinement</label>
+                                <label htmlFor="suite-tier-select" className="text-[10px] uppercase font-bold tracking-widest text-forest/40">Room Type</label>
                                 <div className="relative">
                                     <select
                                         id="suite-tier-select"
@@ -215,9 +216,10 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
                                         onChange={(e) => setSelectedSuite(e.target.value)}
                                         className="w-full bg-white border border-forest/10 p-6 text-forest font-serif text-xl outline-none appearance-none cursor-pointer hover:border-cactus transition-colors shadow-sm"
                                     >
-                                        <option>The Royal Mesob Suite</option>
-                                        <option>Gheralta Vista Deluxe</option>
-                                        <option>Adigrat Executive</option>
+                                        <option value="economy-single">Economy Single</option>
+                                        <option value="economy-double">Economy Double</option>
+                                        <option value="family-room">Family Room</option>
+                                        <option value="comfort-double">Comfort Double</option>
                                     </select>
                                     <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-cactus">
                                         <Icon name="arrow_forward" className="transform rotate-90" />
@@ -229,16 +231,16 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
                                 type="submit"
                                 variant={(!checkIn || !checkOut) ? 'outline' : 'primary'}
                                 disabled={!checkIn || !checkOut}
-                                className="w-full py-8 text-xs"
+                                className="w-full py-4 text-xs"
                             >
-                                Proceed to Sanctuary Checkout <Icon name="arrow_forward" className="text-base ml-2" />
+                                Book Now <Icon name="arrow_forward" className="text-base ml-2" />
                             </Button>
                         </form>
                     )}
 
                     {step === 'payment' && (
-                        <form onSubmit={handleNext} className="space-y-12 animate-in slide-in-from-right-10 duration-700">
-                            <div className="flex items-center justify-between border-b border-forest/5 pb-8">
+                        <form onSubmit={handleNext} className="space-y-6 animate-in slide-in-from-right-10 duration-700">
+                            <div className="flex items-center justify-between border-b border-forest/5 pb-4">
                                 <button
                                     type="button"
                                     onClick={() => setStep('details')}
@@ -251,8 +253,8 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
 
                             <div>
                                 <Badge variant="cactus">Final Step</Badge>
-                                <h2 className="text-4xl md:text-5xl font-serif text-forest mt-4">Secure Checkout</h2>
-                                <p className="text-gray-400 mt-4 font-light text-lg">Your data is encrypted with the same rigidity as our highland basalt foundations.</p>
+                                <h2 className="text-2xl md:text-3xl font-serif text-forest mt-2">Secure Checkout</h2>
+                                <p className="text-gray-400 mt-2 font-light text-sm">Your data is encrypted.</p>
                             </div>
 
                             <div className="space-y-10">
@@ -290,7 +292,7 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
 
                             <Button
                                 type="submit"
-                                className="w-full py-8 text-xs"
+                                className="w-full py-4 text-xs"
                             >
                                 Seal Your Reservation <Icon name="lock" className="text-base ml-2" />
                             </Button>

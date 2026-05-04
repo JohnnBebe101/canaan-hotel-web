@@ -119,9 +119,15 @@ className={`object-cover transition-transform duration-[10000ms] ease-linear ${i
 
               <div className={`flex flex-col md:flex-row justify-center items-center space-y-6 md:space-y-0 md:space-x-12 transform transition-all duration-1000 delay-900 ${index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
                 }`}>
-                <Button onClick={() => window.dispatchEvent(new CustomEvent('open-booking'))} className="px-16 py-6 text-xs w-full md:w-auto bg-bronze text-white border-2 border-bronze hover:bg-forest hover:border-forest transition-all duration-300 shadow-[0_4px_15px_rgba(181,129,58,0.4)]">
-                  {slide.cta}
-                </Button>
+                {slide.cta === 'Discover Our Story' ? (
+                  <Link href="/about" className="px-16 py-6 text-xs w-full md:w-auto bg-bronze text-white border-2 border-bronze hover:bg-forest hover:border-forest transition-all duration-300 shadow-[0_4px_15px_rgba(181,129,58,0.4)]">
+                    Discover Our Story
+                  </Link>
+                ) : (
+                  <Button onClick={() => window.dispatchEvent(new CustomEvent('open-booking'))} className="px-16 py-6 text-xs w-full md:w-auto bg-bronze text-white border-2 border-bronze hover:bg-forest hover:border-forest transition-all duration-300 shadow-[0_4px_15px_rgba(181,129,58,0.4)]">
+                    {slide.cta}
+                  </Button>
+                )}
                 <Link href="/rooms" prefetch>
                   <button
                     className="text-white text-[11px] uppercase tracking-[0.5em] font-bold flex items-center group py-4 bg-transparent border-2 border-white/60 px-8 py-3.5 hover:bg-white/10 hover:border-white/90 backdrop-blur-sm transition-all duration-300"

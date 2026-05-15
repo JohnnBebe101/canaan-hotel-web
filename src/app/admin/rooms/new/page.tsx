@@ -1,8 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
+import { ROOM_TYPES } from "@/lib/roomTypes";
 import { ImagePlus, X, Loader2, AlertCircle, ArrowLeft } from "lucide-react";
 import Button from "@/components/ui/Button";
 
@@ -16,6 +17,7 @@ interface ImagePreview {
 export default function NewRoomPage() {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [selectedRoomType, setSelectedRoomType] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -27,6 +29,20 @@ export default function NewRoomPage() {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
   const [uploadError, setUploadError] = useState("");
+
+  useEffect(() => {
+    if (selectedRoomType) {
+      const roomType = ROOM_TYPES.find(rt => rt.slug === selectedRoomType);
+      if (roomType) {
+        setFormData(prev => ({
+          ...prev,
+          name: roomType.name,
+          price_per_night: roomType.price.toString(),
+          max_guests: roomType.maxGuests.toString()
+        }));
+      }
+    }
+  }, [selectedRoomType]);
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -180,6 +196,27 @@ export default function NewRoomPage() {
         )}
 
         <div className="space-y-6">
+          {/* Room Type Selector */}
+          <div>
+            <label className="block text-sm font-semibold text-forest mb-2">
+              Room Type *
+            </label>
+            <select
+              value={selectedRoomType}
+              onChange={(e) => setSelectedRoomType(e.target.value)}
+              className="w-full px-4 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-cactus focus:border-transparent outline-none transition-all bg-white"
+              required
+            >
+              <option value="">Select a room type...</option>
+              {ROOM_TYPES.map((type) => (
+                <option key={type.slug} value={type.slug}>
+                  {type.name} — ${type.price}/night (up to {type.maxGuests} guests)
+                </option>
+              ))}
+            </select>
+            <p className="text-xs text-slate-400 mt-1">Selecting a room type will auto-fill name, price, and max guests.</p>
+          </div>
+
           {/* Room Name */}
           <div>
             <label className="block text-sm font-semibold text-forest mb-2">

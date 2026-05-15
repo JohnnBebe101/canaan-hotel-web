@@ -8,12 +8,12 @@ import Badge from "./ui/Badge";
 import { Icon } from "@/components/ui/Icons";
 
 interface RoomCardProps {
-  slug: string; // e.g. "economy-single"
+  slug: string; // e.g. "standard"
   imageSrc: string;
   imageAlt: string;
   name: string;
   description: string;
-  priceLabel: string; // e.g. "From $75 / night"
+  priceLabel: string; // e.g. "From $25/night"
   badges?: string[];
   rating?: number;
 }

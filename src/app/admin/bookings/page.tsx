@@ -43,7 +43,7 @@ export default function AdminBookingsPage() {
     check_in_date: "",
     check_out_date: "",
     number_of_guests: 1,
-    room_type: "economy-single",
+    room_type: "standard",
     payment_received_locally: false,
   });
 
@@ -155,7 +155,7 @@ export default function AdminBookingsPage() {
         check_in_date: "",
         check_out_date: "",
         number_of_guests: 1,
-        room_type: "economy-single",
+        room_type: "standard",
         payment_received_locally: false,
       });
       loadBookings();

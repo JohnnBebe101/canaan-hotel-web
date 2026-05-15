@@ -18,7 +18,7 @@ type Step = 'details' | 'payment' | 'success';
 
 export default function BookingWidget({ isOpen, onClose, initialSuite }: BookingWidgetProps) {
     const [step, setStep] = useState<Step>('details');
-    const [selectedSuite, setSelectedSuite] = useState(initialSuite || 'family-room');
+    const [selectedSuite, setSelectedSuite] = useState(initialSuite || 'standard');
 
     // Date selection state
     const [checkIn, setCheckIn] = useState<Date | null>(null);
@@ -39,12 +39,14 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
 
     const totalPrice = useMemo(() => {
         const rates: Record<string, number> = {
-            'economy-single': 4500,
-            'economy-double': 7500,
-            'family-room': 9500,
-            'comfort-double': 12000
+            'standard': 2500,
+            'delux': 3200,
+            'king': 4000,
+            'twin': 4500,
+            'semi-suit': 5000,
+            'suit': 5500
         };
-        const rate = rates[selectedSuite] || 7500;
+        const rate = rates[selectedSuite] || 2500;
         return nights > 0 ? nights * rate : 0;
     }, [nights, selectedSuite]);
 
@@ -216,10 +218,12 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
                                         onChange={(e) => setSelectedSuite(e.target.value)}
                                         className="w-full bg-white border border-forest/10 p-6 text-forest font-serif text-xl outline-none appearance-none cursor-pointer hover:border-cactus transition-colors shadow-sm"
                                     >
-                                        <option value="economy-single">Economy Single</option>
-                                        <option value="economy-double">Economy Double</option>
-                                        <option value="family-room">Family Room</option>
-                                        <option value="comfort-double">Comfort Double</option>
+                                        <option value="standard">Standard Room</option>
+                                        <option value="delux">Delux Room</option>
+                                        <option value="king">King Room</option>
+                                        <option value="twin">Twin Room</option>
+                                        <option value="semi-suit">Semi Suit Room</option>
+                                        <option value="suit">Suit Room</option>
                                     </select>
                                     <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-cactus">
                                         <Icon name="arrow_forward" className="transform rotate-90" />

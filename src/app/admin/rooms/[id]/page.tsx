@@ -5,6 +5,7 @@ export const dynamic = 'force-dynamic';
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Room } from "@/lib/models";
+import { ROOM_TYPES } from "@/lib/roomTypes";
 import { useToast } from "@/components/ui/Toast";
 import { useFormGuard } from "@/lib/hooks/useFormGuard";
 import Button from "@/components/ui/Button";
@@ -132,6 +133,32 @@ export default function EditRoomPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <form onSubmit={handleSubmit} className="lg:col-span-2 space-y-6">
           <div className="bg-white dark:bg-gray-800 p-8 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-xl space-y-6">
+            {/* Room Type Selector */}
+            <div>
+              <label className="block text-sm font-black text-text-primary dark:text-white uppercase tracking-widest mb-2">
+                Room Type
+              </label>
+              <select
+                value={ROOM_TYPES.find(rt => rt.name === room.name)?.slug || ""}
+                onChange={(e) => {
+                  const selectedType = ROOM_TYPES.find(rt => rt.slug === e.target.value);
+                  if (selectedType) {
+                    updateRoom("name", selectedType.name);
+                    updateRoom("price_per_night", selectedType.price);
+                    updateRoom("max_guests", selectedType.maxGuests);
+                  }
+                }}
+                className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 focus:ring-2 focus:ring-primary outline-none"
+              >
+                <option value="">Custom / Unknown</option>
+                {ROOM_TYPES.map((type) => (
+                  <option key={type.slug} value={type.slug}>
+                    {type.name} — ${type.price}/night
+                  </option>
+                ))}
+              </select>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-black text-text-primary dark:text-white uppercase tracking-widest mb-2">

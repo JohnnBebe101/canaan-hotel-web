@@ -277,13 +277,17 @@ CREATE POLICY "Public can view published blogs" ON blogs
 -- Note: See database/supabase-seed-data.sql for initial data
 -- 
 -- Key room types (used in booking form validation):
---   - economy-single  ($45/night)
---   - economy-double  ($75/night)  
---   - family-room     ($95/night)
---   - comfort-double  ($120/night)
+--   - standard      ($25/night) - 1 guest max
+--   - delux         ($32/night) - 2 guests max
+--   - king          ($40/night) - 2 guests max
+--   - twin          ($45/night) - 2 guests max
+--   - semi-suit     ($50/night) - 2 guests max
+--   - suit          ($55/night) - 2 guests max
 --
+-- These 6 room types are the ONLY valid canonical types.
 -- Room types must match: src/app/api/bookings/create/route.ts
 -- and src/lib/featuredRooms.ts
+-- and src/lib/roomTypes.ts
 -- ============================================================
 
 -- ============================================================

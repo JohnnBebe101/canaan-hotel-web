@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import OptimizedImage from "@/components/OptimizedImage";
 import RoomBookingForm from "@/components/RoomBookingForm";
 import { FEATURED_ROOMS } from "@/lib/featuredRooms";
+import { ROOM_GALLERY_IMAGES, getRoomImagePath } from "@/lib/roomTypes";
 import { Icon } from "@/components/ui/Icons";
 
 export async function generateStaticParams() {
@@ -36,10 +37,12 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 }
 
 const roomGallery: Record<string, string[]> = {
-  'economy-single': ['Bed-view-Single.webp', 'bed-close-up.webp', 'bath-room.webp'],
-  'economy-double': ['twin-room.webp', 'twin-room-best-view.webp', 'bath-room.webp'],
-  'family-room': ['single-room-view.webp', 'corridor-rooms.webp', 'bath-room.webp'],
-  'comfort-double': ['single-room-best-view.webp', 'single-room-with-light.webp', 'bath-room.webp'],
+  'standard': ['standard-primary.jpg', 'standard-gallery-01.jpg', 'standard-gallery-02.jpg', 'standard-gallery-03.jpg'],
+  'delux': ['deluxe-primary.jpg', 'deluxe-gallery-01.jpg', 'deluxe-gallery-02.jpg', 'deluxe-gallery-03.jpg'],
+  'king': ['king-primary.jpg', 'king-gallery-01.jpg', 'king-gallery-02.jpg', 'king-gallery-03.jpg'],
+  'twin': ['twin-primary.jpg', 'twin-gallery-01.jpg', 'twin-gallery-02.jpg', 'twin-gallery-03.jpg'],
+  'semi-suit': ['semi-suite-primary.jpg', 'semi-suite-gallery-01.jpg', 'semi-suite-gallery-02.jpg', 'semi-suite-gallery-03.jpg'],
+  'suit': ['suite-primary.jpg', 'suite-gallery-01.jpg', 'suite-gallery-02.jpg', 'suite-gallery-03.jpg'],
 };
 
 export default async function RoomDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -76,7 +79,7 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
             {galleryImages.map((src, i) => (
               <div key={i} className="relative aspect-square">
                 <OptimizedImage 
-                  src={`/images/rooms/${src}`} 
+                  src={getRoomImagePath(room.slug, src)} 
                   alt={`${room.name} view ${i+1}`} 
                   fill 
                   className="object-cover" 

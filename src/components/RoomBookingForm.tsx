@@ -22,7 +22,7 @@ export default function RoomBookingForm({ pricePerNight, roomName, roomSlug }: R
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const roomType = roomSlug || 'economy-single';
+    const roomType = roomSlug || 'standard';
 
     useEffect(() => {
         if (checkIn && checkOut) {

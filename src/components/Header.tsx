@@ -89,8 +89,8 @@ function Header({ variant = 'public' }: HeaderProps) {
         aria-label="Main navigation"
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out ${
           scrolled
-            ? "bg-forest/97 border-b border-white/8 backdrop-blur-md shadow-[0_4px_24px_rgba(0,0,0,0.15)] py-3"
-            : "bg-transparent py-6"
+            ? "bg-forest/80 backdrop-blur-md border-b border-white/20 shadow-[0_4px_16px_rgba(0,0,0,0.15)] py-3"
+            : "bg-white/[0.10] backdrop-blur-md border-b border-white/40 shadow-[0_4px_16px_rgba(0,0,0,0.08)] py-4"
         }`}
       >
         <div className="max-w-7xl mx-auto px-8 flex justify-between items-center h-20">
@@ -102,10 +102,9 @@ function Header({ variant = 'public' }: HeaderProps) {
             <div className="flex flex-col items-start">
               <CanaanLogo
                 size={scrolled ? "w-14 h-14" : "w-20 h-20"}
-                className={`transition-all duration-300 ${scrolled ? "text-cactus" : "text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]"
-                  }`}
+                className={`transition-all duration-300 ${scrolled ? "text-cactus" : "text-white"}`}
               />
-              <span className={`text-xs mt-1 transition-all duration-300 ${scrolled ? "text-forest/60" : "text-white/70 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"}`}>Canaan</span>
+              <span className={`text-xs mt-1 transition-all duration-300 ${scrolled ? "text-forest/60" : "text-white/80"}`}>Canaan</span>
             </div>
           </Link>
 
@@ -120,8 +119,8 @@ function Header({ variant = 'public' }: HeaderProps) {
                   role="menuitem"
                   className={`text-[15px] uppercase tracking-wide font-medium transition-all duration-300 relative group ${
                     scrolled
-                      ? "text-white/80 hover:text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]"
-                      : "text-white/90 hover:text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]"
+                      ? "text-white/80 hover:text-white"
+                      : "text-white/90 hover:text-white"
                   } ${isActive ? "text-bronze font-medium" : ""}`}
                 >
                   {item.label}
@@ -155,9 +154,7 @@ function Header({ variant = 'public' }: HeaderProps) {
             aria-expanded={menuOpen}
             className="lg:hidden flex flex-col gap-1.5 p-2 group"
           >
-            <span className={`block w-6 h-0.5 transition-all duration-300 ${
-              scrolled ? 'bg-white' : 'bg-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]'
-            } ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
+            <span className={`block w-6 h-0.5 transition-all duration-300 bg-white ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
             <span className={`block w-6 h-0.5 transition-all duration-300 bg-white ${
               menuOpen ? 'opacity-0' : ''
             }`} />

@@ -55,9 +55,9 @@ export default function OptimizedImage({
   // Fallback to placeholder if image fails to load
   const imageSrc = imageError ? placeholderSrc : src;
 
-  if (fill) {
+if (fill) {
     return (
-      <div className={`relative ${className}`} style={style}>
+      <div className={`relative ${className} inset-0`} style={style}>
         {isLoading && (
           <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-xl" />
         )}

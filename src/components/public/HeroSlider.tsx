@@ -9,25 +9,36 @@ import { Icon } from "@/components/ui/Icons";
 
 const HERO_SLIDES = [
   {
-    image: "/images/heroes/Ext-Compund.webp",
+    image: "/images/heroes/hero-final/hero-1-1024.jpg",
+    mobileImage: "/images/heroes/hero-final/hero-1-828.jpg",
     label: "Authentic Canaan with Persistency",
     title: "Canaan International Hotel",
     desc: "A landmark of contemporary Ethiopian design in the heart of Adigrat, 0.2km from the city centre. Where the ancient tradition of highland craftsmanship meets the comfort and service of an international hotel.",
     cta: "Book Your Stay"
   },
   {
-    image: "/images/rooms/Bed-view-Single.webp",
+    image: "/images/heroes/hero-final/hero-2-1024.jpg",
+    mobileImage: "/images/heroes/hero-final/hero-2-828.jpg",
     label: "Sandstone Cliffs & Ancient Spirits",
     title: "Tigray's Finest Address",
     desc: "Discover the vertical world of the Gheralta mountains. From rock-hewn legacies to contemporary luxury in the heart of Tigray.",
     cta: "View Our Rooms"
   },
   {
-    image: "/images/heroes/Lobby.webp",
+    image: "/images/heroes/hero-final/hero-3-1024.jpg",
+    mobileImage: "/images/heroes/hero-final/hero-3-828.jpg",
     label: "A Cultural Destination",
     title: "Ancient Tigray, Modern Comfort",
     desc: "Stay where history breathes. Canaan International Hotel stands as a bridge between Tigray's 6th-century rock churches and the demands of the modern traveler.",
     cta: "Discover Our Story"
+  },
+  {
+    image: "/images/heroes/hero-final/hero-4-1024.jpg",
+    mobileImage: "/images/heroes/hero-final/hero-4-828.jpg",
+    label: "Luxury Redefined",
+    title: "Experience Tigray's Heritage",
+    desc: "Indulge in the perfect blend of traditional Ethiopian warmth and world-class hospitality at Canaan International Hotel.",
+    cta: "Book Your Stay"
   }
 ];
 
@@ -76,18 +87,31 @@ export default function HeroSlider() {
           className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
             }`}
         >
-          {/* Background Image with Cinematic Zoom */}
+          {/* Background Images with Responsive Display */}
           <div className="absolute inset-0 overflow-hidden">
+            {/* Desktop Image */}
             <Image
               src={slide.image}
-              alt={slide.title}
+              alt=""
               fill
               priority={index === 0}
               placeholder="empty"
-              sizes="100vw"
               quality={index === 0 ? 90 : 75}
-className={`object-cover transition-transform duration-[10000ms] ease-linear ${index === currentSlide ? 'scale-110' : 'scale-100'
-              }`}
+              className={`hidden md:block object-cover transition-transform duration-[10000ms] ease-linear ${index === currentSlide ? 'scale-110' : 'scale-100'
+                }`}
+              sizes="100vw"
+            />
+            {/* Mobile Image */}
+            <Image
+              src={slide.mobileImage}
+              alt=""
+              fill
+              priority={index === 0}
+              placeholder="empty"
+              quality={index === 0 ? 90 : 75}
+              className={`block md:hidden object-cover transition-transform duration-[10000ms] ease-linear ${index === currentSlide ? 'scale-110' : 'scale-100'
+                }`}
+              sizes="100vw"
             />
             {/* Gradient scrim overlay for text contrast */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-transparent z-10" />
@@ -130,7 +154,7 @@ className={`object-cover transition-transform duration-[10000ms] ease-linear ${i
                 )}
                 <Link href="/rooms" prefetch>
                   <button
-                    className="text-white text-[11px] uppercase tracking-[0.5em] font-bold flex items-center group py-4 bg-transparent border-2 border-white/60 px-8 py-3.5 hover:bg-white/10 hover:border-white/90 backdrop-blur-sm transition-all duration-300"
+                    className="text-white text-[11px] uppercase tracking-wide font-bold flex items-center group py-4 bg-transparent border-2 border-white/60 px-8 py-3.5 hover:bg-white/10 hover:border-white/90 backdrop-blur-sm transition-all duration-300"
                   >
                     Explore Rooms
                     <Icon name="arrow_forward" className="ml-4 text-cactus group-hover:translate-x-4 transition-transform" />

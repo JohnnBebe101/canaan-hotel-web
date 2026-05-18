@@ -1,9 +1,9 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "nvidia/nemotron-3-super-120b",
-  "small_model": "nvidia/nemotron-3-8b",
+  "model": "z-ai/glm-4.7-reasoning",
+  "small_model": "z-ai/glm-4.7-flash",
   "provider": {
-    "nvidia": {
+    "z-ai": {
       "options": {
         "timeout": 600000,
         "chunkTimeout": 30000,
@@ -55,8 +55,8 @@
   "agent": {
     "build": {
       "mode": "primary",
-      "description": "Development agent with full file and bash access",
-      "temperature": 0.2,
+      "description": "Development with GLM-4.7 for 0-warning requirement",
+      "temperature": 0.1,
       "permission": {
         "bash": {
           "*": "ask",
@@ -76,7 +76,7 @@
     },
     "quality-checker": {
       "mode": "subagent",
-      "description": "Validates build passes with 0 warnings, mobile-first compliance, no breaking changes",
+      "description": "GLM-4.7 validation: 0 warnings, mobile-first, no breaking changes",
       "temperature": 0.1,
       "permission": {
         "bash": {
@@ -88,7 +88,19 @@
     }
   },
   "instructions": [
-    "CRITICAL BUILD REQUIREMENTS:\n- All commits must pass: npm run build with 0 warnings\n- Mobile-first responsive design (test on 375px viewport)\n- No breaking changes to booking logic or payment flow\n- TypeScript strict mode compliance\n- Supabase migrations must be reversible\n\nPROJECT STANDARDS:\n- Use existing component patterns in /components\n- Tailwind CSS only (no inline styles)\n- Stripe integration: never hardcode keys, use env vars\n- Database: use Supabase client with RLS enabled\n- Git commits: descriptive messages, reference feature/bug tracking"
+    "CRITICAL BUILD REQUIREMENTS:
+- All commits must pass: npm run build with 0 warnings
+- Mobile-first responsive design (test on 375px viewport)
+- No breaking changes to booking logic or payment flow
+- TypeScript strict mode compliance
+- Supabase migrations must be reversible
+
+PROJECT STANDARDS:
+- Use existing component patterns in /components
+- Tailwind CSS only (no inline styles)
+- Stripe integration: never hardcode keys, use env vars
+- Database: use Supabase client with RLS enabled
+- Git commits: descriptive messages, reference feature/bug tracking"
   ],
   "snapshot": true,
   "autoupdate": false,

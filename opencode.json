@@ -1,16 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "z-ai/glm-4.7-reasoning",
-  "small_model": "z-ai/glm-4.7-flash",
-  "provider": {
-    "z-ai": {
-      "options": {
-        "timeout": 600000,
-        "chunkTimeout": 30000,
-        "setCacheKey": true
-      }
-    }
-  },
+  "model": "nvidia/nemotron-3-super-120b",
   "tools": {
     "bash": true,
     "write": true,
@@ -21,92 +11,5 @@
     "auto": true,
     "prune": true,
     "reserved": 15000
-  },
-  "watcher": {
-    "ignore": [
-      "node_modules/**",
-      ".next/**",
-      "dist/**",
-      ".git/**",
-      "build/**",
-      "coverage/**",
-      ".env*",
-      "public/images/archive/**",
-      "database/migrations/**",
-      "*.log",
-      ".DS_Store"
-    ]
-  },
-  "permission": {
-    "bash": {
-      "*": "ask",
-      "npm run build": "allow",
-      "npm run dev": "allow",
-      "git status": "allow",
-      "git add": "allow",
-      "git commit": "allow",
-      "git diff": "allow",
-      "git log": "allow",
-      "git checkout": "ask"
-    },
-    "edit": "allow",
-    "read": "allow"
-  },
-  "agent": {
-    "build": {
-      "mode": "primary",
-      "description": "Development with GLM-4.7 for 0-warning requirement",
-      "temperature": 0.1,
-      "permission": {
-        "bash": {
-          "*": "ask",
-          "npm run build": "allow",
-          "git commit": "ask"
-        }
-      }
-    },
-    "plan": {
-      "mode": "primary",
-      "description": "Planning and analysis without modifications",
-      "temperature": 0.1,
-      "permission": {
-        "edit": "deny",
-        "bash": "deny"
-      }
-    },
-    "quality-checker": {
-      "mode": "subagent",
-      "description": "GLM-4.7 validation: 0 warnings, mobile-first, no breaking changes",
-      "temperature": 0.1,
-      "permission": {
-        "bash": {
-          "npm run build": "allow",
-          "npm run lint": "allow"
-        },
-        "edit": "deny"
-      }
-    }
-  },
-  "instructions": [
-    "CRITICAL BUILD REQUIREMENTS:
-- All commits must pass: npm run build with 0 warnings
-- Mobile-first responsive design (test on 375px viewport)
-- No breaking changes to booking logic or payment flow
-- TypeScript strict mode compliance
-- Supabase migrations must be reversible
-
-PROJECT STANDARDS:
-- Use existing component patterns in /components
-- Tailwind CSS only (no inline styles)
-- Stripe integration: never hardcode keys, use env vars
-- Database: use Supabase client with RLS enabled
-- Git commits: descriptive messages, reference feature/bug tracking"
-  ],
-  "snapshot": true,
-  "autoupdate": false,
-  "formatter": {
-    "prettier": {
-      "disabled": false
-    }
   }
 }

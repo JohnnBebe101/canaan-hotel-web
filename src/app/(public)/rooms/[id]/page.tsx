@@ -77,7 +77,7 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
           </div>
           <div className="grid grid-cols-3 gap-2 rounded-2xl overflow-hidden">
             {galleryImages.map((src, i) => (
-              <div key={i} className="relative aspect-square">
+              <div key={i} className="relative aspect-square h-full">
                 <OptimizedImage 
                   src={getRoomImagePath(room.slug, src)} 
                   alt={`${room.name} view ${i+1}`} 

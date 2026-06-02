@@ -1,0 +1,8 @@
+{
+  "version": 3,
+  "sources": ["../src/email-forwarder.ts"],
+  "sourceRoot": "dist",
+  "sourcesContent": ["export default {\n  async email(message: EmailMessage, env: Env, ctx: ExecutionContext): Promise<void> {\n    // Forward the original message preserving headers, body, attachments, etc.\n    await message.forward(\"canaaninthotel@gmail.com\");\n  },\n};"],
+  "mappings": ";AAAA,IAAO,0BAAQ;AAAA,EACb,MAAM,MAAM,SAAuB,KAAU,KAAsC;AAEjF,UAAM,QAAQ,QAAQ,0BAA0B;AAAA,EAClD;AACF;",
+  "names": []
+}

@@ -1,0 +1,6 @@
+name = "email-forwarder"
+main = "src/email-forwarder.ts"
+compatibility_date = "2025-02-04"
+
+[[send_email]]
+name = "SEND_EMAIL"

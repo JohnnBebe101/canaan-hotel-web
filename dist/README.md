@@ -1,0 +1,1 @@
+This folder contains the built output assets for the worker "email-forwarder" generated at 2026-06-02T12:37:34.266Z.

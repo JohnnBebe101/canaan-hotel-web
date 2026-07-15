@@ -5,6 +5,8 @@ import { useState, useRef, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { ROOM_TYPES } from "@/lib/roomTypes";
 import { ImagePlus, X, Loader2, AlertCircle, ArrowLeft } from "lucide-react";
+
+const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "";
 import Button from "@/components/ui/Button";
 
 export const dynamic = 'force-dynamic';
@@ -136,7 +138,7 @@ export default function NewRoomPage() {
 
       const response = await fetch("/api/admin/rooms", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "x-admin-secret": ADMIN_SECRET },
         body: JSON.stringify({
           name: formData.name.trim(),
           description: formData.description.trim(),

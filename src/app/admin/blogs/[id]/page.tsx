@@ -13,6 +13,8 @@ import OptimizedImage from "@/components/OptimizedImage";
 import ConfirmModal from "@/components/ui/ConfirmModal";
 import { CircleHelp, Image, Send } from "lucide-react";
 
+const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "";
+
 export default function EditBlogPage() {
   const router = useRouter();
   const params = useParams();
@@ -45,7 +47,9 @@ export default function EditBlogPage() {
   const loadBlog = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/admin/blogs`);
+      const response = await fetch(`/api/admin/blogs`, {
+        headers: { "x-admin-secret": ADMIN_SECRET },
+      });
       if (!response.ok) throw new Error("Failed to load blogs");
       const blogs = await response.json();
       const found = blogs.find((b: Blog) => b.id === blogId);
@@ -97,7 +101,7 @@ export default function EditBlogPage() {
     try {
       const response = await fetch("/api/admin/blogs", {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "x-admin-secret": ADMIN_SECRET },
         body: JSON.stringify({ id: blogId, ...payload }),
       });
 
@@ -124,7 +128,7 @@ export default function EditBlogPage() {
     try {
       const response = await fetch("/api/admin/blogs", {
         method: "DELETE",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "x-admin-secret": ADMIN_SECRET },
         body: JSON.stringify({ id: blogId }),
       });
 

@@ -11,6 +11,8 @@ import OptimizedImage from "@/components/OptimizedImage";
 import ConfirmModal from "@/components/ui/ConfirmModal";
 import { Map, MapPin, X, CircleHelp, Image, Info, Globe, Package } from "lucide-react";
 
+const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "";
+
 export default function AdminAttractionsPage() {
   const [attractions, setAttractions] = useState<Attraction[]>([]);
   const [loading, setLoading] = useState(true);
@@ -30,7 +32,9 @@ export default function AdminAttractionsPage() {
   const fetchAttractions = async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/admin/attractions");
+      const res = await fetch("/api/admin/attractions", {
+        headers: { "x-admin-secret": ADMIN_SECRET },
+      });
       if (!res.ok) throw new Error("Failed to fetch attractions");
       const data = await res.json();
       setAttractions(data);
@@ -59,7 +63,7 @@ export default function AdminAttractionsPage() {
     try {
       const res = await fetch("/api/admin/attractions", {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "x-admin-secret": ADMIN_SECRET },
         body: JSON.stringify(payload),
       });
 
@@ -83,7 +87,7 @@ export default function AdminAttractionsPage() {
     try {
       const res = await fetch("/api/admin/attractions", {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "x-admin-secret": ADMIN_SECRET },
         body: JSON.stringify({ id, is_active: !currentStatus }),
       });
 

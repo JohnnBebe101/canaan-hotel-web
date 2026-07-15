@@ -12,6 +12,8 @@ import Button from "@/components/ui/Button";
 import Link from "next/link";
 import { AlertCircle, CheckCircle, Ban, Shield } from "lucide-react";
 
+const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "";
+
 export default function EditRoomPage() {
   const { id } = useParams();
   const router = useRouter();
@@ -35,7 +37,9 @@ export default function EditRoomPage() {
   const loadRoom = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/admin/rooms/${id}`);
+      const response = await fetch(`/api/admin/rooms/${id}`, {
+        headers: { "x-admin-secret": ADMIN_SECRET },
+      });
       if (!response.ok) {
         if (response.status === 404) throw new Error("Room not found");
         throw new Error("Failed to load room details");
@@ -60,7 +64,7 @@ export default function EditRoomPage() {
     try {
       const response = await fetch("/api/admin/rooms", {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "x-admin-secret": ADMIN_SECRET },
         body: JSON.stringify(room),
       });
 

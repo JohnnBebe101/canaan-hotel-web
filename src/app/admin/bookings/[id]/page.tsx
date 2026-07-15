@@ -9,6 +9,8 @@ import Button from "@/components/ui/Button";
 import { useToast } from "@/components/ui/Toast";
 import { AlertCircle, ArrowLeft, BedDouble, Users, CreditCard, StickyNote } from "lucide-react";
 
+const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "";
+
 export default function BookingDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params);
     const router = useRouter();
@@ -21,7 +23,9 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
     useEffect(() => {
         async function loadBooking() {
             try {
-                const response = await fetch(`/api/admin/bookings/${id}`);
+                const response = await fetch(`/api/admin/bookings/${id}`, {
+                  headers: { "x-admin-secret": ADMIN_SECRET },
+                });
                 if (!response.ok) throw new Error("Booking not found");
                 const data = await response.json();
                 setBooking(data);
@@ -38,7 +42,7 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
         try {
             const response = await fetch("/api/admin/bookings", {
                 method: "PATCH",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json", "x-admin-secret": ADMIN_SECRET },
                 body: JSON.stringify({ id, status: newStatus }),
             });
 

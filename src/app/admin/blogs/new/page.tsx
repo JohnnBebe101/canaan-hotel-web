@@ -9,6 +9,8 @@ import Button from "@/components/ui/Button";
 import OptimizedImage from "@/components/OptimizedImage";
 import { Info } from "lucide-react";
 
+const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "";
+
 export default function NewBlogPage() {
   const router = useRouter();
   const { showToast } = useToast();
@@ -58,7 +60,7 @@ export default function NewBlogPage() {
     try {
       const response = await fetch("/api/admin/blogs", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "x-admin-secret": ADMIN_SECRET },
         body: JSON.stringify(payload),
       });
 

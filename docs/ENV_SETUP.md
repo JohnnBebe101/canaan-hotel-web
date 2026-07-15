@@ -35,6 +35,9 @@ NODE_ENV=development
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD=admin
 SESSION_SECRET=change-me-in-production-generate-a-secure-random-key
+# IMPORTANT: ADMIN_API_SECRET must match NEXT_PUBLIC_ADMIN_PASSWORD
+ADMIN_API_SECRET=your_admin_dashboard_password
+NEXT_PUBLIC_ADMIN_PASSWORD=your_admin_dashboard_password
 
 # Google Maps API (for location/map integration)
 # GOOGLE_MAPS_API_KEY=your-google-maps-api-key
@@ -62,6 +65,8 @@ SESSION_SECRET=change-me-in-production-generate-a-secure-random-key
 - `SESSION_SECRET`: Secret key for session management (default: "change-me-in-production")
   - **Important**: Change the default SESSION_SECRET in production!
   - Generate a secure random key: `openssl rand -base64 32`
+- `ADMIN_API_SECRET`: Secret sent by admin pages to authorize API calls (must match `NEXT_PUBLIC_ADMIN_PASSWORD`)
+- `NEXT_PUBLIC_ADMIN_PASSWORD`: Public-facing secret sent as `x-admin-secret` header (must match `ADMIN_API_SECRET`)
 
 ## Optional Environment Variables
 

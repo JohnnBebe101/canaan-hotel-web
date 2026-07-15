@@ -5,8 +5,8 @@ import { sendEmail } from "@/lib/email/resend";
 import { emailBookingConfirmed } from "@/lib/email/templates";
 
 export async function POST(request: NextRequest) {
-  const authError = verifyAdminAuth(request);
-  if (!authError) {
+  const isAuthed = verifyAdminAuth(request);
+  if (!isAuthed) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

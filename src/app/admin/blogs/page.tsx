@@ -13,6 +13,8 @@ import Button from "@/components/ui/Button";
 import OptimizedImage from "@/components/OptimizedImage";
 import { Plus, FileText, Delete, BookOpen } from "lucide-react";
 
+const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "";
+
 export default function AdminBlogsPage() {
   const router = useRouter();
   const [blogs, setBlogs] = useState<Blog[]>([]);
@@ -40,7 +42,9 @@ export default function AdminBlogsPage() {
   const loadBlogs = async () => {
     try {
       setLoading(true);
-      const response = await fetch("/api/admin/blogs");
+      const response = await fetch("/api/admin/blogs", {
+        headers: { "x-admin-secret": ADMIN_SECRET },
+      });
       if (!response.ok) throw new Error("Failed to load blogs");
       const data = await response.json();
       setBlogs(data);
@@ -70,7 +74,7 @@ export default function AdminBlogsPage() {
     try {
       const response = await fetch("/api/admin/blogs", {
         method: "DELETE",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "x-admin-secret": ADMIN_SECRET },
         body: JSON.stringify({ id: blogId }),
       });
 

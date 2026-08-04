@@ -25,6 +25,7 @@ export default function RoomsPage() {
           fill 
           className="object-cover brightness-75" 
           priority 
+          sizes="100vw"
         />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
           <p className="text-amber-300 text-sm font-medium tracking-widest uppercase mb-2">Accommodations</p>

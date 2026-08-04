@@ -110,6 +110,7 @@ export default function GalleryClient() {
                         alt="Canaan International Hotel exterior"
                         fill
                         priority
+                        sizes="100vw"
                         className="w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px]" />
@@ -201,7 +202,7 @@ export default function GalleryClient() {
                                 alt={selectedImage.alt}
                                 fill
                                 className="object-contain"
-                                sizes="100vw"
+                                sizes="(max-width: 1152px) 100vw, 1152px"
                                 priority
                                 unoptimized={!selectedImage.src.startsWith("/")}
                             />

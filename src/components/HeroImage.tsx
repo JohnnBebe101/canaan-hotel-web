@@ -8,6 +8,7 @@ interface HeroImageProps {
   overlayOpacity?: number;
   className?: string;
   priority?: boolean;
+  sizes?: string;
 }
 
 export default function HeroImage({
@@ -15,7 +16,8 @@ export default function HeroImage({
   alt,
   overlayOpacity = 0.4,
   className = "",
-  priority = true
+  priority = true,
+  sizes = "100vw"
 }: HeroImageProps) {
   return (
     <div className={`relative w-full h-full ${className}`}>
@@ -25,7 +27,7 @@ export default function HeroImage({
         fill
         priority={priority}
         className="object-cover"
-        sizes="100vw"
+        sizes={sizes}
         quality={80}
         unoptimized={src.endsWith('.svg')}
       />

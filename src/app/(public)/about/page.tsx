@@ -27,6 +27,7 @@ export default function AboutPage() {
           fill
           className="object-cover"
           priority
+          sizes="100vw"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-forest/80 via-forest/30 to-transparent" />
         <div className="absolute inset-0 flex flex-col items-center justify-end pb-16 px-6 text-center">

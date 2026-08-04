@@ -18,6 +18,7 @@ export default function CorporatePage() {
           fill 
           className="object-cover brightness-75" 
           priority 
+          sizes="100vw"
         />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
           <h1 className="text-sandstone text-4xl md:text-5xl font-bold tracking-tight" style={{ textShadow: '0 0 60px rgba(255,255,255,0.5), 0 0 100px rgba(255,255,255,0.25), 0 2px 8px rgba(0,0,0,0.6)' }}>Corporate & Groups</h1>

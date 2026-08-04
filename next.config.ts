@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const baseConfig: NextConfig = {
+  outputFileTracingRoot: __dirname,
+  turbopack: {
+    root: __dirname,
+  },
   images: {
     qualities: [75, 80, 90],
     formats: ["image/avif", "image/webp"],

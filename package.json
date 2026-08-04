@@ -6,7 +6,7 @@
     "dev": "node scripts/validate-env.mjs && next dev",
     "build": "next build --webpack",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "test": "vitest",
     "test:watch": "vitest --watch"
   },

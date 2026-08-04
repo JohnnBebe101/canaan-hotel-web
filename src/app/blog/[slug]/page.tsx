@@ -113,6 +113,7 @@ export default async function BlogPostPage({
                 fill
                 className="object-cover"
                 priority
+                sizes="(max-width: 896px) 100vw, 832px"
               />
               <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/20 to-transparent" />
             </div>

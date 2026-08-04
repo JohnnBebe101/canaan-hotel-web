@@ -99,7 +99,7 @@ export default function HeroSlider() {
               quality={index === 0 ? 90 : 75}
               className={`hidden md:block object-cover transition-transform duration-[10000ms] ease-linear ${index === currentSlide ? 'scale-110' : 'scale-100'
                 }`}
-              sizes="100vw"
+              sizes="(min-width: 768px) 100vw"
             />
             {/* Mobile Image */}
             <Image
@@ -111,7 +111,7 @@ export default function HeroSlider() {
               quality={index === 0 ? 90 : 75}
               className={`block md:hidden object-cover transition-transform duration-[10000ms] ease-linear ${index === currentSlide ? 'scale-110' : 'scale-100'
                 }`}
-              sizes="100vw"
+              sizes="(max-width: 767px) 100vw"
             />
             {/* Gradient scrim overlay for text contrast */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-transparent z-10" />

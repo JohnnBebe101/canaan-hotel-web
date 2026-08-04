@@ -102,6 +102,7 @@ export default function AttractionsPage() {
             alt="Beautiful landscape of Tigray region"
             overlayOpacity={0.5}
             className="absolute inset-0 -z-10"
+            sizes="(max-width: 1280px) 100vw, 1280px"
           />
           <div className="flex flex-col gap-4 relative z-10">
             <h1 className="text-4xl font-black leading-tight tracking-tighter md:text-6xl" style={{ textShadow: '0 0 60px rgba(255,255,255,0.5), 0 0 100px rgba(255,255,255,0.25), 0 2px 8px rgba(0,0,0,0.6)' }}>

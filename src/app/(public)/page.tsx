@@ -108,7 +108,7 @@ export default function Home() {
                 <div className="absolute -inset-4 border border-cactus/10 group-hover:inset-0 transition-all duration-700"></div>
                 <div className="relative w-full aspect-[4/5] overflow-hidden shadow-2xl">
                   <Image
-                    src="/images/heroes/Lobby.webp"
+                    src="/images/gallery/Lobby.webp"
                     alt="Detail of the basalt and glass fusion architecture"
                     fill
                     sizes="(max-width: 1024px) 100vw, 50vw"
@@ -193,11 +193,11 @@ export default function Home() {
                 <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Verified by travelers worldwide</p>
                 <div className="flex flex-col md:flex-row items-center gap-6 md:gap-10 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-700">
                   <a href="https://g.page/GfaOOMjriRenNsEqI/review" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                    <Image src="/images/badges/google-business-profile.svg" alt="Google Business Profile" width={100} height={40} className="object-contain" />
+                    <Image src="/images/badges/google-business-profile.svg" alt="Google Business Profile" width={179} height={64} className="w-auto h-10 object-contain" />
                   </a>
                   <span className="hidden md:inline w-1 h-1 bg-cactus rounded-full"></span>
                   <a href="https://www.tripadvisor.com/Hotel_Review-g1401789-d13207473-Reviews-Canaan_Hotel-Adigrat_Tigray_Region.html" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                    <Image src="/images/badges/tripadvisor-3.svg" alt="TripAdvisor" width={100} height={40} className="object-contain" />
+                    <Image src="/images/badges/tripadvisor-3.svg" alt="TripAdvisor" width={2515} height={777} className="w-auto h-10 object-contain" />
                   </a>
                   <span className="hidden md:inline w-1 h-1 bg-cactus rounded-full"></span>
 <a href="https://www.booking.com/hotel/et/canaan-international-adigrat2.en-gb.html?aid=356980&label=gog235jc-10CAsoR0IdY2FuYWFuLWludGVybmF0aW9uYWwtYWRpZ3JhdDJICVgDaEeIAQGYATO4ARfIAQ_YAQPoAQH4AQGIAgGoAgG4AuHm9tAGwAIB0gIkOTZmYjY0NmYtNWZiNi00YjI4LTg0ODQtYWNmMWQyMDYzZTM02AIB4AIB&sid=4ed9d7e74029527edee6898325759d2c&dest_id=-602927&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=1&hpos=1&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&srepoch=1780331390&srpvid=e94773f15e390970&type=total&ucfs=1&" target="_blank" rel="noopener noreferrer" className="text-xl font-serif font-bold text-forest">

@@ -4,6 +4,7 @@ import Link from "next/link";
 import Button from "@/components/ui/Button";
 import CanaanPattern from "@/components/ui/CanaanPattern";
 import ScrollReveal from "@/components/ui/ScrollReveal";
+import HotelInFrame from "@/components/public/HotelInFrame";
 import { Icon } from "@/components/ui/Icons";
 import { canonical } from "@/lib/seo";
 
@@ -179,53 +180,7 @@ export default function AboutPage() {
       {/* SECTION 5 — PHOTO GALLERY */}
       <section className="bg-sandstone py-20 md:py-24">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <ScrollReveal>
-              <p className="text-bronze text-xs font-semibold tracking-[0.3em] uppercase mb-3">
-                A Glimpse Into Our World
-              </p>
-              <h2 className="font-serif text-forest text-4xl font-bold">
-                The Hotel in Frame
-              </h2>
-            </ScrollReveal>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 auto-rows-[200px]">
-            <div className="row-span-2 rounded-2xl overflow-hidden relative">
-              <ScrollReveal delay={0}>
-                <Image src="/images/gallery/Lobby.webp" alt="Canaan Hotel lobby"
-                       width={400} height={600} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
-              </ScrollReveal>
-            </div>
-
-            <div className="rounded-2xl overflow-hidden relative">
-              <ScrollReveal delay={100}>
-                <Image src="/images/gallery/Bed-view-Single.webp" alt="Guest room"
-                       width={300} height={200} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
-              </ScrollReveal>
-            </div>
-
-            <div className="rounded-2xl overflow-hidden relative">
-              <ScrollReveal delay={200}>
-                <Image src="/images/gallery/bath-room.webp" alt="En-suite bathroom"
-                       width={300} height={200} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
-              </ScrollReveal>
-            </div>
-
-            <div className="rounded-2xl overflow-hidden relative">
-              <ScrollReveal delay={300}>
-                <Image src="/images/gallery/single-room-best-view.webp" alt="Comfort double room"
-                       width={300} height={200} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
-              </ScrollReveal>
-            </div>
-
-            <div className="col-span-2 md:col-span-1 rounded-2xl overflow-hidden relative">
-              <ScrollReveal delay={400}>
-                <Image src="/images/gallery/Gate-Corrdor.webp" alt="Hotel entrance corridor"
-                       width={300} height={200} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
-              </ScrollReveal>
-            </div>
-          </div>
+          <HotelInFrame variant="about" />
         </div>
       </section>
 

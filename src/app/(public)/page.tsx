@@ -14,6 +14,7 @@ import { Icon } from "@/components/ui/Icons";
 import { canonical } from "@/lib/seo";
 
 import HeroSlider from "@/components/public/HeroSlider";
+import HotelInFrame from "@/components/public/HotelInFrame";
 
 const AttractionCard = ({ image, title, distance, description }: { image: string, title: string, distance: string, description: string }) => (
   <div className="group cursor-pointer">
@@ -96,6 +97,13 @@ export default function Home() {
             <ScrollReveal delay={160}><SocialRatingWidget platform="booking" rating="9.2" reviews="56" href="https://www.booking.com/hotel/et/canaan-international-adigrat2.en-gb.html?aid=356980&label=gog235jc-10CAsoR0IdY2FuYWFuLWludGVybmF0aW9uYWwtYWRpZ3JhdDJICVgDaEeIAQGYATO4ARfIAQ_YAQPoAQH4AQGIAgGoAgG4AuHm9tAGwAIB0gIkOTZmYjY0NmYtNWZiNi00YjI4LTg0ODQtYWNmMWQyMDYzZTM02AIB4AIB&sid=4ed9d7e74029527edee6898325759d2c&dest_id=-602927&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=1&hpos=1&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&srepoch=1780331390&srpvid=e94773f15e390970&type=total&ucfs=1&" /></ScrollReveal>
             <ScrollReveal delay={240}><SocialRatingWidget platform="expedia" rating="#1" reviews="Best Value" href="https://www.expedia.com/Canaan-Hotel-International.h48986114.Hotel-Information" /></ScrollReveal>
           </div>
+        </section>
+
+        {/* Hotel in Frame — photo gallery */}
+        <section className="py-16 md:py-24 bg-sandstone">
+          <Container>
+            <HotelInFrame variant="home" />
+          </Container>
         </section>
 
         {/* Structural Integrity & Philosophy */}
@@ -236,19 +244,70 @@ export default function Home() {
         </section>
 
         {/* Closing Call to Action */}
-        <section className="py-32 bg-forest relative overflow-hidden">
-          <div className="absolute inset-0 opacity-10 canaan-pattern scale-150"></div>
-          <Container className="relative z-10 text-center">
-            <ScrollReveal direction="none">
-            <SectionTitle
-              title="Your Sanctuary Awaits"
-              description="Experience the junction of ancient Tigrayan heritage and contemporary luxury."
-              centered
-              dark
-            />
-            <BookingCTA />
-            </ScrollReveal>
-          </Container>
+        <section className="relative overflow-hidden bg-forest py-12 md:py-16">
+          {/* Background image — full width, height clipped to this section */}
+          <Image
+            src="/images/cta/sanctuary.jpg"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            quality={80}
+            className="object-cover"
+            placeholder="empty"
+          />
+
+          {/* Brand-toned forest overlay — 2 layers, image stays visible */}
+          <div className="absolute inset-0 bg-gradient-to-t from-forest/90 via-forest/55 to-forest/20" />
+          <div className="absolute inset-0 bg-gradient-to-b from-forest/30 via-transparent to-transparent" />
+          {/* Faint brand texture */}
+          <div className="absolute inset-0 opacity-[0.04] canaan-pattern pointer-events-none" />
+
+          {/* Section separator — thin integrated bronze ornament line */}
+          <div className="absolute inset-x-0 top-0 z-10" aria-hidden="true">
+            <div className="relative flex items-center justify-center">
+              <div className="h-px w-full bg-gradient-to-r from-transparent via-bronze/70 to-transparent" />
+              <div className="absolute top-1/2 -translate-y-1/2 h-2 w-2 rotate-45 bg-bronze/80" />
+            </div>
+          </div>
+
+          {/* Content — hero-style, directly on image, no card */}
+          <div className="relative z-10 flex items-center justify-center px-4 md:px-6">
+            <Container>
+              <ScrollReveal direction="none">
+                <div className="mx-auto max-w-3xl text-center drop-shadow-[0_3px_10px_rgba(0,0,0,0.65)]">
+                  <CanaanLogo size="w-10 h-10" className="mx-auto mb-3 opacity-90" />
+                  <p
+                    className="text-white text-xs font-semibold tracking-[0.3em] uppercase mb-3"
+                    style={{ textShadow: "0 1px 4px rgba(0,0,0,0.9), 0 2px 14px rgba(0,0,0,0.7)" }}
+                  >
+                    Experience Our Hospitality
+                  </p>
+                  <h2
+                    className="font-serif text-white text-3xl md:text-5xl font-bold leading-tight"
+                    style={{ textShadow: "0 2px 6px rgba(0,0,0,0.9), 0 4px 24px rgba(0,0,0,0.6), 0 0 60px rgba(0,0,0,0.4)" }}
+                  >
+                    Your Sanctuary Awaits
+                  </h2>
+                  <div className="mx-auto my-4 h-px w-20 bg-bronze/70" aria-hidden="true" />
+                  <p
+                    className="mx-auto max-w-xl text-white/90 text-base md:text-lg leading-relaxed font-light"
+                    style={{ textShadow: "0 1px 4px rgba(0,0,0,0.9), 0 2px 16px rgba(0,0,0,0.65)" }}
+                  >
+                    Experience the junction of ancient Tigrayan heritage and contemporary luxury.
+                  </p>
+                  <div className="mt-8 flex flex-col md:flex-row items-center justify-center gap-4">
+                    <BookingCTA />
+                    <Link href="/rooms">
+                      <span className="inline-flex items-center gap-2 border border-white/70 bg-white/5 text-white text-[11px] uppercase tracking-[0.3em] font-bold px-12 py-6 backdrop-blur-sm hover:bg-white/15 hover:border-white transition-all duration-300">
+                        Explore Our Rooms
+                      </span>
+                    </Link>
+                  </div>
+                </div>
+              </ScrollReveal>
+            </Container>
+          </div>
         </section>
       </main>
     </div>

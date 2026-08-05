@@ -1,7 +1,9 @@
 import type { Metadata } from "next/types";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Cookie Policy | Canaan International Hotel",
+  alternates: { canonical: canonical("/legal/cookies") },
   description: "Cookie policy for Canaan International Hotel website.",
   openGraph: {
     title: 'Cookie Policy | Canaan International Hotel',

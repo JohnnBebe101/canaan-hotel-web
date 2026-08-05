@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { getPublishedBlogs, getBlogBySlug } from "@/lib/blog-store";
 import { offlineStorage } from "@/lib/offline-storage";
 import ScrollReveal from "@/components/ui/ScrollReveal";
+import { canonical } from "@/lib/seo";
 
 export async function generateStaticParams() {
   const posts = offlineStorage.getPublishedBlogs();
@@ -30,6 +31,7 @@ export async function generateMetadata({
   return {
     title: `${blog.title} | Canaan International Hotel`,
     description: blog.excerpt,
+    alternates: { canonical: canonical(`/blog/${blog.slug}`) },
     openGraph: {
       title: blog.title,
       description: blog.excerpt,

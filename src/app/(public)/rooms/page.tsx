@@ -3,8 +3,10 @@ import Image from "next/image";
 export const revalidate = 3600;
 import RoomsClient from "./RoomsClient";
 import { Icon } from "@/components/ui/Icons";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
+  alternates: { canonical: canonical("/rooms") },
   title: 'Rooms & Suites',
   description: "Explore our diverse range of accommodations in Adigrat, from economy singles to deluxe suites. Find the perfect room for your stay in Tigray.",
   openGraph: {

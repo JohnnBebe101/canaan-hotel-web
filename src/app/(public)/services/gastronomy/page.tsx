@@ -2,9 +2,11 @@ import type { Metadata } from "next/types";
 import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@/components/ui/Icons";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Canaanite Gastronomy | Canaan International Hotel",
+  alternates: { canonical: canonical("/services/gastronomy") },
   description: "Experience the culinary traditions of the Ethiopian highlands at Canaan Hotel's restaurant.",
 };
 

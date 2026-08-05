@@ -6,6 +6,7 @@ import RoomBookingForm from "@/components/RoomBookingForm";
 import { FEATURED_ROOMS } from "@/lib/featuredRooms";
 import { ROOM_GALLERY_IMAGES, getRoomImagePath } from "@/lib/roomTypes";
 import { Icon } from "@/components/ui/Icons";
+import { canonical } from "@/lib/seo";
 
 export async function generateStaticParams() {
   return FEATURED_ROOMS.map((room: { slug: string }) => ({
@@ -28,6 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   return {
     title: `${room.name} — Canaan Hotel`,
     description: room.description,
+    alternates: { canonical: canonical(`/rooms/${room.slug}`) },
     openGraph: {
       title: room.name,
       description: room.description,

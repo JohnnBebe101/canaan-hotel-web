@@ -3,9 +3,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { getPublishedBlogs } from "@/lib/blog-store";
 import ScrollReveal from "@/components/ui/ScrollReveal";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: 'Journal — Travel Stories from Tigray',
+  alternates: { canonical: canonical("/blog") },
   description: 'Travel guides, cultural insights, and stories from the highlands of Tigray. Written by the team at Canaan International Hotel, Adigrat.',
 };
 

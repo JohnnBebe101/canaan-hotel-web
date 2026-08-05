@@ -3,9 +3,11 @@ import Link from "next/link";
 import HeroImage from "@/components/HeroImage";
 import Card from "../../../components/Card";
 import { Icon } from "@/components/ui/Icons";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: 'Local Attractions — Gheralta, Al-Najashi, Debre Damo',
+  alternates: { canonical: canonical("/attractions") },
   description: "Explore Tigray's ancient wonders from Canaan Hotel. Gheralta rock churches (45km), Al-Najashi Mosque (32km), Debre Damo Monastery (52km). Your highland base camp.",
   openGraph: {
     title: 'Discover the Tigray Highlands | Canaan International Hotel',

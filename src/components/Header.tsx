@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Button from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icons";
-import { Home, BedDouble, BookOpen, FileText, Mail, X } from "lucide-react";
+import { Home, BedDouble, BookOpen, FileText, Mail, Search, X } from "lucide-react";
 
 import CanaanLogo from "@/components/ui/CanaanLogo";
 
@@ -15,6 +15,7 @@ const navItems = [
   { label: "Our Story", href: "/about", Icon: BookOpen },
   { label: "Journal", href: "/blog", Icon: FileText },
   { label: "Contact", href: "/contact", Icon: Mail },
+  { label: "Search", href: "/search", Icon: Search },
 ];
 
 interface HeaderProps {

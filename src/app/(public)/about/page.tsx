@@ -5,9 +5,11 @@ import Button from "@/components/ui/Button";
 import CanaanPattern from "@/components/ui/CanaanPattern";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { Icon } from "@/components/ui/Icons";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: 'Our Story — Adigrat, Tigray',
+  alternates: { canonical: canonical("/about") },
   description: 'Canaan International Hotel — a landmark of contemporary Ethiopian design in Adigrat, 0.2km from the city centre. Built on Tigrayan highland craftsmanship and international hospitality standards.',
   openGraph: {
     title: 'Our Story | Canaan International Hotel',

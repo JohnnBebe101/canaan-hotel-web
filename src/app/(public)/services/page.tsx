@@ -2,9 +2,11 @@ import type { Metadata } from "next/types";
 import Link from "next/link";
 import HeroImage from "@/components/HeroImage";
 import ServiceCard from "@/components/ServiceCard";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: 'Hotel Services & Amenities',
+  alternates: { canonical: canonical("/services") },
   description: 'Complimentary breakfast, free Wi-Fi, free parking, 24-hour front desk, restaurant and bar. Every service at Canaan International Hotel is included in your room rate.',
   openGraph: {
     title: 'Services & Amenities | Canaan International Hotel',

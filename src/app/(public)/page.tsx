@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next/types";
 
 import Button from "@/components/ui/Button";
 import BookingCTA from "@/components/public/BookingCTA";
@@ -10,6 +11,7 @@ import SocialRatingWidget from "@/components/ui/SocialRatingWidget";
 import CanaanLogo from "@/components/ui/CanaanLogo";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { Icon } from "@/components/ui/Icons";
+import { canonical } from "@/lib/seo";
 
 import HeroSlider from "@/components/public/HeroSlider";
 
@@ -55,11 +57,35 @@ const Container = ({ children, className = "" }: { children: React.ReactNode, cl
   </div>
 );
 
+export const metadata: Metadata = {
+  alternates: { canonical: canonical("/") },
+};
+
 export default function Home() {
   return (
     <div className="animate-in fade-in duration-1000 bg-sandstone">
 
       <HeroSlider />
+
+      <section className="relative z-20 mt-6 bg-sandstone">
+        <Container>
+          <form
+            role="search"
+            action="/search"
+            method="get"
+            className="mx-auto flex max-w-xl items-center gap-2"
+          >
+            <input
+              type="search"
+              name="q"
+              placeholder="Search rooms, stories & attractions"
+              aria-label="Search the site"
+              className="w-full rounded-full border border-cactus/20 bg-white px-6 py-3 text-forest outline-none focus:border-bronze"
+            />
+            <Button type="submit" variant="primary">Search</Button>
+          </form>
+        </Container>
+      </section>
 
       <main>
         {/* Verified Recognition Trust Bar */}

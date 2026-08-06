@@ -2,7 +2,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import NavigationProgress from "@/components/ui/NavigationProgress";
-import BookingModalTrigger from "@/components/public/BookingModalTrigger";
 import WhatsAppButton from "@/components/public/WhatsAppButton";
 
 export default function PublicLayout({
@@ -16,7 +15,6 @@ export default function PublicLayout({
       <Header />
       <main className="flex-grow">{children}</main>
       <Footer />
-      <BookingModalTrigger />
       <WhatsAppButton />
     </div>
   );

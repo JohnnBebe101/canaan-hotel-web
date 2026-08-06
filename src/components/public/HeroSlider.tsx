@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
 import { Icon } from "@/components/ui/Icons";
 
@@ -148,9 +147,9 @@ export default function HeroSlider() {
                     Discover Our Story
                   </Link>
                 ) : (
-                  <Button onClick={() => window.dispatchEvent(new CustomEvent('open-booking'))} className="px-16 py-6 text-xs w-full md:w-auto bg-bronze text-white border-2 border-bronze hover:bg-forest hover:border-forest transition-all duration-300 shadow-[0_4px_15px_rgba(181,129,58,0.4)]">
+                  <Link href="/booking" className="px-16 py-6 text-xs w-full md:w-auto bg-bronze text-white border-2 border-bronze hover:bg-forest hover:border-forest transition-all duration-300 shadow-[0_4px_15px_rgba(181,129,58,0.4)]">
                     {slide.cta}
-                  </Button>
+                  </Link>
                 )}
                 <Link href="/rooms" prefetch>
                   <button

@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import Button from "@/components/ui/Button";
 import { Home, BedDouble, BookOpen, FileText, Mail, Search, X } from "lucide-react";
 
 import CanaanLogo from "@/components/ui/CanaanLogo";
@@ -136,18 +135,16 @@ function Header({ variant = 'public' }: HeaderProps) {
               );
             })}
 
-            <Button 
-                variant="primary" 
-                size="md" 
-                onClick={() => window.dispatchEvent(new CustomEvent('open-booking'))}
-                className={`px-5 py-2.5 text-[10px] uppercase tracking-normal transition-all duration-200 ${
+            <Link
+                href="/booking"
+                className={`px-5 py-2.5 text-[10px] uppercase tracking-normal transition-all duration-200 rounded-lg text-center ${
                   scrolled
                     ? "bg-bronze text-white border-2 border-bronze hover:bg-forest hover:text-white hover:border-forest"
                     : "bg-bronze text-white border-2 border-bronze hover:bg-white hover:text-forest hover:border-white shadow-[0_2px_12px_rgba(181,129,58,0.5)]"
                 }`}
               >
                 Book Now
-              </Button>
+              </Link>
           </div>
 
           {/* Hamburger Button (Mobile) */}
@@ -226,7 +223,7 @@ function Header({ variant = 'public' }: HeaderProps) {
           {/* Bottom section - CTA */}
           <div className="mt-auto px-6 pb-8 border-t border-white/10 pt-6">
             <Link 
-              href="/rooms" 
+              href="/booking" 
               onClick={() => setMenuOpen(false)}
               className="block w-full bg-bronze text-white font-semibold py-3.5 rounded-xl text-center tracking-normal hover:bg-bronze/90 transition-colors"
             >

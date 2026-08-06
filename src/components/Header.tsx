@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Button from "@/components/ui/Button";
-import { Icon } from "@/components/ui/Icons";
 import { Home, BedDouble, BookOpen, FileText, Mail, Search, X } from "lucide-react";
 
 import CanaanLogo from "@/components/ui/CanaanLogo";
@@ -26,16 +25,17 @@ interface HeaderProps {
  * Header Component with Two Visual States:
  * 
  * At top of page (hero visible, !scrolled):
- * - Background: transparent
- * - Nav links: white/90 with drop-shadow
+ * - Background: transparent with subtle blur
+ * - Nav links: white/90 with text-shadow for legibility
  * - Logo: white with drop-shadow
  * - Book Now button: bronze with hover
  * 
  * After scrolling 80px (scrolled):
- * - Background: forest/97 with backdrop-blur
- * - Nav links: white/80 without drop-shadow
- * - Logo: white
- * - Book Now button: bronze with subtle hover
+ * - Background: sandstone/95 with backdrop-blur
+ * - Nav links: forest/80 (dark ink) for contrast on the light bar
+ * - Logo: cactus green
+ * - Hamburger lines: forest (visible on the light bar)
+ * - Book Now button: bronze with forest hover
  * 
  * Mobile Drawer:
  * - Slides in from right with backdrop blur
@@ -48,6 +48,13 @@ function Header({ variant = 'public' }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
+  // Close menu on route change (reset state during render — avoids effect churn)
+  const [lastPathname, setLastPathname] = useState(pathname);
+  if (lastPathname !== pathname) {
+    setLastPathname(pathname);
+    setMenuOpen(false);
+  }
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 80);
@@ -56,11 +63,6 @@ function Header({ variant = 'public' }: HeaderProps) {
     handleScroll(); // Check initial state
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  // Close menu on route change
-  useEffect(() => {
-    setMenuOpen(false);
-  }, [pathname]);
 
   // Prevent body scroll when menu is open
   useEffect(() => {
@@ -90,8 +92,8 @@ function Header({ variant = 'public' }: HeaderProps) {
         aria-label="Main navigation"
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out ${
           scrolled
-            ? "bg-forest/80 backdrop-blur-md border-b border-white/20 shadow-[0_4px_16px_rgba(0,0,0,0.15)] py-3"
-            : "bg-white/[0.10] backdrop-blur-md border-b border-white/40 shadow-[0_4px_16px_rgba(0,0,0,0.08)] py-4"
+            ? "bg-sandstone/95 backdrop-blur-md border-b border-forest/10 shadow-[0_2px_16px_rgba(0,0,0,0.06)] py-3"
+            : "bg-white/[0.08] backdrop-blur-md border-b border-white/30 shadow-[0_4px_16px_rgba(0,0,0,0.08)] py-4"
         }`}
       >
         <div className="max-w-7xl mx-auto px-8 flex justify-between items-center h-20">
@@ -103,9 +105,9 @@ function Header({ variant = 'public' }: HeaderProps) {
             <div className="flex flex-col items-start">
               <CanaanLogo
                 size={scrolled ? "w-14 h-14" : "w-20 h-20"}
-                className={`transition-all duration-300 ${scrolled ? "text-cactus" : "text-white"}`}
+                className={`transition-all duration-300 ${scrolled ? "text-cactus" : "text-white [filter:drop-shadow(0_2px_8px_rgba(0,0,0,0.5))]"}`}
               />
-              <span className={`text-xs mt-1 transition-all duration-300 ${scrolled ? "text-forest/60" : "text-white/80"}`}>Canaan</span>
+              <span className={`text-xs mt-1 transition-all duration-300 ${scrolled ? "text-forest/60" : "text-white/80 [text-shadow:0_1px_8px_rgba(0,0,0,0.5)]"}`}>Canaan</span>
             </div>
           </Link>
 
@@ -120,8 +122,8 @@ function Header({ variant = 'public' }: HeaderProps) {
                   role="menuitem"
                   className={`text-[15px] uppercase tracking-wide font-medium transition-all duration-300 relative group ${
                     scrolled
-                      ? "text-white/80 hover:text-white"
-                      : "text-white/90 hover:text-white"
+                      ? "text-forest/80 hover:text-forest"
+                      : "text-white/90 hover:text-white [text-shadow:0_1px_10px_rgba(0,0,0,0.45)]"
                   } ${isActive ? "text-bronze font-medium" : ""}`}
                 >
                   {item.label}
@@ -140,7 +142,7 @@ function Header({ variant = 'public' }: HeaderProps) {
                 onClick={() => window.dispatchEvent(new CustomEvent('open-booking'))}
                 className={`px-5 py-2.5 text-[10px] uppercase tracking-normal transition-all duration-200 ${
                   scrolled
-                    ? "bg-bronze text-white border-2 border-bronze hover:bg-bronze/90"
+                    ? "bg-bronze text-white border-2 border-bronze hover:bg-forest hover:text-white hover:border-forest"
                     : "bg-bronze text-white border-2 border-bronze hover:bg-white hover:text-forest hover:border-white shadow-[0_2px_12px_rgba(181,129,58,0.5)]"
                 }`}
               >
@@ -155,11 +157,11 @@ function Header({ variant = 'public' }: HeaderProps) {
             aria-expanded={menuOpen}
             className="lg:hidden flex flex-col gap-1.5 p-2 group"
           >
-            <span className={`block w-6 h-0.5 transition-all duration-300 bg-white ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
-            <span className={`block w-6 h-0.5 transition-all duration-300 bg-white ${
+            <span className={`block w-6 h-0.5 transition-all duration-300 ${scrolled ? 'bg-forest' : 'bg-white'} ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
+            <span className={`block w-6 h-0.5 transition-all duration-300 ${scrolled ? 'bg-forest' : 'bg-white'} ${
               menuOpen ? 'opacity-0' : ''
             }`} />
-            <span className={`block w-6 h-0.5 transition-all duration-300 bg-white ${
+            <span className={`block w-6 h-0.5 transition-all duration-300 ${scrolled ? 'bg-forest' : 'bg-white'} ${
               menuOpen ? '-rotate-45 -translate-y-2' : ''
             }`} />
           </button>

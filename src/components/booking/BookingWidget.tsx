@@ -1,12 +1,13 @@
 
 "use client";
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import Badge from '../ui/Badge';
 import Button from '../ui/Button';
 import Calendar from './Calendar';
 import CanaanLogo from '../ui/CanaanLogo';
 import { Icon } from "@/components/ui/Icons";
+import { FEATURED_ROOMS } from "@/lib/featuredRooms";
 
 interface BookingWidgetProps {
     isOpen: boolean;
@@ -23,13 +24,17 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
     // Date selection state
     const [checkIn, setCheckIn] = useState<Date | null>(null);
     const [checkOut, setCheckOut] = useState<Date | null>(null);
+    const [guests, setGuests] = useState(1);
 
-    useEffect(() => {
-        if (isOpen) {
-            setStep('details');
-            if (initialSuite) setSelectedSuite(initialSuite);
-        }
-    }, [isOpen, initialSuite]);
+    // Reset the flow each time the modal opens (adjust state during render — avoids effect churn)
+    const [lastOpen, setLastOpen] = useState(isOpen);
+    if (isOpen && !lastOpen) {
+        setLastOpen(true);
+        setStep('details');
+        if (initialSuite) setSelectedSuite(initialSuite);
+    } else if (!isOpen && lastOpen) {
+        setLastOpen(false);
+    }
 
     const nights = useMemo(() => {
         if (!checkIn || !checkOut) return 0;
@@ -38,17 +43,13 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
     }, [checkIn, checkOut]);
 
     const totalPrice = useMemo(() => {
-        const rates: Record<string, number> = {
-            'standard': 2500,
-            'delux': 3200,
-            'king': 4000,
-            'twin': 4500,
-            'semi-suit': 5000,
-            'suit': 5500
-        };
-        const rate = rates[selectedSuite] || 2500;
+        const room = FEATURED_ROOMS.find((r) => r.slug === selectedSuite);
+        const rate = room?.pricePerNight ?? FEATURED_ROOMS[0].pricePerNight;
         return nights > 0 ? nights * rate : 0;
     }, [nights, selectedSuite]);
+
+    const selectedRoom =
+        FEATURED_ROOMS.find((r) => r.slug === selectedSuite) ?? FEATURED_ROOMS[0];
 
     if (!isOpen) return null;
 
@@ -114,7 +115,8 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
                             <div className="space-y-8">
                                 <div className="space-y-2 group cursor-default">
                                     <p className="text-[9px] uppercase tracking-widest text-cactus font-bold">Room Type</p>
-                                    <p className="text-xl font-serif text-sandstone group-hover:text-cactus transition-colors">{selectedSuite}</p>
+                                    <p className="text-xl font-serif text-sandstone group-hover:text-cactus transition-colors">{selectedRoom.name}</p>
+                                    <p className="text-[11px] text-cactus/80 font-bold">From ${selectedRoom.pricePerNight} / night</p>
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-3 border-y border-white/5 py-4">
@@ -159,13 +161,20 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
                 <div className="flex-1 p-4 md:p-6 overflow-y-auto bg-sandstone custom-scrollbar relative">
                     {step === 'details' && (
                         <form onSubmit={handleNext} className="space-y-6 animate-in slide-in-from-right-10 duration-700">
-                            <div className="flex items-end justify-between border-b border-forest/5 pb-4">
-                                <div>
-                                    <Badge variant="cactus">Phase 01</Badge>
-                                    <h2 className="text-2xl md:text-3xl font-serif text-forest mt-2">Personal Details</h2>
-                                </div>
-                                <div className="text-[10px] uppercase font-bold text-cactus tracking-[0.3em]" aria-label="Step 1 of 2">Identification</div>
-                            </div>
+                                    <div className="flex items-end justify-between border-b border-forest/5 pb-4">
+                                        <div>
+                                            <Badge variant="cactus">Phase 01</Badge>
+                                            <h2 className="text-2xl md:text-3xl font-serif text-forest mt-2">Personal Details</h2>
+                                        </div>
+                                        <div className="flex flex-col items-end gap-1">
+                                            <div className="flex items-center gap-1.5" aria-hidden="true">
+                                                <span className="h-1.5 w-6 rounded-full bg-cactus"></span>
+                                                <span className="h-1.5 w-2 rounded-full bg-forest/15"></span>
+                                                <span className="h-1.5 w-2 rounded-full bg-forest/15"></span>
+                                            </div>
+                                            <div className="text-[10px] uppercase font-bold text-cactus tracking-[0.3em]" aria-label="Step 1 of 3">Identification</div>
+                                        </div>
+                                    </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="space-y-3">
@@ -209,24 +218,45 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
                                 </div>
                             </div>
 
-                            <div className="space-y-4 pt-4">
-                                <label htmlFor="suite-tier-select" className="text-[10px] uppercase font-bold tracking-widest text-forest/40">Room Type</label>
-                                <div className="relative">
-                                    <select
-                                        id="suite-tier-select"
-                                        value={selectedSuite}
-                                        onChange={(e) => setSelectedSuite(e.target.value)}
-                                        className="w-full bg-white border border-forest/10 p-6 text-forest font-serif text-xl outline-none appearance-none cursor-pointer hover:border-cactus transition-colors shadow-sm"
-                                    >
-                                        <option value="standard">Standard Room</option>
-                                        <option value="delux">Delux Room</option>
-                                        <option value="king">King Room</option>
-                                        <option value="twin">Twin Room</option>
-                                        <option value="semi-suit">Semi Suit Room</option>
-                                        <option value="suit">Suit Room</option>
-                                    </select>
-                                    <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-cactus">
-                                        <Icon name="arrow_forward" className="transform rotate-90" />
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+                                <div className="space-y-4">
+                                    <label htmlFor="suite-tier-select" className="text-[10px] uppercase font-bold tracking-widest text-forest/40 flex items-center gap-2">
+                                        <Icon name="hotel" className="text-cactus text-sm" /> Room Type
+                                    </label>
+                                    <div className="relative">
+                                        <select
+                                            id="suite-tier-select"
+                                            value={selectedSuite}
+                                            onChange={(e) => setSelectedSuite(e.target.value)}
+                                            className="w-full bg-white/50 border-b-2 border-forest/10 py-4 pr-10 text-forest font-serif text-lg outline-none appearance-none cursor-pointer hover:border-cactus focus:border-cactus transition-colors"
+                                        >
+                                            {FEATURED_ROOMS.map((room) => (
+                                                <option key={room.slug} value={room.slug}>{room.name}</option>
+                                            ))}
+                                        </select>
+                                        <div className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-cactus">
+                                            <Icon name="expand_more" className="text-xl" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="space-y-4">
+                                    <label htmlFor="guest-count-select" className="text-[10px] uppercase font-bold tracking-widest text-forest/40 flex items-center gap-2">
+                                        <Icon name="group" className="text-cactus text-sm" /> Guests
+                                    </label>
+                                    <div className="relative">
+                                        <select
+                                            id="guest-count-select"
+                                            value={guests}
+                                            onChange={(e) => setGuests(Number(e.target.value))}
+                                            className="w-full bg-white/50 border-b-2 border-forest/10 py-4 pr-10 text-forest font-serif text-lg outline-none appearance-none cursor-pointer hover:border-cactus focus:border-cactus transition-colors"
+                                        >
+                                            {[1, 2, 3, 4, 5].map((n) => (
+                                                <option key={n} value={n}>{n} {n === 1 ? 'Guest' : 'Guests'}</option>
+                                            ))}
+                                        </select>
+                                        <div className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-cactus">
+                                            <Icon name="expand_more" className="text-xl" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -239,6 +269,16 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
                             >
                                 Book Now <Icon name="arrow_forward" className="text-base ml-2" />
                             </Button>
+
+                            {/* Mobile price bar — compact totals on small screens */}
+                            <div className="sticky bottom-0 -mx-4 md:hidden mt-2 flex items-center justify-between border-t border-forest/10 bg-sandstone/95 px-4 py-3 backdrop-blur-md">
+                                <span className="text-[10px] uppercase font-bold tracking-widest text-forest/50">
+                                    {nights} {nights === 1 ? 'Night' : 'Nights'}
+                                </span>
+                                <span className="font-serif text-2xl font-bold text-forest">
+                                    ${totalPrice.toLocaleString()}
+                                </span>
+                            </div>
                         </form>
                     )}
 
@@ -252,7 +292,14 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
                                 >
                                     <Icon name="chevron_left" className="text-base mr-2 transform group-hover:-translate-x-2 transition-transform" /> Return to Identification
                                 </button>
-                                <div className="text-[10px] uppercase font-bold text-cactus tracking-[0.3em]">Phase 02/02</div>
+                                <div className="flex flex-col items-end gap-1">
+                                    <div className="flex items-center gap-1.5" aria-hidden="true">
+                                        <span className="h-1.5 w-2 rounded-full bg-cactus"></span>
+                                        <span className="h-1.5 w-6 rounded-full bg-cactus"></span>
+                                        <span className="h-1.5 w-2 rounded-full bg-forest/15"></span>
+                                    </div>
+                                    <div className="text-[10px] uppercase font-bold text-cactus tracking-[0.3em]">Step 2 of 3</div>
+                                </div>
                             </div>
 
                             <div>
@@ -270,19 +317,19 @@ export default function BookingWidget({ isOpen, onClose, initialSuite }: Booking
                                             required
                                             type="text"
                                             placeholder="4000 0000 0000 0000"
-                                            className="w-full bg-white border border-forest/10 p-6 text-forest font-serif text-xl focus:border-cactus outline-none transition-all shadow-sm"
+                                            className="w-full bg-white/50 border-b-2 border-forest/10 py-4 text-forest font-serif text-lg focus:border-cactus outline-none transition-all placeholder:text-gray-300 placeholder:italic"
                                         />
-                                        <Icon name="credit_card" className="absolute right-6 top-1/2 -translate-y-1/2 text-forest/20 text-3xl" />
+                                        <Icon name="credit_card" className="absolute right-2 top-1/2 -translate-y-1/2 text-forest/20 text-2xl" />
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-2 gap-10">
                                     <div className="space-y-3">
                                         <label htmlFor="card-expiry" className="text-[10px] uppercase font-bold tracking-widest text-forest/40">Expiry Window (MM/YY)</label>
-                                        <input id="card-expiry" required type="text" placeholder="12/28" className="w-full bg-white border border-forest/10 p-6 text-forest font-serif text-xl outline-none focus:border-cactus transition-all shadow-sm" />
+                                        <input id="card-expiry" required type="text" placeholder="12/28" className="w-full bg-white/50 border-b-2 border-forest/10 py-4 text-forest font-serif text-lg outline-none focus:border-cactus transition-all placeholder:text-gray-300 placeholder:italic" />
                                     </div>
                                     <div className="space-y-3">
                                         <label htmlFor="card-cvv" className="text-[10px] uppercase font-bold tracking-widest text-forest/40">Security Key (CVV)</label>
-                                        <input id="card-cvv" required type="password" placeholder="***" className="w-full bg-white border border-forest/10 p-6 text-forest font-serif text-xl outline-none focus:border-cactus transition-all shadow-sm" />
+                                        <input id="card-cvv" required type="password" placeholder="***" className="w-full bg-white/50 border-b-2 border-forest/10 py-4 text-forest font-serif text-lg outline-none focus:border-cactus transition-all placeholder:text-gray-300 placeholder:italic" />
                                     </div>
                                 </div>
                             </div>

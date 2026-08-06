@@ -90,24 +90,31 @@ export default function RoomBookingForm({ pricePerNight, roomName, roomSlug }: R
         }
     };
 
+    const inputStyles =
+        "w-full border-b-2 border-forest/10 bg-transparent px-1 py-2.5 text-forest font-serif text-lg focus:border-cactus outline-none transition-colors placeholder:text-gray-300 placeholder:font-sans placeholder:text-sm";
+    const labelStyles = "block text-[10px] uppercase font-bold tracking-widest text-forest/60 mb-1.5";
+
     return (
-        <form onSubmit={handleSubmit} className="flex flex-col gap-6 rounded-xl border border-stone-200 bg-white p-6 shadow-lg">
-            <div className="flex flex-col gap-2">
-                <p className="text-sm font-bold text-stone-600">Starting From</p>
+        <form onSubmit={handleSubmit} className="relative flex flex-col gap-6 overflow-hidden rounded-2xl border border-forest/10 bg-white/90 p-6 shadow-xl backdrop-blur">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-forest via-cactus to-forest" aria-hidden="true" />
+
+            <div className="flex flex-col gap-1 pt-2">
+                {roomName && <p className="font-serif text-xl text-forest">{roomName}</p>}
+                <p className="text-[10px] uppercase font-bold tracking-widest text-forest/60">Starting From</p>
                 <div className="flex items-baseline gap-2">
-                    <span className="text-3xl font-black text-stone-800">${pricePerNight}</span>
-                    <span className="text-sm font-medium text-stone-500">/ night</span>
+                    <span className="font-serif text-4xl font-bold text-forest">${pricePerNight}</span>
+                    <span className="text-sm font-medium text-forest/50">/ night</span>
                 </div>
             </div>
 
             {/* Guest Details */}
-            <div className="space-y-4">
+            <div className="space-y-5">
                 <div>
-                    <label className="block text-sm font-bold text-stone-700 mb-1.5" htmlFor="guestName">
+                    <label className={labelStyles} htmlFor="guestName">
                         Full Name
                     </label>
                     <input
-                        className="w-full rounded-lg border border-stone-200 px-4 py-2.5 focus:ring-2 focus:ring-amber-700 focus:border-amber-700 outline-none"
+                        className={inputStyles}
                         id="guestName"
                         type="text"
                         placeholder="Your full name"
@@ -118,11 +125,11 @@ export default function RoomBookingForm({ pricePerNight, roomName, roomSlug }: R
                 </div>
 
                 <div>
-                    <label className="block text-sm font-bold text-stone-700 mb-1.5" htmlFor="email">
+                    <label className={labelStyles} htmlFor="email">
                         Email Address
                     </label>
                     <input
-                        className="w-full rounded-lg border border-stone-200 px-4 py-2.5 focus:ring-2 focus:ring-amber-700 focus:border-amber-700 outline-none"
+                        className={inputStyles}
                         id="email"
                         type="email"
                         placeholder="your@email.com"
@@ -133,11 +140,11 @@ export default function RoomBookingForm({ pricePerNight, roomName, roomSlug }: R
                 </div>
 
                 <div>
-                    <label className="block text-sm font-bold text-stone-700 mb-1.5" htmlFor="phone">
+                    <label className={labelStyles} htmlFor="phone">
                         Phone Number
                     </label>
                     <input
-                        className="w-full rounded-lg border border-stone-200 px-4 py-2.5 focus:ring-2 focus:ring-amber-700 focus:border-amber-700 outline-none"
+                        className={inputStyles}
                         id="phone"
                         type="tel"
                         placeholder="+251 911 000 000"
@@ -149,13 +156,13 @@ export default function RoomBookingForm({ pricePerNight, roomName, roomSlug }: R
             </div>
 
             {/* Dates */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-5">
                 <div>
-                    <label className="block text-sm font-bold text-stone-700 mb-1.5" htmlFor="checkin">
+                    <label className={labelStyles} htmlFor="checkin">
                         Check-in
                     </label>
                     <input
-                        className="w-full rounded-lg border border-stone-200 px-4 py-2.5 focus:ring-2 focus:ring-amber-700 focus:border-amber-700 outline-none"
+                        className={inputStyles}
                         id="checkin"
                         type="date"
                         min={today}
@@ -166,11 +173,11 @@ export default function RoomBookingForm({ pricePerNight, roomName, roomSlug }: R
                 </div>
 
                 <div>
-                    <label className="block text-sm font-bold text-stone-700 mb-1.5" htmlFor="checkout">
+                    <label className={labelStyles} htmlFor="checkout">
                         Check-out
                     </label>
                     <input
-                        className="w-full rounded-lg border border-stone-200 px-4 py-2.5 focus:ring-2 focus:ring-amber-700 focus:border-amber-700 outline-none"
+                        className={inputStyles}
                         id="checkout"
                         type="date"
                         min={checkIn || today}
@@ -182,13 +189,13 @@ export default function RoomBookingForm({ pricePerNight, roomName, roomSlug }: R
             </div>
 
             {/* Guests */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-5">
                 <div>
-                    <label className="block text-sm font-bold text-stone-700 mb-1.5" htmlFor="adults">
+                    <label className={labelStyles} htmlFor="adults">
                         Adults
                     </label>
                     <select
-                        className="w-full rounded-lg border border-stone-200 px-4 py-2.5 focus:ring-2 focus:ring-amber-700 focus:border-amber-700 outline-none"
+                        className={inputStyles}
                         id="adults"
                         value={adults}
                         onChange={(e) => setAdults(Number(e.target.value))}
@@ -201,11 +208,11 @@ export default function RoomBookingForm({ pricePerNight, roomName, roomSlug }: R
                 </div>
 
                 <div>
-                    <label className="block text-sm font-bold text-stone-700 mb-1.5" htmlFor="children">
+                    <label className={labelStyles} htmlFor="children">
                         Children
                     </label>
                     <select
-                        className="w-full rounded-lg border border-stone-200 px-4 py-2.5 focus:ring-2 focus:ring-amber-700 focus:border-amber-700 outline-none"
+                        className={inputStyles}
                         id="children"
                         value={children}
                         onChange={(e) => setChildren(Number(e.target.value))}
@@ -217,11 +224,12 @@ export default function RoomBookingForm({ pricePerNight, roomName, roomSlug }: R
                 </div>
             </div>
 
-            <Button 
-                type="submit" 
-                size="lg" 
-                className="w-full py-4 uppercase tracking-widest bg-amber-700 hover:bg-amber-800"
-                disabled={isLoading}
+            <Button
+                type="submit"
+                size="lg"
+                variant="primary"
+                className="w-full py-4"
+                isLoading={isLoading}
             >
                 {isLoading ? "Processing..." : "Reserve Your Stay"}
             </Button>
@@ -232,9 +240,10 @@ export default function RoomBookingForm({ pricePerNight, roomName, roomSlug }: R
                 </p>
             )}
 
-            <div className="text-center pt-2 border-t border-stone-100">
-                <p className="text-xs text-stone-500">
-                    Total for {nights} {nights === 1 ? 'night' : 'nights'}: <span className="font-black text-stone-800 text-base">${totalPrice}</span>
+            <div className="pt-2 border-t border-forest/10">
+                <p className="text-xs text-forest/50">
+                    Total for {nights} {nights === 1 ? 'night' : 'nights'}:{" "}
+                    <span className="font-serif text-xl font-bold text-forest">${totalPrice.toLocaleString()}</span>
                 </p>
             </div>
         </form>

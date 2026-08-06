@@ -55,9 +55,12 @@ export default function OptimizedImage({
   // Fallback to placeholder if image fails to load
   const imageSrc = imageError ? placeholderSrc : src;
 
+  // Next.js forbids combining "priority" with "loading"; coerce to eager
+  const resolvedLoading = priority ? "eager" : loading;
+
 if (fill) {
     return (
-      <div className={`relative ${className} inset-0`} style={style}>
+      <div className={`relative h-full w-full ${className} inset-0`} style={style}>
         {isLoading && (
           <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-xl" />
         )}
@@ -68,7 +71,7 @@ if (fill) {
           sizes={sizes}
           quality={quality}
           priority={priority}
-          loading={loading}
+          loading={resolvedLoading}
           className={`${className} ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
           onError={handleError}
           onLoad={handleLoad}
@@ -95,7 +98,7 @@ if (fill) {
         sizes={sizes}
         quality={quality}
         priority={priority}
-        loading={loading}
+        loading={resolvedLoading}
         className={`${className} ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
         onError={handleError}
         onLoad={handleLoad}

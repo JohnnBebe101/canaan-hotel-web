@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import OptimizedImage from "@/components/OptimizedImage";
 import RoomBookingForm from "@/components/RoomBookingForm";
 import { FEATURED_ROOMS } from "@/lib/featuredRooms";
-import { ROOM_GALLERY_IMAGES, getRoomImagePath } from "@/lib/roomTypes";
+import { getRoomImagePath } from "@/lib/roomTypes";
 import { Icon } from "@/components/ui/Icons";
 import { canonical } from "@/lib/seo";
 
@@ -117,11 +117,11 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
               <h3 className="text-lg font-semibold text-stone-800 mb-4">What Our Guests Say</h3>
               <div className="flex flex-col gap-4">
                 <div className="border-l-4 border-amber-700 pl-4">
-                  <p className="text-stone-600 italic">"Absolutely wonderful stay. The room was immaculate and the service was top-notch."</p>
+                  <p className="text-stone-600 italic">&ldquo;Absolutely wonderful stay. The room was immaculate and the service was top-notch.&rdquo;</p>
                   <p className="mt-2 font-bold text-sm">— Jane D.</p>
                 </div>
                 <div className="border-l-4 border-amber-700 pl-4">
-                  <p className="text-stone-600 italic">"A true gem in the heart of the city. Comfortable and convenient."</p>
+                  <p className="text-stone-600 italic">&ldquo;A true gem in the heart of the city. Comfortable and convenient.&rdquo;</p>
                   <p className="mt-2 font-bold text-sm">— Mark S.</p>
                 </div>
               </div>
@@ -131,7 +131,7 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
 
         {/* Right Column: Booking Form */}
         <div className="lg:sticky lg:top-24">
-          <RoomBookingForm pricePerNight={room.pricePerNight} roomName={room.name} />
+          <RoomBookingForm pricePerNight={room.pricePerNight} roomName={room.name} roomSlug={room.slug} />
         </div>
       </div>
     </main>

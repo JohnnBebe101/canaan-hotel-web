@@ -1,7 +1,21 @@
-import { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
+import type { Metadata } from "next/types";
+import { notFound } from "next/navigation";
+import OptimizedImage from "@/components/OptimizedImage";
+import RoomBookingForm from "@/components/RoomBookingForm";
+import RoomCard from "@/components/RoomCard";
 import { FEATURED_ROOMS } from "@/lib/featuredRooms";
+import { getRoomImagePath } from "@/lib/roomTypes";
+import { Icon } from "@/components/ui/Icons";
+import Breadcrumbs from "@/components/seo/Breadcrumbs";
+import { canonical } from "@/lib/seo";
+
+export async function generateStaticParams() {
+  return FEATURED_ROOMS.map((room: { slug: string }) => ({
+    id: room.slug,
+  }));
+}
+
+export const dynamic = 'force-static';
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
@@ -9,269 +23,152 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
   if (!room) {
     return {
-      title: "Room Not Found | Canaan International Hotel",
+      title: "Room Not Found",
     };
   }
 
   return {
-    title: `${room.name} | Canaan International Hotel`,
+    title: room.name,
     description: room.description,
+    alternates: { canonical: canonical(`/rooms/${room.slug}`) },
     openGraph: {
-      title: `${room.name} - Luxury Accommodation in Adigrat`,
+      title: room.name,
       description: room.description,
       images: [room.imageSrc],
     },
   };
 }
 
+const roomGallery: Record<string, string[]> = {
+  'standard': ['standard-primary.jpg', 'standard-gallery-01.jpg', 'standard-gallery-02.jpg', 'standard-gallery-03.jpg'],
+  'delux': ['deluxe-primary.jpg', 'deluxe-gallery-01.jpg', 'deluxe-gallery-02.jpg', 'deluxe-gallery-03.jpg'],
+  'king': ['king-primary.jpg', 'king-gallery-01.jpg', 'king-gallery-02.jpg', 'king-gallery-03.jpg'],
+  'twin': ['twin-primary.jpg', 'twin-gallery-01.jpg', 'twin-gallery-02.jpg', 'twin-gallery-03.jpg'],
+  'semi-suit': ['semi-suite-primary.jpg', 'semi-suite-gallery-01.jpg', 'semi-suite-gallery-02.jpg', 'semi-suite-gallery-03.jpg'],
+  'suit': ['suite-primary.jpg', 'suite-gallery-01.jpg', 'suite-gallery-02.jpg', 'suite-gallery-03.jpg'],
+};
+
 export default async function RoomDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const room = FEATURED_ROOMS.find(r => r.slug === id);
+
+  if (!room) {
+    notFound();
+  }
+
+  const galleryImages = roomGallery[room.slug] ?? [room.imageSrc, room.imageSrc, room.imageSrc];
+  const otherRooms = FEATURED_ROOMS.filter(r => r.slug !== room.slug).slice(0, 3);
+
   return (
     <main className="flex-1 px-4 sm:px-10 lg:px-20 py-10 sm:py-16">
-      <div className="mx-auto max-w-7xl">
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-          <div className="lg:col-span-3">
-            <div className="relative w-full">
-              <div className="relative w-full overflow-hidden rounded-xl aspect-[4/3]">
-                <Image
-                  className="w-full h-full object-cover"
-                  alt={`${room?.name || 'Hotel room'} - ${room?.description || 'Comfortable accommodation'}`}
-                  src="/images/Room-Larger.svg"
-                  width={800}
-                  height={600}
-                  priority
+      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-10">
+        {/* Left Column: Gallery + Details */}
+        <div>
+          <Breadcrumbs
+            items={[
+              { name: "Rooms & Suites", href: "/rooms" },
+              { name: room.name },
+            ]}
+          />
+
+          {/* Gallery */}
+          <div className="relative w-full overflow-hidden rounded-xl aspect-[4/3] mb-4">
+            <OptimizedImage
+              className="w-full h-full object-cover"
+              alt={room.name}
+              src={room.imageSrc}
+              width={800}
+              height={600}
+            />
+          </div>
+          <div className="grid grid-cols-3 gap-2 rounded-2xl overflow-hidden">
+            {galleryImages.map((src, i) => (
+              <div key={i} className="relative aspect-square h-full">
+                <OptimizedImage 
+                  src={getRoomImagePath(room.slug, src)} 
+                  alt={`${room.name} view ${i+1}`} 
+                  fill 
+                  className="object-cover" 
                 />
-                <button className="absolute top-4 right-4 flex items-center gap-2 rounded-full bg-black/50 px-3 py-1.5 text-white text-xs font-semibold backdrop-blur-sm hover:bg-black/70">
-                  <span className="material-symbols-outlined text-base">fullscreen</span>
-                  View All
-                </button>
               </div>
-              <div className="mt-3 grid grid-cols-5 gap-3">
-                <div className="overflow-hidden rounded-lg aspect-square">
-                  <Image
-                    className="w-full h-full object-cover cursor-pointer border-2 border-primary"
-                    alt="Bedroom view"
-                    src="/images/Bed-Best-View.svg"
-                    width={200}
-                    height={200}
-                  />
-                </div>
-                <div className="overflow-hidden rounded-lg aspect-square">
-                  <Image
-                    className="w-full h-full object-cover cursor-pointer opacity-70 hover:opacity-100 transition-opacity"
-                    alt="Room amenities"
-                    src="/images/Rooms-Corridor.svg"
-                    width={200}
-                    height={200}
-                  />
-                </div>
-                <div className="overflow-hidden rounded-lg aspect-square">
-                  <Image
-                    className="w-full h-full object-cover cursor-pointer opacity-70 hover:opacity-100 transition-opacity"
-                    alt="Bathroom facilities"
-                    src="/images/Bath-Portrait.svg"
-                    width={200}
-                    height={200}
-                  />
-                </div>
-                <div className="overflow-hidden rounded-lg aspect-square">
-                  <Image
-                    className="w-full h-full object-cover cursor-pointer opacity-70 hover:opacity-100 transition-opacity"
-                    alt="The view from the hotel room window."
-                    src="/images/Room-Bed.svg"
-                    width={200}
-                    height={200}
-                  />
-                </div>
-                <div className="overflow-hidden rounded-lg aspect-square">
-                  <div className="w-full h-full bg-black/50 flex items-center justify-center cursor-pointer hover:bg-black/60 transition-colors">
-                    <span className="text-white font-bold text-lg">+5</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
 
-          <div className="lg:col-span-2 mt-8 lg:mt-0">
-            <div className="sticky top-24">
-              <div className="flex flex-col gap-8 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800/50 p-6 shadow-lg">
-                <div className="flex flex-col gap-2">
-                  <p className="text-sm font-bold text-primary">Starting From</p>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-3xl font-black text-primary dark:text-white">$120</span>
-                    <span className="text-sm font-medium text-gray-500 dark:text-gray-400">/ night</span>
+          {/* Room Details */}
+          <div className="mt-10">
+            <h1 className="text-3xl font-bold text-stone-800 mb-4">
+              {room.name}
+            </h1>
+            <p className="text-stone-600 leading-relaxed mb-6">
+              {room.description}
+            </p>
+
+            {/* Key Amenities */}
+            <div className="border-t border-stone-200 pt-6 mb-6">
+              <h3 className="text-lg font-semibold text-stone-800 mb-4">Key Amenities</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                {room.badges.map((badge) => (
+                  <div key={badge} className="flex items-center gap-2">
+                    <Icon name="check_circle" className="text-green-600" />
+                    <span className="text-sm text-stone-600">{badge}</span>
                   </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-text-primary dark:text-background-light mb-1" htmlFor="checkin">
-                      Check-in
-                    </label>
-                    <div className="relative">
-                      <input
-                        className="w-full rounded-lg border border-border-color dark:border-text-secondary/50 dark:bg-background-light/10 dark:text-background-light focus:ring-primary focus:border-primary"
-                        id="checkin"
-                        placeholder="Select Date"
-                        type="text"
-                      />
-                      <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
-                        calendar_today
-                      </span>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-text-primary dark:text-background-light mb-1" htmlFor="checkout">
-                      Check-out
-                    </label>
-                    <div className="relative">
-                      <input
-                        className="w-full rounded-lg border border-border-color dark:border-text-secondary/50 dark:bg-background-light/10 dark:text-background-light focus:ring-primary focus:border-primary"
-                        id="checkout"
-                        placeholder="Select Date"
-                        type="text"
-                      />
-                      <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
-                        calendar_today
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-text-primary dark:text-background-light mb-1" htmlFor="adults">
-                      Adults
-                    </label>
-                    <select
-                      className="w-full rounded-lg border border-border-color dark:border-text-secondary/50 dark:bg-background-light/10 dark:text-background-light focus:ring-primary focus:border-primary"
-                      id="adults"
-                      defaultValue="2"
-                    >
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-text-primary dark:text-background-light mb-1" htmlFor="children">
-                      Children
-                    </label>
-                    <select
-                      className="w-full rounded-lg border border-border-color dark:border-text-secondary/50 dark:bg-background-light/10 dark:text-background-light focus:ring-primary focus:border-primary"
-                      id="children"
-                      defaultValue="0"
-                    >
-                      <option value="0">0</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                    </select>
-                  </div>
-                </div>
-
-                <Link
-                  href="/#booking"
-                  className="w-full flex items-center justify-center rounded-lg h-12 px-6 bg-primary text-white text-base font-bold hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-                >
-                  <span>Reserve Your Stay</span>
-                </Link>
-
-                <div className="text-center mt-3">
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Total for 1 night: <span className="font-bold text-text-primary dark:text-background-light">$120</span>
-                  </p>
-                  <div className="flex justify-center gap-2 mt-2">
-                    <span className="inline-block px-2 py-1 rounded-full bg-green-100 text-green-800 text-xs" data-demo="true">
-                      Payment Processed
-                    </span>
-                    <span className="inline-block px-2 py-1 rounded-full bg-primary/10 text-primary text-xs" data-demo="true">
-                      Email Sent
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="lg:col-span-3 mt-12 lg:mt-0">
-          <div className="flex flex-col gap-6">
-            <div>
-                <div className="flex justify-between items-start mb-4">
-                  <h1 className="text-4xl font-black leading-tight tracking-tighter text-primary dark:text-white">
-                    {room?.name || "Comfort Double"}
-                  </h1>
-                <div className="flex gap-2">
-                  <span className="inline-block px-2 py-1 rounded-full bg-green-100 text-green-800 text-xs font-medium" data-demo="true">
-                    Available
-                  </span>
-                  <span className="inline-block px-2 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium" data-demo="true">
-                    Best Seller
-                  </span>
-                </div>
-              </div>
-              <p className="mt-4 text-base font-normal leading-relaxed">
-                {room?.description || "Experience unparalleled comfort in our spacious room. Perfect for couples or business travelers."}
-              </p>
-            </div>
-
-            <div className="border-t border-gray-200 dark:border-gray-700"></div>
-
-            <div>
-              <h3 className="text-xl font-bold text-primary dark:text-white">Key Amenities</h3>
-              <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-4">
-                <div className="flex items-center gap-3">
-                  <span className="material-symbols-outlined text-primary">wifi</span>
-                  <span className="text-sm font-medium">Free WiFi</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="material-symbols-outlined text-primary">free_breakfast</span>
-                  <span className="text-sm font-medium">Continental Breakfast</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="material-symbols-outlined text-primary">shower</span>
-                  <span className="text-sm font-medium">Rainfall Showerhead</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="material-symbols-outlined text-primary">ac_unit</span>
-                  <span className="text-sm font-medium">Air Conditioning</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="material-symbols-outlined text-primary">tv</span>
-                  <span className="text-sm font-medium">Flat-screen TV</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="material-symbols-outlined text-primary">lock</span>
-                  <span className="text-sm font-medium">In-room Safe</span>
-                </div>
+                ))}
               </div>
             </div>
 
-            <div className="border-t border-gray-200 dark:border-gray-700"></div>
-
-            <div>
-              <h3 className="text-xl font-bold text-primary dark:text-white">What Our Guests Say</h3>
-              <div className="mt-4 flex flex-col gap-6">
-                <div className="border-l-4 border-primary pl-4">
-                  <p className="italic">
-                    "Absolutely wonderful stay. The room was immaculate and the service was top-notch. Highly recommended for anyone visiting Adigrat."
-                  </p>
+            {/* Guest Reviews */}
+            <div className="border-t border-stone-200 pt-6">
+              <h3 className="text-lg font-semibold text-stone-800 mb-4">What Our Guests Say</h3>
+              <div className="flex flex-col gap-4">
+                <div className="border-l-4 border-amber-700 pl-4">
+                  <p className="text-stone-600 italic">&ldquo;Absolutely wonderful stay. The room was immaculate and the service was top-notch.&rdquo;</p>
                   <p className="mt-2 font-bold text-sm">— Jane D.</p>
                 </div>
-                <div className="border-l-4 border-primary pl-4">
-                  <p className="italic">
-                    "A true gem in the heart of the city. Comfortable, clean, and convenient. The booking process was seamless. We'll be back!"
-                  </p>
+                <div className="border-l-4 border-amber-700 pl-4">
+                  <p className="text-stone-600 italic">&ldquo;A true gem in the heart of the city. Comfortable and convenient.&rdquo;</p>
                   <p className="mt-2 font-bold text-sm">— Mark S.</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
+        {/* Right Column: Booking Form */}
+        <div className="lg:sticky lg:top-24">
+          <RoomBookingForm pricePerNight={room.pricePerNight} roomName={room.name} roomSlug={room.slug} />
+        </div>
       </div>
+
+      {/* Other Rooms */}
+      {otherRooms.length > 0 && (
+        <section className="max-w-6xl mx-auto mt-16 pt-10 border-t border-stone-200">
+          <div className="flex items-end justify-between mb-8">
+            <div>
+              <h2 className="text-2xl font-serif font-bold text-stone-800">
+                Other Rooms & Suites
+              </h2>
+              <p className="text-stone-500 mt-1">
+                Explore more ways to stay at Canaan Hotel.
+              </p>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {otherRooms.map((r) => (
+              <RoomCard
+                key={r.slug}
+                slug={r.slug}
+                imageSrc={r.imageSrc}
+                imageAlt={r.imageAlt}
+                name={r.name}
+                description={r.description}
+                priceLabel={r.priceLabel}
+                badges={r.badges}
+                rating={r.rating}
+              />
+            ))}
+          </div>
+        </section>
+      )}
     </main>
   );
 }

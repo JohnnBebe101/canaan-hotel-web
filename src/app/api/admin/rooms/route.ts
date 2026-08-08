@@ -1,19 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
+export const dynamic = 'force-dynamic';
 import {
   getRooms,
   createRoom,
   updateRoom,
   deleteRoom,
-} from "@/lib/room-store";
+  type Room
+} from "@/lib/admin-room-store";
+import { verifyAdminAuth } from "@/lib/admin-auth";
 
-/**
- * Admin Rooms API
- * Protected by middleware - requires admin authentication
- * CRUD operations for room management
- */
+function adminAuthCheck(request: NextRequest) {
+  if (!verifyAdminAuth(request)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  return null;
+}
 
 // GET /api/admin/rooms - List all rooms
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const authError = adminAuthCheck(request);
+  if (authError) return authError;
+
   try {
     const rooms = await getRooms();
     return NextResponse.json(rooms);
@@ -28,19 +35,21 @@ export async function GET() {
 
 // POST /api/admin/rooms - Create new room
 export async function POST(request: NextRequest) {
+  const authError = adminAuthCheck(request);
+  if (authError) return authError;
   try {
     const body = await request.json();
 
     // Validate required fields
-    if (!body.name || body.pricePerNight === undefined) {
+    if (!body.name || body.price_per_night === undefined) {
       return NextResponse.json(
-        { error: "Missing required fields: name and pricePerNight" },
+        { error: "Missing required fields: name and price_per_night" },
         { status: 400 }
       );
     }
 
     // Validate price is a positive number
-    if (typeof body.pricePerNight !== "number" || body.pricePerNight <= 0) {
+    if (typeof body.price_per_night !== "number" || body.price_per_night <= 0) {
       return NextResponse.json(
         { error: "Price per night must be a positive number" },
         { status: 400 }
@@ -50,9 +59,14 @@ export async function POST(request: NextRequest) {
     const room = await createRoom({
       name: body.name.trim(),
       description: body.description?.trim() || "",
-      pricePerNight: Number(body.pricePerNight),
-      maxGuests: Number(body.maxGuests) || 2,
-      isActive: body.isActive !== undefined ? Boolean(body.isActive) : true,
+      price_per_night: Number(body.price_per_night),
+      max_guests: Number(body.max_guests) || 2,
+      is_active: body.is_active !== undefined ? Boolean(body.is_active) : true,
+      image_src: body.image_src,
+      image_alt: body.image_alt,
+      price_label: body.price_label || `From $${body.price_per_night} / night`,
+      badges: body.badges || [],
+      images: body.images || [],
     });
 
     return NextResponse.json(room, { status: 201 });
@@ -67,6 +81,8 @@ export async function POST(request: NextRequest) {
 
 // PUT /api/admin/rooms - Update existing room
 export async function PUT(request: NextRequest) {
+  const authError = adminAuthCheck(request);
+  if (authError) return authError;
   try {
     const body = await request.json();
 
@@ -78,19 +94,22 @@ export async function PUT(request: NextRequest) {
     }
 
     // Validate price if provided
-    if (body.pricePerNight !== undefined && (typeof body.pricePerNight !== "number" || body.pricePerNight <= 0)) {
+    if (body.price_per_night !== undefined && (typeof body.price_per_night !== "number" || body.price_per_night <= 0)) {
       return NextResponse.json(
         { error: "Price per night must be a positive number" },
         { status: 400 }
       );
     }
 
-    const updateData: any = {};
+    const updateData: Partial<Room> = {};
     if (body.name !== undefined) updateData.name = body.name.trim();
     if (body.description !== undefined) updateData.description = body.description.trim();
-    if (body.pricePerNight !== undefined) updateData.pricePerNight = Number(body.pricePerNight);
-    if (body.maxGuests !== undefined) updateData.maxGuests = Number(body.maxGuests);
-    if (body.isActive !== undefined) updateData.isActive = Boolean(body.isActive);
+    if (body.price_per_night !== undefined) updateData.price_per_night = Number(body.price_per_night);
+    if (body.max_guests !== undefined) updateData.max_guests = Number(body.max_guests);
+    if (body.is_active !== undefined) updateData.is_active = Boolean(body.is_active);
+    if (body.image_src !== undefined) updateData.image_src = body.image_src;
+    if (body.image_alt !== undefined) updateData.image_alt = body.image_alt;
+    if (body.images !== undefined) updateData.images = body.images;
 
     const updated = await updateRoom(body.id, updateData);
     if (!updated) {
@@ -107,8 +126,10 @@ export async function PUT(request: NextRequest) {
   }
 }
 
-// DELETE /api/admin/rooms - Delete room
+// DELETE /api/admin/rooms - Delete room (soft delete)
 export async function DELETE(request: NextRequest) {
+  const authError = adminAuthCheck(request);
+  if (authError) return authError;
   try {
     const body = await request.json();
 

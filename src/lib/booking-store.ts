@@ -1,237 +1,200 @@
-import { Booking, BookingStatus } from "./models";
-import { safeAsync } from "./asyncGuards";
-import { logInfo, logWarn, logError } from "./logger";
-import {
-  dispatchBookingReceivedEmail,
-  dispatchBookingStatusUpdateEmail,
-  dispatchInvoiceIssuedEmail,
-  dispatchHotelAlertEmail,
-} from "./email/emailDispatcher";
-import { isDbPersistenceEnabled, isDbShadowReadEnabled, isDbReadPrimaryEnabled } from "./featureFlags";
-import { saveBooking, getBookingById, getAllBookings, updateBooking } from "./persistence/dbAdapter";
-import { readBookingById } from "./persistence/dbReader";
-import { compareMemoryVsDB } from "./persistence/shadowCompare";
+import { supabase } from './supabase';
+import { offlineStorage } from './offline-storage';
+import { Booking } from './models';
 
-// CRM Core: Operational booking management
-// REMOVED: In-memory bookings array, now using database persistence
+// CamelCase input type for bookings (during transition to camelCase API)
+export interface BookingCamel {
+  guestName: string;
+  email: string;
+  phone?: string;
+  roomType: string;
+  checkIn: string;
+  checkOut: string;
+  numberOfGuests?: number;
+  totalPrice?: number;
+  status?: string;
+  notes?: string;
+}
+
+// ============================================
+// BOOKING STORE (Supabase with Offline Fallback)
+// ============================================
 
 export async function getBookings(): Promise<Booking[]> {
-  if (!isDbPersistenceEnabled()) {
-    logWarn("DB_DISABLED", "Database persistence is disabled, returning empty array for getBookings");
-    return [];
-  }
   try {
-    const allBookings = await getAllBookings();
-    return allBookings as Booking[];
+    if (!supabase) throw new Error('Supabase not initialized');
+    const { data, error } = await supabase
+      .from('bookings')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    return data || [];
   } catch (error) {
-    logError("DB_FETCH_FAILED", "Failed to retrieve all bookings from database", { error });
-    throw new Error("Failed to retrieve bookings");
+    console.warn('[BookingStore] Supabase unavailable, using offline storage');
+    return offlineStorage.getBookings();
   }
 }
 
-export async function getBooking(id: string): Promise<Booking | undefined> {
-  // V6.5 Cutover: DB primary read with runtime guards
-  if (isDbReadPrimaryEnabled()) {
-    if (!isDbPersistenceEnabled()) {
-      logWarn("DB_CUTOVER_GUARD", "DB_READ_PRIMARY_ENABLED=true but DB_PERSISTENCE_ENABLED=false, falling back to memory (now effectively empty)", {
-        operation: "getBooking",
-        bookingId: id,
-      });
-      return undefined; // No memory fallback data anymore
-    } else {
-      try {
-        const dbBooking = await getBookingById(id);
-        if (dbBooking) {
-          logInfo("DB_CUTOVER_SUCCESS", "DB primary read succeeded", {
-            operation: "getBooking",
-            bookingId: id,
-          });
-          return dbBooking as Booking;
-        }
-        return undefined; // DB returned null
-      } catch (error) {
-        logError("DB_CUTOVER_FALLBACK", "DB read failed, no memory fallback", {
-          operation: "getBooking",
-          bookingId: id,
-          error: error instanceof Error ? error.message : String(error),
-        });
-        return undefined; // DB read failed, no memory fallback
-      }
+export async function getBookingById(id: string): Promise<Booking | null> {
+  try {
+    if (!supabase) throw new Error('Supabase not initialized');
+    const { data, error } = await supabase
+      .from('bookings')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (error) {
+      if (error.code === 'PGRST116') return null;
+      throw error;
     }
-  }
-
-  // Old memory fallback path (now effectively empty/unused if DB is primary)
-  // In a full cutover, this block would be removed.
-  return undefined;
-}
-
-export async function createBooking(data: Omit<Booking, "id" | "status" | "createdAt" | "updatedAt">): Promise<Booking> {
-  if (!isDbPersistenceEnabled()) {
-    logError("DB_DISABLED_CREATE", "Database persistence is disabled, cannot create booking.");
-    throw new Error("Database not enabled for booking creation.");
-  }
-
-  const newBooking: Booking = {
-    ...data,
-    id: crypto.randomUUID(), // Will be overwritten by lowdb nanoid if passed to saveBooking
-    status: "NEW", // All bookings start as NEW in the DB
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
-
-  try {
-    await saveBooking(newBooking);
-    logInfo("CRM_BOOKING_DB", `New booking created and persisted to DB: ${newBooking.id}`, {
-      bookingId: newBooking.id,
-      guestName: newBooking.guestName,
-      roomType: newBooking.roomType,
-      status: newBooking.status,
-    });
+    return data;
   } catch (error) {
-    logError("DB_CREATE_FAILED", "Failed to persist new booking to database", {
-      bookingId: newBooking.id,
-      operation: "createBooking",
-      error: error instanceof Error ? error.message : String(error),
-    });
-    throw new Error("Failed to create booking in database.");
+    console.warn('[BookingStore] Supabase unavailable, using offline storage');
+    return offlineStorage.getBooking(id) || null;
   }
-
-  safeAsync(
-    () => Promise.all([
-      dispatchBookingReceivedEmail(newBooking),
-      dispatchHotelAlertEmail(newBooking)
-    ]).then(() => undefined),
-    "BOOKING_CREATION_EMAILS"
-  );
-
-  return newBooking;
 }
 
-export async function updateBookingStatus(id: string, status: BookingStatus): Promise<Booking | null> {
-  if (!isDbPersistenceEnabled()) {
-    logWarn("DB_DISABLED_UPDATE_STATUS", "Database persistence is disabled, cannot update booking status.");
+export async function getBookingByReference(ref: string): Promise<Booking | null> {
+  try {
+    if (!supabase) throw new Error('Supabase not initialized');
+    const { data, error } = await supabase
+      .from('bookings')
+      .select('*')
+      .eq('booking_reference', ref)
+      .single();
+
+    if (error) {
+      if (error.code === 'PGRST116') return null;
+      throw error;
+    }
+    return data;
+  } catch (error) {
+    console.warn('[BookingStore] Error fetching by reference:', error);
     return null;
   }
+}
 
-  const bookingToUpdate = await getBooking(id);
-  if (!bookingToUpdate) return null;
-
-  if (bookingToUpdate.status === "CLOSED") {
-    return null;
-  }
-
-  const previousStatus = bookingToUpdate.status;
-  bookingToUpdate.status = status;
-  bookingToUpdate.updatedAt = new Date().toISOString();
-
-  if (status === "INVOICED" && !bookingToUpdate.invoiceRef) {
-    bookingToUpdate.invoiceRef = `INV-${Date.now()}`;
-  }
+// Overloads to support both camelCase input and snake_case storage payloads
+export async function createBooking(booking: BookingCamel): Promise<Booking>;
+export async function createBooking(booking: Omit<Booking, 'id' | 'created_at'>): Promise<Booking>;
+export async function createBooking(booking: any): Promise<Booking> {
+  // Map camelCase input to snake_case if needed
+  const isCamel = booking && (booking as BookingCamel).guestName !== undefined;
+  const payload = isCamel ? camelToSnake(booking as BookingCamel) : booking as Omit<Booking, 'id' | 'created_at'>;
 
   try {
-    const updated = await updateBooking(id, bookingToUpdate);
-    logInfo("CRM_STATUS_TRANSITION_DB", `Booking status changed and persisted to DB: ${previousStatus} → ${status}`, {
-      bookingId: id,
-      previousStatus,
-      newStatus: status,
-      guestName: bookingToUpdate.guestName,
-      invoiceRef: bookingToUpdate.invoiceRef,
-    });
-    safeAsync(
-      () => Promise.all([
-        dispatchBookingStatusUpdateEmail(bookingToUpdate),
-        ...(status === "INVOICED" ? [dispatchInvoiceIssuedEmail(bookingToUpdate)] : [])
-      ]).then(() => undefined),
-      "BOOKING_STATUS_UPDATE_EMAILS"
-    );
-    return updated as Booking;
+    if (!supabase) throw new Error('Supabase not initialized');
+    const { data, error } = await (supabase as any)
+      .from('bookings')
+      .insert(payload)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
   } catch (error) {
-    logError("DB_UPDATE_STATUS_FAILED", "Failed to persist booking status update to database", {
-      bookingId: id,
-      operation: "updateBookingStatus",
-      previousStatus,
-      newStatus: status,
-      error: error instanceof Error ? error.message : String(error),
-    });
-    throw new Error("Failed to update booking status in database.");
+    console.warn('[BookingStore] Supabase unavailable, using offline storage');
+    return offlineStorage.createBooking(booking);
   }
 }
 
-export async function updateBookingNotes(id: string, notes: string): Promise<Booking | null> {
-  if (!isDbPersistenceEnabled()) {
-    logWarn("DB_DISABLED_UPDATE_NOTES", "Database persistence is disabled, cannot update booking notes.");
-    return null;
-  }
+// Convert camelCase booking input to snake_case for storage
+function camelToSnake(b: BookingCamel): Omit<Booking, 'id' | 'created_at'> {
+  return {
+    guest_name: b.guestName,
+    email: b.email,
+    phone: b.phone,
+    room_type: b.roomType,
+    check_in_date: b.checkIn,
+    check_out_date: b.checkOut,
+    number_of_guests: b.numberOfGuests ?? 1,
+    total_price: b.totalPrice ?? 0,
+    status: b.status ?? 'pending',
+    notes: b.notes,
+  } as any;
+}
 
-  const bookingToUpdate = await getBooking(id);
-  if (!bookingToUpdate) return null;
-
-  bookingToUpdate.notes = notes;
-  bookingToUpdate.updatedAt = new Date().toISOString();
-
+export async function updateBooking(id: string, updates: Partial<Booking>): Promise<Booking | null> {
   try {
-    const updated = await updateBooking(id, bookingToUpdate);
-    logInfo("CRM_NOTES_UPDATE_DB", `Booking notes updated and persisted to DB for: ${id}`, {
-      bookingId: id,
-      guestName: bookingToUpdate.guestName,
-    });
-    return updated as Booking;
+    if (!supabase) throw new Error('Supabase not initialized');
+    const { data, error } = await supabase
+      .from('bookings')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
   } catch (error) {
-    logError("DB_UPDATE_NOTES_FAILED", "Failed to persist booking notes update to database", {
-      bookingId: id,
-      operation: "updateBookingNotes",
-      error: error instanceof Error ? error.message : String(error),
-    });
-    throw new Error("Failed to update booking notes in database.");
+    console.warn('[BookingStore] Supabase unavailable, using offline storage');
+    return offlineStorage.updateBooking(id, updates);
   }
 }
 
-export async function updateBookingPayment(id: string, paymentId: string, paymentRecord: any): Promise<Booking | null> {
-  if (!isDbPersistenceEnabled()) {
-    logWarn("DB_DISABLED_UPDATE_PAYMENT", "Database persistence is disabled, cannot update booking payment.");
-    return null;
-  }
-
+export async function deleteBooking(id: string): Promise<boolean> {
   try {
-    const bookingToUpdate = await getBooking(id);
-    if (!bookingToUpdate) return null;
-
-    bookingToUpdate.paymentId = paymentId;
-    bookingToUpdate.paymentRecord = paymentRecord;
-    bookingToUpdate.updatedAt = new Date().toISOString();
-
-    const updated = await updateBooking(id, bookingToUpdate);
-    logInfo("CRM_PAYMENT_LINK_STORED_DB", `Payment reference stored and persisted to DB for booking: ${id}`, {
-      bookingId: id,
-      paymentId,
-      status: paymentRecord?.status,
-      amount: paymentRecord?.amountCents,
-    });
-    return updated as Booking;
+    if (!supabase) throw new Error('Supabase not initialized');
+    const { error } = await supabase.from('bookings').delete().eq('id', id);
+    if (error) throw error;
+    return true;
   } catch (error) {
-    logError("CRM_PAYMENT_UPDATE_FAILED_DB", "Failed to store payment reference to database", {
-      bookingId: id,
-      paymentId,
-      error: error instanceof Error ? error.message : String(error),
-    });
-    throw new Error("Failed to update booking payment in database.");
+    console.warn('[BookingStore] Supabase unavailable, using offline storage');
+    return offlineStorage.deleteBooking(id);
   }
 }
 
-// Analytics helpers for dashboard
-export async function getBookingsByStatus(status: BookingStatus): Promise<Booking[]> {
-  if (!isDbPersistenceEnabled()) {
-    return [];
-  }
-  const allBookings = await getBookings();
-  return allBookings.filter(b => b.status === status);
-}
+export async function getBookingStats() {
+  try {
+    if (!supabase) throw new Error('Supabase not initialized');
+    const { data: totalBookings } = await supabase
+      .from('bookings')
+      .select('id', { count: 'exact', head: true });
 
-export async function getRecentBookings(limit: number = 10): Promise<Booking[]> {
-  if (!isDbPersistenceEnabled()) {
-    return [];
+    const { data: confirmedBookings } = await supabase
+      .from('bookings')
+      .select('id', { count: 'exact', head: true })
+      .eq('status', 'confirmed');
+
+    const { data: pendingBookings } = await supabase
+      .from('bookings')
+      .select('id', { count: 'exact', head: true })
+      .eq('status', 'pending');
+
+    const { data: revenueData } = await supabase
+      .from('bookings')
+      .select('total_price')
+      .eq('status', 'confirmed');
+
+    const revenue = revenueData?.reduce((sum: number, b: { total_price: number | string }) => sum + (Number(b.total_price) || 0), 0) || 0;
+
+    const { data: guestData } = await supabase
+      .from('bookings')
+      .select('number_of_guests')
+      .eq('status', 'confirmed');
+
+    const activeGuests = guestData?.reduce((sum: number, b: { number_of_guests: number | string }) => sum + (Number(b.number_of_guests) || 0), 0) || 0;
+
+    return {
+      totalBookings: totalBookings?.length || 0,
+      confirmedBookings: confirmedBookings?.length || 0,
+      pendingBookings: pendingBookings?.length || 0,
+      totalRevenue: revenue,
+      activeGuests: activeGuests,
+      occupancyRate: Math.round(((confirmedBookings?.length || 0) / 10) * 100)
+    };
+  } catch (error) {
+    console.warn('[BookingStore] Using offline storage for stats');
+    const stats = offlineStorage.getStats();
+    return {
+      totalBookings: stats.totalBookings,
+      confirmedBookings: stats.confirmedBookings,
+      pendingBookings: stats.pendingBookings,
+      totalRevenue: 0,
+      activeGuests: 0,
+      occupancyRate: 0
+    };
   }
-  const allBookings = await getBookings();
-  // Sort by createdAt timestamp in descending order for most recent
-  return allBookings.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, limit);
 }

@@ -3,19 +3,25 @@
  * Provides secure token signing and verification
  */
 
-const SESSION_SECRET = process.env.SESSION_SECRET;
-
-if (!SESSION_SECRET) {
-  throw new Error("Missing required environment variable: SESSION_SECRET");
-}
 const SESSION_MAX_AGE = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+/**
+ * Get session secret from environment (lazy initialization)
+ */
+function getSessionSecret(): string {
+  const secret = process.env.SESSION_SECRET;
+  if (!secret) {
+    throw new Error('Missing required environment variable: SESSION_SECRET');
+  }
+  return secret;
+}
 
 /**
  * Get crypto subtle API (works in both Node.js and Edge Runtime)
  */
 async function getKey(): Promise<CryptoKey> {
   const encoder = new TextEncoder();
-  const keyData = encoder.encode(SESSION_SECRET);
+  const keyData = encoder.encode(getSessionSecret());
 
   return crypto.subtle.importKey(
     "raw",

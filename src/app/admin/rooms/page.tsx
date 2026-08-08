@@ -1,22 +1,40 @@
 "use client";
 
+export const dynamic = 'force-dynamic';
+
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Room } from "@/lib/models";
-
-/**
- * Admin Rooms Management Page
- * Route: /admin/rooms
- *
- * Allows admins to manage hotel rooms (add, edit, delete)
- */
+import { useToast } from "@/components/ui/Toast";
+import ConfirmModal from "@/components/ui/ConfirmModal";
+import Badge from "@/components/ui/Badge";
+import Button from "@/components/ui/Button";
+import { Plus, BedDouble, CreditCard, Users, Delete, Package, Pencil } from "lucide-react";
 
 export default function AdminRoomsPage() {
+  const router = useRouter();
   const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { showToast } = useToast();
 
-  // Load rooms on component mount
+  const [confirmConfig, setConfirmConfig] = useState<{
+    isOpen: boolean;
+    roomId: string;
+    action: "delete" | "toggle";
+    title: string;
+    message: string;
+    variant: "danger" | "warning" | "primary";
+  }>({
+    isOpen: false,
+    roomId: "",
+    action: "toggle",
+    title: "",
+    message: "",
+    variant: "primary",
+  });
+
   useEffect(() => {
     loadRooms();
   }, []);
@@ -24,9 +42,18 @@ export default function AdminRoomsPage() {
   const loadRooms = async () => {
     try {
       setLoading(true);
-      const response = await fetch("/api/admin/rooms");
+      const adminSecret = process.env.NEXT_PUBLIC_ADMIN_PASSWORD ?? "";
+      const response = await fetch("/api/admin/rooms", {
+        headers: { "x-admin-secret": adminSecret },
+      });
+      
+      if (response.status === 401) {
+        console.error("[rooms] Auth failed — check ADMIN_API_SECRET");
+        setError("Authentication failed. Check admin credentials.");
+        return;
+      }
+      
       if (!response.ok) throw new Error("Failed to load rooms");
-
       const data = await response.json();
       setRooms(data);
     } catch (err) {
@@ -36,164 +63,191 @@ export default function AdminRoomsPage() {
     }
   };
 
-  const handleToggleActive = async (roomId: string) => {
-    try {
-      const room = rooms.find(r => r.id === roomId);
-      if (!room) return;
+  const handleToggleRequest = (roomId: string) => {
+    const room = rooms.find((r) => r.id === roomId);
+    if (!room) return;
 
-      const response = await fetch("/api/admin/rooms", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          id: roomId,
-          isActive: !room.isActive
-        })
-      });
-
-      if (!response.ok) throw new Error("Failed to update room");
-
-      // Update local state
-      setRooms(rooms.map(r =>
-        r.id === roomId ? { ...r, isActive: !r.isActive } : r
-      ));
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to update room");
-    }
+    setConfirmConfig({
+      isOpen: true,
+      roomId,
+      action: "toggle",
+      title: room.is_active ? "Deactivate Room" : "Activate Room",
+      message: room.is_active
+        ? `Are you sure you want to take "${room.name}" offline? It will no longer be bookable.`
+        : `Bring "${room.name}" back online? Guests will be able to book it immediately.`,
+      variant: "warning",
+    });
   };
 
-  const handleDelete = async (roomId: string) => {
-    if (!confirm("Are you sure you want to delete this room?")) return;
+  const handleDeleteRequest = (roomId: string) => {
+    const room = rooms.find((r) => r.id === roomId);
+    if (!room) return;
+
+    setConfirmConfig({
+      isOpen: true,
+      roomId,
+      action: "delete",
+      title: "Delete Room Permanently",
+      message: `Are you sure you want to delete "${room.name}"? This action cannot be undone and will remove all associated data.`,
+      variant: "danger",
+    });
+  };
+
+  const executeAction = async () => {
+    const { roomId, action } = confirmConfig;
+    if (!roomId) return;
 
     try {
-      const response = await fetch("/api/admin/rooms", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: roomId })
-      });
-
-      if (!response.ok) throw new Error("Failed to delete room");
-
-      // Remove from local state
-      setRooms(rooms.filter(r => r.id !== roomId));
+      if (action === "toggle") {
+        const room = rooms.find((r) => r.id === roomId);
+        const response = await fetch("/api/admin/rooms", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: roomId, is_active: !room?.is_active }),
+        });
+        if (!response.ok) throw new Error("Failed to update room");
+        setRooms(rooms.map((r) => (r.id === roomId ? { ...r, is_active: !r.is_active } : r)));
+        showToast("success", "Room status updated successfully.");
+      } else {
+        const response = await fetch("/api/admin/rooms", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: roomId }),
+        });
+        if (!response.ok) throw new Error("Failed to delete room");
+        setRooms(rooms.filter((r) => r.id !== roomId));
+        showToast("success", "Room deleted successfully.");
+      }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to delete room");
+      showToast("error", "An error occurred while updating the room.");
+    } finally {
+      setConfirmConfig((prev) => ({ ...prev, isOpen: false }));
     }
   };
 
   if (loading) {
     return (
-      <div className="p-6">
-        <div className="text-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading rooms...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="p-6">
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-          <h3 className="text-red-900 font-medium">Error loading rooms</h3>
-          <p className="text-red-700 text-sm mt-1">{error}</p>
-          <button
-            onClick={loadRooms}
-            className="mt-3 px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:opacity-90 transition-opacity"
-          >
-            Retry Loading
-          </button>
-        </div>
+      <div className="flex flex-col items-center justify-center py-20">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cactus mx-auto"></div>
+        <p className="mt-4 text-sm font-medium text-slate-400 uppercase tracking-wider">Loading Inventory...</p>
       </div>
     );
   }
 
   return (
-    <div className="p-6">
-      <div className="mb-8 flex items-center justify-between">
+    <div className="space-y-8">
+      {/* Page Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Room Management</h1>
-          <p className="text-gray-600">Manage hotel rooms and pricing</p>
+          <h1 className="text-2xl font-bold text-forest tracking-tight">Room Management</h1>
+          <p className="text-sm text-slate-500 mt-1">Configure your hotel's room inventory and pricing.</p>
         </div>
-        <Link
-          href="/admin/rooms/new"
-          className="bg-amber-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-amber-700 transition-colors"
-        >
+        <Button onClick={() => router.push('/admin/rooms/new')} size="lg">
+          <Plus className="w-4 h-4 mr-2" />
           Add New Room
-        </Link>
+        </Button>
       </div>
 
-      {/* Rooms List */}
-      <div className="bg-white rounded-lg shadow-sm border">
-        <div className="p-6 border-b">
-          <h2 className="text-lg font-semibold text-gray-900">All Rooms ({rooms.length})</h2>
-        </div>
-
-        <div className="divide-y divide-gray-200">
-          {rooms.map((room) => (
-            <div key={room.id} className="p-6">
-              <div className="flex items-center justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center space-x-3 mb-2">
-                    <h3 className="text-lg font-semibold text-gray-900">{room.name}</h3>
-                    <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                      room.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                    }`}>
-                      {room.isActive ? 'Active' : 'Inactive'}
-                    </span>
-                  </div>
-                  <p className="text-gray-600 mb-2">${room.pricePerNight}/night • Up to {room.maxGuests} guests</p>
-                  <p className="text-sm text-gray-600 line-clamp-2">{room.description}</p>
+      {/* Room Cards Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-6">
+        {rooms.map((room) => (
+          <div key={room.id} className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+            {/* Image Area */}
+            <div className="aspect-video bg-slate-100 relative">
+              {room.image_src ? (
+                <img 
+                  src={room.image_src} 
+                  alt={room.name}
+                  className="object-cover w-full h-full"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <BedDouble className="w-12 h-12 text-slate-300" />
                 </div>
-
-                <div className="flex items-center space-x-2 ml-4">
-                  <button
-                    onClick={() => handleToggleActive(room.id)}
-                    className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-                      room.isActive
-                        ? 'bg-green-100 text-green-800 hover:bg-green-200'
-                        : 'bg-red-100 text-red-800 hover:bg-red-200'
-                    }`}
-                  >
-                    {room.isActive ? 'Deactivate' : 'Activate'}
-                  </button>
-                  <Link
-                    href={`/admin/rooms/${room.id}`}
-                    className="px-3 py-2 text-sm font-medium rounded-md bg-primary text-white hover:opacity-90 transition-opacity"
-                  >
-                    Edit
-                  </Link>
-                  <button
-                    onClick={() => handleDelete(room.id)}
-                    className="px-3 py-2 text-sm font-medium bg-red-100 text-red-800 rounded-md hover:bg-red-200 transition-colors"
-                  >
-                    Delete
-                  </button>
-                </div>
+              )}
+              <div className="absolute top-3 left-3">
+                <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                  room.is_active ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'
+                }`}>
+                  {room.is_active ? "Available" : "Offline"}
+                </span>
               </div>
             </div>
-          ))}
-        </div>
+            
+            {/* Card Body */}
+            <div className="p-4">
+              <h3 className="text-sm font-semibold text-forest">{room.name}</h3>
+              <p className="text-xs text-slate-400 mt-0.5">{room.description?.substring(0, 60)}...</p>
+              
+              <div className="flex items-center gap-4 mt-3">
+                <div className="flex items-center gap-1">
+                  <CreditCard className="w-4 h-4 text-bronze" />
+                  <span className="text-lg font-bold text-bronze">${room.price_per_night}</span>
+                  <span className="text-xs text-slate-400">/night</span>
+                </div>
+                <div className="flex items-center gap-1 border-l border-slate-100 pl-4">
+                  <Users className="w-4 h-4 text-slate-400" />
+                  <span className="text-xs text-slate-500">{room.max_guests} Guests</span>
+                </div>
+              </div>
 
-        {rooms.length === 0 && (
-          <div className="p-12 text-center">
-            <div className="text-gray-400 mb-4">
-              <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-              </svg>
+              {/* Action Buttons */}
+              <div className="mt-3 flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex-1"
+                  onClick={() => router.push(`/admin/rooms/${room.id}`)}
+                >
+                  <Pencil className="w-3 h-3 mr-1" />
+                  Edit
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className={room.is_active ? "text-amber-600 hover:bg-amber-50" : "text-green-600 hover:bg-green-50"}
+                  onClick={() => handleToggleRequest(room.id)}
+                >
+                  {room.is_active ? "Deactivate" : "Activate"}
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-slate-400 hover:text-red-500 p-2"
+                  onClick={() => handleDeleteRequest(room.id)}
+                >
+                  <Delete className="w-4 h-4" />
+                </Button>
+              </div>
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">No rooms yet</h3>
-            <p className="text-gray-600 mb-4">Get started by creating your first room</p>
-            <Link
-              href="/admin/rooms/new"
-              className="inline-block bg-amber-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-amber-700 transition-colors"
-            >
-              Create First Room
-            </Link>
           </div>
-        )}
+        ))}
       </div>
+
+      {/* Empty State */}
+      {rooms.length === 0 && (
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-20 text-center">
+          <Package className="w-16 h-16 text-slate-300 mx-auto mb-4" />
+          <h2 className="text-lg font-semibold text-forest mb-2">No rooms added yet.</h2>
+          <p className="text-sm text-slate-500 mb-8 max-w-sm mx-auto">
+            Add your first room to start accepting bookings.
+          </p>
+          <Button onClick={() => router.push('/admin/rooms/new')} size="lg">
+            <Plus className="w-4 h-4 mr-2" />
+            Add First Room
+          </Button>
+        </div>
+      )}
+
+      <ConfirmModal
+        isOpen={confirmConfig.isOpen}
+        title={confirmConfig.title}
+        message={confirmConfig.message}
+        variant={confirmConfig.variant}
+        confirmLabel={confirmConfig.action === "delete" ? "Delete Permanently" : "Proceed"}
+        onConfirm={executeAction}
+        onCancel={() => setConfirmConfig((prev) => ({ ...prev, isOpen: false }))}
+      />
     </div>
   );
 }
-

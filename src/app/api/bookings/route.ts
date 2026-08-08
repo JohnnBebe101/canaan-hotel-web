@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createBooking } from "@/lib/booking-store";
+export const dynamic = 'force-dynamic';
+import { createBooking, getBookings } from "@/lib/booking-store";
 
-// POST handler for booking inquiries
+// POST - Create a new booking inquiry
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -11,8 +12,9 @@ export async function POST(request: NextRequest) {
     const missingFields = requiredFields.filter((field) => !body[field]);
 
     if (missingFields.length > 0) {
+      const errorMsg = `Missing required fields: ${missingFields.join(", ")}`;
       return NextResponse.json(
-        { error: `Missing required fields: ${missingFields.join(", ")}` },
+        { error: errorMsg, message: errorMsg },
         { status: 400 }
       );
     }
@@ -20,21 +22,40 @@ export async function POST(request: NextRequest) {
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(body.email)) {
+      const errorMsg = "Invalid email format";
       return NextResponse.json(
-        { error: "Invalid email format" },
+        { error: errorMsg, message: errorMsg },
         { status: 400 }
       );
     }
 
-    // Validate dates structure
-    if (!body.dates.check_in || !body.dates.check_out) {
+    // Validate dates
+    if (!body.dates?.check_in || !body.dates?.check_out) {
+      const errorMsg = "Dates must include check_in and check_out";
       return NextResponse.json(
-        { error: "Dates must include check_in and check_out" },
+        { error: errorMsg, message: errorMsg },
         { status: 400 }
       );
     }
 
-    // Create operational booking record for CRM
+    // Calculate price (simplified)
+    const roomPrices: Record<string, number> = {
+      'Standard Room': 45,
+      'Deluxe Room': 75,
+      'Family Room': 95,
+      'Luxury Suite': 120,
+      'Economy Single Room': 50,
+      'Comfort Double Room': 75,
+      'Family Suite': 110,
+    };
+    const pricePerNight = roomPrices[body.room_type] || 75;
+
+    const checkIn = new Date(body.dates.check_in);
+    const checkOut = new Date(body.dates.check_out);
+    const nights = Math.max(1, Math.ceil((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24)));
+    const totalPrice = pricePerNight * nights;
+
+    // Create booking using BookingStore (camelCase input; store will map to snake_case)
     const booking = await createBooking({
       guestName: body.guest_name.trim(),
       email: body.email.trim().toLowerCase(),
@@ -42,10 +63,12 @@ export async function POST(request: NextRequest) {
       roomType: body.room_type.trim(),
       checkIn: body.dates.check_in,
       checkOut: body.dates.check_out,
-      notes: body.message?.trim() || undefined,
+      numberOfGuests: body.number_of_guests ?? 1,
+      totalPrice: totalPrice,
+      notes: body.message?.trim(),
+      status: 'pending',
     });
 
-    // Return success response with booking details
     return NextResponse.json(
       {
         message: "Booking inquiry received successfully",
@@ -56,26 +79,24 @@ export async function POST(request: NextRequest) {
     );
   } catch (error) {
     console.error("Error processing booking inquiry:", error);
+    const errorMsg = "Internal server error";
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: errorMsg, message: errorMsg },
       { status: 500 }
     );
   }
 }
 
-// GET handler (optional - for testing or retrieving bookings)
+// GET - List all bookings
 export async function GET() {
   try {
-    return NextResponse.json(
-      { message: "Booking inquiry API endpoint. Use POST to submit a booking inquiry." },
-      { status: 200 }
-    );
+    const bookings = await getBookings();
+    return NextResponse.json(bookings);
   } catch (error) {
-    console.error("Booking GET error:", error);
+    console.error("Error fetching bookings:", error);
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Failed to fetch bookings" },
       { status: 500 }
     );
   }
 }
-

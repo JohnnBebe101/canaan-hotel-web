@@ -1,14 +1,18 @@
-import { Metadata } from "next";
+import type { Metadata } from "next/types";
 import Link from "next/link";
 import HeroImage from "@/components/HeroImage";
 import Card from "../../../components/Card";
+import { Icon } from "@/components/ui/Icons";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Local Attractions | Explore Adigrat & Tigray",
-  description: "Discover the rich history and breathtaking landscapes surrounding Canaan International Hotel, including Debre Damo Monastery and Gheralta Mountains.",
+  title: 'Local Attractions — Gheralta, Al-Najashi, Debre Damo',
+  alternates: { canonical: canonical("/attractions") },
+  description: "Explore Tigray's ancient wonders from Canaan Hotel. Gheralta rock churches (45km), Al-Najashi Mosque (32km), Debre Damo Monastery (52km). Your highland base camp.",
   openGraph: {
-    title: "Explore Tigray's Heritage - Attractions Near Canaan Hotel",
-    description: "Plan your visit to ancient monasteries, stunning mountains, and historic sites in the Tigray region.",
+    title: 'Discover the Tigray Highlands | Canaan International Hotel',
+    description: 'Gateway to the spiritual heart of the Horn of Africa. Ancient monasteries, sacred mosques, vertical sandstone landscapes.',
+    images: ['/images/heroes/Ext-Compund.webp'],
   },
 };
 
@@ -29,7 +33,7 @@ const attractions: Attraction[] = [
     name: "Debre Damo Monastery",
     description: "An ancient monastery perched atop a flat-topped mountain.",
     longDescription: "One of the oldest monasteries in Ethiopia, Debre Damo is accessible only by climbing a 15-meter rope up a sheer cliff face. This 6th-century monastery houses ancient manuscripts and offers breathtaking views of the surrounding landscape.",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBVBCiJf9wtUSe8GRtQ7FjJUL8fqmByyx3a4qTqQ4n4-Ktm0mo3pH9pUo8uYbzc7pSTsYQWC9WKS_MOLPYFKGQS1Ynu5UXq-QmoswfdXlt3IDrCGl334TDwMKhUc0kiS86rI4ylnTuYIpkv7nb4_LyTXcdTfjKTVMOHo4AG3w2nZv9nz4eOjt_Qsnjym7EGUbYmBexcpulCoMUbKpqoDgjuFuWWQDt8TvJ0TTqeXk65Mb-Odp1FD2F6X7eCjNp_5VISBUWeJhlZ1Qtu",
+    image: "/images/attractions/Debre-Damo-Abune-Aregawi-monaster--1920x1080.webp",
     distance: "45 km",
     category: "Religious Site",
     highlights: ["6th century monastery", "Ancient manuscripts", "Rope climb access", "Panoramic views"],
@@ -39,7 +43,7 @@ const attractions: Attraction[] = [
     name: "Gheralta Mountains",
     description: "Home to stunning rock-hewn churches and panoramic views.",
     longDescription: "The Gheralta mountain range features dramatic sandstone cliffs and is home to some of the most impressive rock-hewn churches in Ethiopia. These ancient churches, carved into cliff faces, date back to the 4th-6th centuries.",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCOmzVXKyVHsOx5BZJWwzPKLNMpkFW0fPK_T6kwrzbuR1SHuGeOlUqQ5iQdDZ24F_uXiLTIRpp1jk-wCrZxA3OsyUxnlhaT0cTuR1qivKgKiXaC4BkeXMRihJwrwcinyoTV5O7hc0qsQZlQS5qIv0R_aQ5CizVwvf17Mu-9q5G6vgzVjddqcCtJqDweNpb0wk_UMwGCVCG8hk2T6Xffjriy0Duk_Hfqt6j8hpoJdRGZhC61HW5we8N_gYV6nX9-dPEJok4mvXIKhHwV",
+    image: "/images/attractions/Gheralta.webp",
     distance: "65 km",
     category: "Natural Wonder",
     highlights: ["Rock-hewn churches", "Dramatic cliffs", "Hiking trails", "Ancient frescoes"],
@@ -49,7 +53,7 @@ const attractions: Attraction[] = [
     name: "Al-Nejashi Mosque",
     description: "One of the earliest mosques in Africa, a site of great historical importance.",
     longDescription: "The Al-Nejashi Mosque is believed to be the first mosque in Africa, established during the first Hijra when early Muslims sought refuge in the Ethiopian kingdom. This historically significant site represents the peaceful coexistence of religions in Ethiopia.",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBu1k1XaYnLWxoh_9eox5bwqgUMyw6TLJvyOs0Z4OkVoWWhjdFNrXXRF9X6CbCqqx7QMW0zFPcwvsPQn0jDImshfGxd0GMEKmWuF6Vq6XtTylCEo3OBIl9rSoaNHS33g4HNsV1sLmQd_L6uCT5wqcE-yythiueqZJ_PT8FIkllUYS_JPQ1fSfSCv8pEmMs47I5lvxXTwDY7971GKY8JDBXNG1vJ3kSw8SYuCMsInmPJhichHxmplgY7VrQ0b4DrcIk55orKUc6tJk1o",
+    image: "/images/attractions/Al Najashi4.webp",
     distance: "30 km",
     category: "Religious Site",
     highlights: ["First mosque in Africa", "Historical significance", "Religious harmony", "Cultural heritage"],
@@ -59,7 +63,7 @@ const attractions: Attraction[] = [
     name: "Yeha Temple",
     description: "A pre-Aksumite temple dating back over 2,500 years.",
     longDescription: "The Great Temple of Yeha is one of the oldest standing structures in Ethiopia, dating to around the 8th-7th century BC. This remarkable monument from the pre-Aksumite period showcases the advanced civilization that existed in this region.",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBVBCiJf9wtUSe8GRtQ7FjJUL8fqmByyx3a4qTqQ4n4-Ktm0mo3pH9pUo8uYbzc7pSTsYQWC9WKS_MOLPYFKGQS1Ynu5UXq-QmoswfdXlt3IDrCGl334TDwMKhUc0kiS86rI4ylnTuYIpkv7nb4_LyTXcdTfjKTVMOHo4AG3w2nZv9nz4eOjt_Qsnjym7EGUbYmBexcpulCoMUbKpqoDgjuFuWWQDt8TvJ0TTqeXk65Mb-Odp1FD2F6X7eCjNp_5VISBUWeJhlZ1Qtu",
+    image: "/images/attractions/Gheralta.webp",
     distance: "55 km",
     category: "Archaeological Site",
     highlights: ["Pre-Aksumite era", "2,500+ years old", "Ancient architecture", "Historical museum"],
@@ -69,7 +73,7 @@ const attractions: Attraction[] = [
     name: "Adigrat Local Market",
     description: "Experience authentic Ethiopian culture and local crafts.",
     longDescription: "The vibrant local market in Adigrat offers an authentic glimpse into daily Ethiopian life. Browse traditional crafts, sample local produce, and experience the warm hospitality of the Tigrayan people.",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCOmzVXKyVHsOx5BZJWwzPKLNMpkFW0fPK_T6kwrzbuR1SHuGeOlUqQ5iQdDZ24F_uXiLTIRpp1jk-wCrZxA3OsyUxnlhaT0cTuR1qivKgKiXaC4BkeXMRihJwrwcinyoTV5O7hc0qsQZlQS5qIv0R_aQ5CizVwvf17Mu-9q5G6vgzVjddqcCtJqDweNpb0wk_UMwGCVCG8hk2T6Xffjriy0Duk_Hfqt6j8hpoJdRGZhC61HW5we8N_gYV6nX9-dPEJok4mvXIKhHwV",
+    image: "/images/attractions/Gheralta.webp",
     distance: "1 km",
     category: "Cultural Experience",
     highlights: ["Traditional crafts", "Local produce", "Cultural immersion", "Walking distance"],
@@ -79,7 +83,7 @@ const attractions: Attraction[] = [
     name: "Qohaito Archaeological Site",
     description: "Ancient ruins with mysterious stelae and rock carvings.",
     longDescription: "Qohaito features impressive pre-Aksumite ruins including the remains of a dam, stelae, and rock carvings. This archaeological site provides insights into the advanced civilization that flourished in this region thousands of years ago.",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBu1k1XaYnLWxoh_9eox5bwqgUMyw6TLJvyOs0Z4OkVoWWhjdFNrXXRF9X6CbCqqx7QMW0zFPcwvsPQn0jDImshfGxd0GMEKmWuF6Vq6XtTylCEo3OBIl9rSoaNHS33g4HNsV1sLmQd_L6uCT5wqcE-yythiueqZJ_PT8FIkllUYS_JPQ1fSfSCv8pEmMs47I5lvxXTwDY7971GKY8JDBXNG1vJ3kSw8SYuCMsInmPJhichHxmplgY7VrQ0b4DrcIk55orKUc6tJk1o",
+    image: "/images/attractions/Gheralta.webp",
     distance: "80 km",
     category: "Archaeological Site",
     highlights: ["Ancient ruins", "Mysterious stelae", "Rock carvings", "Historical research"],
@@ -96,16 +100,17 @@ export default function AttractionsPage() {
           aria-label="Local attractions hero section"
         >
           <HeroImage
-            src="/images/Compound.svg"
+            src="/images/heroes/Ext-Compund.webp"
             alt="Beautiful landscape of Tigray region"
             overlayOpacity={0.5}
             className="absolute inset-0 -z-10"
+            sizes="(max-width: 1280px) 100vw, 1280px"
           />
           <div className="flex flex-col gap-4 relative z-10">
-            <h1 className="text-4xl font-black leading-tight tracking-tighter md:text-6xl">
+            <h1 className="text-4xl font-black leading-tight tracking-tighter md:text-6xl" style={{ textShadow: '0 0 60px rgba(255,255,255,0.5), 0 0 100px rgba(255,255,255,0.25), 0 2px 8px rgba(0,0,0,0.6)' }}>
               Explore Adigrat & Tigray
             </h1>
-            <p className="mx-auto max-w-2xl text-base font-normal leading-normal text-gray-200 md:text-lg">
+            <p className="mx-auto max-w-2xl text-base font-normal leading-normal text-sandstone/80 md:text-lg" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.6)' }}>
               Discover the rich history and breathtaking landscapes surrounding our hotel.
             </p>
           </div>
@@ -175,7 +180,7 @@ export default function AttractionsPage() {
                           {attraction.category}
                         </span>
                         <span className="flex items-center gap-1 text-xs text-text-secondary">
-                          <span className="material-symbols-outlined text-sm">place</span>
+                          <Icon name="place" className="text-sm" />
                           {attraction.distance}
                         </span>
                       </div>
@@ -213,7 +218,7 @@ export default function AttractionsPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             <article className="flex flex-col items-center gap-4 rounded-lg bg-background-light p-6 text-center dark:bg-background-dark">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/20 text-primary" aria-hidden="true">
-                <span className="material-symbols-outlined text-3xl">directions_car</span>
+                <Icon name="directions_car" className="text-3xl" />
               </div>
               <div className="flex flex-col gap-1">
                 <h3 className="text-lg font-bold text-text-primary dark:text-background-light">Private Transfers</h3>
@@ -224,7 +229,7 @@ export default function AttractionsPage() {
             </article>
             <article className="flex flex-col items-center gap-4 rounded-lg bg-background-light p-6 text-center dark:bg-background-dark">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/20 text-primary" aria-hidden="true">
-                <span className="material-symbols-outlined text-3xl">person</span>
+                <Icon name="person" className="text-3xl" />
               </div>
               <div className="flex flex-col gap-1">
                 <h3 className="text-lg font-bold text-text-primary dark:text-background-light">Expert Guides</h3>
@@ -235,7 +240,7 @@ export default function AttractionsPage() {
             </article>
             <article className="flex flex-col items-center gap-4 rounded-lg bg-background-light p-6 text-center dark:bg-background-dark">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/20 text-primary" aria-hidden="true">
-                <span className="material-symbols-outlined text-3xl">calendar_month</span>
+                <Icon name="calendar_month" className="text-3xl" />
               </div>
               <div className="flex flex-col gap-1">
                 <h3 className="text-lg font-bold text-text-primary dark:text-background-light">Custom Itineraries</h3>

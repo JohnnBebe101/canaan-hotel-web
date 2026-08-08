@@ -1,80 +1,58 @@
 @import "tailwindcss";
 
-/* Material Symbols Outlined */
-.material-symbols-outlined {
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-  font-weight: normal;
-  font-style: normal;
-  font-size: 24px;
-  line-height: 1;
-  letter-spacing: normal;
-  text-transform: none;
-  display: inline-block;
-  white-space: nowrap;
-  word-wrap: normal;
-  direction: ltr;
-  font-feature-settings: 'liga';
-  -webkit-font-feature-settings: 'liga';
-  -webkit-font-smoothing: antialiased;
+:root {
+  /* Design Tokens */
+  --color-forest: #0B221A;
+  --color-cactus: #4B6344;
+  --color-sandstone: #F5F2E9;
+  --color-bronze: #8E735B;
+  
+  /* Legacy/Compatibility Mapping */
+  --color-primary: var(--color-cactus);
+  --color-secondary: var(--color-forest);
+  --color-background-light: var(--color-sandstone);
+  --color-background-dark: var(--color-forest);
+
+  /* Typography variables injected by Next.js */
+  --font-playfair: 'Playfair Display', serif;
+  --font-inter: 'Inter', sans-serif;
 }
 
-/* Skip link for accessibility */
-.skip-link {
-  position: absolute;
-  top: -40px;
-  left: 0;
-  background: #f97316;
-  color: white;
-  padding: 8px;
-  text-decoration: none;
-  z-index: 100;
-  border-radius: 4px;
-}
-
-.skip-link:focus {
-  top: 0;
-}
-
-/* Focus styles for accessibility */
-*:focus-visible {
-  outline: 2px solid #f97316;
-  outline-offset: 2px;
-}
-
-/* Smooth scrolling */
+/* Base Estimations */
 html {
-  scroll-behavior: smooth;
 }
 
-/* Custom scrollbar */
+body {
+  background-color: var(--color-sandstone);
+  color: var(--color-forest);
+}
+
+/* Geometric Pattern Utility */
+.canaan-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0C20 0 20 15 5 20C20 25 20 40 20 40C20 40 20 25 35 20C20 15 20 0 20 0Z' fill='%234B6344' fill-opacity='0.1'/%3E%3C/svg%3E");
+  background-size: 40px 40px;
+}
+
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--color-sandstone);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #c5c5c5;
-  border-radius: 4px;
+  background: var(--color-cactus);
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8;
+  background: var(--color-forest);
 }
 
-/* Dark mode scrollbar */
-@media (prefers-color-scheme: dark) {
-  ::-webkit-scrollbar-track {
-    background: #2d2d2d;
-  }
-  
-  ::-webkit-scrollbar-thumb {
-    background: #555;
-  }
-  
-  ::-webkit-scrollbar-thumb:hover {
-    background: #777;
-  }
+/* Accessibility Focus */
+*:focus-visible {
+  outline: 2px solid var(--color-cactus);
+  outline-offset: 2px;
 }

@@ -1,9 +1,13 @@
 import type { NextConfig } from "next";
 
 const baseConfig: NextConfig = {
+  outputFileTracingRoot: __dirname,
+  turbopack: {
+    root: __dirname,
+  },
   images: {
-    qualities: [75, 80],
-    formats: ["image/webp", "image/avif"],
+    qualities: [75, 80, 90],
+    formats: ["image/avif", "image/webp"],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 31536000,
@@ -31,7 +35,6 @@ const baseConfig: NextConfig = {
   experimental: {
     optimizeCss: true,
   },
-  poweredByHeader: false,
   compress: true,
   ...(process.env.NEXT_ALLOWED_DEV_ORIGINS && {
     allowedDevOrigins: process.env.NEXT_ALLOWED_DEV_ORIGINS.split(",").map(

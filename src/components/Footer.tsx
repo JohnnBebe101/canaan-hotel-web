@@ -1,117 +1,134 @@
+import React from "react";
 import Link from "next/link";
+import Image from "next/image";
+import CanaanLogo from "@/components/ui/CanaanLogo";
+import { Icon } from "@/components/ui/Icons";
 
 export default function Footer() {
   return (
-    <footer className="bg-white dark:bg-background-dark/90 border-t border-border-color dark:border-text-secondary/20">
-      <div className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
-          <div className="col-span-2 lg:col-span-1">
-            <div className="flex items-center gap-3">
-              <img src="/images/logo 2.svg" alt="Canaan International Hotel Logo" className="h-12 w-auto" />
-            </div>
-            <p className="mt-4 text-sm text-text-secondary dark:text-text-secondary/90">
-              Your home in the heart of Tigray. Experience comfort, history, and warm Ethiopian hospitality.
+    <footer className="bg-forest text-sandstone">
+      <div className="max-w-7xl mx-auto px-6 py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-8">
+          {/* Column 1 — Brand Identity */}
+          <div className="space-y-4">
+            <CanaanLogo size="w-20 h-20" className="text-cactus" />
+            <p className="text-sandstone/60 text-sm leading-relaxed mt-3 max-w-[200px]">
+              Where the basalt of the highlands meets sanctuary and comfort.
             </p>
-            <div className="mt-4 flex gap-4">
-              <a href="#" className="text-text-secondary hover:text-primary transition-colors" aria-label="Facebook">
-                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
-                </svg>
+            <div className="flex space-x-3 pt-2">
+              <a href="#" aria-label="Facebook — coming soon" className="text-sandstone/40 hover:text-bronze transition-colors opacity-60 cursor-not-allowed">
+                <Icon name="facebook" className="w-5 h-5" />
               </a>
-              <a href="#" className="text-text-secondary hover:text-primary transition-colors" aria-label="Instagram">
-                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.012-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 016.345 2.525c.636-.247 1.363.416 2.427-.465C9.795 2.013 10.148 2 12.315 2z" />
-                </svg>
+              <a href="#" aria-label="Instagram — coming soon" className="text-sandstone/40 hover:text-bronze transition-colors opacity-60 cursor-not-allowed">
+                <Icon name="instagram" className="w-5 h-5" />
               </a>
-              <a href="#" className="text-text-secondary hover:text-primary transition-colors" aria-label="Twitter">
-                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
-                </svg>
+              <a href="#" aria-label="X/Twitter — coming soon" className="text-sandstone/40 hover:text-bronze transition-colors opacity-60 cursor-not-allowed">
+                <Icon name="twitter" className="w-5 h-5" />
+              </a>
+              <a href="#" aria-label="YouTube — coming soon" className="text-sandstone/40 hover:text-bronze transition-colors opacity-60 cursor-not-allowed">
+                <Icon name="youtube" className="w-5 h-5" />
               </a>
             </div>
           </div>
 
+          {/* Column 2 — Explore */}
           <div>
-            <h4 className="font-semibold text-text-primary dark:text-background-light">Quick Links</h4>
-            <ul className="mt-4 space-y-2 text-sm text-text-secondary dark:text-text-secondary/90">
-              <li><Link href="/rooms" className="hover:text-primary transition-colors">Rooms & Suites</Link></li>
-              <li><Link href="/services" className="hover:text-primary transition-colors">Services</Link></li>
-              <li><Link href="/gallery" className="hover:text-primary transition-colors">Photo Gallery</Link></li>
-              <li><Link href="/attractions" className="hover:text-primary transition-colors">Local Attractions</Link></li>
-              <li><Link href="/about" className="hover:text-primary transition-colors">About Us</Link></li>
-              <li><Link href="/contact" className="hover:text-primary transition-colors">Contact</Link></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-semibold text-text-primary dark:text-background-light">Contact Us</h4>
-            <ul className="mt-4 space-y-2 text-sm text-text-secondary dark:text-text-secondary/90">
-              <li>123 Main Street, Adigrat, Tigray</li>
+            <h4 className="text-xs font-semibold tracking-widest uppercase mb-4 text-sandstone/40">Explore</h4>
+            <ul className="space-y-2">
               <li>
-                <a href="tel:+251911095728" className="hover:text-primary transition-colors">
-                  +251 911 095 728
-                </a>
+                <Link href="/rooms" className="block text-sandstone/70 hover:text-sandstone text-sm py-1 transition-colors">
+                  Rooms & Suites
+                </Link>
               </li>
               <li>
-                <a href="mailto:contact@canaanhotel.com" className="hover:text-primary transition-colors">
-                  contact@canaanhotel.com
-                </a>
+                <Link href="/services/gastronomy" className="block text-sandstone/70 hover:text-sandstone text-sm py-1 transition-colors">
+                  Canaanite Gastronomy
+                </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-primary hover:underline text-sm">
-                  View on Map →
+                <Link href="/about" className="block text-sandstone/70 hover:text-sandstone text-sm py-1 transition-colors">
+                  Our Story
+                </Link>
+              </li>
+              <li>
+                <Link href="/blog" className="block text-sandstone/70 hover:text-sandstone text-sm py-1 transition-colors">
+                  Journal & Stories
+                </Link>
+              </li>
+              <li>
+                <Link href="/corporate" className="block text-sandstone/70 hover:text-sandstone text-sm py-1 transition-colors">
+                  Corporate & Groups
                 </Link>
               </li>
             </ul>
           </div>
 
+          {/* Column 3 — Contact */}
           <div>
-            <h4 className="font-semibold text-text-primary dark:text-background-light">Newsletter</h4>
-            <p className="mt-4 text-sm text-text-secondary dark:text-text-secondary/90">
-              Subscribe for exclusive offers and updates.
-            </p>
-            <form className="mt-4 space-y-2">
-              <input
-                type="email"
-                placeholder="Your email"
-                className="w-full px-3 py-2 text-sm border border-border-color rounded-lg focus:ring-2 focus:ring-primary bg-white dark:bg-background-light/10 text-text-primary dark:text-background-light"
-              />
-              <button
-                type="submit"
-                className="w-full px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-orange-600 transition-colors"
-              >
-                Subscribe
-              </button>
-            </form>
+            <h4 className="text-xs font-semibold tracking-widest uppercase mb-4 text-sandstone/40">Contact</h4>
+            <ul className="space-y-3 text-sm text-sandstone/70">
+              <li className="flex items-center gap-2">
+                <Icon name="call" className="w-4 h-4 text-cactus" />
+                <a href="tel:+251911095728" className="hover:text-bronze transition-colors">+251 911 095 728</a>
+              </li>
+              <li className="flex items-center gap-2">
+                <Icon name="mail" className="w-4 h-4 text-cactus" />
+                <a href="mailto:info@canaanhotels.com" className="hover:text-bronze transition-colors">info@canaanhotels.com</a>
+              </li>
+              <li className="flex items-start gap-2">
+                <Icon name="location_on" className="w-4 h-4 text-cactus mt-0.5" />
+                <span>
+                  Kebele 03, Adigrat<br />
+                  <span className="text-sandstone/50">Tigray 1000, Ethiopia</span>
+                </span>
+              </li>
+              <li className="flex items-center gap-2 pt-2">
+                <Icon name="info" className="w-4 h-4 text-cactus" />
+                <span className="text-sandstone/60">24-Hour Front Desk</span>
+              </li>
+            </ul>
           </div>
 
-          <div className="col-span-2 md:col-span-1">
-            <h4 className="font-semibold text-text-primary dark:text-background-light">Payment Methods</h4>
-            <div className="mt-4 flex flex-wrap gap-2">
-              <div className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-xs text-text-secondary">Visa</div>
-              <div className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-xs text-text-secondary">Mastercard</div>
-              <div className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-xs text-text-secondary">Amex</div>
-              <div className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-xs text-text-secondary">PayPal</div>
-              <div className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-xs text-text-secondary">Bank Transfer</div>
+          {/* Column 4 — Visit */}
+          <div>
+            <h4 className="text-xs font-semibold tracking-widest uppercase mb-4 text-sandstone/40">Visit</h4>
+            <div className="rounded-xl overflow-hidden shadow-lg border border-cactus/20 h-32">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3948.533!2d39.4624769!3d14.2845872!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x166c8f924fda49bb%3A0xf3d84f15780cf278!2sInternational%20Canaan%20Hotel!5e0!3m2!1sen!2set!4v"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Canaan International Hotel location"
+              />
             </div>
-            <div className="mt-6">
-              <h4 className="font-semibold text-text-primary dark:text-background-light text-sm">Certifications</h4>
-              <div className="mt-2 flex items-center gap-2">
-                <div className="flex items-center gap-1 text-xs text-text-secondary">
-                  <span className="material-symbols-outlined text-green-600 text-sm">verified</span>
-                  <span>Ethiopian Tourism</span>
-                </div>
-              </div>
+            <a 
+              href="https://www.google.com/maps/place/International+Canaan+Hotel/@14.2845872,39.459902,17z/data=!4m9!3m8!1s0x166c8f924fda49bb:0xf3d84f15780cf278!5m2!4m1!1i2!8m2!3d14.2845872!4d39.4624769!16s%2Fg%2F11c59546j_?entry=ttu" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-bronze text-xs hover:underline mt-2 inline-block"
+            >
+              Open in Google Maps →
+            </a>
+            <div className="text-sandstone/60 text-xs mt-4">
+              <p>Check-in: 12:00 PM</p>
+              <p>Check-out: 11:00 AM</p>
             </div>
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-border-color dark:border-text-secondary/30">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-text-secondary dark:text-text-secondary/90">
-            <p>© 2025 Canaan International Hotel. All rights reserved.</p>
+        {/* Bottom Bar */}
+        <div className="border-t border-cactus/20 pt-6 mt-8">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-sandstone/40">
+            <span>© 2026 Canaan International Hotel. All rights reserved.</span>
             <div className="flex gap-6">
-              <a href="#privacy" className="hover:text-primary transition-colors">Privacy Policy</a>
-              <a href="#terms" className="hover:text-primary transition-colors">Terms of Service</a>
+              <Link href="/legal/privacy" className="text-sandstone/40 hover:text-sandstone/70 transition-colors">Privacy</Link>
+              <span>·</span>
+              <Link href="/legal/terms" className="text-sandstone/40 hover:text-sandstone/70 transition-colors">Terms</Link>
+              <span>·</span>
+              <Link href="/legal/cookies" className="text-sandstone/40 hover:text-sandstone/70 transition-colors">Cookies</Link>
             </div>
           </div>
         </div>

@@ -1,0 +1,358 @@
+# **Critical Cross-Examination QA Prompt: Canaan Hotel Booking System**
+
+## **Strategic Context**
+
+This prompt is designed for **deep-dive verification** after the initial audit. It challenges the audit findings and validates that the codebase is production-ready by testing assumptions, hidden dependencies, and edge cases specific to a hotel booking system.
+
+---
+
+## **QA Investigation Prompt**
+
+### **Objective**
+Perform a **cross-validation audit** to verify the initial cleanup audit was complete and accurate. Focus on production-critical areas (booking logic, payments, user data) and hidden technical debt that automated scans miss.
+
+---
+
+### **SECTION 1: Import & Dependency Verification**
+
+**Question Set A: Import Resolution & Circular Dependencies**
+
+1. **Verify import consolidation safety:**
+   - Are the duplicate imports in `supabase.ts` and `supabase-admin.ts` truly redundant, or do they serve different initialization contexts (e.g., server-side vs. client-side)?
+   - Check: Do both files export different instances? Are they used in different execution contexts (API routes vs. components)?
+   - **Risk**: Merging them could break server/client separation.
+
+2. **Circular dependency detection:**
+   - Run: `npm ls --depth=10 | grep "UNMET\|deduped"` 
+   - Manually trace imports: Does `supabase.ts` import from any file that imports from `supabase.ts`?
+   - Check barrel exports in `lib/models.ts`: Are they importing from files that import from `models.ts`?
+   - **Risk**: Circular deps can cause undefined behavior in Next.js builds.
+
+3. **Transitive dependency conflicts:**
+   - The 5 optional Sharp dependencies (`@emnapi/*`, `@napi-rs/*`, `@tybys/*`): Are they actually unused, or are they required for image optimization on deployment?
+   - Test: Run `npm run build` with these removed locally. Does the build still pass? Does image optimization work?
+   - **Risk**: Removing them could break image processing in production.
+
+---
+
+**Question Set B: Barrel Export Completeness**
+
+4. **Model barrel exports audit:**
+   - List all files that import from `@/lib/models`:
+     ```bash
+     grep -r "from.*@/lib/models" src/ | wc -l
+     ```
+   - Are ALL model types (Booking, Room, User, Payment, etc.) exported from this barrel?
+   - Are there any direct imports like `import { Booking } from "@/lib/models/booking.ts"` that bypass the barrel?
+   - **Risk**: Inconsistent imports make refactoring dangerous.
+
+5. **Utility function consolidation:**
+   - Search for all files with date formatting functions:
+     ```bash
+     grep -r "formatDate\|parseDate\|toISOString" src/ | grep -v node_modules
+     ```
+   - How many implementations exist? Are they identical or do they have subtle differences?
+   - Check: Do any have different timezone handling or locale support?
+   - **Risk**: Duplicate date logic could cause booking confirmation mismatches.
+
+---
+
+### **SECTION 2: Booking Logic & Payment Integration**
+
+**Question Set C: Stripe & Payment Duplication**
+
+6. **Stripe configuration audit:**
+   - Search for Stripe initialization:
+     ```bash
+     grep -r "Stripe\|STRIPE_" src/ | grep -v node_modules | grep -v ".next"
+     ```
+   - How many files initialize Stripe? (Should be 1-2 max)
+   - Are there duplicate webhook handlers for `payment_intent.succeeded` or `charge.refunded`?
+   - **Risk**: Multiple Stripe instances could cause double-charging or failed refunds.
+
+7. **API route duplication for payments:**
+   - List all API routes in `src/api/`:
+     ```bash
+     find src/api -name "*.ts" -type f | sort
+     ```
+   - Are there multiple endpoints for the same operation? (e.g., `/api/bookings/create` AND `/api/create-booking`)
+   - Check for deprecated endpoints that should be removed.
+   - **Risk**: Multiple payment endpoints could create race conditions or orphaned transactions.
+
+8. **Supabase transaction consistency:**
+   - Do all booking creation flows use the same transaction pattern?
+   - Search: `BEGIN`, `COMMIT`, `ROLLBACK` in both TypeScript and SQL files.
+   - Are there any booking operations that update multiple tables without transactions?
+   - **Risk**: Incomplete transactions could leave the database in an inconsistent state.
+
+---
+
+**Question Set D: Booking State Management**
+
+9. **Duplicate booking status logic:**
+   - Search for all booking status enums/constants:
+     ```bash
+     grep -r "PENDING\|CONFIRMED\|CANCELLED\|COMPLETED" src/ | grep -v node_modules
+     ```
+   - Are booking statuses defined in multiple places (e.g., TypeScript types, Supabase schema, constants)?
+   - Do all status transitions follow the same state machine?
+   - **Risk**: Inconsistent status definitions could allow invalid state transitions.
+
+10. **Confirmation email duplication:**
+    - How many files send confirmation emails?
+    - Do they all use the same email template or are there multiple versions?
+    - Are there any redundant email triggers (e.g., both API route and webhook sending confirmation)?
+    - **Risk**: Customers could receive duplicate confirmations or conflicting information.
+
+---
+
+### **SECTION 3: Database & Schema Integrity**
+
+**Question Set E: Migration & Schema Consistency**
+
+11. **Migration file audit:**
+    - List all migration files:
+      ```bash
+      ls -la database/migrations/
+      ```
+    - Are all migrations sequentially numbered? Any gaps (e.g., 001, 002, 004 — missing 003)?
+    - Do the migration descriptions match their actual SQL content?
+    - **Risk**: Migration gaps could cause deployment failures or data inconsistencies.
+
+12. **Schema duplication across migrations:**
+    - Do any migrations create the same table or column twice?
+    - Search migration files for duplicate `CREATE TABLE` or `ALTER TABLE` statements.
+    - Are there any migrations that contradict each other (e.g., one adds a constraint, another removes it)?
+    - **Risk**: Conflicting migrations could fail on fresh deployments.
+
+13. **Supabase vs. TypeScript schema mismatch:**
+    - Compare Supabase schema (from migrations) with TypeScript types in `lib/models.ts`:
+      - Does every database column have a corresponding TypeScript property?
+      - Are there TypeScript types that don't exist in the database?
+      - Are nullable columns properly marked as `optional` in types?
+    - **Risk**: Type mismatches could cause runtime errors or data loss.
+
+---
+
+### **SECTION 4: Component & UI Duplication**
+
+**Question Set F: Component Redundancy**
+
+14. **Hero/Navigation component duplication:**
+    - Search for hero components:
+      ```bash
+      find src/components -name "*hero*" -o -name "*Hero*" | sort
+      ```
+    - How many hero components exist? Are they truly different or just styled variants?
+    - Are there multiple navigation components (`Navbar`, `Header`, `Navigation`, `TopNav`)?
+    - **Risk**: Multiple similar components make maintenance harder and increase bundle size.
+
+15. **Form component consistency:**
+    - How many booking form implementations exist?
+    - Are they using the same validation logic or different validators?
+    - Do all forms handle errors the same way?
+    - **Risk**: Inconsistent form behavior could confuse users or cause booking failures.
+
+16. **Button/Input component library:**
+    - Are there duplicate button or input components across the codebase?
+    - Search: `<button`, `<input`, `<Button`, `<Input` (case-insensitive)
+    - Are custom styled components duplicating Tailwind utility combinations?
+    - **Risk**: Inconsistent UI components break design system and increase maintenance.
+
+---
+
+### **SECTION 5: Environment & Configuration**
+
+**Question Set G: Environment Variable Consistency**
+
+17. **Hardcoded values audit:**
+    - Search for hardcoded API keys, URLs, or secrets:
+      ```bash
+      grep -r "sk_live_\|pk_live_\|https://api\." src/ | grep -v node_modules
+      ```
+    - Are there any hardcoded Stripe keys, Supabase URLs, or API endpoints?
+    - Are environment variables properly loaded in all contexts (API routes, components, middleware)?
+    - **Risk**: Hardcoded production secrets could be exposed in version control.
+
+18. **Environment variable duplication:**
+    - List all `.env*` files:
+      ```bash
+      find . -name ".env*" -type f | grep -v node_modules
+      ```
+    - Are there duplicate variable definitions across `.env`, `.env.local`, `.env.production`?
+    - Do all required variables have fallback values or defaults?
+    - **Risk**: Missing env vars could cause silent failures in production.
+
+19. **Next.js environment variable exposure:**
+    - Check `next.config.js`: Are environment variables properly prefixed with `NEXT_PUBLIC_` only when needed?
+    - Search for client-side code accessing `process.env`:
+      ```bash
+      grep -r "process.env\." src/components src/lib | grep -v "NEXT_PUBLIC_"
+      ```
+    - **Risk**: Exposing secrets in client-side code is a security vulnerability.
+
+---
+
+### **SECTION 6: Build & Performance**
+
+**Question Set H: Build Artifacts & Dead Code**
+
+20. **Unused exports detection:**
+    - Are there exported functions/components that are never imported anywhere?
+    ```bash
+    grep -r "export " src/ | grep -v node_modules | wc -l
+    ```
+    - Manually spot-check 10-20 exports to verify they're actually used.
+    - **Risk**: Dead exports increase bundle size and confuse developers.
+
+21. **Unused CSS classes:**
+    - Does Tailwind CSS purge configuration match actual file patterns?
+    - Check `tailwind.config.js`: Does `content` array include all component directories?
+    - Are there custom CSS classes that are never used?
+    - **Risk**: Unused CSS bloats the final bundle.
+
+22. **Next.js optimization verification:**
+    - Run: `npm run build && npm run analyze` (if webpack-bundle-analyzer is installed)
+    - Are there any large dependencies that could be replaced with lighter alternatives?
+    - Is code splitting working correctly (async components, dynamic imports)?
+    - **Risk**: Poor optimization increases page load time, affecting SEO and UX.
+
+---
+
+### **SECTION 7: Testing & Documentation**
+
+**Question Set I: Test Coverage & Cleanup**
+
+23. **Test file orphans:**
+    - List all test files:
+      ```bash
+      find src -name "*.test.ts" -o -name "*.spec.ts" | sort
+      ```
+    - For each test file, verify the corresponding source file exists and is in use.
+    - Are there test files for deleted features or components?
+    - **Risk**: Orphaned tests waste CI/CD time and confuse developers.
+
+24. **README & documentation accuracy:**
+    - Does the README list all environment variables that are actually required?
+    - Are there setup instructions that reference deleted files or deprecated dependencies?
+    - Is the tech stack documentation up-to-date (Next.js 16.2.2, React 19)?
+    - **Risk**: Outdated docs cause setup failures and developer confusion.
+
+---
+
+### **SECTION 8: Git & Version Control**
+
+**Question Set J: Repository Cleanliness**
+
+25. **Committed node_modules or artifacts:**
+    - Check `.gitignore`: Are `.next/`, `dist/`, `build/` properly excluded?
+    - Verify no `node_modules/` or lock files are accidentally committed.
+    - **Risk**: Bloated repository slows down clones and deployments.
+
+26. **Branch and merge history:**
+    - Are there any merged branches with duplicate code?
+    - Check git log for commits that undo previous changes (sign of rework).
+    - **Risk**: Messy history makes debugging and blame tracking difficult.
+
+---
+
+### **SECTION 9: Production Readiness**
+
+**Question Set K: Deployment & Runtime Risks**
+
+27. **Booking concurrency issues:**
+    - When two users book the same room simultaneously, are there race conditions?
+    - Does the database use row-level locking or optimistic concurrency control?
+    - Is there a reservation expiry mechanism to prevent booking locks?
+    - **Risk**: Race conditions could lead to overbooking or failed transactions.
+
+28. **Error handling consistency:**
+    - Do all API routes have proper error handling with try-catch blocks?
+    - Are errors logged consistently (same format, same logger)?
+    - Do error responses expose sensitive information?
+    - **Risk**: Poor error handling causes poor debugging and security vulnerabilities.
+
+29. **Mobile-first validation:**
+    - Are all forms tested on mobile viewports (320px, 375px, 768px)?
+    - Do touch interactions work correctly (no hover-only functionality)?
+    - Is the booking flow optimized for mobile (minimal steps, large touch targets)?
+    - **Risk**: Mobile-first design might not be truly mobile-first.
+
+---
+
+## **Execution Strategy**
+
+### **Phase 1: Automated Verification (15 min)**
+Run all grep/find commands above. Document findings in a spreadsheet.
+
+### **Phase 2: Manual Code Review (30 min)**
+Spot-check critical areas:
+- Supabase client initialization (both files)
+- Stripe payment handlers
+- Booking creation flow (end-to-end)
+- Database migration sequence
+
+### **Phase 3: Risk Assessment (10 min)**
+For each finding, rate:
+- **Severity**: Critical / High / Medium / Low
+- **Likelihood**: How probable is this issue?
+- **Impact**: What breaks if this issue exists?
+
+### **Phase 4: Report & Recommendations (10 min)**
+Document all findings and prioritize fixes.
+
+---
+
+## **Success Criteria**
+
+✅ All 29 questions answered with evidence (code snippets, command outputs)  
+✅ Zero critical or high-priority issues found  
+✅ All findings documented with file paths and line numbers  
+✅ Recommendations prioritized by risk and effort  
+✅ Build passes `npm run build` with 0 warnings after verification  
+✅ No breaking changes introduced during investigation  
+
+---
+
+## **Output Format (Required)**
+
+```
+## CROSS-EXAMINATION QA RESULTS
+
+### CRITICAL FINDINGS
+[List any issues found]
+
+### HIGH PRIORITY FINDINGS
+[List any issues found]
+
+### MEDIUM PRIORITY FINDINGS
+[List any issues found]
+
+### VERIFICATION PASSED ✅
+[List questions that passed without issues]
+
+### RECOMMENDATIONS
+1. [Action item with priority]
+2. [Action item with priority]
+
+### RISK MATRIX
+| Issue | Severity | Likelihood | Impact | Action |
+|-------|----------|-----------|--------|--------|
+```
+
+---
+
+## **Why This QA Prompt Is Bulletproof**
+
+| Aspect | Coverage |
+|--------|----------|
+| **Booking logic** | 6 questions (payments, state, concurrency) |
+| **Database integrity** | 4 questions (schema, migrations, consistency) |
+| **Code quality** | 7 questions (duplicates, dead code, exports) |
+| **Configuration** | 3 questions (env vars, secrets, build) |
+| **Production readiness** | 3 questions (errors, mobile, concurrency) |
+| **Version control** | 2 questions (git cleanliness) |
+| **Testing & docs** | 2 questions (orphans, accuracy) |
+| **Total coverage** | **29 critical questions** |
+
+**This prompt validates that the initial audit was complete and the codebase is production-ready with zero blind spots.** 🎯

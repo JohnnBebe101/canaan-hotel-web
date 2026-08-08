@@ -1,31 +1,50 @@
 /** @type {import('tailwindcss').Config} */
-export default {
+module.exports = {
   content: [
     './src/**/*.{ts,tsx}',
     './src/app/**/*.{ts,tsx}',
+    './src/components/**/*.{ts,tsx}',
   ],
   theme: {
     extend: {
       colors: {
-        primary: '#f97316',
-        'background-light': '#f8f8f5',
-        'background-dark': '#181611',
-        'text-primary': '#172554',
-        'text-secondary': '#64748b',
-        'border-color': '#e2e8f0',
+        forest: {
+          DEFAULT: '#0B221A', // Primary dark, depth
+          95: '#0B221AF2',    // 95% opacity
+          90: '#0B221AE6',    // 90% opacity
+        },
+        cactus: {
+          DEFAULT: '#4B6344', // Primary accent
+          10: '#4B63441A',    // 10% opacity
+        },
+        sandstone: {
+          DEFAULT: '#F5F2E9', // Primary light
+          50: '#F5F2E980',    // 50% opacity
+        },
+        bronze: '#8E735B',
+        // Keeping existing utilitarian colors for compatibility during migration
+        primary: {
+          DEFAULT: '#4B6344', // Replaces Orange with Cactus
+          muted: '#4B63441A',
+        },
+        'background-light': '#F5F2E9',
+        'background-dark': '#0B221A',
+        'text-primary': '#0B221A',
+        'text-secondary': '#4B6344',
       },
       fontFamily: {
-        display: ['Plus Jakarta Sans', 'Noto Sans', 'sans-serif'],
+        serif: ['var(--font-playfair)', 'serif'],
+        sans: ['var(--font-inter)', 'sans-serif'],
       },
-      borderRadius: {
-        DEFAULT: '0.25rem',
-        lg: '0.5rem',
-        xl: '0.75rem',
-        full: '9999px',
+      letterSpacing: {
+        widest: '0.25em',
+        tighter: '-0.05em',
+      },
+      animation: {
+        'in': 'animate-in fade-in zoom-in-95 duration-1000',
+        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
     },
   },
-  plugins: [
-    require('@iconify/tailwind4'),
-  ],
+  plugins: [],
 }

@@ -1,73 +1,114 @@
-import { Room } from "./models";
-import { getAllRooms, saveRoom, updateRoom as dbUpdateRoom, deleteRoom as dbDeleteRoom } from "./persistence/dbAdapter";
-import { logInfo, logError } from "./logger";
+import { supabase } from './supabase';
+import { offlineStorage } from './offline-storage';
+import { Room } from './models';
+export type { Room };
 
-// Room Management Core: Operational room management
-// NO IN-MEMORY FALLBACK: Using database persistence as primary source
+// ============================================
+// ROOM STORE (Supabase with Offline Fallback)
+// ============================================
 
 export async function getRooms(): Promise<Room[]> {
   try {
-    const rooms = await getAllRooms();
-    return rooms as Room[];
+    const { data, error } = await supabase
+      .from('rooms')
+      .select('*')
+      .eq('is_active', true)
+      .order('price_per_night', { ascending: true });
+
+    if (error) throw error;
+    return data || [];
   } catch (error) {
-    logError("ROOM_FETCH_FAILED", "Failed to retrieve rooms from database", { error });
-    return [];
+    console.warn('[RoomStore] Supabase unavailable, using offline storage');
+    return offlineStorage.getRooms();
   }
 }
 
-export async function getRoomById(id: string): Promise<Room | undefined> {
+export async function getRoomById(id: string): Promise<Room | null> {
   try {
-    const allRooms = await getRooms();
-    return allRooms.find((room) => room.id === id);
-  } catch (error) {
-    logError("ROOM_BY_ID_FAILED", `Failed to get room by id: ${id}`, { error });
-    return undefined;
-  }
-}
+    const { data, error } = await supabase
+      .from('rooms')
+      .select('*')
+      .eq('id', id)
+      .single();
 
-export async function createRoom(data: Omit<Room, "id" | "createdAt">): Promise<Room> {
-  const newRoom: Room = {
-    ...data,
-    id: crypto.randomUUID(),
-    createdAt: new Date().toISOString(),
-  };
-
-  try {
-    await saveRoom(newRoom);
-    logInfo("ROOM_CREATED", `New room created and persisted: ${newRoom.id}`, { roomId: newRoom.id });
-  } catch (error) {
-    logError("ROOM_CREATE_FAILED", "Failed to persist new room", { error });
-    throw new Error("Failed to create room in database");
-  }
-
-  return newRoom;
-}
-
-export async function updateRoom(
-  id: string,
-  data: Partial<Omit<Room, "id" | "createdAt">>
-): Promise<Room | null> {
-  try {
-    const updated = await dbUpdateRoom(id, data);
-    if (updated) {
-      logInfo("ROOM_UPDATED", `Room updated and persisted: ${id}`, { roomId: id });
+    if (error) {
+      if (error.code === 'PGRST116') return null;
+      throw error;
     }
-    return updated as Room | null;
+    return data;
   } catch (error) {
-    logError("ROOM_UPDATE_FAILED", `Failed to update room: ${id}`, { error });
-    throw new Error("Failed to update room in database");
+    console.warn('[RoomStore] Supabase unavailable, using offline storage');
+    const rooms = offlineStorage.getRooms();
+    return rooms.find(r => r.id === id) || null;
+  }
+}
+
+export async function createRoom(room: Omit<Room, 'id' | 'created_at'>): Promise<Room> {
+  try {
+    const { data, error } = await supabase
+      .from('rooms')
+      .insert(room)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.warn('[RoomStore] Supabase unavailable, using offline storage');
+    return offlineStorage.createRoom(room);
+  }
+}
+
+export async function updateRoom(id: string, updates: Partial<Room>): Promise<Room | null> {
+  try {
+    const { data, error } = await supabase
+      .from('rooms')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.warn('[RoomStore] Supabase unavailable, using offline storage');
+    return offlineStorage.updateRoom(id, updates);
   }
 }
 
 export async function deleteRoom(id: string): Promise<boolean> {
   try {
-    const success = await dbDeleteRoom(id);
-    if (success) {
-      logInfo("ROOM_DELETED", `Room deleted and persisted: ${id}`, { roomId: id });
-    }
-    return success;
+    const { error } = await supabase
+      .from('rooms')
+      .update({ is_active: false })
+      .eq('id', id);
+
+    if (error) throw error;
+    return true;
   } catch (error) {
-    logError("ROOM_DELETE_FAILED", `Failed to delete room: ${id}`, { error });
-    return false;
+    console.warn('[RoomStore] Supabase unavailable, using offline storage');
+    return offlineStorage.deleteRoom(id);
+  }
+}
+
+export async function getRoomBySlug(slug: string): Promise<Room | null> {
+  try {
+    const { data, error } = await supabase
+      .from('rooms')
+      .select('*')
+      .ilike('name', slug.replace(/-/g, ' '))
+      .single();
+
+    if (error) {
+      if (error.code === 'PGRST116') return null;
+      throw error;
+    }
+    return data;
+  } catch (error) {
+    console.warn('[RoomStore] Supabase unavailable, using offline storage');
+    const rooms = offlineStorage.getRooms();
+    return rooms.find(r =>
+      r.name.toLowerCase().replace(/\s+/g, '-') === slug.toLowerCase()
+    ) || null;
   }
 }

@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --webpack",
-    "build": "next build",
+    "dev": "node scripts/validate-env.mjs && next dev",
+    "build": "next build --webpack",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "test": "vitest",
     "test:watch": "vitest --watch"
   },
@@ -14,11 +14,16 @@
     "node": ">=20.19.6"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.10.2",
+    "@supabase/supabase-js": "^2.103.3",
     "lowdb": "^6.0.1",
+    "lucide-react": "^1.7.0",
     "nanoid": "^5.1.6",
-    "next": "16.1.0",
+    "next": "^16.2.2",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "resend": "^6.12.0",
+    "stripe": "^22.0.1"
   },
   "devDependencies": {
     "@iconify-json/tabler": "^1.2.26",
@@ -27,10 +32,11 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "critters": "^0.0.23",
     "eslint": "^9",
     "eslint-config-next": "16.1.0",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "vitest": "^2.0.0"
+    "vitest": "^4.1.2"
   }
 }

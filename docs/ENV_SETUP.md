@@ -35,6 +35,9 @@ NODE_ENV=development
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD=admin
 SESSION_SECRET=change-me-in-production-generate-a-secure-random-key
+# IMPORTANT: ADMIN_API_SECRET must match NEXT_PUBLIC_ADMIN_PASSWORD
+ADMIN_API_SECRET=your_admin_dashboard_password
+NEXT_PUBLIC_ADMIN_PASSWORD=your_admin_dashboard_password
 
 # Google Maps API (for location/map integration)
 # GOOGLE_MAPS_API_KEY=your-google-maps-api-key
@@ -62,6 +65,8 @@ SESSION_SECRET=change-me-in-production-generate-a-secure-random-key
 - `SESSION_SECRET`: Secret key for session management (default: "change-me-in-production")
   - **Important**: Change the default SESSION_SECRET in production!
   - Generate a secure random key: `openssl rand -base64 32`
+- `ADMIN_API_SECRET`: Secret sent by admin pages to authorize API calls (must match `NEXT_PUBLIC_ADMIN_PASSWORD`)
+- `NEXT_PUBLIC_ADMIN_PASSWORD`: Public-facing secret sent as `x-admin-secret` header (must match `ADMIN_API_SECRET`)
 
 ## Optional Environment Variables
 
@@ -71,6 +76,18 @@ All other variables listed above are optional or for future features:
 - **Email/SMTP**: Will be needed when booking inquiry email notifications are implemented
 - **Google Maps**: Will be needed when map integration is added
 - **Widget IDs**: Will be needed when external review widgets are integrated
+- **`NEXT_PUBLIC_SITE_URL`**: The canonical domain (e.g. `https://canaanhotels.com`). Used for canonical tags, sitemap, robots, Open Graph, and structured data.
+
+## Production Deployment
+
+> **Important: `NEXT_PUBLIC_SITE_URL`**
+> `NEXT_PUBLIC_*` variables are **inlined at build time**. They control canonical URLs, the sitemap, robots.txt, Open Graph, and structured data. If unset, the site falls back to `https://canaanhotels.com`.
+
+Set `NEXT_PUBLIC_SITE_URL` in your production build environment:
+- **Netlify (recommended):** it is declared in `netlify.toml` under `[build.environment]` (`NEXT_PUBLIC_SITE_URL = "https://canaanhotels.com"`), or set it in the Netlify UI (Site Settings → Environment variables).
+- **Local dev:** `.env.local` typically uses `http://localhost:3000` so local previews work; production builds use the value from the build environment.
+
+> Changing `NEXT_PUBLIC_SITE_URL` requires a **new build** to take effect.
 
 ## Security Notes
 

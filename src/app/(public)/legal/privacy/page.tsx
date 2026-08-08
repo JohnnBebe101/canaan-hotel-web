@@ -1,8 +1,9 @@
 import type { Metadata } from "next/types";
+import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Canaan International Hotel",
+  title: "Privacy Policy",
   alternates: { canonical: canonical("/legal/privacy") },
   description: "Privacy policy for Canaan International Hotel, Adigrat, Tigray. Your privacy is important to us.",
   openGraph: {
@@ -16,6 +17,7 @@ export default function PrivacyPage() {
   return (
     <main id="main-content" className="flex flex-col items-center py-16 px-4">
       <div className="max-w-3xl w-full">
+        <Breadcrumbs items={[{ name: "Privacy Policy" }]} />
         <h1 className="text-4xl font-serif font-bold text-forest mb-8">Privacy Policy</h1>
         <div className="prose prose-sandstone max-w-none">
           <p className="text-text-secondary leading-relaxed mb-6">

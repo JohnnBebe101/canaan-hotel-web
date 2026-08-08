@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { getPublishedBlogs, getBlogBySlug } from "@/lib/blog-store";
 import { offlineStorage } from "@/lib/offline-storage";
 import ScrollReveal from "@/components/ui/ScrollReveal";
+import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import { canonical } from "@/lib/seo";
 
 export async function generateStaticParams() {
@@ -29,7 +30,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${blog.title} | Canaan International Hotel`,
+    title: blog.title,
     description: blog.excerpt,
     alternates: { canonical: canonical(`/blog/${blog.slug}`) },
     openGraph: {
@@ -73,12 +74,12 @@ export default async function BlogPostPage({
   return (
     <div className="flex flex-1 flex-col items-center">
       <article className="w-full max-w-4xl px-4 sm:px-6 lg:px-8 py-16">
-        <Link
-          href="/blog"
-          className="text-bronze hover:underline text-sm mb-6 inline-block"
-        >
-          ← Back to Journal
-        </Link>
+        <Breadcrumbs
+          items={[
+            { name: "Journal", href: "/blog" },
+            { name: blog.title },
+          ]}
+        />
 
         <ScrollReveal>
           <header className="mb-8">
@@ -160,6 +161,36 @@ export default async function BlogPostPage({
             </nav>
           </ScrollReveal>
         )}
+
+        {/* Explore Canaan */}
+        <ScrollReveal>
+          <div className="mt-12 pt-8 border-t border-forest/10">
+            <h2 className="text-2xl font-serif font-bold text-forest mb-6">Explore Canaan</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <Link
+                href="/rooms"
+                className="group rounded-lg border border-forest/10 bg-white p-5 hover:border-bronze/40 transition-colors"
+              >
+                <p className="font-serif font-bold text-forest group-hover:text-bronze transition-colors">Rooms & Suites</p>
+                <p className="mt-1 text-sm text-text-secondary">See where you&apos;ll rest in the heart of Adigrat.</p>
+              </Link>
+              <Link
+                href="/attractions"
+                className="group rounded-lg border border-forest/10 bg-white p-5 hover:border-bronze/40 transition-colors"
+              >
+                <p className="font-serif font-bold text-forest group-hover:text-bronze transition-colors">Local Attractions</p>
+                <p className="mt-1 text-sm text-text-secondary">Gheralta, Al-Najashi, and Debre Damo await.</p>
+              </Link>
+              <Link
+                href="/services/gastronomy"
+                className="group rounded-lg border border-forest/10 bg-white p-5 hover:border-bronze/40 transition-colors"
+              >
+                <p className="font-serif font-bold text-forest group-hover:text-bronze transition-colors">Canaanite Gastronomy</p>
+                <p className="mt-1 text-sm text-text-secondary">Taste the culinary traditions of the highlands.</p>
+              </Link>
+            </div>
+          </div>
+        </ScrollReveal>
 
         <div className="mt-12 pt-8 border-t border-forest/10">
           <Link

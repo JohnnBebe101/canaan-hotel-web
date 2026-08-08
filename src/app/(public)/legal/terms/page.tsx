@@ -1,8 +1,9 @@
 import type { Metadata } from "next/types";
+import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Terms of Service | Canaan International Hotel",
+  title: "Terms of Service",
   alternates: { canonical: canonical("/legal/terms") },
   description: "Terms of service for Canaan International Hotel, Adigrat, Tigray.",
   openGraph: {
@@ -16,6 +17,7 @@ export default function TermsPage() {
   return (
     <main id="main-content" className="flex flex-col items-center py-16 px-4">
       <div className="max-w-3xl w-full">
+        <Breadcrumbs items={[{ name: "Terms of Service" }]} />
         <h1 className="text-4xl font-serif font-bold text-forest mb-8">Terms of Service</h1>
         <div className="prose prose-sandstone max-w-none">
           <p className="text-text-secondary leading-relaxed mb-6">
@@ -35,7 +37,7 @@ export default function TermsPage() {
           </p>
           <h2 className="text-2xl font-bold text-forest mt-8 mb-4">Liability</h2>
           <p className="text-text-secondary leading-relaxed mb-4">
-            Canaan International Hotel is not liable for any injury, loss, or damage to guests' property during their stay, except as required by law.
+            Canaan International Hotel is not liable for any injury, loss, or damage to guests&apos; property during their stay, except as required by law.
           </p>
           <h2 className="text-2xl font-bold text-forest mt-8 mb-4">Contact Us</h2>
           <p className="text-text-secondary leading-relaxed">

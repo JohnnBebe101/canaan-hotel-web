@@ -41,4 +41,12 @@ if (missing.length > 0) {
     process.exit(1);
 }
 
+const publicKeys = ['NEXT_PUBLIC_SITE_URL'];
+const publicMissing = publicKeys.filter(key => !envContent.includes(key + '='));
+if (publicMissing.length > 0) {
+    console.warn(`⚠️  Missing recommended public key in .env.local: ${publicMissing.join(', ')}`);
+    console.warn('    NEXT_PUBLIC_SITE_URL is inlined at build time and controls canonical URLs, sitemap, and structured data.');
+    console.warn('    Ensure it is set in the production build environment (e.g. Netlify) to avoid localhost URLs in production.');
+}
+
 console.log('✅ Environment validation passed.');

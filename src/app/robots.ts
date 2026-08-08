@@ -1,6 +1,5 @@
 import { MetadataRoute } from 'next'
-
-const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://canaan11.netlify.app'
+import { SITE_URL } from '@/lib/site'
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -8,9 +7,9 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/admin/', '/api/', '/auth/', '/search/'],
+        disallow: ['/admin/', '/api/', '/auth/', '/search'],
       },
     ],
-    sitemap: `${BASE}/sitemap.xml`,
+    sitemap: `${SITE_URL}/sitemap.xml`,
   }
 }

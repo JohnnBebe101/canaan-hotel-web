@@ -2,10 +2,11 @@ import type { Metadata } from "next/types";
 import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@/components/ui/Icons";
+import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Canaanite Gastronomy | Canaan International Hotel",
+  title: "Canaanite Gastronomy",
   alternates: { canonical: canonical("/services/gastronomy") },
   description: "Experience the culinary traditions of the Ethiopian highlands at Canaan Hotel's restaurant.",
 };
@@ -31,6 +32,14 @@ export default function GastronomyPage() {
 
       {/* Body Section */}
       <section className="max-w-3xl mx-auto px-6 py-16 text-center">
+        <div className="text-left">
+          <Breadcrumbs
+            items={[
+              { name: "Services", href: "/services" },
+              { name: "Canaanite Gastronomy" },
+            ]}
+          />
+        </div>
         <h2 className="text-2xl font-serif font-bold text-forest mb-6">Where Tigray Meets the Table</h2>
         <p className="text-stone-600 leading-relaxed mb-12">
           Our restaurant celebrates the rich culinary traditions of the Ethiopian highlands — 
@@ -67,8 +76,8 @@ export default function GastronomyPage() {
         </Link>
         
         <div className="mt-8">
-          <Link href="/" className="text-bronze hover:underline text-sm">
-            ← Back to Hotel
+          <Link href="/services" className="text-bronze hover:underline text-sm">
+            ← Back to Services
           </Link>
         </div>
       </section>

@@ -1,3 +1,3 @@
-const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://canaan11.netlify.app";
+import { SITE_URL } from "@/lib/site";
 
-export const canonical = (path = "/") => `${BASE}${path === "/" ? "/" : path}`;
+export const canonical = (path = "/") => `${SITE_URL}${path === "/" ? "/" : path}`;

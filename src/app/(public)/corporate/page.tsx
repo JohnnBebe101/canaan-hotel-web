@@ -4,7 +4,7 @@ import CorporateInquiryForm from "./CorporateInquiryForm";
 import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Corporate & Groups | Canaan International Hotel",
+  title: "Corporate & Groups",
   alternates: { canonical: canonical("/corporate") },
   description: "Meetings, retreats, and group stays in the heart of Tigray. Host your next event at Canaan Hotel.",
 };

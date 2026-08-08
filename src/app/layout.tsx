@@ -1,6 +1,7 @@
 
 import type { Metadata } from "next/types";
 import { Playfair_Display, Inter } from "next/font/google";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -17,28 +18,8 @@ const inter = Inter({
   weight: ["300", "400", "500", "600", "700"],
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://canaan11.netlify.app";
-
-const websiteSchema = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  name: "Canaan International Hotel",
-  alternateName: "Canaan Hotel",
-  url: SITE_URL,
-  potentialAction: {
-    "@type": "SearchAction",
-    target: {
-      "@type": "EntryPoint",
-      urlTemplate: `${SITE_URL}/search?q={search_term_string}`,
-    },
-    "query-input": "required name=search_term_string",
-  },
-};
-
 export const metadata: Metadata = {
-  metadataBase: new URL(
-  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://canaan11.netlify.app'
-),
+  metadataBase: new URL(SITE_URL),
   title: {
     template: '%s | Canaan Hotel',
     default: "Canaan International Hotel - Your Gateway to Tigray's History and Comfort",
@@ -49,7 +30,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://canaanhotels.com",
+    url: SITE_URL,
     title: "Canaan International Hotel - Your Gateway to Tigray's History and Comfort",
     description: "Experience unparalleled hospitality in the heart of Adigrat. Book direct for best rates and exclusive offers.",
     images: [
@@ -82,10 +63,6 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body className="bg-sandstone text-forest font-sans antialiased selection:bg-cactus selection:text-white">
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
-        />
         {children}
       </body>
     </html>

@@ -1,11 +1,12 @@
 import type { Metadata } from "next/types";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import OptimizedImage from "@/components/OptimizedImage";
 import RoomBookingForm from "@/components/RoomBookingForm";
+import RoomCard from "@/components/RoomCard";
 import { FEATURED_ROOMS } from "@/lib/featuredRooms";
 import { getRoomImagePath } from "@/lib/roomTypes";
 import { Icon } from "@/components/ui/Icons";
+import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import { canonical } from "@/lib/seo";
 
 export async function generateStaticParams() {
@@ -27,7 +28,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   }
 
   return {
-    title: `${room.name} — Canaan Hotel`,
+    title: room.name,
     description: room.description,
     alternates: { canonical: canonical(`/rooms/${room.slug}`) },
     openGraph: {
@@ -56,16 +57,19 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
   }
 
   const galleryImages = roomGallery[room.slug] ?? [room.imageSrc, room.imageSrc, room.imageSrc];
+  const otherRooms = FEATURED_ROOMS.filter(r => r.slug !== room.slug).slice(0, 3);
 
   return (
     <main className="flex-1 px-4 sm:px-10 lg:px-20 py-10 sm:py-16">
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-10">
         {/* Left Column: Gallery + Details */}
         <div>
-          {/* Back Link */}
-          <Link href="/rooms" className="inline-flex items-center gap-1.5 text-sm text-stone-500 hover:text-stone-800 transition-colors mb-6">
-            ← All Rooms & Suites
-          </Link>
+          <Breadcrumbs
+            items={[
+              { name: "Rooms & Suites", href: "/rooms" },
+              { name: room.name },
+            ]}
+          />
 
           {/* Gallery */}
           <div className="relative w-full overflow-hidden rounded-xl aspect-[4/3] mb-4">
@@ -134,6 +138,37 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
           <RoomBookingForm pricePerNight={room.pricePerNight} roomName={room.name} roomSlug={room.slug} />
         </div>
       </div>
+
+      {/* Other Rooms */}
+      {otherRooms.length > 0 && (
+        <section className="max-w-6xl mx-auto mt-16 pt-10 border-t border-stone-200">
+          <div className="flex items-end justify-between mb-8">
+            <div>
+              <h2 className="text-2xl font-serif font-bold text-stone-800">
+                Other Rooms & Suites
+              </h2>
+              <p className="text-stone-500 mt-1">
+                Explore more ways to stay at Canaan Hotel.
+              </p>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {otherRooms.map((r) => (
+              <RoomCard
+                key={r.slug}
+                slug={r.slug}
+                imageSrc={r.imageSrc}
+                imageAlt={r.imageAlt}
+                name={r.name}
+                description={r.description}
+                priceLabel={r.priceLabel}
+                badges={r.badges}
+                rating={r.rating}
+              />
+            ))}
+          </div>
+        </section>
+      )}
     </main>
   );
 }

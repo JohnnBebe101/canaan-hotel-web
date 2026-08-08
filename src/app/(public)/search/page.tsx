@@ -7,7 +7,7 @@ import { FEATURED_ROOMS } from "@/lib/featuredRooms";
 import { Icon } from "@/components/ui/Icons";
 
 export const metadata: Metadata = {
-  title: "Search | Canaan International Hotel",
+  title: "Search",
   robots: { index: false, follow: false },
 };
 

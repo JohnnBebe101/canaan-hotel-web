@@ -2,8 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { stripe, isStripeConfigured } from '@/lib/stripe';
 import { updateBooking } from '@/lib/booking-store';
 import { getBookingById } from '@/lib/admin-booking-store';
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://canaanhotels.com';
+import { SITE_URL } from '@/lib/site';
 
 export async function POST(req: NextRequest) {
   try {

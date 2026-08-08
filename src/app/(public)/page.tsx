@@ -15,6 +15,8 @@ import { canonical } from "@/lib/seo";
 
 import HeroSlider from "@/components/public/HeroSlider";
 import HotelInFrame from "@/components/public/HotelInFrame";
+import WebsiteSchema from "@/components/seo/WebsiteSchema";
+import HotelSchema from "@/components/seo/HotelSchema";
 
 const AttractionCard = ({ image, title, distance, description }: { image: string, title: string, distance: string, description: string }) => (
   <div className="group cursor-pointer">
@@ -65,7 +67,8 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <div className="animate-in fade-in duration-1000 bg-sandstone">
-
+      <WebsiteSchema />
+      <HotelSchema />
       <HeroSlider />
 
       <section className="relative z-20 mt-6 bg-sandstone">

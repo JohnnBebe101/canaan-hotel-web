@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { SITE_URL } from "@/lib/site";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -9,7 +10,7 @@ export const EMAIL_CONFIG = {
   hotelAddress: "Kebele 03, Adigrat, Tigray 1000, Ethiopia",
   checkInTime: "12:00 PM",
   checkOutTime: "11:00 AM",
-  siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "https://canaanhotels.com",
+  siteUrl: SITE_URL,
 };
 
 export async function sendEmail(params: {
